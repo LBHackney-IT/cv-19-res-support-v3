@@ -4,19 +4,19 @@ setup:
 
 .PHONY: build
 build:
-	docker-compose build base-api
+	docker-compose build cv-19-res-support-api-v3
 
 .PHONY: serve
 serve:
-	docker-compose build base-api && docker-compose up base-api
+	docker-compose build cv-19-res-support-api-v3 && docker-compose up cv-19-res-support-api-v3
 
 .PHONY: shell
 shell:
-	docker-compose run base-api bash
+	docker-compose run cv-19-res-support-api-v3 bash
 
 .PHONY: test
 test:
-	docker-compose up test-database & docker-compose build base-api-test && docker-compose up base-api-test
+	docker-compose up test-database & docker-compose build cv-19-res-support-api-v3-test && docker-compose up cv-19-res-support-api-v3-test
 
 .PHONY: lint
 lint:
