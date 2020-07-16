@@ -1,11 +1,11 @@
 using System.Net.Http;
-using BaseApi.V1.Infrastructure;
+using cv19ResRupportV3.V1.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Npgsql;
 using NUnit.Framework;
 
-namespace BaseApi.Tests
+namespace cv19ResRupportV3.Tests
 {
     public class IntegrationTests<TStartup> where TStartup : class
     {

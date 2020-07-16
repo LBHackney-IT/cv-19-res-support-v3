@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\cv-19-res-support-v3\cv-19-res-support-v3.csproj" />
+    <ProjectReference Include="..\cv19ResSupportV3\cv19ResSupportV3.csproj" />
   </ItemGroup>
 
 </Project>
