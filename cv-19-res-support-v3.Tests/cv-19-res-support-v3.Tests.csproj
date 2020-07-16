@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BaseApi\BaseApi.csproj" />
+    <ProjectReference Include="..\cv-19-res-support-v3\cv-19-res-support-v3.csproj" />
   </ItemGroup>
 
 </Project>
