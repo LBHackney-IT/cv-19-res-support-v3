@@ -28,7 +28,6 @@ namespace cv19ResRupportV3.Tests
 
             _builder = new DbContextOptionsBuilder();
             _builder.UseNpgsql(_connection);
-
         }
 
         [SetUp]
