@@ -1,10 +1,10 @@
 version: "3.2"
 
 services:
-  base-api:
-    image: base-api
+  cv-19-res-support-api-v3:
+    image: cv-19-res-support-api-v3
     build:
-      context: BaseApi/
+      context: cv19ResSupportV3/
       dockerfile: ./Dockerfile
     ports:
       - 3000:3000
@@ -19,11 +19,11 @@ services:
     volumes:
       - ./database:/docker-entrypoint-initdb.d
 
-  base-api-test:
-    image: base-api-test
+  cv-19-res-support-api-v3-test:
+    image: cv-19-res-support-api-v3-test
     build:
       context: .
-      dockerfile: BaseApi.Tests/Dockerfile
+      dockerfile: cv19ResSupportV3.Tests/Dockerfile
     environment:
       - DB_HOST=test-database
       - DB_PORT=5432
