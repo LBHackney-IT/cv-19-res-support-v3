@@ -1,20 +1,20 @@
-using cv19ResRupportV3.V1.Gateways;
-using cv19ResRupportV3.V1.UseCase;
+using cv19ResRupportV3.V3.Gateways;
+using cv19ResRupportV3.V3.UseCase;
 using Moq;
 using NUnit.Framework;
-
 namespace cv19ResRupportV3.Tests.V1.UseCase
 {
-    public class GetByIdUseCaseTests
+    [TestFixture]
+    public class CreateHelpRequestUseCaseTests
     {
-        private Mock<IExampleGateway> _mockGateway;
-        private GetByIdUseCase _classUnderTest;
+        private Mock<IHelpRequestGateway> _mockGateway;
+        private CreateHelpRequestUseCase _classUnderTest;
 
         [SetUp]
         public void SetUp()
         {
-            _mockGateway = new Mock<IExampleGateway>();
-            _classUnderTest = new GetByIdUseCase(_mockGateway.Object);
+            _mockGateway = new Mock<IHelpRequestGateway>();
+            _classUnderTest = new CreateHelpRequestUseCase(_mockGateway.Object);
         }
 
         //TODO: test to check that the use case retrieves the correct record from the database.

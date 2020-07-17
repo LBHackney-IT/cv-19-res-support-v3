@@ -1,12 +1,12 @@
 using System.Linq;
-using cv19ResRupportV3.Tests.V1.Helper;
-using cv19ResRupportV3.V1.Infrastructure;
+using cv19ResRupportV3.Tests.V3.Helper;
+using FluentAssertions;
 using NUnit.Framework;
 
-namespace cv19ResRupportV3.Tests.V1.Infrastructure
+namespace cv19ResRupportV3.Tests.V3.Infrastructure
 {
     [TestFixture]
-    public class DatabaseContextTest : DatabaseTests
+    public class HelpRequestsContextTests : DatabaseTests
     {
         [Test]
         public void CanGetADatabaseEntity()
@@ -16,9 +16,9 @@ namespace cv19ResRupportV3.Tests.V1.Infrastructure
             DatabaseContext.Add(databaseEntity);
             DatabaseContext.SaveChanges();
 
-            var result = DatabaseContext.DatabaseEntities.ToList().FirstOrDefault();
+            var result = DatabaseContext.HelpRequestEntities.ToList().FirstOrDefault();
 
-            Assert.AreEqual(result, databaseEntity);
+            result.Should().BeEquivalentTo(databaseEntity);
         }
     }
 }

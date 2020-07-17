@@ -1,5 +1,5 @@
 using System;
-using cv19ResRupportV3.V1.Domain;
+using cv19ResRupportV3.V3.Domain;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -11,18 +11,18 @@ namespace cv19ResRupportV3.Tests.V1.Domain
         [Test]
         public void EntitiesHaveAnId()
         {
-            var entity = new Entity();
+            var entity = new HelpRequest();
             entity.Id.Should().BeGreaterOrEqualTo(0);
         }
 
         [Test]
         public void EntitiesHaveACreatedAt()
         {
-            var entity = new Entity();
+            var entity = new HelpRequest();
             var date = new DateTime(2019, 02, 21);
-            entity.CreatedAt = date;
+            entity.DateTimeRecorded = date;
 
-            entity.CreatedAt.Should().BeSameDateAs(date);
+            entity.DateTimeRecorded.Should().BeSameDateAs(date);
         }
     }
 }

@@ -1,12 +1,12 @@
 using System.Threading;
-using cv19ResRupportV3.V1.UseCase;
+using cv19ResRupportV3.V3.UseCase;
 using Bogus;
 using FluentAssertions;
 using Microsoft.Extensions.HealthChecks;
 using Moq;
 using NUnit.Framework;
 
-namespace cv19ResRupportV3.Tests.V1.UseCase
+namespace cv19ResRupportV3.Tests.V3.UseCase
 {
     [TestFixture]
     public class DbHealthCheckUseCaseTests

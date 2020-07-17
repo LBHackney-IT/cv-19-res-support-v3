@@ -1,10 +1,10 @@
 using System.Collections.Generic;
-using cv19ResRupportV3.V1.UseCase;
+using cv19ResRupportV3.V3.UseCase;
 using Microsoft.AspNetCore.Mvc;
 
-namespace cv19ResRupportV3.V1.Controllers
+namespace cv19ResRupportV3.V3.Controllers
 {
-    [Route("api/v1/healthcheck")]
+    [Route("api/v3/healthcheck")]
     [ApiController]
     [Produces("application/json")]
     public class HealthCheckController : BaseController
