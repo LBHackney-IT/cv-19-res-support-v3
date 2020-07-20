@@ -86,6 +86,7 @@ namespace cv19ResSupportV3.V3.Factories
                 WhenIsMedicinesDelivered = helpRequest.WhenIsMedicinesDelivered,
                 NameAddressPharmacist = helpRequest.NameAddressPharmacist,
                 UrgentEssentials = helpRequest.UrgentEssentials,
+                UrgentEssentialsAnythingElse = helpRequest.UrgentEssentialsAnythingElse,
                 CurrentSupport = helpRequest.CurrentSupport,
                 CurrentSupportFeedback = helpRequest.CurrentSupportFeedback,
                 FirstName = helpRequest.FirstName,

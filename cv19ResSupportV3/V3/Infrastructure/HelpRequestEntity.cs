@@ -90,6 +90,9 @@ namespace cv19ResSupportV3.V3.Infrastructure
         [Column("urgent_essentials")]
         public string UrgentEssentials { get; set; }
 
+        [Column("urgent_essentials_anything_else")]
+        public string UrgentEssentialsAnythingElse { get; set; }
+
         [Column("current_support")]
         public string CurrentSupport { get; set; }
 
