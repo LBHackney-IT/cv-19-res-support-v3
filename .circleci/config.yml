@@ -157,7 +157,7 @@ jobs:
 workflows:
   check-and-deploy-development:
     jobs:
-#      - check-code-formatting
+   # - check-code-formatting
       - build-and-test
       - assume-role-development:
           context: api-assume-role-development-context
