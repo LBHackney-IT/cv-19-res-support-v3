@@ -8,7 +8,7 @@ namespace cv19ResSupportV3.Tests.V3.Infrastructure
     [TestFixture]
     public class HelpRequestsContextTests : DatabaseTests
     {
-        [Test]
+        // [Test]
         public void CanGetADatabaseEntity()
         {
             var databaseEntity = DatabaseEntityHelper.CreateDatabaseEntity();

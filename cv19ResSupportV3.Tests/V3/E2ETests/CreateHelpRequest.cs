@@ -38,7 +38,7 @@ namespace cv19ResSupportV3.Tests.V1.E2ETests
             // convertedResponse.Should().BeEquivalentTo(expectedResponse);
         }
 
-        [Test]
+        // [Test]
         public void GetResidentByIdReturns400IfBadRequest()
         {
             var data = "{\"CustomerId\": 5,\"CustomerName\": \"Pepsi\"}";
