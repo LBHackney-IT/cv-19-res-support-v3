@@ -104,10 +104,10 @@ jobs:
       - setup_remote_docker
       - run:
           name: build
-          command: docker-compose build cv-19-i-need-help-test
+          command: docker-compose build cv-19-res-support-api-v3-test
       - run:
           name: Run tests
-          command: docker-compose run cv-19-i-need-help-test
+          command: docker-compose run cv-19-res-support-api-v3-test
   assume-role-development:
     executor: docker-python
     steps:

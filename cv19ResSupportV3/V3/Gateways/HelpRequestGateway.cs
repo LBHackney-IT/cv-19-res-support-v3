@@ -1,10 +1,9 @@
 using System.Collections.Generic;
-using cv19ResRupportV3.V3.Domain;
-using cv19ResRupportV3.V3.Factories;
-using cv19ResRupportV3.V3.Infrastructure;
-using HelpRequest = cv19ResRupportV3.V3.Domain.HelpRequest;
+using cv19ResSupportV3.V3.Gateways;
+using cv19ResSupportV3.V3.Infrastructure;
+using HelpRequest = cv19ResSupportV3.V3.Domain.HelpRequest;
 
-namespace cv19ResRupportV3.V3.Gateways
+namespace cv19ResSupportV3.V3.Gateways
 {
     public class HelpRequestGateway : IHelpRequestGateway
     {
@@ -19,6 +18,7 @@ namespace cv19ResRupportV3.V3.Gateways
         public int CreateHelpRequest(HelpRequestEntity request)
         {
             _helpRequestsContext.HelpRequestEntities.Add(request);
+            _helpRequestsContext.SaveChanges();
             return request.Id;
         }
     }

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using cv19ResRupportV3.V3.Gateways;
-using cv19ResRupportV3.V3.Infrastructure;
-using cv19ResRupportV3.V3.UseCase;
-using cv19ResRupportV3.V3.UseCase.Interfaces;
-using cv19ResRupportV3.Versioning;
+using cv19ResSupportV3.V3.Gateways;
+using cv19ResSupportV3.V3.Infrastructure;
+using cv19ResSupportV3.V3.UseCase;
+using cv19ResSupportV3.V3.UseCase.Interfaces;
+using cv19ResSupportV3.Versioning;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +20,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace cv19ResRupportV3
+namespace cv19ResSupportV3
 {
     public class Startup
     {

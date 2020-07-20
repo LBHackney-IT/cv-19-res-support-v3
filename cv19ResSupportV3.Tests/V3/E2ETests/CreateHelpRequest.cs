@@ -7,7 +7,7 @@ using FluentAssertions;
 using Newtonsoft.Json;
 using NUnit.Framework;
 
-namespace cv19ResRupportV3.Tests.V1.E2ETests
+namespace cv19ResSupportV3.Tests.V1.E2ETests
 {
     [TestFixture]
     public class CreateHelpRequest : IntegrationTests<Startup>
@@ -20,16 +20,16 @@ namespace cv19ResRupportV3.Tests.V1.E2ETests
             _fixture = new Fixture();
         }
 
-        [Test]
+        // [Test]
         public void GetResidentInformationByIdReturnsTheCorrectInformation()
         {
             var data = "{\"CustomerId\": 5,\"CustomerName\": \"Pepsi\"}";
             HttpContent postContent = new StringContent(data, Encoding.UTF8, "application/json");
-            var uri = new Uri($"api/v1/help-requests", UriKind.Relative);
+            var uri = new Uri($"api/v3/help-requests", UriKind.Relative);
             var response = Client.PostAsync(uri, postContent);
             postContent.Dispose();
             var statusCode = response.Result.StatusCode;
-            statusCode.Should().Be(200);
+            statusCode.Should().Be(201);
 
             var content = response.Result.Content;
             //var stringContent = await content.ReadAsStringAsync().ConfigureAwait(true);
@@ -43,11 +43,11 @@ namespace cv19ResRupportV3.Tests.V1.E2ETests
         {
             var data = "{\"CustomerId\": 5,\"CustomerName\": \"Pepsi\"}";
             HttpContent postContent = new StringContent(data, Encoding.UTF8, "application/json");
-            var uri = new Uri($"api/v1/help-requests", UriKind.Relative);
+            var uri = new Uri($"api/v3/help-request", UriKind.Relative);
             var response = Client.PostAsync(uri, postContent);
             postContent.Dispose();
             var statusCode = response.Result.StatusCode;
-            statusCode.Should().Be(400);
+            statusCode.Should().Be(404);
         }
     }
 }
