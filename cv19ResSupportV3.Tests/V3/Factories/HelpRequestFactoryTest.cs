@@ -1,9 +1,9 @@
-using cv19ResRupportV3.V3.Factories;
-using cv19ResRupportV3.V3.Infrastructure;
+using cv19ResSupportV3.V3.Factories;
+using cv19ResSupportV3.V3.Infrastructure;
 using FluentAssertions;
 using NUnit.Framework;
 
-namespace cv19ResRupportV3.Tests.V1.Factories
+namespace cv19ResSupportV3.Tests.V1.Factories
 {
     [TestFixture]
     public class HelpRequestFactoryTest

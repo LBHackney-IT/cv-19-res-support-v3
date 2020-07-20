@@ -1,5 +1,5 @@
 
-namespace cv19ResRupportV3.V3.UseCase
+namespace cv19ResSupportV3.V3.UseCase
 {
     public static class ThrowOpsErrorUsecase
     {

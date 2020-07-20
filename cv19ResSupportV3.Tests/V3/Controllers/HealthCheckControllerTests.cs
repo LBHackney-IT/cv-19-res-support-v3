@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using cv19ResRupportV3.V3.Controllers;
-using cv19ResRupportV3.V3.UseCase;
+using cv19ResSupportV3.V3.Controllers;
+using cv19ResSupportV3.V3.UseCase;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;

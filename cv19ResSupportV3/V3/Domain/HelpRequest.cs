@@ -1,6 +1,6 @@
 using System;
 
-namespace cv19ResRupportV3.V3.Domain
+namespace cv19ResSupportV3.V3.Domain
 {
     public class HelpRequest
     {
@@ -44,7 +44,7 @@ namespace cv19ResRupportV3.V3.Domain
         public string EmailAddress { get; set; }
         public string GpSurgeryDetails { get; set; }
         public string NumberOfChildrenUnder18 { get; set; }
-        public string ConsentToShare { get; set; }
+        public bool ConsentToShare { get; set; }
         public DateTime DateTimeRecorded { get; set; }
     }
 }

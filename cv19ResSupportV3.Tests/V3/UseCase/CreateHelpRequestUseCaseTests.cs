@@ -1,8 +1,8 @@
-using cv19ResRupportV3.V3.Gateways;
-using cv19ResRupportV3.V3.UseCase;
+using cv19ResSupportV3.V3.Gateways;
+using cv19ResSupportV3.V3.UseCase;
 using Moq;
 using NUnit.Framework;
-namespace cv19ResRupportV3.Tests.V1.UseCase
+namespace cv19ResSupportV3.Tests.V1.UseCase
 {
     [TestFixture]
     public class CreateHelpRequestUseCaseTests

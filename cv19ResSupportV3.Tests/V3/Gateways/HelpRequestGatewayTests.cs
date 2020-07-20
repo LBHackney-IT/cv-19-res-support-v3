@@ -1,10 +1,10 @@
 using AutoFixture;
-using cv19ResRupportV3.V3.Gateways;
-using cv19ResRupportV3.V3.Infrastructure;
+using cv19ResSupportV3.V3.Gateways;
+using cv19ResSupportV3.V3.Infrastructure;
 using FluentAssertions;
 using NUnit.Framework;
 
-namespace cv19ResRupportV3.Tests.V3.Gateways
+namespace cv19ResSupportV3.Tests.V3.Gateways
 {
     [TestFixture]
     public class ExampleGatewayTests : DatabaseTests

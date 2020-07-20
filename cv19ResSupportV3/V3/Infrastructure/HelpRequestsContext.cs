@@ -1,7 +1,7 @@
-using cv19ResRupportV3.V3.Infrastructure;
+using cv19ResSupportV3.V3.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
-namespace cv19ResRupportV3.V3.Infrastructure
+namespace cv19ResSupportV3.V3.Infrastructure
 {
     public class HelpRequestsContext : DbContext
     {

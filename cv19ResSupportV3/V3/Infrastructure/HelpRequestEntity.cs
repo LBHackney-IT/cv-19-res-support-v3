@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace cv19ResRupportV3.V3.Infrastructure
+namespace cv19ResSupportV3.V3.Infrastructure
 {
     [Table("i_need_help_resident_support_v3")]
     public class HelpRequestEntity
@@ -127,7 +127,7 @@ namespace cv19ResRupportV3.V3.Infrastructure
         public string NumberOfChildrenUnder18 { get; set; }
 
         [Column("consent_to_share")]
-        public string ConsentToShare { get; set; }
+        public bool ConsentToShare { get; set; }
 
         [Column("date_time_recorded")]
         public DateTime DateTimeRecorded { get; set; }

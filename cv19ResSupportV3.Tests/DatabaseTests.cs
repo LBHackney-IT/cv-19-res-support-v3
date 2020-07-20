@@ -1,9 +1,9 @@
-using cv19ResRupportV3.V3.Infrastructure;
+using cv19ResSupportV3.V3.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using NUnit.Framework;
 
-namespace cv19ResRupportV3.Tests
+namespace cv19ResSupportV3.Tests
 {
     [TestFixture]
     public class DatabaseTests

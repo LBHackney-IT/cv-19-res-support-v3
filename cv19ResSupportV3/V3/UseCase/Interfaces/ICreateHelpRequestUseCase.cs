@@ -1,7 +1,7 @@
-using cv19ResRupportV3.V3.Domain;
-using cv19ResRupportV3.V3.Boundary.Response;
+using cv19ResSupportV3.V3.Domain;
+using cv19ResSupportV3.V3.Boundary.Response;
 
-namespace cv19ResRupportV3.V3.UseCase.Interfaces
+namespace cv19ResSupportV3.V3.UseCase.Interfaces
 {
     public interface ICreateHelpRequestUseCase
     {

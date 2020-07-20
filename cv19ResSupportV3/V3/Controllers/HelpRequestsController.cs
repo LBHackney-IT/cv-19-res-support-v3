@@ -1,11 +1,12 @@
 using System;
-using cv19ResRupportV3.V3.Boundary.Response;
-using cv19ResRupportV3.V3.Domain;
-using cv19ResRupportV3.V3.UseCase.Interfaces;
+using System.Diagnostics;
+using cv19ResSupportV3.V3.Boundary.Response;
+using cv19ResSupportV3.V3.Domain;
+using cv19ResSupportV3.V3.UseCase.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace cv19ResRupportV3.V3.Controllers
+namespace cv19ResSupportV3.V3.Controllers
 {
     [ApiController]
     //TODO: Rename to match the APIs endpoint
@@ -13,10 +14,10 @@ namespace cv19ResRupportV3.V3.Controllers
     [Produces("application/json")]
     [ApiVersion("1.0")]
     //TODO: rename class to match the API name
-    public class cv19ResRupportV3Controller : BaseController
+    public class HelpRequestsController : BaseController
     {
         private readonly ICreateHelpRequestUseCase _createHelpRequestUseCase;
-        public cv19ResRupportV3Controller(ICreateHelpRequestUseCase createHelpRequestUseCase)
+        public HelpRequestsController(ICreateHelpRequestUseCase createHelpRequestUseCase)
         {
             _createHelpRequestUseCase = createHelpRequestUseCase;
         }
@@ -26,13 +27,14 @@ namespace cv19ResRupportV3.V3.Controllers
         /// ...
         /// </summary>
         /// <response code="201">...</response>
-        /// <response code="400">Invalid Query Parameter.</response>
         [ProducesResponseType(typeof(HelpRequestResponse), StatusCodes.Status201Created)]
-        [HttpGet]
+        [HttpPost]
         public IActionResult CreateHelpRequest(HelpRequest request)
         {
+            Console.WriteLine("Testing");
             var result = _createHelpRequestUseCase.Execute(request);
-            return Created(new Uri("api/v3/help-requests" + result.Id), result);
+            Console.WriteLine(result.Id.ToString());
+            return Created(new Uri($"api/v3/help-requests/{result.Id}", UriKind.Relative), result);
         }
     }
 }

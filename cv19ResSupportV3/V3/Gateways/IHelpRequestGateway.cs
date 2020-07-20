@@ -1,7 +1,7 @@
-using cv19ResRupportV3.V3.Domain;
-using cv19ResRupportV3.V3.Infrastructure;
+using cv19ResSupportV3.V3.Domain;
+using cv19ResSupportV3.V3.Infrastructure;
 
-namespace cv19ResRupportV3.V3.Gateways
+namespace cv19ResSupportV3.V3.Gateways
 {
     public interface IHelpRequestGateway
     {

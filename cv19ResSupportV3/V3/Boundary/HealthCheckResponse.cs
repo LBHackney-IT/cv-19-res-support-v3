@@ -1,4 +1,4 @@
-namespace cv19ResRupportV3.V3.Boundary
+namespace cv19ResSupportV3.V3.Boundary
 {
     public class HealthCheckResponse
     {

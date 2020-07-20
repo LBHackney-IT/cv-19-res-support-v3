@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 
-namespace cv19ResRupportV3.Versioning
+namespace cv19ResSupportV3.Versioning
 {
     public static class ApiVersionDescriptionExtensions
     {

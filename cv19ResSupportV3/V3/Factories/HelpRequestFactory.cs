@@ -1,7 +1,7 @@
-using cv19ResRupportV3.V3.Infrastructure;
-using HelpRequest = cv19ResRupportV3.V3.Domain.HelpRequest;
+using cv19ResSupportV3.V3.Infrastructure;
+using HelpRequest = cv19ResSupportV3.V3.Domain.HelpRequest;
 
-namespace cv19ResRupportV3.V3.Factories
+namespace cv19ResSupportV3.V3.Factories
 {
     public static class EntityFactory
     {

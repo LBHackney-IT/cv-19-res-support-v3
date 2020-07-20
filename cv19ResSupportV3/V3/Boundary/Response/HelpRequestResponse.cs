@@ -1,4 +1,4 @@
-namespace cv19ResRupportV3.V3.Boundary.Response
+namespace cv19ResSupportV3.V3.Boundary.Response
 {
     //TODO: Rename to represent to object you will be returning eg. ResidentInformation, HouseholdDetails e.t.c
     public class HelpRequestResponse

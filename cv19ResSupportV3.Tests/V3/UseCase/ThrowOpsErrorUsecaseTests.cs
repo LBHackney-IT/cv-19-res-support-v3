@@ -1,8 +1,8 @@
-using cv19ResRupportV3.V3.UseCase;
+using cv19ResSupportV3.V3.UseCase;
 using FluentAssertions;
 using NUnit.Framework;
 
-namespace cv19ResRupportV3.Tests.V3.UseCase
+namespace cv19ResSupportV3.Tests.V3.UseCase
 {
     [TestFixture]
     public class ThrowOpsErrorUsecaseTests

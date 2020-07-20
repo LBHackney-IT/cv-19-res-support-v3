@@ -1,9 +1,9 @@
 using System;
-using cv19ResRupportV3.V3.Domain;
+using cv19ResSupportV3.V3.Domain;
 using FluentAssertions;
 using NUnit.Framework;
 
-namespace cv19ResRupportV3.Tests.V1.Domain
+namespace cv19ResSupportV3.Tests.V1.Domain
 {
     [TestFixture]
     public class EntityTests

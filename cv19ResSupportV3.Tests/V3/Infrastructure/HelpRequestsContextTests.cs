@@ -1,9 +1,9 @@
 using System.Linq;
-using cv19ResRupportV3.Tests.V3.Helper;
+using cv19ResSupportV3.Tests.V3.Helper;
 using FluentAssertions;
 using NUnit.Framework;
 
-namespace cv19ResRupportV3.Tests.V3.Infrastructure
+namespace cv19ResSupportV3.Tests.V3.Infrastructure
 {
     [TestFixture]
     public class HelpRequestsContextTests : DatabaseTests

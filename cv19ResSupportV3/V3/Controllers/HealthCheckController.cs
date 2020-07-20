@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using cv19ResRupportV3.V3.UseCase;
+using cv19ResSupportV3.V3.UseCase;
 using Microsoft.AspNetCore.Mvc;
 
-namespace cv19ResRupportV3.V3.Controllers
+namespace cv19ResSupportV3.V3.Controllers
 {
     [Route("api/v3/healthcheck")]
     [ApiController]

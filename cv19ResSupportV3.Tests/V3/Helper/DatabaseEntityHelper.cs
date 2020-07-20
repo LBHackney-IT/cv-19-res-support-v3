@@ -1,9 +1,9 @@
 using AutoFixture;
-using cv19ResRupportV3.V3.Domain;
-using cv19ResRupportV3.V3.Infrastructure;
-using HelpRequest = cv19ResRupportV3.V3.Domain.HelpRequest;
+using cv19ResSupportV3.V3.Domain;
+using cv19ResSupportV3.V3.Infrastructure;
+using HelpRequest = cv19ResSupportV3.V3.Domain.HelpRequest;
 
-namespace cv19ResRupportV3.Tests.V3.Helper
+namespace cv19ResSupportV3.Tests.V3.Helper
 {
     public static class DatabaseEntityHelper
     {
