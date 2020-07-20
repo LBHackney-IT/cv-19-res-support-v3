@@ -1,7 +1,7 @@
 using Amazon.Lambda.AspNetCoreServer;
 using Microsoft.AspNetCore.Hosting;
 
-namespace cv19ResRupportV3
+namespace cv19ResSupportV3
 {
     public class LambdaEntryPoint : APIGatewayProxyFunction
     {

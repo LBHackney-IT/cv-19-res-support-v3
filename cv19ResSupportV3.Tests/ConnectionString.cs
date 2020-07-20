@@ -1,6 +1,6 @@
 using System;
 
-namespace cv19ResRupportV3.Tests
+namespace cv19ResSupportV3.Tests
 {
     public static class ConnectionString
     {

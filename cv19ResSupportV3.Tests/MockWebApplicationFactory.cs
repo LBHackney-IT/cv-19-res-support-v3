@@ -1,13 +1,13 @@
 using System.Data.Common;
-using cv19ResRupportV3;
-using cv19ResRupportV3.V1.Infrastructure;
+using cv19ResSupportV3;
+using cv19ResSupportV3.V3.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace cv19ResRupportV3.Tests
+namespace cv19ResSupportV3.Tests
 {
     public class MockWebApplicationFactory<TStartup>
         : WebApplicationFactory<TStartup> where TStartup : class
@@ -27,11 +27,11 @@ namespace cv19ResRupportV3.Tests
             {
                 var dbBuilder = new DbContextOptionsBuilder();
                 dbBuilder.UseNpgsql(_connection);
-                var context = new DatabaseContext(dbBuilder.Options);
+                var context = new HelpRequestsContext(dbBuilder.Options);
                 services.AddSingleton(context);
 
                 var serviceProvider = services.BuildServiceProvider();
-                var dbContext = serviceProvider.GetRequiredService<DatabaseContext>();
+                var dbContext = serviceProvider.GetRequiredService<HelpRequestsContext>();
 
                 dbContext.Database.EnsureCreated();
             });

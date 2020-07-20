@@ -1,11 +1,11 @@
 using System.Collections.Generic;
-using cv19ResRupportV3.V1.Controllers;
-using cv19ResRupportV3.V1.UseCase;
+using cv19ResSupportV3.V3.Controllers;
+using cv19ResSupportV3.V3.UseCase;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
 
-namespace cv19ResRupportV3.Tests.V1.Controllers
+namespace cv19ResRupportV3.Tests.V3.Controllers
 {
 
     [TestFixture]

@@ -1,16 +1,16 @@
 using System.Net.Http;
-using cv19ResRupportV3.V1.Infrastructure;
+using cv19ResSupportV3.V3.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Npgsql;
 using NUnit.Framework;
 
-namespace cv19ResRupportV3.Tests
+namespace cv19ResSupportV3.Tests
 {
     public class IntegrationTests<TStartup> where TStartup : class
     {
         protected HttpClient Client { get; private set; }
-        protected DatabaseContext DatabaseContext { get; private set; }
+        protected HelpRequestsContext DatabaseContext { get; private set; }
 
         private MockWebApplicationFactory<TStartup> _factory;
         private NpgsqlConnection _connection;
@@ -35,7 +35,7 @@ namespace cv19ResRupportV3.Tests
         {
             _factory = new MockWebApplicationFactory<TStartup>(_connection);
             Client = _factory.CreateClient();
-            DatabaseContext = new DatabaseContext(_builder.Options);
+            DatabaseContext = new HelpRequestsContext(_builder.Options);
             DatabaseContext.Database.EnsureCreated();
             _transaction = DatabaseContext.Database.BeginTransaction();
         }

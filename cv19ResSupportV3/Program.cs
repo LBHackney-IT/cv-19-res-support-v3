@@ -2,7 +2,7 @@ using System;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
-namespace cv19ResRupportV3
+namespace cv19ResSupportV3
 {
     public static class Program
     {

@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace cv19ResRupportV3.V1.Controllers
+namespace cv19ResSupportV3.V3.Controllers
 {
     public class BaseController : Controller
     {
