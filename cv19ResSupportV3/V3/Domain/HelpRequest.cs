@@ -32,6 +32,7 @@ namespace cv19ResSupportV3.V3.Domain
         public string WhenIsMedicinesDelivered { get; set; }
         public string NameAddressPharmacist { get; set; }
         public string UrgentEssentials { get; set; }
+        public string UrgentEssentialsAnythingElse { get; set; }
         public string CurrentSupport { get; set; }
         public string CurrentSupportFeedback { get; set; }
         public string FirstName { get; set; }

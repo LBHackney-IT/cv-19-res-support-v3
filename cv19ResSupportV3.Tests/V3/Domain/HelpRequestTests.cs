@@ -16,12 +16,11 @@ namespace cv19ResSupportV3.Tests.V1.Domain
         }
 
         [Test]
-        public void EntitiesHaveACreatedAt()
+        public void EntitiesHaveADateTimeRecorded()
         {
             var entity = new HelpRequest();
             var date = new DateTime(2019, 02, 21);
             entity.DateTimeRecorded = date;
-
             entity.DateTimeRecorded.Should().BeSameDateAs(date);
         }
     }
