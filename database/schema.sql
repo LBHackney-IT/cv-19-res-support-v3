@@ -60,6 +60,11 @@ CREATE TABLE public.i_need_help_resident_support_v3 (
     "number_of_children_under_18" varchar,
     "consent_to_share" varchar,
     "date_time_recorded" timestamp,
+    "urgent_essentials_anything_else" varchar,
+    "help_with_housing" bool,
+    "help_with_jobs_or_training" bool,
+    "help_with_children_and_schools" bool,
+    "help_with_disabilities" bool,
     PRIMARY KEY ("id")
 );
 
