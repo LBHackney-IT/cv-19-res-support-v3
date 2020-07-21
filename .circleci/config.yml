@@ -103,6 +103,9 @@ jobs:
       - checkout
       - setup_remote_docker
       - run:
+          name: build database
+          command: docker-compose up test-database
+      - run:
           name: build
           command: docker-compose build cv-19-res-support-api-v3-test
       - run:

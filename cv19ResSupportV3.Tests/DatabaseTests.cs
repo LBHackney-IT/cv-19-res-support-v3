@@ -17,7 +17,7 @@ namespace cv19ResSupportV3.Tests
             var builder = new DbContextOptionsBuilder();
             builder.UseNpgsql(ConnectionString.TestDatabase());
             DatabaseContext = new HelpRequestsContext(builder.Options);
-            //DatabaseContext.Database.EnsureCreated();
+            DatabaseContext.Database.EnsureCreated();
             _transaction = DatabaseContext.Database.BeginTransaction();
         }
 
