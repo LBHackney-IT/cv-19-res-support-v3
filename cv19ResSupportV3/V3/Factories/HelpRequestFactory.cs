@@ -104,7 +104,8 @@ namespace cv19ResSupportV3.V3.Factories
                 GpSurgeryDetails = helpRequest.GpSurgeryDetails,
                 NumberOfChildrenUnder18 = helpRequest.NumberOfChildrenUnder18,
                 ConsentToShare = helpRequest.ConsentToShare,
-                DateTimeRecorded = helpRequest.DateTimeRecorded
+                DateTimeRecorded = helpRequest.DateTimeRecorded,
+                RecordStatus = helpRequest.RecordStatus
             };
         }
 
