@@ -85,6 +85,7 @@ commands:
           command: |
             cd ./cv19ResSupportV3/
             sls deploy --stage <<parameters.stage>> --conceal
+
 jobs:
   check-code-formatting:
     executor: docker-dotnet
@@ -157,9 +158,9 @@ jobs:
           stage: "production"
 
 workflows:
-  check-and-deploy-development-then-production:
+  check-and-deploy-development:
     jobs:
-      # - check-code-formatting
+   # - check-code-formatting
       - build-and-test
       - assume-role-development:
           context: api-assume-role-development-context
@@ -180,31 +181,33 @@ workflows:
           filters:
             branches:
               only: development
-      - permit-production-terraform-release:
-           type: approval
-           requires:
-             - deploy-to-development
-      - assume-role-production:
+  check-and-deploy-production:
+     jobs:
+     - build-and-test:
+         filters:
+           branches:
+             only: master
+     - permit-production-terraform-release:
+         type: approval
+     - assume-role-production:
          context: api-assume-role-production-context
          requires:
              - permit-production-terraform-release
          filters:
             branches:
               only: master
-      - terraform-init-and-apply-to-production:
+     - terraform-init-and-apply-to-production:
          requires:
            - assume-role-production
          filters:
            branches:
              only: master
-      - permit-production-release:
+     - permit-production-release:
          type: approval
-         requires:
-           - deploy-to-development
          filters:
            branches:
              only: master
-      - deploy-to-production:
+     - deploy-to-production:
          requires:
            - permit-production-release
            - assume-role-production
