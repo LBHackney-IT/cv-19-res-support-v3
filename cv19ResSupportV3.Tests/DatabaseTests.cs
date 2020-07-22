@@ -8,7 +8,7 @@ namespace cv19ResSupportV3.Tests
     [TestFixture]
     public class DatabaseTests
     {
-        // private IDbContextTransaction _transaction;
+        private IDbContextTransaction _transaction;
         protected HelpRequestsContext DatabaseContext { get; private set; }
 
         [SetUp]
@@ -17,16 +17,15 @@ namespace cv19ResSupportV3.Tests
             var builder = new DbContextOptionsBuilder();
             builder.UseNpgsql(ConnectionString.TestDatabase());
             DatabaseContext = new HelpRequestsContext(builder.Options);
-
-            // DatabaseContext.Database.EnsureCreated();
-            // _transaction = DatabaseContext.Database.BeginTransaction();
+            DatabaseContext.Database.EnsureCreated();
+            _transaction = DatabaseContext.Database.BeginTransaction();
         }
 
         [TearDown]
         public void RunAfterAnyTests()
         {
-            // _transaction.Rollback();
-            // _transaction.Dispose();
+            _transaction.Rollback();
+            _transaction.Dispose();
         }
     }
 }

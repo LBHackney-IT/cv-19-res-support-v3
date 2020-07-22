@@ -85,7 +85,6 @@ commands:
           command: |
             cd ./cv19ResSupportV3/
             sls deploy --stage <<parameters.stage>> --conceal
-
 jobs:
   check-code-formatting:
     executor: docker-dotnet
@@ -102,6 +101,9 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
+      - run:
+          name: build database
+          command: docker-compose up test-database
       - run:
           name: build
           command: docker-compose build cv-19-res-support-api-v3-test
@@ -155,9 +157,9 @@ jobs:
           stage: "production"
 
 workflows:
-  check-and-deploy-development:
+  check-and-deploy-development-then-production:
     jobs:
-   # - check-code-formatting
+      # - check-code-formatting
       - build-and-test
       - assume-role-development:
           context: api-assume-role-development-context
@@ -178,59 +180,34 @@ workflows:
           filters:
             branches:
               only: development
-#   check-and-deploy-staging-and-production:
-#       jobs:
-#       - build-and-test:
-#           filters:
-#             branches:
-#               only: master
-#       - assume-role-staging:
-#           context: api-assume-role-staging-context
-#           requires:
-#               - build-and-test
-#           filters:
-#              branches:
-#                only: master
-#       - terraform-init-and-apply-to-staging:
-#           requires:
-#             - assume-role-staging
-#           filters:
-#             branches:
-#               only: master
-#       - deploy-to-staging:
-#           requires:
-#             - assume-role-staging
-#           filters:
-#             branches:
-#               only: master
-#       - permit-production-terraform-release:
-#           type: approval
-#           requires:
-#             - deploy-to-staging
-#       - assume-role-production:
-#           context: api-assume-role-production-context
-#           requires:
-#               - permit-production-terraform-release
-#           filters:
-#              branches:
-#                only: master
-#       - terraform-init-and-apply-to-production:
-#           requires:
-#             - assume-role-production
-#           filters:
-#             branches:
-#               only: master
-#       - permit-production-release:
-#           type: approval
-#           requires:
-#             - deploy-to-staging
-#           filters:
-#             branches:
-#               only: master
-#       - deploy-to-production:
-#           requires:
-#             - permit-production-release
-#             - assume-role-production
-#           filters:
-#             branches:
-#               only: master
+      - permit-production-terraform-release:
+           type: approval
+           requires:
+             - deploy-to-development
+      - assume-role-production:
+         context: api-assume-role-production-context
+         requires:
+             - permit-production-terraform-release
+         filters:
+            branches:
+              only: master
+      - terraform-init-and-apply-to-production:
+         requires:
+           - assume-role-production
+         filters:
+           branches:
+             only: master
+      - permit-production-release:
+         type: approval
+         requires:
+           - deploy-to-development
+         filters:
+           branches:
+             only: master
+      - deploy-to-production:
+         requires:
+           - permit-production-release
+           - assume-role-production
+         filters:
+           branches:
+             only: master
