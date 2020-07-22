@@ -157,7 +157,7 @@ jobs:
           stage: "production"
 
 workflows:
-  check-and-deploy-development:
+  check-and-deploy-development-then-production:
     jobs:
       # - check-code-formatting
       - build-and-test
@@ -180,12 +180,6 @@ workflows:
           filters:
             branches:
               only: development
-  check-and-deploy-production:
-    jobs:
-      - build-and-test:
-         filters:
-           branches:
-             only: master
       - permit-production-terraform-release:
            type: approval
            requires:
