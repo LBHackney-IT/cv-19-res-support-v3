@@ -75,6 +75,18 @@ namespace cv19ResSupportV3.V3.Infrastructure
         [Column("help_with_something_else")]
         public bool HelpWithSomethingElse { get; set; }
 
+        [Column("help_with_housing")]
+        public bool HelpWithHousing { get; set; }
+
+        [Column("help_with_jobs_or_training")]
+        public bool HelpWithJobsOrTraining { get; set; }
+
+        [Column("help_with_children_and_schools")]
+        public bool HelpWithChildrenAndSchools { get; set; }
+
+        [Column("help_with_disabilities")]
+        public bool HelpWithDisabilities { get; set; }
+
         [Column("medicine_delivery_help_needed")]
         public bool MedicineDeliveryHelpNeeded { get; set; }
 
@@ -89,6 +101,9 @@ namespace cv19ResSupportV3.V3.Infrastructure
 
         [Column("urgent_essentials")]
         public string UrgentEssentials { get; set; }
+
+        [Column("urgent_essentials_anything_else")]
+        public string UrgentEssentialsAnythingElse { get; set; }
 
         [Column("current_support")]
         public string CurrentSupport { get; set; }

@@ -26,12 +26,17 @@ namespace cv19ResSupportV3.V3.Domain
         public bool HelpWithHealth { get; set; }
         public bool HelpWithMentalHealth { get; set; }
         public bool HelpWithAccessingInternet { get; set; }
+        public bool HelpWithHousing { get; set; }
+        public bool HelpWithJobsOrTraining { get; set; }
+        public bool HelpWithChildrenAndSchools { get; set; }
+        public bool HelpWithDisabilities { get; set; }
         public bool HelpWithSomethingElse { get; set; }
         public bool MedicineDeliveryHelpNeeded { get; set; }
         public bool IsPharmacistAbleToDeliver { get; set; }
         public string WhenIsMedicinesDelivered { get; set; }
         public string NameAddressPharmacist { get; set; }
         public string UrgentEssentials { get; set; }
+        public string UrgentEssentialsAnythingElse { get; set; }
         public string CurrentSupport { get; set; }
         public string CurrentSupportFeedback { get; set; }
         public string FirstName { get; set; }
