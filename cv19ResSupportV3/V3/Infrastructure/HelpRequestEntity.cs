@@ -147,5 +147,7 @@ namespace cv19ResSupportV3.V3.Infrastructure
         [Column("date_time_recorded")]
         public DateTime DateTimeRecorded { get; set; }
 
+        [Column("record_status")]
+        public string RecordStatus { get; set; }
     }
 }

@@ -51,5 +51,6 @@ namespace cv19ResSupportV3.V3.Domain
         public string NumberOfChildrenUnder18 { get; set; }
         public bool ConsentToShare { get; set; }
         public DateTime DateTimeRecorded { get; set; }
+        public string RecordStatus { get; set; }
     }
 }
