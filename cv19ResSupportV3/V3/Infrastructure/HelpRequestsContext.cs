@@ -158,6 +158,15 @@ namespace cv19ResSupportV3.V3.Infrastructure
                         entity.Property(e => e.RecordStatus)
                             .HasColumnName("record_status")
                             .HasColumnType("character varying");
+                        entity.Property(e => e.CallbackRequired)
+                            .HasColumnName("callback_required")
+                            .HasColumnType("bool");
+                        entity.Property(e => e.CaseNotes)
+                            .HasColumnName("case_notes")
+                            .HasColumnType("character varying");
+                        entity.Property(e => e.AdviceNotes)
+                            .HasColumnName("advice_notes")
+                            .HasColumnType("character varying");
                     }
                 );
         }
