@@ -151,5 +151,14 @@ namespace cv19ResSupportV3.V3.Infrastructure
 
         [Column("record_status")]
         public string RecordStatus { get; set; }
+
+        [Column("callback_required")]
+        public bool? CallbackRequired { get; set; }
+
+        [Column("case_notes")]
+        public string CaseNotes { get; set; }
+
+        [Column("advice_notes")]
+        public string AdviceNotes { get; set; }
     }
 }

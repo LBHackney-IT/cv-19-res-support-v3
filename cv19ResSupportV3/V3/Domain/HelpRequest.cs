@@ -52,5 +52,8 @@ namespace cv19ResSupportV3.V3.Domain
         public bool? ConsentToShare { get; set; }
         public DateTime? DateTimeRecorded { get; set; }
         public string RecordStatus { get; set; }
+        public bool? CallbackRequired { get; set; }
+        public string CaseNotes { get; set; }
+        public string AdviceNotes { get; set; }
     }
 }

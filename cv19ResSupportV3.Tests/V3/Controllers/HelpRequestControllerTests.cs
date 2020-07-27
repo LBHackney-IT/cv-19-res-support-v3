@@ -16,13 +16,17 @@ namespace cv19ResRupportV3.Tests.V3.Controllers
     public class HelpRequestsControllerTests
     {
         private HelpRequestsController _classUnderTest;
-        private Mock<ICreateHelpRequestUseCase> _fakeUseCase;
+        private Mock<ICreateHelpRequestUseCase> _fakeCreateHelpRequestUseCase;
+        private Mock<IUpdateHelpRequestUseCase> _fakeUpdateHelpRequestUseCase;
+        private Mock<IGetHelpRequestsUseCase> _fakeGetHelpRequestsUseCase;
 
         [SetUp]
         public void SetUp()
         {
-            _fakeUseCase = new Mock<ICreateHelpRequestUseCase>();
-            _classUnderTest = new HelpRequestsController(_fakeUseCase.Object);
+            _fakeCreateHelpRequestUseCase = new Mock<ICreateHelpRequestUseCase>();
+            _fakeUpdateHelpRequestUseCase = new Mock<IUpdateHelpRequestUseCase>();
+            _fakeGetHelpRequestsUseCase = new Mock<IGetHelpRequestsUseCase>();
+            _classUnderTest = new HelpRequestsController(_fakeCreateHelpRequestUseCase.Object, _fakeGetHelpRequestsUseCase.Object, _fakeUpdateHelpRequestUseCase.Object);
         }
 
         // [Test]

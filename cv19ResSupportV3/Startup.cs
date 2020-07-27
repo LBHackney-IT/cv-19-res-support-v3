@@ -126,6 +126,9 @@ namespace cv19ResSupportV3
         private static void RegisterUseCases(IServiceCollection services)
         {
             services.AddScoped<ICreateHelpRequestUseCase, CreateHelpRequestUseCase>();
+            services.AddScoped<IUpdateHelpRequestUseCase, UpdateHelpRequestUseCase>();
+            services.AddScoped<IGetHelpRequestsUseCase, GetHelpRequestsUseCase>();
+            services.AddScoped<IGetCallbacksUseCase, GetCallbacksUseCase>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -67,6 +67,9 @@ CREATE TABLE public.i_need_help_resident_support_v3 (
     "help_with_children_and_schools" bool,
     "help_with_disabilities" bool,
     "record_status" varchar,
+    "callback_required" bool,
+    "case_notes" text,
+    "advice_notes" text,
     PRIMARY KEY ("id")
 );
 
