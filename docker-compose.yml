@@ -13,14 +13,11 @@ services:
     links:
       - dev-database
   dev-database:
-    image: dev-database
-    build:
-      context: .
-      dockerfile: database/Dockerfile
-    ports:
-      - 5432:5432
     env_file:
       - database.env
+    image: postgres:12
+    volumes:
+      - ./database:/docker-entrypoint-initdb.d
 
   cv-19-res-support-api-v3-test:
     image: cv-19-res-support-api-v3-test
