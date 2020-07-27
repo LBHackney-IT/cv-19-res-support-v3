@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using cv19ResSupportV3.V3.Boundary.Response;
 using cv19ResSupportV3.V3.Domain;
+using cv19ResSupportV3.V3.UseCase;
 using cv19ResSupportV3.V3.UseCase.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,9 +19,13 @@ namespace cv19ResSupportV3.V3.Controllers
     public class HelpRequestsController : BaseController
     {
         private readonly ICreateHelpRequestUseCase _createHelpRequestUseCase;
-        public HelpRequestsController(ICreateHelpRequestUseCase createHelpRequestUseCase)
+        private readonly IUpdateHelpRequestUseCase _updateHelpRequestUseCase;
+        private readonly IGetHelpRequestsUseCase _getHelpRequestsUseCase;
+        public HelpRequestsController(ICreateHelpRequestUseCase createHelpRequestUseCase, IGetHelpRequestsUseCase getHelpRequestsUseCase, IUpdateHelpRequestUseCase updateHelpRequestUseCase)
         {
             _createHelpRequestUseCase = createHelpRequestUseCase;
+            _getHelpRequestsUseCase = getHelpRequestsUseCase;
+            _updateHelpRequestUseCase = updateHelpRequestUseCase;
         }
 
         //TODO: add xml comments containing information that will be included in the auto generated swagger docs (https://github.com/LBHackney-IT/lbh-base-api/wiki/Controllers-and-Response-Objects)
@@ -31,10 +37,35 @@ namespace cv19ResSupportV3.V3.Controllers
         [HttpPost]
         public IActionResult CreateHelpRequest(HelpRequest request)
         {
-            Console.WriteLine("Testing");
             var result = _createHelpRequestUseCase.Execute(request);
-            Console.WriteLine(result.Id.ToString());
             return Created(new Uri($"api/v3/help-requests/{result.Id}", UriKind.Relative), result);
         }
+
+        //TODO: add xml comments containing information that will be included in the auto generated swagger docs (https://github.com/LBHackney-IT/lbh-base-api/wiki/Controllers-and-Response-Objects)
+        /// <summary>
+        /// ...
+        /// </summary>
+        /// <response code="201">...</response>
+        [ProducesResponseType(typeof(HelpRequestResponse), StatusCodes.Status200OK)]
+        [HttpPut]
+        public IActionResult UpdateHelpRequest(HelpRequest request)
+        {
+            var result = _updateHelpRequestUseCase.Execute(request);
+            return Ok(result);
+        }
+
+        //TODO: add xml comments containing information that will be included in the auto generated swagger docs (https://github.com/LBHackney-IT/lbh-base-api/wiki/Controllers-and-Response-Objects)
+        /// <summary>
+        /// ...
+        /// </summary>
+        /// <response code="200">...</response>
+        [ProducesResponseType(typeof(HelpRequestResponseList), StatusCodes.Status200OK)]
+        [HttpGet]
+        public IActionResult GetHelpRequests()
+        {
+            var result = _getHelpRequestsUseCase.Execute();
+            return Ok(result);
+        }
+
     }
 }
