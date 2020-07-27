@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using cv19ResSupportV3.V3.Factories;
@@ -41,7 +42,10 @@ namespace cv19ResSupportV3.V3.Gateways
 
         public List<HelpRequestEntity> GetCallbacks()
         {
-            return _helpRequestsContext.HelpRequestEntities.Where(x => (x.CallbackRequired == true || x.CallbackRequired == null)).ToList();
+            return _helpRequestsContext.HelpRequestEntities
+                .Where(x => (x.CallbackRequired == true || x.CallbackRequired == null) && x.DateTimeRecorded <= DateTime.Today.AddDays(-1))
+                .OrderBy(x => x.DateTimeRecorded)
+                .ToList();
         }
 
         private void SetRecordStatus(HelpRequestEntity request)
