@@ -59,7 +59,7 @@ CREATE TABLE public.i_need_help_resident_support_v3 (
     "email_address" varchar,
     "gp_surgery_details" varchar,
     "number_of_children_under_18" varchar,
-    "consent_to_share" varchar,
+    "consent_to_share" bool,
     "date_time_recorded" timestamp,
     "urgent_essentials_anything_else" varchar,
     "help_with_housing" bool,
