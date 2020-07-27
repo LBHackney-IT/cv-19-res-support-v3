@@ -50,7 +50,10 @@ namespace cv19ResSupportV3.V3.Factories
                 GpSurgeryDetails = helpRequestEntity.GpSurgeryDetails,
                 NumberOfChildrenUnder18 = helpRequestEntity.NumberOfChildrenUnder18,
                 ConsentToShare = helpRequestEntity.ConsentToShare,
-                DateTimeRecorded = helpRequestEntity.DateTimeRecorded
+                DateTimeRecorded = helpRequestEntity.DateTimeRecorded,
+                CallbackRequired = helpRequestEntity.CallbackRequired,
+                CaseNotes = helpRequestEntity.CaseNotes,
+                AdviceNotes = helpRequestEntity.AdviceNotes
             };
         }
 
@@ -104,7 +107,10 @@ namespace cv19ResSupportV3.V3.Factories
                 NumberOfChildrenUnder18 = helpRequest.NumberOfChildrenUnder18,
                 ConsentToShare = helpRequest.ConsentToShare,
                 DateTimeRecorded = helpRequest.DateTimeRecorded,
-                RecordStatus = helpRequest.RecordStatus
+                RecordStatus = helpRequest.RecordStatus,
+                CallbackRequired = helpRequest.CallbackRequired,
+                CaseNotes = helpRequest.CaseNotes,
+                AdviceNotes = helpRequest.AdviceNotes
             };
         }
 
