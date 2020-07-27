@@ -13,9 +13,7 @@ namespace cv19ResSupportV3.Tests.V1.Factories
         {
             var databaseEntity = new HelpRequestEntity();
             var entity = databaseEntity.ToDomain();
-
-            databaseEntity.Id.Should().Be(entity.Id);
-            databaseEntity.DateTimeRecorded.Should().BeSameDateAs(entity.DateTimeRecorded);
+            databaseEntity.Should().BeEquivalentTo(entity);
         }
     }
 }

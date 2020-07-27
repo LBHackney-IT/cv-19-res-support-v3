@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace cv19ResSupportV3.V3.Infrastructure
@@ -7,13 +8,14 @@ namespace cv19ResSupportV3.V3.Infrastructure
     public class HelpRequestEntity
     {
         [Column("id")]
+        [Key]
         public int Id { get; set; }
 
         [Column("is_on_behalf")]
-        public bool IsOnBehalf { get; set; }
+        public bool? IsOnBehalf { get; set; }
 
         [Column("consent_to_complete_on_behalf")]
-        public bool ConsentToCompleteOnBehalf { get; set; }
+        public bool? ConsentToCompleteOnBehalf { get; set; }
 
         [Column("on_behalf_first_name")]
         public string OnBehalfFirstName { get; set; }
@@ -52,46 +54,46 @@ namespace cv19ResSupportV3.V3.Infrastructure
         public string GettingInTouchReason { get; set; }
 
         [Column("help_with_accessing_food")]
-        public bool HelpWithAccessingFood { get; set; }
+        public bool? HelpWithAccessingFood { get; set; }
 
         [Column("help_with_accessing_medicine")]
-        public bool HelpWithAccessingMedicine { get; set; }
+        public bool? HelpWithAccessingMedicine { get; set; }
 
         [Column("help_with_accessing_other_essentials")]
-        public bool HelpWithAccessingOtherEssentials { get; set; }
+        public bool? HelpWithAccessingOtherEssentials { get; set; }
 
         [Column("help_with_debt_and_money")]
-        public bool HelpWithDebtAndMoney { get; set; }
+        public bool? HelpWithDebtAndMoney { get; set; }
 
         [Column("help_with_health")]
-        public bool HelpWithHealth { get; set; }
+        public bool? HelpWithHealth { get; set; }
 
         [Column("help_with_mental_health")]
-        public bool HelpWithMentalHealth { get; set; }
+        public bool? HelpWithMentalHealth { get; set; }
 
         [Column("help_with_accessing_internet")]
-        public bool HelpWithAccessingInternet { get; set; }
+        public bool? HelpWithAccessingInternet { get; set; }
 
         [Column("help_with_something_else")]
-        public bool HelpWithSomethingElse { get; set; }
+        public bool? HelpWithSomethingElse { get; set; }
 
         [Column("help_with_housing")]
-        public bool HelpWithHousing { get; set; }
+        public bool? HelpWithHousing { get; set; }
 
         [Column("help_with_jobs_or_training")]
-        public bool HelpWithJobsOrTraining { get; set; }
+        public bool? HelpWithJobsOrTraining { get; set; }
 
         [Column("help_with_children_and_schools")]
-        public bool HelpWithChildrenAndSchools { get; set; }
+        public bool? HelpWithChildrenAndSchools { get; set; }
 
         [Column("help_with_disabilities")]
-        public bool HelpWithDisabilities { get; set; }
+        public bool? HelpWithDisabilities { get; set; }
 
         [Column("medicine_delivery_help_needed")]
-        public bool MedicineDeliveryHelpNeeded { get; set; }
+        public bool? MedicineDeliveryHelpNeeded { get; set; }
 
         [Column("is_pharmacist_able_to_deliver")]
-        public bool IsPharmacistAbleToDeliver { get; set; }
+        public bool? IsPharmacistAbleToDeliver { get; set; }
 
         [Column("when_is_medicines_delivered")]
         public string WhenIsMedicinesDelivered { get; set; }
@@ -142,10 +144,10 @@ namespace cv19ResSupportV3.V3.Infrastructure
         public string NumberOfChildrenUnder18 { get; set; }
 
         [Column("consent_to_share")]
-        public bool ConsentToShare { get; set; }
+        public bool? ConsentToShare { get; set; }
 
         [Column("date_time_recorded")]
-        public DateTime DateTimeRecorded { get; set; }
+        public DateTime? DateTimeRecorded { get; set; }
 
         [Column("record_status")]
         public string RecordStatus { get; set; }

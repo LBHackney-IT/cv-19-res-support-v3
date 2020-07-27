@@ -4,9 +4,9 @@ namespace cv19ResSupportV3.V3.Domain
 {
     public class HelpRequest
     {
-        public int Id { get; set; }
-        public bool IsOnBehalf { get; set; }
-        public bool ConsentToCompleteOnBehalf { get; set; }
+        public int? Id { get; set; }
+        public bool? IsOnBehalf { get; set; }
+        public bool? ConsentToCompleteOnBehalf { get; set; }
         public string OnBehalfFirstName { get; set; }
         public string OnBehalfLastName { get; set; }
         public string OnBehalfEmailAddress { get; set; }
@@ -19,20 +19,20 @@ namespace cv19ResSupportV3.V3.Domain
         public string AddressSecondLine { get; set; }
         public string AddressThirdLine { get; set; }
         public string GettingInTouchReason { get; set; }
-        public bool HelpWithAccessingFood { get; set; }
-        public bool HelpWithAccessingMedicine { get; set; }
-        public bool HelpWithAccessingOtherEssentials { get; set; }
-        public bool HelpWithDebtAndMoney { get; set; }
-        public bool HelpWithHealth { get; set; }
-        public bool HelpWithMentalHealth { get; set; }
-        public bool HelpWithAccessingInternet { get; set; }
-        public bool HelpWithHousing { get; set; }
-        public bool HelpWithJobsOrTraining { get; set; }
-        public bool HelpWithChildrenAndSchools { get; set; }
-        public bool HelpWithDisabilities { get; set; }
-        public bool HelpWithSomethingElse { get; set; }
-        public bool MedicineDeliveryHelpNeeded { get; set; }
-        public bool IsPharmacistAbleToDeliver { get; set; }
+        public bool? HelpWithAccessingFood { get; set; }
+        public bool? HelpWithAccessingMedicine { get; set; }
+        public bool? HelpWithAccessingOtherEssentials { get; set; }
+        public bool? HelpWithDebtAndMoney { get; set; }
+        public bool? HelpWithHealth { get; set; }
+        public bool? HelpWithMentalHealth { get; set; }
+        public bool? HelpWithAccessingInternet { get; set; }
+        public bool? HelpWithHousing { get; set; }
+        public bool? HelpWithJobsOrTraining { get; set; }
+        public bool? HelpWithChildrenAndSchools { get; set; }
+        public bool? HelpWithDisabilities { get; set; }
+        public bool? HelpWithSomethingElse { get; set; }
+        public bool? MedicineDeliveryHelpNeeded { get; set; }
+        public bool? IsPharmacistAbleToDeliver { get; set; }
         public string WhenIsMedicinesDelivered { get; set; }
         public string NameAddressPharmacist { get; set; }
         public string UrgentEssentials { get; set; }
@@ -49,8 +49,8 @@ namespace cv19ResSupportV3.V3.Domain
         public string EmailAddress { get; set; }
         public string GpSurgeryDetails { get; set; }
         public string NumberOfChildrenUnder18 { get; set; }
-        public bool ConsentToShare { get; set; }
-        public DateTime DateTimeRecorded { get; set; }
+        public bool? ConsentToShare { get; set; }
+        public DateTime? DateTimeRecorded { get; set; }
         public string RecordStatus { get; set; }
     }
 }
