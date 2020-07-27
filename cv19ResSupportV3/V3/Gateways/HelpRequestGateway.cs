@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using cv19ResSupportV3.V3.Factories;
 using cv19ResSupportV3.V3.Gateways;
 using cv19ResSupportV3.V3.Infrastructure;
 using HelpRequest = cv19ResSupportV3.V3.Domain.HelpRequest;
@@ -18,14 +19,29 @@ namespace cv19ResSupportV3.V3.Gateways
 
         public int CreateHelpRequest(HelpRequestEntity request)
         {
-            if (request != null)
-            {
-                SetRecordStatus(request);
-                _helpRequestsContext.HelpRequestEntities.Add(request);
-                _helpRequestsContext.SaveChanges();
-                return request.Id;
-            }
-            return 0;
+            if (request == null) return 0;
+            SetRecordStatus(request);
+            request.CallbackRequired ??= true;
+            _helpRequestsContext.HelpRequestEntities.Add(request);
+            _helpRequestsContext.SaveChanges();
+            return request.Id;
+        }
+
+        public HelpRequest UpdateHelpRequest(HelpRequestEntity request)
+        {
+            _helpRequestsContext.HelpRequestEntities.Attach(request);
+            _helpRequestsContext.SaveChanges();
+            return request.ToDomain();
+        }
+
+        public List<HelpRequestEntity> GetHelpRequests()
+        {
+            return _helpRequestsContext.HelpRequestEntities.ToList();
+        }
+
+        public List<HelpRequestEntity> GetCallbacks()
+        {
+            return _helpRequestsContext.HelpRequestEntities.Where(x => (x.CallbackRequired == true || x.CallbackRequired == null)).ToList();
         }
 
         private void SetRecordStatus(HelpRequestEntity request)
