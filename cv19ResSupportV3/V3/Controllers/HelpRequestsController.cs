@@ -22,13 +22,15 @@ namespace cv19ResSupportV3.V3.Controllers
     {
         private readonly ICreateHelpRequestUseCase _createHelpRequestUseCase;
         private readonly IUpdateHelpRequestUseCase _updateHelpRequestUseCase;
+        private readonly IPatchHelpRequestUseCase _patchHelpRequestUseCase;
         private readonly IGetHelpRequestsUseCase _getHelpRequestsUseCase;
         private readonly IGetHelpRequestUseCase _getHelpRequestUseCase;
         public HelpRequestsController(ICreateHelpRequestUseCase createHelpRequestUseCase, IGetHelpRequestsUseCase getHelpRequestsUseCase,
-            IUpdateHelpRequestUseCase updateHelpRequestUseCase, IGetHelpRequestUseCase getHelpRequestUseCase)
+            IUpdateHelpRequestUseCase updateHelpRequestUseCase, IGetHelpRequestUseCase getHelpRequestUseCase, IPatchHelpRequestUseCase patchHelpRequestUseCase)
         {
             _createHelpRequestUseCase = createHelpRequestUseCase;
             _updateHelpRequestUseCase = updateHelpRequestUseCase;
+            _patchHelpRequestUseCase = patchHelpRequestUseCase;
             _getHelpRequestsUseCase = getHelpRequestsUseCase;
             _getHelpRequestUseCase = getHelpRequestUseCase;
         }
@@ -57,6 +59,19 @@ namespace cv19ResSupportV3.V3.Controllers
         {
             var result = _updateHelpRequestUseCase.Execute(request);
             return Ok(result);
+        }
+
+        //TODO: add xml comments containing information that will be included in the auto generated swagger docs (https://github.com/LBHackney-IT/lbh-base-api/wiki/Controllers-and-Response-Objects)
+        /// <summary>
+        /// ...
+        /// </summary>
+        /// <response code="200">...</response>
+        [HttpPatch]
+        [Route("{id}")]
+        public IActionResult PatchHelpRequest([FromRoute]int id, [FromBody] HelpRequest request)
+        {
+            _patchHelpRequestUseCase.Execute(id, request);
+            return Ok();
         }
 
         //TODO: add xml comments containing information that will be included in the auto generated swagger docs (https://github.com/LBHackney-IT/lbh-base-api/wiki/Controllers-and-Response-Objects)

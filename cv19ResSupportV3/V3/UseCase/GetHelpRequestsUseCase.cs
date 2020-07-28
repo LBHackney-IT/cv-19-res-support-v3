@@ -18,7 +18,7 @@ namespace cv19ResSupportV3.V3.UseCase
         public List<HelpRequestGetResponse> Execute(RequestQueryParams queryParams)
         {
             if(queryParams == null)
-                return _gateway.GetHelpRequests().ToResponse();
+                return new List<HelpRequestGetResponse>();
             return queryParams.PostCode == null ? _gateway.GetHelpRequests().ToResponse()
                 : _gateway.SearchHelpRequests(queryParams.PostCode).ToResponse();
         }
