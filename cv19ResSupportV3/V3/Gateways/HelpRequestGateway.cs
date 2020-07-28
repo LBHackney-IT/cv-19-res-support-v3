@@ -96,7 +96,6 @@ namespace cv19ResSupportV3.V3.Gateways
             {
                 rec.HelpWithSomethingElse = request.HelpWithSomethingElse;
             }
-
             if (request.CurrentSupport != null)
             {
                 rec.CurrentSupport = request.CurrentSupport;
