@@ -155,6 +155,9 @@ namespace cv19ResSupportV3.V3.Infrastructure
         [Column("callback_required")]
         public bool? CallbackRequired { get; set; }
 
+        [Column("initial_callback_completed")]
+        public bool? InitialCallbackCompleted { get; set; }
+
         [Column("case_notes")]
         public string CaseNotes { get; set; }
 

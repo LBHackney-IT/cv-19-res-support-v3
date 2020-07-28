@@ -52,6 +52,7 @@ namespace cv19ResSupportV3.V3.Factories
                 ConsentToShare = helpRequestEntity.ConsentToShare,
                 DateTimeRecorded = helpRequestEntity.DateTimeRecorded,
                 CallbackRequired = helpRequestEntity.CallbackRequired,
+                InitialCallbackCompleted = helpRequestEntity.InitialCallbackCompleted,
                 CaseNotes = helpRequestEntity.CaseNotes,
                 AdviceNotes = helpRequestEntity.AdviceNotes
             };
@@ -109,10 +110,10 @@ namespace cv19ResSupportV3.V3.Factories
                 DateTimeRecorded = helpRequest.DateTimeRecorded,
                 RecordStatus = helpRequest.RecordStatus,
                 CallbackRequired = helpRequest.CallbackRequired,
+                InitialCallbackCompleted = helpRequest.InitialCallbackCompleted,
                 CaseNotes = helpRequest.CaseNotes,
                 AdviceNotes = helpRequest.AdviceNotes
             };
         }
-
     }
 }
