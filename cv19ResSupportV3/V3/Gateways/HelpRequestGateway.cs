@@ -28,11 +28,17 @@ namespace cv19ResSupportV3.V3.Gateways
             return request.Id;
         }
 
-        public HelpRequest UpdateHelpRequest(HelpRequestEntity request)
+        public HelpRequestEntity UpdateHelpRequest(HelpRequestEntity request)
         {
             _helpRequestsContext.HelpRequestEntities.Attach(request);
             _helpRequestsContext.SaveChanges();
-            return request.ToDomain();
+            return request;
+        }
+
+        public HelpRequestEntity GetHelpRequest(int id)
+        {
+            return _helpRequestsContext.HelpRequestEntities
+                .FirstOrDefault(x => x.Id == id);
         }
 
         public List<HelpRequestEntity> GetHelpRequests()
@@ -43,7 +49,8 @@ namespace cv19ResSupportV3.V3.Gateways
         public List<HelpRequestEntity> GetCallbacks()
         {
             return _helpRequestsContext.HelpRequestEntities
-                .Where(x => (x.CallbackRequired == true || x.CallbackRequired == null) && x.DateTimeRecorded <= DateTime.Today.AddDays(-1))
+                .Where(x => (x.CallbackRequired == true || x.CallbackRequired == null)
+                            && x.DateTimeRecorded <= DateTime.Today.AddDays(-1))
                 .OrderBy(x => x.DateTimeRecorded)
                 .ToList();
         }

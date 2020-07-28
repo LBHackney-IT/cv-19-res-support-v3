@@ -8,9 +8,9 @@ namespace cv19ResSupportV3.V3.Factories
 {
     public static class ResponseFactory
     {
-        public static HelpRequest ToResponse(this HelpRequestEntity domain)
+        public static HelpRequest ToResponse(this HelpRequestEntity hr)
         {
-            return new HelpRequest();
+            return hr.ToDomain();
         }
 
         public static List<HelpRequest> ToResponse(this IEnumerable<HelpRequestEntity> domainList)
