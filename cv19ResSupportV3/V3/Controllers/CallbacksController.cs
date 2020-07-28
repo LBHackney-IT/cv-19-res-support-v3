@@ -29,7 +29,7 @@ namespace cv19ResSupportV3.V3.Controllers
         /// ...
         /// </summary>
         /// <response code="200">...</response>
-        [ProducesResponseType(typeof(HelpRequestResponseList), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(List<HelpRequestGetResponse>), StatusCodes.Status200OK)]
         [HttpGet]
         public IActionResult GetCallbacks()
         {

@@ -11,5 +11,6 @@ namespace cv19ResSupportV3.V3.Gateways
         List<HelpRequestEntity> GetCallbacks();
         HelpRequestEntity UpdateHelpRequest(HelpRequestEntity request);
         HelpRequestEntity GetHelpRequest(int id);
+        List<HelpRequestEntity> SearchHelpRequests(string queryParamsPostCode);
     }
 }
