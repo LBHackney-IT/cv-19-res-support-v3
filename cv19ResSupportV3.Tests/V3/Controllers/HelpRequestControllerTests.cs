@@ -19,6 +19,7 @@ namespace cv19ResRupportV3.Tests.V3.Controllers
         private Mock<ICreateHelpRequestUseCase> _fakeCreateHelpRequestUseCase;
         private Mock<IUpdateHelpRequestUseCase> _fakeUpdateHelpRequestUseCase;
         private Mock<IGetHelpRequestsUseCase> _fakeGetHelpRequestsUseCase;
+        private Mock<IGetHelpRequestUseCase> _fakeGetHelpRequestUseCase;
 
         [SetUp]
         public void SetUp()
@@ -26,7 +27,9 @@ namespace cv19ResRupportV3.Tests.V3.Controllers
             _fakeCreateHelpRequestUseCase = new Mock<ICreateHelpRequestUseCase>();
             _fakeUpdateHelpRequestUseCase = new Mock<IUpdateHelpRequestUseCase>();
             _fakeGetHelpRequestsUseCase = new Mock<IGetHelpRequestsUseCase>();
-            _classUnderTest = new HelpRequestsController(_fakeCreateHelpRequestUseCase.Object, _fakeGetHelpRequestsUseCase.Object, _fakeUpdateHelpRequestUseCase.Object);
+            _fakeGetHelpRequestUseCase = new Mock<IGetHelpRequestUseCase>();
+            _classUnderTest = new HelpRequestsController(_fakeCreateHelpRequestUseCase.Object,
+                _fakeGetHelpRequestsUseCase.Object, _fakeUpdateHelpRequestUseCase.Object, _fakeGetHelpRequestUseCase.Object);
         }
 
         // [Test]

@@ -21,11 +21,14 @@ namespace cv19ResSupportV3.V3.Controllers
         private readonly ICreateHelpRequestUseCase _createHelpRequestUseCase;
         private readonly IUpdateHelpRequestUseCase _updateHelpRequestUseCase;
         private readonly IGetHelpRequestsUseCase _getHelpRequestsUseCase;
-        public HelpRequestsController(ICreateHelpRequestUseCase createHelpRequestUseCase, IGetHelpRequestsUseCase getHelpRequestsUseCase, IUpdateHelpRequestUseCase updateHelpRequestUseCase)
+        private readonly IGetHelpRequestUseCase _getHelpRequestUseCase;
+        public HelpRequestsController(ICreateHelpRequestUseCase createHelpRequestUseCase, IGetHelpRequestsUseCase getHelpRequestsUseCase,
+            IUpdateHelpRequestUseCase updateHelpRequestUseCase, IGetHelpRequestUseCase getHelpRequestUseCase)
         {
             _createHelpRequestUseCase = createHelpRequestUseCase;
-            _getHelpRequestsUseCase = getHelpRequestsUseCase;
             _updateHelpRequestUseCase = updateHelpRequestUseCase;
+            _getHelpRequestsUseCase = getHelpRequestsUseCase;
+            _getHelpRequestUseCase = getHelpRequestUseCase;
         }
 
         //TODO: add xml comments containing information that will be included in the auto generated swagger docs (https://github.com/LBHackney-IT/lbh-base-api/wiki/Controllers-and-Response-Objects)
@@ -66,6 +69,20 @@ namespace cv19ResSupportV3.V3.Controllers
             var result = _getHelpRequestsUseCase.Execute();
             return Ok(result);
         }
+
+        //TODO: add xml comments containing information that will be included in the auto generated swagger docs (https://github.com/LBHackney-IT/lbh-base-api/wiki/Controllers-and-Response-Objects)
+        /// <summary>
+        /// ...
+        /// </summary>
+        /// <response code="200">...</response>
+        [ProducesResponseType(typeof(HelpRequest), StatusCodes.Status200OK)]
+        [HttpGet]
+        public IActionResult GetHelpRequest(int id)
+        {
+            var result = _getHelpRequestUseCase.Execute(id);
+            return Ok(result);
+        }
+
 
     }
 }
