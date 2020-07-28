@@ -158,6 +158,9 @@ namespace cv19ResSupportV3.V3.Infrastructure
                         entity.Property(e => e.RecordStatus)
                             .HasColumnName("record_status")
                             .HasColumnType("character varying");
+                        entity.Property(e => e.InitialCallbackCompleted)
+                            .HasColumnName("initial_callback_completed")
+                            .HasColumnType("bool");
                         entity.Property(e => e.CallbackRequired)
                             .HasColumnName("callback_required")
                             .HasColumnType("bool");

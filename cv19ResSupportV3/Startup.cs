@@ -38,7 +38,12 @@ namespace cv19ResSupportV3
         public static void ConfigureServices(IServiceCollection services)
         {
             services
-                .AddMvc()
+                .AddMvc(setupAction=> {
+                    setupAction.EnableEndpointRouting = false;
+                }).AddJsonOptions(jsonOptions =>
+                {
+                    jsonOptions.JsonSerializerOptions.PropertyNamingPolicy = null;
+                })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.AddApiVersioning(o =>
             {

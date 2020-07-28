@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using cv19ResSupportV3.V3.Boundary.Response;
 using cv19ResSupportV3.V3.Controllers;
 using cv19ResSupportV3.V3.Domain;
 using cv19ResSupportV3.V3.UseCase;
@@ -35,6 +36,8 @@ namespace cv19ResRupportV3.Tests.V3.Controllers
         // [Test]
         public void ReturnsResponseWithStatus()
         {
+            _fakeCreateHelpRequestUseCase.Setup(x => x.Execute(It.IsAny<HelpRequest>()))
+                .Returns(new HelpRequestCreateResponse(){Id = 1});
             var request = new HelpRequest
             {
                 IsOnBehalf = false,
@@ -85,7 +88,6 @@ namespace cv19ResRupportV3.Tests.V3.Controllers
             };
             var expected = new Dictionary<string, object> { { "success", true } };
             var response = _classUnderTest.CreateHelpRequest(request) as OkObjectResult;
-
             response.Should().NotBeNull();
             response.StatusCode.Should().Be(200);
             response.Value.Should().BeEquivalentTo(expected);

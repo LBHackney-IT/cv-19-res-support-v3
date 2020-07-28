@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using cv19ResSupportV3.V3.Factories;
 using cv19ResSupportV3.V3.Gateways;
 using cv19ResSupportV3.V3.Infrastructure;
@@ -39,6 +40,16 @@ namespace cv19ResSupportV3.V3.Gateways
         {
             return _helpRequestsContext.HelpRequestEntities
                 .FirstOrDefault(x => x.Id == id);
+        }
+
+        public List<HelpRequestEntity> SearchHelpRequests(string queryParamsPostCode)
+        {
+            Expression<Func<HelpRequestEntity, bool>> queryPostCode = x =>
+                string.IsNullOrWhiteSpace(queryParamsPostCode)
+                || x.PostCode.Replace(" ", "").ToUpper().Contains(queryParamsPostCode.Replace(" ", "").ToUpper());
+            return _helpRequestsContext.HelpRequestEntities
+                .Where(queryPostCode)
+                .ToList();
         }
 
         public List<HelpRequestEntity> GetHelpRequests()

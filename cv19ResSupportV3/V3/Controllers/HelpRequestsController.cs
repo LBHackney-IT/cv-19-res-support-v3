@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using cv19ResSupportV3.V3.Boundary.Requests;
 using cv19ResSupportV3.V3.Boundary.Response;
 using cv19ResSupportV3.V3.Domain;
 using cv19ResSupportV3.V3.UseCase;
 using cv19ResSupportV3.V3.UseCase.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace cv19ResSupportV3.V3.Controllers
 {
@@ -36,7 +38,7 @@ namespace cv19ResSupportV3.V3.Controllers
         /// ...
         /// </summary>
         /// <response code="201">...</response>
-        [ProducesResponseType(typeof(HelpRequestResponse), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(HelpRequestCreateResponse), StatusCodes.Status201Created)]
         [HttpPost]
         public IActionResult CreateHelpRequest(HelpRequest request)
         {
@@ -48,8 +50,8 @@ namespace cv19ResSupportV3.V3.Controllers
         /// <summary>
         /// ...
         /// </summary>
-        /// <response code="201">...</response>
-        [ProducesResponseType(typeof(HelpRequestResponse), StatusCodes.Status200OK)]
+        /// <response code="200">...</response>
+        [ProducesResponseType(typeof(HelpRequestCreateResponse), StatusCodes.Status200OK)]
         [HttpPut]
         public IActionResult UpdateHelpRequest(HelpRequest request)
         {
@@ -62,11 +64,12 @@ namespace cv19ResSupportV3.V3.Controllers
         /// ...
         /// </summary>
         /// <response code="200">...</response>
-        [ProducesResponseType(typeof(HelpRequestResponseList), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(List<HelpRequestGetResponse>), StatusCodes.Status200OK)]
         [HttpGet]
-        public IActionResult GetHelpRequests()
+        public IActionResult GetHelpRequests([FromQuery] RequestQueryParams requestParams)
         {
-            var result = _getHelpRequestsUseCase.Execute();
+            Console.WriteLine(JsonConvert.SerializeObject(requestParams));
+            var result = _getHelpRequestsUseCase.Execute(requestParams);
             return Ok(result);
         }
 
