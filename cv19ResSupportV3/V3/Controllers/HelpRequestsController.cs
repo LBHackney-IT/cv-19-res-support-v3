@@ -77,6 +77,7 @@ namespace cv19ResSupportV3.V3.Controllers
         /// <response code="200">...</response>
         [ProducesResponseType(typeof(HelpRequest), StatusCodes.Status200OK)]
         [HttpGet]
+        [Route("{id}")]
         public IActionResult GetHelpRequest(int id)
         {
             var result = _getHelpRequestUseCase.Execute(id);
