@@ -12,5 +12,6 @@ namespace cv19ResSupportV3.V3.Gateways
         HelpRequestEntity UpdateHelpRequest(HelpRequestEntity request);
         HelpRequestEntity GetHelpRequest(int id);
         List<HelpRequestEntity> SearchHelpRequests(string queryParamsPostCode);
+        void PatchHelpRequest(int id, HelpRequestEntity request);
     }
 }

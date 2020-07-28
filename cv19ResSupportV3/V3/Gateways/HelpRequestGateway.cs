@@ -52,6 +52,138 @@ namespace cv19ResSupportV3.V3.Gateways
                 .ToList();
         }
 
+        public void PatchHelpRequest(int id, HelpRequestEntity request)
+        {
+            Console.WriteLine($"*************** Id is {id}");
+            var rec = _helpRequestsContext.HelpRequestEntities.SingleOrDefault(x => x.Id == id);
+            if (request == null)
+            {
+                throw new Exception("Record not found.");
+            }
+            if (request.GettingInTouchReason != null)
+            {
+                rec.GettingInTouchReason = request.GettingInTouchReason;
+            }
+            if (request.HelpWithAccessingFood != null)
+            {
+                rec.HelpWithAccessingFood = request.HelpWithAccessingFood;
+            }
+            if (request.HelpWithAccessingMedicine != null)
+            {
+                rec.HelpWithAccessingMedicine = request.HelpWithAccessingMedicine;
+            }
+            if (request.HelpWithAccessingOtherEssentials != null)
+            {
+                rec.HelpWithAccessingOtherEssentials = request.HelpWithAccessingOtherEssentials;
+            }
+            if (request.HelpWithDebtAndMoney != null)
+            {
+                rec.HelpWithDebtAndMoney = request.HelpWithDebtAndMoney;
+            }
+            if (request.HelpWithMentalHealth != null)
+            {
+                rec.HelpWithMentalHealth = request.HelpWithMentalHealth;
+            }
+            if (request.HelpWithHealth != null)
+            {
+                rec.HelpWithHealth = request.HelpWithHealth;
+            }
+            if (request.HelpWithAccessingInternet != null)
+            {
+                rec.HelpWithAccessingInternet = request.HelpWithAccessingInternet;
+            }
+            if (request.HelpWithSomethingElse != null)
+            {
+                rec.HelpWithSomethingElse = request.HelpWithSomethingElse;
+            }
+
+            if (request.CurrentSupport != null)
+            {
+                rec.CurrentSupport = request.CurrentSupport;
+            }
+
+            if (request.CurrentSupportFeedback != null)
+            {
+                rec.CurrentSupportFeedback = request.CurrentSupportFeedback;
+            }
+
+            if (request.FirstName != null)
+            {
+                rec.FirstName = request.FirstName;
+            }
+
+            if (request.LastName != null)
+            {
+                rec.LastName = request.LastName;
+            }
+
+            if (request.DobMonth != null)
+            {
+                rec.DobMonth = request.DobMonth;
+            }
+
+            if (request.DobYear != null)
+            {
+                rec.DobYear = request.DobYear;
+            }
+
+            if (request.DobDay != null)
+            {
+                rec.DobDay = request.DobDay;
+            }
+
+            if (request.ContactTelephoneNumber != null)
+            {
+                rec.ContactTelephoneNumber = request.ContactTelephoneNumber;
+            }
+
+            if (request.ContactMobileNumber != null)
+            {
+                rec.ContactMobileNumber = request.ContactMobileNumber;
+            }
+
+            if (request.EmailAddress != null)
+            {
+                rec.EmailAddress = request.EmailAddress;
+            }
+
+            if (request.GpSurgeryDetails != null)
+            {
+                rec.GpSurgeryDetails = request.GpSurgeryDetails;
+            }
+
+            if (request.NumberOfChildrenUnder18 != null)
+            {
+                rec.NumberOfChildrenUnder18 = request.NumberOfChildrenUnder18;
+            }
+
+            if (request.ConsentToShare != null)
+            {
+                rec.ConsentToShare = request.ConsentToShare;
+            }
+
+            if (request.CaseNotes != null)
+            {
+                rec.CaseNotes = request.CaseNotes;
+            }
+
+            if (request.AdviceNotes != null)
+            {
+                rec.AdviceNotes = request.AdviceNotes;
+            }
+
+            if (request.InitialCallbackCompleted != null)
+            {
+                rec.InitialCallbackCompleted = request.InitialCallbackCompleted;
+            }
+
+            if (request.CallbackRequired != null)
+            {
+                rec.CallbackRequired = request.CallbackRequired;
+            }
+            _helpRequestsContext.SaveChanges();
+        }
+
         public List<HelpRequestEntity> GetHelpRequests()
         {
             return _helpRequestsContext.HelpRequestEntities.ToList();
