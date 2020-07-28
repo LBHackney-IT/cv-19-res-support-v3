@@ -12,7 +12,7 @@ namespace cv19ResSupportV3.V3.Controllers
 {
     [ApiController]
     //TODO: Rename to match the APIs endpoint
-    [Route("api/v3/help-requests/callbacks")]
+    [Route("api/v3/callbacks")]
     [Produces("application/json")]
     [ApiVersion("1.0")]
     //TODO: rename class to match the API name
