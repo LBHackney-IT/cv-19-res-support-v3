@@ -19,7 +19,7 @@ namespace cv19ResSupportV3.V3.UseCase
         {
             if(queryParams == null)
                 return new List<HelpRequestGetResponse>();
-            return queryParams.PostCode == null ? _gateway.GetHelpRequests().ToResponse()
+            return queryParams.PostCode == null ? new List<HelpRequestGetResponse>()
                 : _gateway.SearchHelpRequests(queryParams.PostCode).ToResponse();
         }
     }
