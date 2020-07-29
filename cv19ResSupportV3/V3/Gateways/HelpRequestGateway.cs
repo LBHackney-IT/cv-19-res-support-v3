@@ -96,7 +96,6 @@ namespace cv19ResSupportV3.V3.Gateways
             {
                 rec.HelpWithSomethingElse = request.HelpWithSomethingElse;
             }
-
             if (request.CurrentSupport != null)
             {
                 rec.CurrentSupport = request.CurrentSupport;
@@ -193,7 +192,7 @@ namespace cv19ResSupportV3.V3.Gateways
         {
             return _helpRequestsContext.HelpRequestEntities
                 .Where(x => (x.CallbackRequired == true || x.CallbackRequired == null)
-                            && x.DateTimeRecorded <= DateTime.Today.AddDays(-1))
+                            && x.DateTimeRecorded < DateTime.Today)
                 .OrderBy(x => x.InitialCallbackCompleted)
                 .ThenBy(x => x.DateTimeRecorded)
                 .ToList();
