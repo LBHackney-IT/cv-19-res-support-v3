@@ -54,7 +54,6 @@ namespace cv19ResSupportV3.V3.Gateways
 
         public void PatchHelpRequest(int id, HelpRequestEntity request)
         {
-            Console.WriteLine($"*************** Id is {id}");
             var rec = _helpRequestsContext.HelpRequestEntities.SingleOrDefault(x => x.Id == id);
             if (request == null)
             {
