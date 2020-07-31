@@ -3,51 +3,40 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using AutoFixture;
+using cv19ResSupportV3.V3.Boundary.Response;
+using cv19ResSupportV3.V3.Domain;
 using FluentAssertions;
 using Newtonsoft.Json;
 using NUnit.Framework;
 
-namespace cv19ResSupportV3.Tests.V1.E2ETests
+namespace cv19ResSupportV3.Tests.V3.E2ETests
 {
     [TestFixture]
     public class CreateHelpRequest : IntegrationTests<Startup>
     {
-        private IFixture _fixture;
-
-        [SetUp]
-        public void SetUp()
+        [Test]
+        public async Task GetResidentInformationByIdReturnsTheCorrectInformation()
         {
-            _fixture = new Fixture();
-        }
-
-        // [Test]
-        public void GetResidentInformationByIdReturnsTheCorrectInformation()
-        {
-            var data = "{\"CustomerId\": 5,\"CustomerName\": \"Pepsi\"}";
+            DatabaseContext.Database.RollbackTransaction();
+            var requestObject = new Fixture().Build<HelpRequest>().Create();
+            var data = JsonConvert.SerializeObject(requestObject);
             HttpContent postContent = new StringContent(data, Encoding.UTF8, "application/json");
             var uri = new Uri($"api/v3/help-requests", UriKind.Relative);
             var response = Client.PostAsync(uri, postContent);
             postContent.Dispose();
             var statusCode = response.Result.StatusCode;
             statusCode.Should().Be(201);
-
             var content = response.Result.Content;
-            //var stringContent = await content.ReadAsStringAsync().ConfigureAwait(true);
-            // var convertedResponse = JsonConvert.DeserializeObject<ResidentInformation>(stringContent);
-            //
-            // convertedResponse.Should().BeEquivalentTo(expectedResponse);
+            var stringContent = await content.ReadAsStringAsync().ConfigureAwait(true);
+            var convertedResponse = JsonConvert.DeserializeObject<HelpRequestCreateResponse>(stringContent);
+            var createdEntity = DatabaseContext.HelpRequestEntities.Find(convertedResponse.Id);
+            createdEntity.Uprn.Should().BeEquivalentTo(requestObject.Uprn);
+            createdEntity.FirstName.Should().BeEquivalentTo(requestObject.FirstName);
+            createdEntity.LastName.Should().BeEquivalentTo(requestObject.LastName);
+            createdEntity.RecordStatus.Should().Be("MASTER");
+            DatabaseContext.Database.BeginTransaction();
         }
 
-        // [Test]
-        public void GetResidentByIdReturns400IfBadRequest()
-        {
-            var data = "{\"CustomerId\": 5,\"CustomerName\": \"Pepsi\"}";
-            HttpContent postContent = new StringContent(data, Encoding.UTF8, "application/json");
-            var uri = new Uri($"api/v3/help-request", UriKind.Relative);
-            var response = Client.PostAsync(uri, postContent);
-            postContent.Dispose();
-            var statusCode = response.Result.StatusCode;
-            statusCode.Should().Be(404);
-        }
+
     }
 }
