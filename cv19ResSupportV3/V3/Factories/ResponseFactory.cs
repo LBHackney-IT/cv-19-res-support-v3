@@ -10,6 +10,10 @@ namespace cv19ResSupportV3.V3.Factories
     {
         public static HelpRequestGetResponse ToResponse(this HelpRequestEntity hr)
         {
+            if (hr == null)
+            {
+                return null;
+            }
             return new HelpRequestGetResponse()
             {
                 Id = hr.Id,
