@@ -1,3 +1,4 @@
+using cv19ResSupportV3.Tests.V3.Helper;
 using cv19ResSupportV3.V3.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -26,6 +27,14 @@ namespace cv19ResSupportV3.Tests
         {
             _transaction.Rollback();
             _transaction.Dispose();
+            ClearTable();
+        }
+
+        private void ClearTable()
+        {
+            var addedEntities = DatabaseContext.HelpRequestEntities;
+            DatabaseContext.HelpRequestEntities.RemoveRange(addedEntities);
+            DatabaseContext.SaveChanges();
         }
     }
 }
