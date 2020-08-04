@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using AutoFixture;
 using cv19ResSupportV3.V3.Boundary.Response;
 using cv19ResSupportV3.V3.Controllers;
 using cv19ResSupportV3.V3.Domain;
@@ -36,64 +37,14 @@ namespace cv19ResRupportV3.Tests.V3.Controllers
                 _fakeGetHelpRequestUseCase.Object, _fakePatchHelpRequestUseCase.Object);
         }
 
-        // [Test]
+        [Test]
         public void ReturnsResponseWithStatus()
         {
-            _fakeCreateHelpRequestUseCase.Setup(x => x.Execute(It.IsAny<HelpRequest>()))
-                .Returns(new HelpRequestCreateResponse(){Id = 1});
-            var request = new HelpRequest
-            {
-                IsOnBehalf = false,
-                ConsentToCompleteOnBehalf = false,
-                OnBehalfFirstName = "Test",
-                OnBehalfLastName = "Test",
-                OnBehalfEmailAddress = "Test",
-                OnBehalfContactNumber = "Test",
-                RelationshipWithResident = "Test",
-                PostCode = "Test",
-                Uprn = "Test",
-                Ward = "Test",
-                AddressFirstLine = "Test",
-                AddressSecondLine = "Test",
-                AddressThirdLine = "Test",
-                GettingInTouchReason = "Test",
-                HelpWithAccessingFood = false,
-                HelpWithAccessingMedicine = false,
-                HelpWithAccessingOtherEssentials = false,
-                HelpWithDebtAndMoney = false,
-                HelpWithHealth = false,
-                HelpWithMentalHealth = false,
-                HelpWithAccessingInternet = false,
-                HelpWithHousing = false,
-                HelpWithJobsOrTraining = false,
-                HelpWithChildrenAndSchools = false,
-                HelpWithDisabilities = false,
-                HelpWithSomethingElse = false,
-                MedicineDeliveryHelpNeeded = false,
-                IsPharmacistAbleToDeliver = false,
-                WhenIsMedicinesDelivered = "Test",
-                NameAddressPharmacist = "Test",
-                UrgentEssentials = "Test",
-                CurrentSupport = "Test",
-                CurrentSupportFeedback = "Test",
-                FirstName = "Test",
-                LastName = "Test",
-                DobMonth = "Test",
-                DobYear = "Test",
-                DobDay = "Test",
-                ContactTelephoneNumber = "Test",
-                ContactMobileNumber = "Test",
-                EmailAddress = "Test",
-                GpSurgeryDetails = "Test",
-                NumberOfChildrenUnder18 = "Test",
-                ConsentToShare = false,
-                DateTimeRecorded = DateTime.Now
-            };
-            var expected = new Dictionary<string, object> { { "success", true } };
-            var response = _classUnderTest.CreateHelpRequest(request) as OkObjectResult;
-            response.Should().NotBeNull();
-            response.StatusCode.Should().Be(200);
-            response.Value.Should().BeEquivalentTo(expected);
+            var request = new Fixture().Build<HelpRequest>().Create();
+            _fakeCreateHelpRequestUseCase.Setup(x => x.Execute(request))
+                .Returns(new HelpRequestCreateResponse(){Id = request.Id.Value});
+            var response = _classUnderTest.CreateHelpRequest(request) as CreatedResult;
+            response.StatusCode.Should().Be(201);
         }
     }
 }

@@ -14,7 +14,6 @@ namespace cv19ResSupportV3.V3.UseCase
             _gateway = gateway;
         }
 
-        //TODO: rename id to the name of the identifier that will be used for this API, the type may also need to change
         public HelpRequest Execute(HelpRequest request)
         {
             return _gateway.UpdateHelpRequest(request.ToEntity()).ToDomain();

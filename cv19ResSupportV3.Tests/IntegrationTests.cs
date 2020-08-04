@@ -1,3 +1,4 @@
+using System;
 using System.Net.Http;
 using cv19ResSupportV3.V3.Infrastructure;
 using Microsoft.EntityFrameworkCore;
@@ -45,7 +46,15 @@ namespace cv19ResSupportV3.Tests
         {
             Client.Dispose();
             _factory.Dispose();
-            _transaction.Rollback();
+            try
+            {
+                _transaction.Rollback();
+            }
+            catch (InvalidOperationException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
             _transaction.Dispose();
         }
     }

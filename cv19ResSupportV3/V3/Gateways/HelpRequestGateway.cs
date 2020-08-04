@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using cv19ResSupportV3.V3.Boundary.Requests;
 using cv19ResSupportV3.V3.Factories;
 using cv19ResSupportV3.V3.Gateways;
 using cv19ResSupportV3.V3.Infrastructure;
@@ -42,13 +43,23 @@ namespace cv19ResSupportV3.V3.Gateways
                 .FirstOrDefault(x => x.Id == id);
         }
 
-        public List<HelpRequestEntity> SearchHelpRequests(string queryParamsPostCode)
+        public List<HelpRequestEntity> SearchHelpRequests(RequestQueryParams queryParams)
         {
             Expression<Func<HelpRequestEntity, bool>> queryPostCode = x =>
-                string.IsNullOrWhiteSpace(queryParamsPostCode)
-                || x.PostCode.Replace(" ", "").ToUpper().Contains(queryParamsPostCode.Replace(" ", "").ToUpper());
+                string.IsNullOrWhiteSpace(queryParams.Postcode)
+                || x.PostCode.Replace(" ", "").ToUpper().Contains(queryParams.Postcode.Replace(" ", "").ToUpper());
+
+            Expression<Func<HelpRequestEntity, bool>> queryFirstName = x =>
+                string.IsNullOrWhiteSpace(queryParams.FirstName)
+                || x.FirstName.Replace(" ", "").ToUpper().Equals(queryParams.FirstName.Replace(" ", "").ToUpper());
+
+            Expression<Func<HelpRequestEntity, bool>> queryLastName = x =>
+                string.IsNullOrWhiteSpace(queryParams.LastName)
+                || x.LastName.Replace(" ", "").ToUpper().Equals(queryParams.LastName.Replace(" ", "").ToUpper());
             return _helpRequestsContext.HelpRequestEntities
                 .Where(queryPostCode)
+                .Where(queryFirstName)
+                .Where(queryLastName)
                 .ToList();
         }
 

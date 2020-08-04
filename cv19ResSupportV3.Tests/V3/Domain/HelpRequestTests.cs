@@ -3,7 +3,7 @@ using cv19ResSupportV3.V3.Domain;
 using FluentAssertions;
 using NUnit.Framework;
 
-namespace cv19ResSupportV3.Tests.V1.Domain
+namespace cv19ResSupportV3.Tests.V3.Domain
 {
     [TestFixture]
     public class EntityTests

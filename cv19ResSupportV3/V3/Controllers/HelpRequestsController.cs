@@ -93,12 +93,15 @@ namespace cv19ResSupportV3.V3.Controllers
         /// ...
         /// </summary>
         /// <response code="200">...</response>
+        /// <response code="404">...</response>
         [ProducesResponseType(typeof(HelpRequest), StatusCodes.Status200OK)]
         [HttpGet]
         [Route("{id}")]
         public IActionResult GetHelpRequest(int id)
         {
             var result = _getHelpRequestUseCase.Execute(id);
+            if (result == null)
+                return NotFound();
             return Ok(result);
         }
 

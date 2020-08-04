@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using cv19ResSupportV3.V3.Boundary.Requests;
 using cv19ResSupportV3.V3.Domain;
 using cv19ResSupportV3.V3.Infrastructure;
 
@@ -11,7 +12,7 @@ namespace cv19ResSupportV3.V3.Gateways
         List<HelpRequestEntity> GetCallbacks();
         HelpRequestEntity UpdateHelpRequest(HelpRequestEntity request);
         HelpRequestEntity GetHelpRequest(int id);
-        List<HelpRequestEntity> SearchHelpRequests(string queryParamsPostCode);
+        List<HelpRequestEntity> SearchHelpRequests(RequestQueryParams queryParams);
         void PatchHelpRequest(int id, HelpRequestEntity request);
     }
 }
