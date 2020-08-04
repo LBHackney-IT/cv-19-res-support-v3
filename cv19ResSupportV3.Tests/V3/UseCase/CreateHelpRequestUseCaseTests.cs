@@ -1,8 +1,14 @@
+using AutoFixture;
+using cv19ResSupportV3.V3.Boundary.Response;
+using cv19ResSupportV3.V3.Domain;
+using cv19ResSupportV3.V3.Factories;
 using cv19ResSupportV3.V3.Gateways;
+using cv19ResSupportV3.V3.Infrastructure;
 using cv19ResSupportV3.V3.UseCase;
+using FluentAssertions;
 using Moq;
 using NUnit.Framework;
-namespace cv19ResSupportV3.Tests.V1.UseCase
+namespace cv19ResSupportV3.Tests.V3.UseCase
 {
     [TestFixture]
     public class CreateHelpRequestUseCaseTests
@@ -17,7 +23,17 @@ namespace cv19ResSupportV3.Tests.V1.UseCase
             _classUnderTest = new CreateHelpRequestUseCase(_mockGateway.Object);
         }
 
-        //TODO: test to check that the use case retrieves the correct record from the database.
-        //Guidance on unit testing and example of mocking can be found here https://github.com/LBHackney-IT/lbh-base-api/wiki/Writing-Unit-Tests
+        [Test]
+        public void ExecuteSavesRequestToDatabase()
+        {
+            var expectedResponse = new HelpRequestCreateResponse
+            {
+                Id = 1
+            };
+            _mockGateway.Setup(s => s.CreateHelpRequest(It.IsAny<HelpRequestEntity>())).Returns(1);
+            var dataToSave = new Fixture().Build<HelpRequest>().Create();
+            var response = _classUnderTest.Execute(dataToSave);
+            response.Should().BeEquivalentTo(expectedResponse);
+        }
     }
 }

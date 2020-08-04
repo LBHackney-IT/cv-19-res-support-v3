@@ -30,7 +30,7 @@ namespace cv19ResSupportV3.Tests
             ClearTable();
         }
 
-        private void ClearTable()
+        public void ClearTable()
         {
             var addedEntities = DatabaseContext.HelpRequestEntities;
             DatabaseContext.HelpRequestEntities.RemoveRange(addedEntities);
