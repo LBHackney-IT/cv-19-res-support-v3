@@ -18,10 +18,11 @@ namespace cv19ResSupportV3.V3.UseCase
 
         public List<HelpRequestGetResponse> Execute(RequestQueryParams queryParams)
         {
-            if(queryParams == null)
+            if (queryParams.Postcode == null && queryParams.FirstName == null && queryParams.LastName == null)
+            {
                 return new List<HelpRequestGetResponse>();
-            return queryParams.PostCode == null ? new List<HelpRequestGetResponse>()
-                : _gateway.SearchHelpRequests(queryParams.PostCode).ToResponse();
+            }
+            return _gateway.SearchHelpRequests(queryParams).ToResponse();
         }
     }
 }
