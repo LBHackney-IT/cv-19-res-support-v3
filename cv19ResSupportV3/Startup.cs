@@ -31,8 +31,7 @@ namespace cv19ResSupportV3
 
         public IConfiguration Configuration { get; }
         private static List<ApiVersionDescription> _apiVersions { get; set; }
-        //TODO update the below to the name of your API
-        private const string ApiName = "CV-19 Resident Support API";
+        private const string ApiName = "cv-19-resident-support";
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public static void ConfigureServices(IServiceCollection services)
@@ -47,7 +46,7 @@ namespace cv19ResSupportV3
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.AddApiVersioning(o =>
             {
-                o.DefaultApiVersion = new ApiVersion(1, 0);
+                o.DefaultApiVersion = new ApiVersion(3, 0);
                 o.AssumeDefaultVersionWhenUnspecified = true; // assume that the caller wants the default version if they don't specify
                 o.ApiVersionReader = new UrlSegmentApiVersionReader(); // read the version number from the url segment header)
             });
@@ -99,7 +98,7 @@ namespace cv19ResSupportV3
                     {
                         Title = $"{ApiName}-api {version}",
                         Version = version,
-                        Description = $"{ApiName} version {version}. Please check older versions for depreciated endpoints."
+                        Description = $"{ApiName} version {version}. Please check older versions for deprecated endpoints."
                     });
                 }
 

@@ -190,6 +190,11 @@ namespace cv19ResSupportV3.V3.Gateways
             {
                 rec.CallbackRequired = request.CallbackRequired;
             }
+
+            if (request.RecordStatus != null)
+            {
+                rec.RecordStatus = request.RecordStatus;
+            }
             _helpRequestsContext.SaveChanges();
         }
 
@@ -201,7 +206,8 @@ namespace cv19ResSupportV3.V3.Gateways
         public List<HelpRequestEntity> GetCallbacks()
         {
             return _helpRequestsContext.HelpRequestEntities
-                .Where(x => (x.CallbackRequired == true || x.CallbackRequired == null)
+                .Where(x => (x.CallbackRequired == true || x.CallbackRequired == null ||
+                             (x.InitialCallbackCompleted == false && x.CallbackRequired == false))
                             && x.DateTimeRecorded < DateTime.Today)
                 .OrderByDescending(x => x.InitialCallbackCompleted)
                 .ThenBy(x => x.DateTimeRecorded)
