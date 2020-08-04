@@ -36,7 +36,7 @@ namespace cv19ResSupportV3.V3.Controllers
         /// <summary>
         /// Creates a help request with the values provided.
         /// </summary>
-        /// <response code="201">...</response>
+        /// <response code="201">Record created successfully</response>
         [ProducesResponseType(typeof(HelpRequestCreateResponse), StatusCodes.Status201Created)]
         [HttpPost]
         public IActionResult CreateHelpRequest(HelpRequest request)
@@ -49,20 +49,12 @@ namespace cv19ResSupportV3.V3.Controllers
         /// Replaces an existing help request record with
         /// </summary>
         /// <response code="200">The record has been updated</response>
-        /// <response code="400">There was an issue updating the record.</response>
         [ProducesResponseType(typeof(HelpRequestCreateResponse), StatusCodes.Status200OK)]
         [HttpPut]
         public IActionResult UpdateHelpRequest(HelpRequest request)
         {
-            try
-            {
-                var result = _updateHelpRequestUseCase.Execute(request);
-                return Ok(result);
-            }
-            catch(Exception e)
-            {
-                return BadRequest("Record not created.");
-            }
+            var result = _updateHelpRequestUseCase.Execute(request);
+            return Ok(result);
         }
 
         /// <summary>
@@ -94,21 +86,12 @@ namespace cv19ResSupportV3.V3.Controllers
         /// RecordStatus
         /// </summary>
         /// <response code="200">The record has been updated</response>
-        /// <response code="400">There was an issue updating the record.</response>
         [HttpPatch]
         [Route("{id}")]
         public IActionResult PatchHelpRequest([FromRoute]int id, [FromBody] HelpRequest request)
         {
-            try
-            {
-                _patchHelpRequestUseCase.Execute(id, request);
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                return BadRequest("Record not updated");
-            }
-
+            _patchHelpRequestUseCase.Execute(id, request);
+            return Ok();
         }
 
         /// <summary>
