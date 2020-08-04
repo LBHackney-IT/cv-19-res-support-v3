@@ -11,11 +11,9 @@ using Microsoft.AspNetCore.Mvc;
 namespace cv19ResSupportV3.V3.Controllers
 {
     [ApiController]
-    //TODO: Rename to match the APIs endpoint
     [Route("api/v3/help-requests/callbacks")]
     [Produces("application/json")]
-    [ApiVersion("1.0")]
-    //TODO: rename class to match the API name
+    [ApiVersion("3.0")]
     public class CallbacksController : BaseController
     {
         private readonly IGetCallbacksUseCase _getCallbacksUseCase;
@@ -24,11 +22,10 @@ namespace cv19ResSupportV3.V3.Controllers
             _getCallbacksUseCase = getCallbacksUseCase;
         }
 
-        //TODO: add xml comments containing information that will be included in the auto generated swagger docs (https://github.com/LBHackney-IT/lbh-base-api/wiki/Controllers-and-Response-Objects)
         /// <summary>
-        /// ...
+        /// Returns a list of help requests requiring a callback.
         /// </summary>
-        /// <response code="200">...</response>
+        /// <response code="200">A list of 0 or more callbacks returned.</response>
         [ProducesResponseType(typeof(List<HelpRequestGetResponse>), StatusCodes.Status200OK)]
         [HttpGet]
         public IActionResult GetCallbacks()
