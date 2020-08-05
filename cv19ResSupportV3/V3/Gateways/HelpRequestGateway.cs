@@ -203,15 +203,21 @@ namespace cv19ResSupportV3.V3.Gateways
             return _helpRequestsContext.HelpRequestEntities.ToList();
         }
 
-        public List<HelpRequestEntity> GetCallbacks()
+        public List<HelpRequestEntity> GetCallbacks(CallbackRequestParams requestParams)
         {
-            return _helpRequestsContext.HelpRequestEntities
+
+            var response = _helpRequestsContext.HelpRequestEntities
                 .Where(x => (x.CallbackRequired == true || x.CallbackRequired == null ||
                              (x.InitialCallbackCompleted == false && x.CallbackRequired == false))
                             && x.DateTimeRecorded < DateTime.Today)
                 .OrderByDescending(x => x.InitialCallbackCompleted)
                 .ThenBy(x => x.DateTimeRecorded)
                 .ToList();
+            if (!string.IsNullOrWhiteSpace(requestParams.Master))
+            {
+                return response.Where(x => x.RecordStatus.ToUpper() == "MASTER").ToList();
+            }
+            return response;
         }
 
         private void SetRecordStatus(HelpRequestEntity request)

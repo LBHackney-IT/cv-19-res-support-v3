@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using cv19ResSupportV3.V3.Boundary.Requests;
 using cv19ResSupportV3.V3.Boundary.Response;
 using cv19ResSupportV3.V3.Factories;
 using cv19ResSupportV3.V3.Gateways;
@@ -14,9 +15,9 @@ namespace cv19ResSupportV3.V3.UseCase
             _gateway = gateway;
         }
 
-        public List<HelpRequestGetResponse> Execute()
+        public List<HelpRequestGetResponse> Execute(CallbackRequestParams requestParams)
         {
-            return _gateway.GetCallbacks().ToResponse();
+            return _gateway.GetCallbacks(requestParams).ToResponse();
         }
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using cv19ResSupportV3.V3.Boundary.Requests;
 using cv19ResSupportV3.V3.Boundary.Response;
 using cv19ResSupportV3.V3.Domain;
 using cv19ResSupportV3.V3.UseCase;
@@ -28,9 +29,9 @@ namespace cv19ResSupportV3.V3.Controllers
         /// <response code="200">A list of 0 or more callbacks returned.</response>
         [ProducesResponseType(typeof(List<HelpRequestGetResponse>), StatusCodes.Status200OK)]
         [HttpGet]
-        public IActionResult GetCallbacks()
+        public IActionResult GetCallbacks([FromQuery] CallbackRequestParams requestParams)
         {
-            var result = _getCallbacksUseCase.Execute();
+            var result = _getCallbacksUseCase.Execute(requestParams);
             return Ok(result);
         }
 
