@@ -244,6 +244,7 @@ namespace cv19ResSupportV3.V3.Gateways
                     request.RecordStatus = "EXCEPTION";
                 }
             }
+
         }
     }
 }
