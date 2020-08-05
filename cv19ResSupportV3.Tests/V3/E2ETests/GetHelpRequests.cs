@@ -24,6 +24,8 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
         public void SetUp()
         {
             CustomizeAssertions.ApproximationDateTime();
+            DatabaseContext.Database.RollbackTransaction();
+            ClearTable();
         }
 
         [Test]
@@ -186,6 +188,11 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             deserializedBody.Should().BeEquivalentTo(expectedResponse);
         }
 
-
+        private void ClearTable()
+        {
+            var addedEntities = DatabaseContext.HelpRequestEntities;
+            DatabaseContext.HelpRequestEntities.RemoveRange(addedEntities);
+            DatabaseContext.SaveChanges();
+        }
     }
 }
