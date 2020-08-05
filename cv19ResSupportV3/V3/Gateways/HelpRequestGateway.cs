@@ -234,7 +234,6 @@ namespace cv19ResSupportV3.V3.Gateways
                     var rec = _helpRequestsContext.HelpRequestEntities.Find(record.Id);
                     rec.RecordStatus = "DUPLICATE";
                 }
-
             }
             else
             {
