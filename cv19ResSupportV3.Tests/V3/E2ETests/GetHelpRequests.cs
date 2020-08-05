@@ -25,7 +25,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
         {
             CustomizeAssertions.ApproximationDateTime();
             DatabaseContext.Database.RollbackTransaction();
-            ClearTable();
+            E2ETestHelpers.ClearTable(DatabaseContext);
         }
 
         [Test]
@@ -186,13 +186,6 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             var deserializedBody = JsonConvert.DeserializeObject<List<HelpRequestGetResponse>>(stringResponse);
             deserializedBody.Count.Should().Be(1);
             deserializedBody.Should().BeEquivalentTo(expectedResponse);
-        }
-
-        private void ClearTable()
-        {
-            var addedEntities = DatabaseContext.HelpRequestEntities;
-            DatabaseContext.HelpRequestEntities.RemoveRange(addedEntities);
-            DatabaseContext.SaveChanges();
         }
     }
 }

@@ -15,5 +15,12 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
 
             return helpRequest;
         }
+
+        public static void ClearTable(HelpRequestsContext context)
+        {
+            var addedEntities = context.HelpRequestEntities;
+            context.HelpRequestEntities.RemoveRange(addedEntities);
+            context.SaveChanges();
+        }
     }
 }

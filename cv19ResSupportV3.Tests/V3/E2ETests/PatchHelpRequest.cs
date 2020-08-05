@@ -20,7 +20,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
         public void RunBeforeAnyTests()
         {
             DatabaseContext.Database.RollbackTransaction();
-            ClearTable();
+            E2ETestHelpers.ClearTable(DatabaseContext);
         }
 
         [Test]
@@ -64,13 +64,6 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             var convertedResponse = JsonConvert.DeserializeObject<HelpRequestCreateResponse>(stringContent);
             var updatedEntity = DatabaseContext.HelpRequestEntities.First();
             updatedEntity.OnBehalfFirstName.Should().NotBeEquivalentTo(changeValue);
-        }
-
-        private void ClearTable()
-        {
-            var addedEntities = DatabaseContext.HelpRequestEntities;
-            DatabaseContext.HelpRequestEntities.RemoveRange(addedEntities);
-            DatabaseContext.SaveChanges();
         }
     }
 }
