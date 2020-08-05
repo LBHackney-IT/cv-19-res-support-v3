@@ -32,9 +32,11 @@ namespace cv19ResSupportV3.V3.Gateways
 
         public HelpRequestEntity UpdateHelpRequest(HelpRequestEntity request)
         {
-            _helpRequestsContext.HelpRequestEntities.Attach(request);
+            if (request == null) return null;
+            var entity = _helpRequestsContext.HelpRequestEntities.Find(request.Id);
+            _helpRequestsContext.Entry(entity).CurrentValues.SetValues(request);
             _helpRequestsContext.SaveChanges();
-            return request;
+            return entity;
         }
 
         public HelpRequestEntity GetHelpRequest(int id)
@@ -214,7 +216,7 @@ namespace cv19ResSupportV3.V3.Gateways
                 .ToList();
             if (!string.IsNullOrWhiteSpace(requestParams.Master))
             {
-                return response.Where(x => x.RecordStatus.ToUpper() == "MASTER").ToList();
+                return response.Where(x => x.RecordStatus != null && x.RecordStatus.ToUpper() == "MASTER").ToList();
             }
             return response;
         }

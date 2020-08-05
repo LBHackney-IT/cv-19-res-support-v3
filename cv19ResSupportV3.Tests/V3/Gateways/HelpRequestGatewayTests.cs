@@ -32,6 +32,7 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
         public void CreateDuplicateHelpRequestTheLatestAsMaster()
         {
             var helpRequest = _fixture.Create<HelpRequest>();
+            helpRequest.Id = 0;
             var response1 = _classUnderTest.CreateHelpRequest(helpRequest.ToEntity());
             var response2 = _classUnderTest.CreateHelpRequest(helpRequest.ToEntity());
             var firstRecordToCheck = DatabaseContext.HelpRequestEntities.Find(response1);
