@@ -205,7 +205,6 @@ namespace cv19ResSupportV3.V3.Gateways
 
         public List<HelpRequestEntity> GetCallbacks(CallbackRequestParams requestParams)
         {
-
             var response = _helpRequestsContext.HelpRequestEntities
                 .Where(x => (x.CallbackRequired == true || x.CallbackRequired == null ||
                              (x.InitialCallbackCompleted == false && x.CallbackRequired == false))
