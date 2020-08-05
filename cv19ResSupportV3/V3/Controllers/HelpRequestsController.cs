@@ -61,7 +61,7 @@ namespace cv19ResSupportV3.V3.Controllers
             }
             catch(Exception e)
             {
-                return BadRequest("Record not created.");
+                return BadRequest($"Record not updated. {e.Message}");
             }
         }
 

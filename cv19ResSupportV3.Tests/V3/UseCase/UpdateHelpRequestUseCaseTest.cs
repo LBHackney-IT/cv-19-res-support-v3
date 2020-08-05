@@ -32,7 +32,6 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
             var request = _fixture.Create<HelpRequest>();
             _mockGateway.Setup(s => s.UpdateHelpRequest(It.IsAny<HelpRequestEntity>())).Returns(request.ToEntity());
             var response = _classUnderTest.Execute(request);
-            request.Id = 0;  // The Id isn't returned in the response
             response.Should().BeEquivalentTo(request);
         }
     }
