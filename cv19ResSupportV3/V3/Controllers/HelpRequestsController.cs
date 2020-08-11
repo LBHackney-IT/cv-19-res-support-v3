@@ -48,7 +48,7 @@ namespace cv19ResSupportV3.V3.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest($"Record not created. {e.Message}");
+                return BadRequest($"Record not created. {e}");
             }
         }
 
@@ -68,7 +68,7 @@ namespace cv19ResSupportV3.V3.Controllers
             }
             catch(Exception e)
             {
-                return BadRequest($"Record not updated. {e.Message}");
+                return BadRequest($"Record not updated. {e}");
             }
         }
 
@@ -113,7 +113,7 @@ namespace cv19ResSupportV3.V3.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest($"Record not updated. {e.Message}");
+                return BadRequest($"Record not updated. {e}");
             }
 
         }
