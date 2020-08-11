@@ -41,8 +41,15 @@ namespace cv19ResSupportV3.V3.Controllers
         [HttpPost]
         public IActionResult CreateHelpRequest(HelpRequest request)
         {
-            var result = _createHelpRequestUseCase.Execute(request);
-            return Created(new Uri($"api/v3/help-requests/{result.Id}", UriKind.Relative), result);
+            try
+            {
+                var result = _createHelpRequestUseCase.Execute(request);
+                return Created(new Uri($"api/v3/help-requests/{result.Id}", UriKind.Relative), result);
+            }
+            catch (Exception e)
+            {
+                return BadRequest($"Record not created. {e.Message}");
+            }
         }
 
         /// <summary>
@@ -106,7 +113,7 @@ namespace cv19ResSupportV3.V3.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest("Record not updated");
+                return BadRequest($"Record not updated. {e.Message}");
             }
 
         }
