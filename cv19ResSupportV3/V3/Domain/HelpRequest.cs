@@ -4,7 +4,7 @@ namespace cv19ResSupportV3.V3.Domain
 {
     public class HelpRequest
     {
-        public int? Id { get; set; }
+        public int Id { get; set; }
         public bool? IsOnBehalf { get; set; }
         public bool? ConsentToCompleteOnBehalf { get; set; }
         public string OnBehalfFirstName { get; set; }

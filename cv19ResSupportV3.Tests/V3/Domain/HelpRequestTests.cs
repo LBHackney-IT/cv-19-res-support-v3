@@ -12,7 +12,7 @@ namespace cv19ResSupportV3.Tests.V3.Domain
          public void EntitiesHaveAnId()
          {
              var entity = new HelpRequest();
-             entity.Id.Should().BeNull();
+             entity.Id.Should().Be(0);
          }
 
         [Test]
