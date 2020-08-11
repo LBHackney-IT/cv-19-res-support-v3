@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using Amazon.Lambda.Core;
 using cv19ResSupportV3.V3.Boundary.Requests;
 using cv19ResSupportV3.V3.Factories;
 using cv19ResSupportV3.V3.Gateways;
@@ -33,8 +34,8 @@ namespace cv19ResSupportV3.V3.Gateways
             }
             catch (Exception e)
             {
-                Console.WriteLine("CreateHelpRequest error: ");
-                Console.WriteLine(e);
+                LambdaLogger.Log("CreateHelpRequest error: ");
+                LambdaLogger.Log(e.Message);
                 throw;
             }
         }
@@ -51,8 +52,8 @@ namespace cv19ResSupportV3.V3.Gateways
             }
             catch (Exception e)
             {
-                Console.WriteLine("UpdateHelpRequest error: ");
-                Console.WriteLine(e);
+                LambdaLogger.Log("UpdateHelpRequest error: ");
+                LambdaLogger.Log(e.Message);
                 throw;
             }
         }
@@ -66,8 +67,8 @@ namespace cv19ResSupportV3.V3.Gateways
             }
             catch (Exception e)
             {
-                Console.WriteLine("GetHelpRequest error: ");
-                Console.WriteLine(e);
+                LambdaLogger.Log("GetHelpRequest error: ");
+                LambdaLogger.Log(e.Message);
                 throw;
             }
         }
@@ -96,8 +97,8 @@ namespace cv19ResSupportV3.V3.Gateways
             }
             catch (Exception e)
             {
-                Console.WriteLine("SearchHelpRequest error: ");
-                Console.WriteLine(e);
+                LambdaLogger.Log("SearchHelpRequest error: ");
+                LambdaLogger.Log(e.Message);
                 throw;
             }
         }
@@ -240,8 +241,8 @@ namespace cv19ResSupportV3.V3.Gateways
             }
             catch (Exception e)
             {
-                Console.WriteLine("PatchHelpRequest error: ");
-                Console.WriteLine(e);
+                LambdaLogger.Log("PatchHelpRequest error: ");
+                LambdaLogger.Log(e.Message);
                 throw;
             }
         }
@@ -254,8 +255,8 @@ namespace cv19ResSupportV3.V3.Gateways
             }
             catch (Exception e)
             {
-                Console.WriteLine("GetHelpRequests error: ");
-                Console.WriteLine(e);
+                LambdaLogger.Log("GetHelpRequests error: ");
+                LambdaLogger.Log(e.Message);
                 throw;
             }
 
@@ -280,8 +281,8 @@ namespace cv19ResSupportV3.V3.Gateways
             }
             catch (Exception e)
             {
-                Console.WriteLine("GetCallbacks error: ");
-                Console.WriteLine(e);
+                LambdaLogger.Log("GetCallbacks error: ");
+                LambdaLogger.Log(e.Message);
                 throw;
             }
         }
