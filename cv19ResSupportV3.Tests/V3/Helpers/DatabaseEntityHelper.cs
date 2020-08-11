@@ -18,7 +18,7 @@ namespace cv19ResSupportV3.Tests.V3.Helper
         {
             return new HelpRequestEntity
             {
-                Id = helpRequest.Id.Value,
+                Id = helpRequest.Id,
                 IsOnBehalf = helpRequest.IsOnBehalf,
                 ConsentToCompleteOnBehalf = helpRequest.ConsentToCompleteOnBehalf,
                 OnBehalfFirstName = helpRequest.OnBehalfFirstName,
