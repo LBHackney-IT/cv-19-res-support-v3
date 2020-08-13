@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Generic;
+using cv19ResSupportV3.V3.Domain;
 
-namespace cv19ResSupportV3.V3.Domain
+namespace cv19ResSupportV3.V3.Boundary.Response
 {
-    public class HelpRequest
+    public class HelpRequestGetResponse
     {
         public int Id { get; set; }
         public bool? IsOnBehalf { get; set; }

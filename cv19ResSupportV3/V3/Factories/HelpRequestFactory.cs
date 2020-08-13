@@ -31,12 +31,17 @@ namespace cv19ResSupportV3.V3.Factories
                 HelpWithHealth = helpRequestEntity.HelpWithHealth,
                 HelpWithMentalHealth = helpRequestEntity.HelpWithMentalHealth,
                 HelpWithAccessingInternet = helpRequestEntity.HelpWithAccessingInternet,
+                HelpWithHousing = helpRequestEntity.HelpWithHousing,
+                HelpWithJobsOrTraining = helpRequestEntity.HelpWithJobsOrTraining,
+                HelpWithChildrenAndSchools = helpRequestEntity.HelpWithChildrenAndSchools,
+                HelpWithDisabilities = helpRequestEntity.HelpWithDisabilities,
                 HelpWithSomethingElse = helpRequestEntity.HelpWithSomethingElse,
                 MedicineDeliveryHelpNeeded = helpRequestEntity.MedicineDeliveryHelpNeeded,
                 IsPharmacistAbleToDeliver = helpRequestEntity.IsPharmacistAbleToDeliver,
                 WhenIsMedicinesDelivered = helpRequestEntity.WhenIsMedicinesDelivered,
                 NameAddressPharmacist = helpRequestEntity.NameAddressPharmacist,
                 UrgentEssentials = helpRequestEntity.UrgentEssentials,
+                UrgentEssentialsAnythingElse = helpRequestEntity.UrgentEssentialsAnythingElse,
                 CurrentSupport = helpRequestEntity.CurrentSupport,
                 CurrentSupportFeedback = helpRequestEntity.CurrentSupportFeedback,
                 FirstName = helpRequestEntity.FirstName,
@@ -50,7 +55,12 @@ namespace cv19ResSupportV3.V3.Factories
                 GpSurgeryDetails = helpRequestEntity.GpSurgeryDetails,
                 NumberOfChildrenUnder18 = helpRequestEntity.NumberOfChildrenUnder18,
                 ConsentToShare = helpRequestEntity.ConsentToShare,
-                DateTimeRecorded = helpRequestEntity.DateTimeRecorded
+                DateTimeRecorded = helpRequestEntity.DateTimeRecorded,
+                RecordStatus = helpRequestEntity.RecordStatus,
+                CallbackRequired = helpRequestEntity.CallbackRequired,
+                InitialCallbackCompleted = helpRequestEntity.InitialCallbackCompleted,
+                CaseNotes = helpRequestEntity.CaseNotes,
+                AdviceNotes = helpRequestEntity.AdviceNotes
             };
         }
 
@@ -104,9 +114,13 @@ namespace cv19ResSupportV3.V3.Factories
                 GpSurgeryDetails = helpRequest.GpSurgeryDetails,
                 NumberOfChildrenUnder18 = helpRequest.NumberOfChildrenUnder18,
                 ConsentToShare = helpRequest.ConsentToShare,
-                DateTimeRecorded = helpRequest.DateTimeRecorded
+                DateTimeRecorded = helpRequest.DateTimeRecorded,
+                RecordStatus = helpRequest.RecordStatus,
+                CallbackRequired = helpRequest.CallbackRequired,
+                InitialCallbackCompleted = helpRequest.InitialCallbackCompleted,
+                CaseNotes = helpRequest.CaseNotes,
+                AdviceNotes = helpRequest.AdviceNotes
             };
         }
-
     }
 }

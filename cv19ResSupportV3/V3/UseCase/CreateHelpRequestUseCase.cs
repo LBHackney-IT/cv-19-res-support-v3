@@ -13,12 +13,10 @@ namespace cv19ResSupportV3.V3.UseCase
         {
             _gateway = gateway;
         }
-
-        //TODO: rename id to the name of the identifier that will be used for this API, the type may also need to change
-        public HelpRequestResponse Execute(HelpRequest request)
+        public HelpRequestCreateResponse Execute(HelpRequest request)
         {
             var response =  _gateway.CreateHelpRequest(request.ToEntity());
-            return new HelpRequestResponse
+            return new HelpRequestCreateResponse
             {
                 Id = response
             };

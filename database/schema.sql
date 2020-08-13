@@ -20,6 +20,7 @@ SET default_with_oids = false;
 
 CREATE TABLE public.i_need_help_resident_support_v3 (
     "id" int4 NOT NULL,
+    "is_on_behalf" bool,
     "consent_to_complete_on_behalf" bool,
     "on_behalf_first_name" varchar ,
     "on_behalf_last_name" varchar,
@@ -58,20 +59,25 @@ CREATE TABLE public.i_need_help_resident_support_v3 (
     "email_address" varchar,
     "gp_surgery_details" varchar,
     "number_of_children_under_18" varchar,
-    "consent_to_share" varchar,
+    "consent_to_share" bool,
     "date_time_recorded" timestamp,
     "urgent_essentials_anything_else" varchar,
     "help_with_housing" bool,
     "help_with_jobs_or_training" bool,
     "help_with_children_and_schools" bool,
     "help_with_disabilities" bool,
+    "record_status" varchar,
+    "callback_required" bool,
+    "initial_callback_completed" bool,
+    "case_notes" text,
+    "advice_notes" text,
     PRIMARY KEY ("id")
 );
 
 ALTER TABLE public.i_need_help_resident_support_v3 OWNER TO postgres;
 
 -- Sequence and defined type
-CREATE SEQUENCE public.i_need_help_resident_support_v3_seq
+CREATE SEQUENCE public.i_need_help_resident_support_v3_id_seq
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -83,7 +89,7 @@ CREATE SEQUENCE public.i_need_help_resident_support_v3_seq
 -- Name: i_need_help_resident_support_v3 id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE public.i_need_help_resident_support_v3_id_seq OWNER TO postgres;
+ALTER SEQUENCE public.i_need_help_resident_support_v3_id_seq OWNER TO postgres;
 
 --
 -- Name: i_need_help_resident_support_v3 id; Type: DEFAULT; Schema: public; Owner: postgres

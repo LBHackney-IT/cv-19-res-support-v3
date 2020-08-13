@@ -3,17 +3,17 @@ using cv19ResSupportV3.V3.Domain;
 using FluentAssertions;
 using NUnit.Framework;
 
-namespace cv19ResSupportV3.Tests.V1.Domain
+namespace cv19ResSupportV3.Tests.V3.Domain
 {
     [TestFixture]
     public class EntityTests
     {
         [Test]
-        public void EntitiesHaveAnId()
-        {
-            var entity = new HelpRequest();
-            entity.Id.Should().BeGreaterOrEqualTo(0);
-        }
+         public void EntitiesHaveAnId()
+         {
+             var entity = new HelpRequest();
+             entity.Id.Should().Be(0);
+         }
 
         [Test]
         public void EntitiesHaveADateTimeRecorded()

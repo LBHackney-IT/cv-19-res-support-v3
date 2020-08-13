@@ -3,8 +3,8 @@ using cv19ResSupportV3.V3.Boundary.Response;
 
 namespace cv19ResSupportV3.V3.UseCase.Interfaces
 {
-    public interface ICreateHelpRequestUseCase
+    public interface IUpdateHelpRequestUseCase
     {
-        HelpRequestCreateResponse Execute(HelpRequest request);
+        HelpRequest Execute(HelpRequest request);
     }
 }
