@@ -44,6 +44,37 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             updatedEntity.FirstName.Should().BeEquivalentTo(requestObject.FirstName);
         }
 
+
+        [Test]
+        public async Task PatchResidentInformationWithPatchableAddressFieldUpdatesTheRecord()
+        {
+            var dbEntity = DatabaseContext.HelpRequestEntities.Add(new Fixture().Build<HelpRequestEntity>().Create());
+            DatabaseContext.SaveChanges();
+            var requestObject = DatabaseContext.HelpRequestEntities.First();
+            requestObject.AddressFirstLine = "7 test road";
+            requestObject.AddressSecondLine = null;
+            requestObject.AddressThirdLine = null;
+            requestObject.PostCode = "ABC 123";
+            requestObject.Uprn = "1231456456789";
+
+            var data = JsonConvert.SerializeObject(requestObject);
+            HttpContent postContent = new StringContent(data, Encoding.UTF8, "application/json");
+            var uri = new Uri($"api/v3/help-requests/{requestObject.Id}", UriKind.Relative);
+            var response = Client.PatchAsync(uri, postContent);
+            postContent.Dispose();
+            var statusCode = response.Result.StatusCode;
+            statusCode.Should().Be(200);
+            var content = response.Result.Content;
+            var stringContent = await content.ReadAsStringAsync().ConfigureAwait(true);
+            var convertedResponse = JsonConvert.DeserializeObject<HelpRequestCreateResponse>(stringContent);
+            var updatedEntity = DatabaseContext.HelpRequestEntities.First();
+            updatedEntity.AddressFirstLine.Should().BeEquivalentTo(requestObject.AddressFirstLine);
+            updatedEntity.AddressSecondLine.Should().BeNullOrEmpty();
+            updatedEntity.AddressThirdLine.Should().BeNullOrEmpty();
+            updatedEntity.PostCode.Should().BeEquivalentTo(requestObject.PostCode);
+            updatedEntity.Uprn.Should().BeEquivalentTo(requestObject.Uprn);
+        }
+
         [Test]
         public async Task PatchResidentInformationWithNonPatchableFieldDoesNotUpdateTheRecord()
         {
