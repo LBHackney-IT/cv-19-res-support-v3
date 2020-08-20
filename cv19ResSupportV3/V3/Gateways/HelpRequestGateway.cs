@@ -198,6 +198,17 @@ namespace cv19ResSupportV3.V3.Gateways
                     rec.EmailAddress = request.EmailAddress;
                 }
 
+                if (request.AddressFirstLine != null && request.PostCode != null)
+                {
+                    // update new address fields
+                    rec.AddressFirstLine = request.AddressFirstLine;
+                    rec.AddressSecondLine = request.AddressSecondLine;
+                    rec.AddressThirdLine = request.AddressThirdLine;
+                    rec.PostCode = request.PostCode;
+                    rec.Uprn = request.Uprn;
+                    rec.Ward = request.Ward;
+                }
+
                 if (request.GpSurgeryDetails != null)
                 {
                     rec.GpSurgeryDetails = request.GpSurgeryDetails;
