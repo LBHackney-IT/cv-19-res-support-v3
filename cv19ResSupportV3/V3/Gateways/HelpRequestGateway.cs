@@ -279,8 +279,7 @@ namespace cv19ResSupportV3.V3.Gateways
             {
                 var response = _helpRequestsContext.HelpRequestEntities
                     .Where(x => (x.CallbackRequired == true || x.CallbackRequired == null ||
-                                 (x.InitialCallbackCompleted == false && x.CallbackRequired == false))
-                                && x.DateTimeRecorded < DateTime.Today)
+                                 (x.InitialCallbackCompleted == false && x.CallbackRequired == false)))
                     .OrderByDescending(x => x.InitialCallbackCompleted)
                     .ThenBy(x => x.DateTimeRecorded)
                     .ToList();
