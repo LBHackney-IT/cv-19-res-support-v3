@@ -71,6 +71,7 @@ CREATE TABLE public.i_need_help_resident_support_v3 (
     "initial_callback_completed" bool,
     "case_notes" text,
     "advice_notes" text,
+    "help_needed" varchar,
     PRIMARY KEY ("id")
 );
 

@@ -170,6 +170,9 @@ namespace cv19ResSupportV3.V3.Infrastructure
                         entity.Property(e => e.AdviceNotes)
                             .HasColumnName("advice_notes")
                             .HasColumnType("character varying");
+                        entity.Property(e => e.HelpNeeded)
+                            .HasColumnName("help_needed")
+                            .HasColumnType("character varying");
                     }
                 );
         }

@@ -163,5 +163,7 @@ namespace cv19ResSupportV3.V3.Infrastructure
 
         [Column("advice_notes")]
         public string AdviceNotes { get; set; }
+        [Column("help_needed")]
+        public string HelpNeeded { get; set; }
     }
 }
