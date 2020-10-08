@@ -81,11 +81,15 @@ namespace cv19ResSupportV3.V3.Gateways
 
             Expression<Func<HelpRequestEntity, bool>> queryFirstName = x =>
                 string.IsNullOrWhiteSpace(queryParams.FirstName)
-                || x.FirstName.Replace(" ", "").ToUpper().Equals(queryParams.FirstName.Replace(" ", "").ToUpper());
+                || x.FirstName.Replace(" ", "").ToUpper().Contains(queryParams.FirstName.Replace(" ", "").ToUpper());
 
             Expression<Func<HelpRequestEntity, bool>> queryLastName = x =>
                 string.IsNullOrWhiteSpace(queryParams.LastName)
-                || x.LastName.Replace(" ", "").ToUpper().Equals(queryParams.LastName.Replace(" ", "").ToUpper());
+                || x.LastName.Replace(" ", "").ToUpper().Contains(queryParams.LastName.Replace(" ", "").ToUpper());
+
+            Expression<Func<HelpRequestEntity, bool>> queryHelpNeeded = x =>
+                string.IsNullOrWhiteSpace(queryParams.HelpNeeded)
+                || x.HelpNeeded.Replace(" ", "").ToUpper().Equals(queryParams.HelpNeeded.Replace(" ", "").ToUpper());
 
             try
             {
@@ -93,6 +97,7 @@ namespace cv19ResSupportV3.V3.Gateways
                     .Where(queryPostCode)
                     .Where(queryFirstName)
                     .Where(queryLastName)
+                    .Where(queryHelpNeeded)
                     .ToList();
             }
             catch (Exception e)
