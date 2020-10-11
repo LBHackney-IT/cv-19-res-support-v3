@@ -275,6 +275,11 @@ namespace cv19ResSupportV3.V3.Gateways
                 {
                     rec.RecordStatus = request.RecordStatus;
                 }
+
+                if (request.HelpNeeded != null)
+                {
+                    rec.HelpNeeded = request.HelpNeeded;
+                }
                 _helpRequestsContext.SaveChanges();
             }
             catch (Exception e)
