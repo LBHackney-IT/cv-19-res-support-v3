@@ -20,6 +20,8 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
         {
             var addedEntities = context.HelpRequestEntities;
             context.HelpRequestEntities.RemoveRange(addedEntities);
+            var addedLookups = context.Lookups;
+            context.Lookups.RemoveRange(addedLookups);
             context.SaveChanges();
         }
     }

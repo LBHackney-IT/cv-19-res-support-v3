@@ -8,6 +8,7 @@ namespace cv19ResSupportV3.V3.Gateways
     public interface IHelpRequestGateway
     {
         int CreateHelpRequest(HelpRequestEntity request);
+        List<LookupEntity> GetLookups(LookupQueryParams requestParams);
         List<HelpRequestEntity> GetHelpRequests();
         List<HelpRequestEntity> GetCallbacks(CallbackRequestParams requestParams);
         HelpRequestEntity UpdateHelpRequest(HelpRequestEntity request);

@@ -40,6 +40,27 @@ namespace cv19ResSupportV3.V3.Gateways
             }
         }
 
+        public List<LookupEntity> GetLookups(LookupQueryParams requestParams)
+        {
+            Expression<Func<LookupEntity, bool>> queryLookups = x =>
+                string.IsNullOrWhiteSpace(requestParams.LookupGroup)
+                || x.Lookup.Replace(" ", "").ToUpper().Equals(requestParams.LookupGroup.Replace(" ", "").ToUpper());
+            try
+            {
+                var response = _helpRequestsContext.Lookups
+                    .Where(queryLookups)
+                    .OrderByDescending(x => x.Lookup)
+                    .ToList();
+                return response;
+            }
+            catch (Exception e)
+            {
+                LambdaLogger.Log("GetCallbacks error: ");
+                LambdaLogger.Log(e.Message);
+                throw;
+            }
+        }
+
         public HelpRequestEntity UpdateHelpRequest(HelpRequestEntity request)
         {
             if (request == null) return null;
@@ -280,11 +301,15 @@ namespace cv19ResSupportV3.V3.Gateways
 
         public List<HelpRequestEntity> GetCallbacks(CallbackRequestParams requestParams)
         {
+            Expression<Func<HelpRequestEntity, bool>> queryHelpNeeded = x =>
+                string.IsNullOrWhiteSpace(requestParams.HelpNeeded)
+                || x.HelpNeeded.Replace(" ", "").ToUpper().Equals(requestParams.HelpNeeded.Replace(" ", "").ToUpper());
             try
             {
                 var response = _helpRequestsContext.HelpRequestEntities
                     .Where(x => (x.CallbackRequired == true || x.CallbackRequired == null ||
                                  (x.InitialCallbackCompleted == false && x.CallbackRequired == false)))
+                    .Where(queryHelpNeeded)
                     .OrderByDescending(x => x.InitialCallbackCompleted)
                     .ThenBy(x => x.DateTimeRecorded)
                     .ToList();

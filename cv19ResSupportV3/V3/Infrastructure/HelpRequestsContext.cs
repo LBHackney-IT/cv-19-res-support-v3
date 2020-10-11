@@ -10,6 +10,7 @@ namespace cv19ResSupportV3.V3.Infrastructure
         {
         }
         public DbSet<HelpRequestEntity> HelpRequestEntities { get; set; }
+        public DbSet<LookupEntity> Lookups { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -173,6 +174,20 @@ namespace cv19ResSupportV3.V3.Infrastructure
                         entity.Property(e => e.HelpNeeded)
                             .HasColumnName("help_needed")
                             .HasColumnType("character varying");
+                    }
+                );
+
+                        modelBuilder.Entity<LookupEntity>(entity =>
+                    {
+                        entity.ToTable("inh_lookups");
+                        entity.HasKey(lookup => new {lookup.Id});
+                        entity.Property(e => e.Id).HasColumnName("id");
+                        entity.Property(e => e.LookupGroup)
+                            .HasColumnName("lookup_group")
+                            .HasColumnType("character varying");
+                        entity.Property(e => e.Lookup)
+                            .HasColumnName("lookup")
+                            .HasColumnType("character_varying");;
                     }
                 );
         }
