@@ -44,12 +44,13 @@ namespace cv19ResSupportV3.V3.Gateways
         {
             Expression<Func<LookupEntity, bool>> queryLookups = x =>
                 string.IsNullOrWhiteSpace(requestParams.LookupGroup)
-                || x.Lookup.Replace(" ", "").ToUpper().Equals(requestParams.LookupGroup.Replace(" ", "").ToUpper());
+                || x.LookupGroup.Replace(" ", "").ToUpper().Equals(requestParams.LookupGroup.Replace(" ", "").ToUpper());
             try
             {
                 var response = _helpRequestsContext.Lookups
                     .Where(queryLookups)
-                    .OrderByDescending(x => x.Lookup)
+                    .OrderBy(x => x.LookupGroup)
+                    .ThenBy(x => x.Lookup)
                     .ToList();
                 return response;
             }
