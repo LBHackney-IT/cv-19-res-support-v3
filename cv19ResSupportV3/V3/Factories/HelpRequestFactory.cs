@@ -60,7 +60,8 @@ namespace cv19ResSupportV3.V3.Factories
                 CallbackRequired = helpRequestEntity.CallbackRequired,
                 InitialCallbackCompleted = helpRequestEntity.InitialCallbackCompleted,
                 CaseNotes = helpRequestEntity.CaseNotes,
-                AdviceNotes = helpRequestEntity.AdviceNotes
+                AdviceNotes = helpRequestEntity.AdviceNotes,
+                HelpNeeded = helpRequestEntity.HelpNeeded
             };
         }
 
@@ -119,7 +120,8 @@ namespace cv19ResSupportV3.V3.Factories
                 CallbackRequired = helpRequest.CallbackRequired,
                 InitialCallbackCompleted = helpRequest.InitialCallbackCompleted,
                 CaseNotes = helpRequest.CaseNotes,
-                AdviceNotes = helpRequest.AdviceNotes
+                AdviceNotes = helpRequest.AdviceNotes,
+                HelpNeeded = helpRequest.HelpNeeded
             };
         }
     }

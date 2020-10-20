@@ -5,5 +5,6 @@ namespace cv19ResSupportV3.V3.Boundary.Requests
         public string Postcode { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string HelpNeeded { get; set; }
     }
 }

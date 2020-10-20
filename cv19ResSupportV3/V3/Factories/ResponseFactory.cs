@@ -67,13 +67,26 @@ namespace cv19ResSupportV3.V3.Factories
                 InitialCallbackCompleted = hr.InitialCallbackCompleted,
                 CallbackRequired = hr.CallbackRequired,
                 CaseNotes = hr.CaseNotes,
-                AdviceNotes = hr.AdviceNotes
+                AdviceNotes = hr.AdviceNotes,
+                HelpNeeded = hr.HelpNeeded
             };
         }
 
         public static List<HelpRequestGetResponse> ToResponse(this IEnumerable<HelpRequestEntity> responseList)
         {
             return responseList.Select(responseItem => responseItem.ToResponse()).ToList();
+        }
+
+        public static LookupResponse ToResponse(this LookupEntity lookup)
+        {
+            return lookup == null
+                ? null
+                : new LookupResponse { LookupGroup = lookup.LookupGroup, Lookup = lookup.Lookup };
+        }
+
+        public static List<LookupResponse> ToResponse(this IEnumerable<LookupEntity> lookupEntities)
+        {
+            return lookupEntities.Select(le => le.ToResponse()).ToList();
         }
     }
 }

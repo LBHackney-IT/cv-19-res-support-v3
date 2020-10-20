@@ -71,6 +71,7 @@ CREATE TABLE public.i_need_help_resident_support_v3 (
     "initial_callback_completed" bool,
     "case_notes" text,
     "advice_notes" text,
+    "help_needed" varchar,
     PRIMARY KEY ("id")
 );
 
@@ -102,3 +103,38 @@ ALTER SEQUENCE public.i_need_help_resident_support_v3_id_seq OWNED BY public.i_n
 --
 
 ALTER TABLE ONLY public.i_need_help_resident_support_v3 ALTER COLUMN id SET DEFAULT nextval('public.i_need_help_resident_support_v3_id_seq'::regclass);
+
+
+
+----- I NEED HELP LOOKUPS -----
+-- Name: inh_lookups id; Type: DEFAULT; Schema: public; Owner: postgres --
+
+CREATE TABLE public.inh_lookups (
+    "id" int4 NOT NULL,
+    "lookup_group" varchar ,
+    "lookup" varchar,
+    PRIMARY KEY ("id")
+);
+
+ALTER TABLE public.inh_lookups OWNER TO postgres;
+
+-- Sequence and defined type --
+CREATE SEQUENCE public.inh_lookups_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+-- Name: inh_lookups id; Type: DEFAULT; Schema: public; Owner: postgres --
+
+ALTER SEQUENCE public.inh_lookups_id_seq OWNER TO postgres;
+
+-- Name: inh_lookups id; Type: DEFAULT; Schema: public; Owner: postgres --
+
+ALTER SEQUENCE public.inh_lookups_id_seq OWNED BY public.inh_lookups.id;
+
+-- Name: inh_lookups id; Type: DEFAULT; Schema: public; Owner: postgres --
+
+ALTER TABLE ONLY public.inh_lookups ALTER COLUMN id SET DEFAULT nextval('public.inh_lookups_id_seq'::regclass);

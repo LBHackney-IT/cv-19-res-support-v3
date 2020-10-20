@@ -34,6 +34,8 @@ namespace cv19ResSupportV3.Tests
         {
             var addedEntities = DatabaseContext.HelpRequestEntities;
             DatabaseContext.HelpRequestEntities.RemoveRange(addedEntities);
+            var addedLookups = DatabaseContext.Lookups;
+            DatabaseContext.Lookups.RemoveRange(addedLookups);
             DatabaseContext.SaveChanges();
         }
     }
