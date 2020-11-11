@@ -64,6 +64,18 @@ namespace cv19ResSupportV3.V3.Infrastructure
                         entity.Property(e => e.HelpWithAccessingFood)
                             .HasColumnName("help_with_accessing_food")
                             .HasColumnType("bool");
+                        entity.Property(e => e.HelpWithCompletingNssForm)
+                            .HasColumnName("help_with_completing_nss_form")
+                            .HasColumnType("bool");
+                        entity.Property(e => e.HelpWithAccessingSupermarketFood)
+                            .HasColumnName("help_with_accessing_supermarket_food")
+                            .HasColumnType("bool");
+                        entity.Property(e => e.HelpWithShieldingGuidance)
+                            .HasColumnName("help_with_shielding_guidance")
+                            .HasColumnType("bool");
+                        entity.Property(e => e.HelpWithNoNeedsIdentified)
+                            .HasColumnName("help_with_no_needs_identified")
+                            .HasColumnType("bool");
                         entity.Property(e => e.HelpWithAccessingMedicine)
                             .HasColumnName("help_with_accessing_medicine")
                             .HasColumnType("bool");
