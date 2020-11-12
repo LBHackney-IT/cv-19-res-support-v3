@@ -19,6 +19,8 @@ services:
       - POSTGRES_PASSWORD=mypassword
       - POSTGRES_DB=devdb
     image: postgres:12
+    ports:
+      - 5433:5432
 
   cv-19-res-support-api-v3-test:
     image: cv-19-res-support-api-v3-test
