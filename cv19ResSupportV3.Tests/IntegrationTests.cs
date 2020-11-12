@@ -39,6 +39,7 @@ namespace cv19ResSupportV3.Tests
             DatabaseContext = new HelpRequestsContext(_builder.Options);
             DatabaseContext.Database.EnsureCreated();
             _transaction = DatabaseContext.Database.BeginTransaction();
+            DatabaseContext.HelpRequestEntities.RemoveRange(DatabaseContext.HelpRequestEntities);
         }
 
         [TearDown]
