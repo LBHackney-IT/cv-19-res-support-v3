@@ -14,11 +14,11 @@ services:
     links:
       - dev-database
   dev-database:
-    env_file:
-      - database.env
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=mypassword
+      - POSTGRES_DB=devdb
     image: postgres:12
-#    volumes:
-#      - ./database:/docker-entrypoint-initdb.d
 
   cv-19-res-support-api-v3-test:
     image: cv-19-res-support-api-v3-test
@@ -31,14 +31,14 @@ services:
       - DB_USERNAME=postgres
       - DB_PASSWORD=mypassword
       - DB_DATABASE=testdb
+      - ASPNETCORE_ENVIRONMENT=Test
     links:
       - test-database
   test-database:
-    image: test-database
-    build:
-      context: .
-      dockerfile: database/Dockerfile
     ports:
       - 5432:5432
-    env_file:
-      - database.env
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=mypassword
+      - POSTGRES_DB=testdb
+    image: postgres:12
