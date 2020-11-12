@@ -34,9 +34,11 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             createdEntity.FirstName.Should().BeEquivalentTo(requestObject.FirstName);
             createdEntity.LastName.Should().BeEquivalentTo(requestObject.LastName);
             createdEntity.RecordStatus.Should().Be("MASTER");
+            createdEntity.HelpWithAccessingSupermarketFood.Should().Be(requestObject.HelpWithAccessingSupermarketFood);
+            createdEntity.HelpWithCompletingNssForm.Should().Be(requestObject.HelpWithCompletingNssForm);
+            createdEntity.HelpWithShieldingGuidance.Should().Be(requestObject.HelpWithShieldingGuidance);
+            createdEntity.HelpWithNoNeedsIdentified.Should().Be(requestObject.HelpWithNoNeedsIdentified);
             DatabaseContext.Database.BeginTransaction();
         }
-
-
     }
 }
