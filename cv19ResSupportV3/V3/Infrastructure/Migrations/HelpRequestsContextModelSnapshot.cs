@@ -266,7 +266,7 @@ namespace cv19ResSupportV3.V3.Infrastructure.Migrations
 
                     b.Property<string>("Lookup")
                         .HasColumnName("lookup")
-                        .HasColumnType("character_varying");
+                        .HasColumnType("character varying");
 
                     b.Property<string>("LookupGroup")
                         .HasColumnName("lookup_group")

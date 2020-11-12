@@ -79,7 +79,7 @@ namespace cv19ResSupportV3.V3.Infrastructure.Migrations
                     id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     lookup_group = table.Column<string>(type: "character varying", nullable: true),
-                    lookup = table.Column<string>(type: "character_varying", nullable: true)
+                    lookup = table.Column<string>(type: "character varying", nullable: true)
                 },
                 constraints: table =>
                 {

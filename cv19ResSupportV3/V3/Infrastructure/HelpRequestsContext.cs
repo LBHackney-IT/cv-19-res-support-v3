@@ -199,7 +199,7 @@ namespace cv19ResSupportV3.V3.Infrastructure
                             .HasColumnType("character varying");
                         entity.Property(e => e.Lookup)
                             .HasColumnName("lookup")
-                            .HasColumnType("character_varying");;
+                            .HasColumnType("character varying");;
                     }
                 );
         }
