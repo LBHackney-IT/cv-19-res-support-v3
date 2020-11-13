@@ -86,12 +86,16 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
                 With(x => x.HelpWithAccessingSupermarketFood, false).Create());
             DatabaseContext.SaveChanges();
             var requestObject = DatabaseContext.HelpRequestEntities.Find(1);
-            requestObject.HelpWithCompletingNssForm = false;
-            requestObject.HelpWithShieldingGuidance = null;
-            requestObject.HelpWithNoNeedsIdentified = false;
-            requestObject.HelpWithAccessingSupermarketFood = true;
 
-            var data = JsonConvert.SerializeObject(requestObject);
+            var patchRequestObject = new HelpRequestEntity()
+            {
+                HelpWithCompletingNssForm = false,
+                HelpWithShieldingGuidance = false,
+                HelpWithNoNeedsIdentified = null,
+                HelpWithAccessingSupermarketFood = false
+            };
+
+            var data = JsonConvert.SerializeObject(patchRequestObject);
             HttpContent postContent = new StringContent(data, Encoding.UTF8, "application/json");
             var uri = new Uri($"api/v3/help-requests/{requestObject.Id}", UriKind.Relative);
             var response = Client.PatchAsync(uri, postContent);
@@ -102,10 +106,10 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             var stringContent = await content.ReadAsStringAsync().ConfigureAwait(true);
             var convertedResponse = JsonConvert.DeserializeObject<HelpRequestCreateResponse>(stringContent);
             var updatedEntity = DatabaseContext.HelpRequestEntities.Find(requestObject.Id);
-            updatedEntity.HelpWithCompletingNssForm.Should().Be(requestObject.HelpWithCompletingNssForm);
+            updatedEntity.HelpWithCompletingNssForm.Should().Be(true);
             updatedEntity.HelpWithShieldingGuidance.Should().Be(true);
-            updatedEntity.HelpWithNoNeedsIdentified.Should().Be(requestObject.HelpWithNoNeedsIdentified);
-            updatedEntity.HelpWithAccessingSupermarketFood.Should().Be(requestObject.HelpWithAccessingSupermarketFood);
+            updatedEntity.HelpWithNoNeedsIdentified.Should().Be(true);
+            updatedEntity.HelpWithAccessingSupermarketFood.Should().Be(false);
 
         }
 

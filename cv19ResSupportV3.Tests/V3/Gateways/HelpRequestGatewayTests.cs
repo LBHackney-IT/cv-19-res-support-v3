@@ -54,20 +54,22 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
 
             var dbEntity = DatabaseContext.HelpRequestEntities.Add(helpRequest);
             DatabaseContext.SaveChanges();
-            helpRequest.HelpWithCompletingNssForm = false;
-            helpRequest.HelpWithShieldingGuidance = false;
-            helpRequest.HelpWithNoNeedsIdentified = null;
-            helpRequest.HelpWithAccessingSupermarketFood = false;
+            var patchRequestObject = new HelpRequestEntity()
+            {
+                HelpWithCompletingNssForm = false,
+                HelpWithShieldingGuidance = false,
+                HelpWithNoNeedsIdentified = null,
+                HelpWithAccessingSupermarketFood = false
+            };
 
-            _classUnderTest.PatchHelpRequest(helpRequest.Id, helpRequest);
+            _classUnderTest.PatchHelpRequest(helpRequest.Id, patchRequestObject);
 
             var updatedEntity = DatabaseContext.HelpRequestEntities.Find(helpRequest.Id);
 
-
-            updatedEntity.HelpWithCompletingNssForm.Should().Be(helpRequest.HelpWithCompletingNssForm);
-            updatedEntity.HelpWithShieldingGuidance.Should().Be(helpRequest.HelpWithShieldingGuidance);
+            updatedEntity.HelpWithCompletingNssForm.Should().Be(false);
+            updatedEntity.HelpWithShieldingGuidance.Should().Be(false);
             updatedEntity.HelpWithNoNeedsIdentified.Should().Be(true);
-            updatedEntity.HelpWithAccessingSupermarketFood.Should().Be(helpRequest.HelpWithAccessingSupermarketFood);
+            updatedEntity.HelpWithAccessingSupermarketFood.Should().Be(false);
 
         }
     }
