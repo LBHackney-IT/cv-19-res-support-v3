@@ -147,6 +147,23 @@ namespace cv19ResSupportV3.V3.Gateways
                 {
                     rec.HelpWithAccessingFood = request.HelpWithAccessingFood;
                 }
+                if (request.HelpWithAccessingSupermarketFood != null)
+                {
+                    rec.HelpWithAccessingSupermarketFood = request.HelpWithAccessingSupermarketFood;
+                }
+                if (request.HelpWithCompletingNssForm != null)
+                {
+                    rec.HelpWithCompletingNssForm = request.HelpWithCompletingNssForm;
+                }
+                if (request.HelpWithShieldingGuidance != null)
+                {
+                    rec.HelpWithShieldingGuidance = request.HelpWithShieldingGuidance;
+                }
+                if (request.HelpWithNoNeedsIdentified != null)
+                {
+                    System.Diagnostics.Debug.WriteLine("\n \n \n HERE");
+                    rec.HelpWithNoNeedsIdentified = request.HelpWithNoNeedsIdentified;
+                }
                 if (request.HelpWithAccessingMedicine != null)
                 {
                     rec.HelpWithAccessingMedicine = request.HelpWithAccessingMedicine;

@@ -76,6 +76,40 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
         }
 
         [Test]
+        public async Task PatchResidentInformationWithHelpNeededFieldUpdatesTheRecord()
+        {
+            var dbEntity = DatabaseContext.HelpRequestEntities.Add(new Fixture().Build<HelpRequestEntity>().
+                With(x => x.Id, 1).
+                With( x => x.HelpWithCompletingNssForm, true).
+                With(x => x.HelpWithShieldingGuidance, true).
+                With(x => x.HelpWithNoNeedsIdentified, true ).
+                With(x => x.HelpWithAccessingSupermarketFood, false).Create());
+            DatabaseContext.SaveChanges();
+            var requestObject = DatabaseContext.HelpRequestEntities.Find(1);
+            requestObject.HelpWithCompletingNssForm = false;
+            requestObject.HelpWithShieldingGuidance = null;
+            requestObject.HelpWithNoNeedsIdentified = false;
+            requestObject.HelpWithAccessingSupermarketFood = true;
+
+            var data = JsonConvert.SerializeObject(requestObject);
+            HttpContent postContent = new StringContent(data, Encoding.UTF8, "application/json");
+            var uri = new Uri($"api/v3/help-requests/{requestObject.Id}", UriKind.Relative);
+            var response = Client.PatchAsync(uri, postContent);
+            postContent.Dispose();
+            var statusCode = response.Result.StatusCode;
+            statusCode.Should().Be(200);
+            var content = response.Result.Content;
+            var stringContent = await content.ReadAsStringAsync().ConfigureAwait(true);
+            var convertedResponse = JsonConvert.DeserializeObject<HelpRequestCreateResponse>(stringContent);
+            var updatedEntity = DatabaseContext.HelpRequestEntities.Find(requestObject.Id);
+            updatedEntity.HelpWithCompletingNssForm.Should().Be(requestObject.HelpWithCompletingNssForm);
+            updatedEntity.HelpWithShieldingGuidance.Should().Be(true);
+            updatedEntity.HelpWithNoNeedsIdentified.Should().Be(requestObject.HelpWithNoNeedsIdentified);
+            updatedEntity.HelpWithAccessingSupermarketFood.Should().Be(requestObject.HelpWithAccessingSupermarketFood);
+
+        }
+
+        [Test]
         public async Task PatchResidentInformationWithNonPatchableFieldDoesNotUpdateTheRecord()
         {
             var dbEntity = DatabaseContext.HelpRequestEntities.Add(new Fixture().Build<HelpRequestEntity>().Create());
