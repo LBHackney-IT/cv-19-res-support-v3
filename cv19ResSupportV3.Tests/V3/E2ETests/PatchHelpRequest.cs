@@ -8,6 +8,7 @@ using cv19ResSupportV3.V3.Boundary.Response;
 using cv19ResSupportV3.V3.Domain;
 using cv19ResSupportV3.V3.Infrastructure;
 using FluentAssertions;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using NUnit.Framework;
 
@@ -82,7 +83,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
                 With(x => x.Id, 1).
                 With( x => x.HelpWithCompletingNssForm, true).
                 With(x => x.HelpWithShieldingGuidance, true).
-                With(x => x.HelpWithNoNeedsIdentified, true ).
+                With(x => x.HelpWithNoNeedsIdentified, true).
                 With(x => x.HelpWithAccessingSupermarketFood, false).Create());
             DatabaseContext.SaveChanges();
             var requestObject = DatabaseContext.HelpRequestEntities.Find(1);
@@ -92,7 +93,8 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
                 HelpWithCompletingNssForm = false,
                 HelpWithShieldingGuidance = false,
                 HelpWithNoNeedsIdentified = null,
-                HelpWithAccessingSupermarketFood = false
+                HelpWithAccessingSupermarketFood = true,
+                Id = requestObject.Id,
             };
 
             var data = JsonConvert.SerializeObject(patchRequestObject);
@@ -104,13 +106,14 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             statusCode.Should().Be(200);
             var content = response.Result.Content;
             var stringContent = await content.ReadAsStringAsync().ConfigureAwait(true);
-            var convertedResponse = JsonConvert.DeserializeObject<HelpRequestCreateResponse>(stringContent);
+            var convertedResponse = JsonConvert.DeserializeObject<HelpRequest>(stringContent);
+            var oldEntity = DatabaseContext.HelpRequestEntities.Find(requestObject.Id);
+            DatabaseContext.Entry(oldEntity).State = EntityState.Detached;
             var updatedEntity = DatabaseContext.HelpRequestEntities.Find(requestObject.Id);
-            updatedEntity.HelpWithCompletingNssForm.Should().Be(true);
-            updatedEntity.HelpWithShieldingGuidance.Should().Be(true);
+            updatedEntity.HelpWithCompletingNssForm.Should().Be(false);
+            updatedEntity.HelpWithShieldingGuidance.Should().Be(false);
             updatedEntity.HelpWithNoNeedsIdentified.Should().Be(true);
-            updatedEntity.HelpWithAccessingSupermarketFood.Should().Be(false);
-
+            updatedEntity.HelpWithAccessingSupermarketFood.Should().Be(true);
         }
 
         [Test]
