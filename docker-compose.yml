@@ -18,7 +18,10 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=mypassword
       - POSTGRES_DB=devdb
-    image: postgres:12
+    image: dev-database
+    build:
+      context: .
+      dockerfile: database/Dockerfile
     ports:
       - 5433:5432
 
@@ -43,4 +46,7 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=mypassword
       - POSTGRES_DB=testdb
-    image: postgres:12
+    image: test-database
+    build:
+      context: .
+      dockerfile: database/Dockerfile
