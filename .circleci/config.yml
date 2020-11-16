@@ -209,10 +209,15 @@ workflows:
          filters:
            branches:
              only: master
+     - migrate-database-production:
+         executor: docker-dotnet
+         steps:
+           - migrate-database:
+               stage: "production"
      - deploy-to-production:
          requires:
            - permit-production-release
-           - assume-role-production
+           - migrate-database-production
          filters:
            branches:
              only: master
