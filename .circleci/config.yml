@@ -90,13 +90,13 @@ commands:
           command: |
             aws ssm get-parameter --name "/platform-apis-jump-box-pem-key" --output text --query Parameter.Value > ./private-key.pem
             chmod 400 ./private-key.pem
-            HOST=$(aws ssm get-parameter --name /cv-19-i-need-help-v3/<<parameters.stage>>/postgres-hostname --query Parameter.Value)
-            PORT=$(aws ssm get-parameter --name /cv-19-i-need-help-v3/<<parameters.stage>>/postgres-port --query Parameter.Value)
-            INSTANCE_NAME=$(aws ssm get-parameter --name /platform-apis-jump-box-instance-name --query Parameter.Value)
-            ssh -4 -i ./private-key.pem -Nf -M -L ${PORT//\"}:${HOST//\"}:${PORT//\"} -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" -o ProxyCommand="aws ssm start-session --target %h --document AWS-StartSSHSession --parameters portNumber=%p --region=eu-west-2" ec2-user@${INSTANCE_NAME//\"}
-            PASSWORD=$(aws ssm get-parameter --name /cv-19-i-need-help-v3/<<parameters.stage>>/postgres-password --query Parameter.Value)
-            USERNAME=$(aws ssm get-parameter --name /cv-19-i-need-help-v3/<<parameters.stage>>/postgres-username --query Parameter.Value)
-            DATABASE=$(aws ssm get-parameter --name /cv-19-i-need-help-v3/<<parameters.stage>>/postgres-database --query Parameter.Value)
+            HOST=$(aws ssm get-parameter --name /cv-19-i-need-help-v3/<<parameters.stage>>/postgres-hostname --query Parameter.Value --output text)
+            PORT=$(aws ssm get-parameter --name /cv-19-i-need-help-v3/<<parameters.stage>>/postgres-port --query Parameter.Value --output text)
+            USERNAME=$(aws ssm get-parameter --name /cv-19-i-need-help-v3/<<parameters.stage>>/postgres-username --query Parameter.Value --output text)
+            PASSWORD=$(aws ssm get-parameter --name /cv-19-i-need-help-v3/<<parameters.stage>>/postgres-password --query Parameter.Value --output text)
+            DATABASE=$(aws ssm get-parameter --name /cv-19-i-need-help-v3/<<parameters.stage>>/postgres-database --query Parameter.Value --output text)
+            INSTANCE_NAME=$(aws ssm get-parameter --name /platform-apis-jump-box-instance-name --query Parameter.Value --output text)
+            ssh -4 -i ./private-key.pem -Nf -M -L ${PORT}:${HOST}:${PORT} -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" -o ProxyCommand="aws ssm start-session --target %h --document AWS-StartSSHSession --parameters portNumber=%p --region=eu-west-2" ec2-user@${INSTANCE_NAME}
             CONN_STR="Host=localhost;Password=${PASSWORD};Port=${PORT};Username=${USERNAME};Database=${DATABASE}"
             cd ./cv19ResSupportV3/
             CONNECTION_STRING=${CONN_STR} ./../dotnet-ef-local/dotnet-ef database update
