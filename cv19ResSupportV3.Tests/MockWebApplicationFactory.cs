@@ -33,7 +33,7 @@ namespace cv19ResSupportV3.Tests
                 var serviceProvider = services.BuildServiceProvider();
                 var dbContext = serviceProvider.GetRequiredService<HelpRequestsContext>();
 
-                dbContext.Database.EnsureCreated();
+                dbContext.Database.Migrate();
             });
         }
     }
