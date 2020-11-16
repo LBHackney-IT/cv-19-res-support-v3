@@ -35,6 +35,8 @@ $ aws ecr get-login --no-include-email
 $ make build && make serve
 ```
 
+See further information in [here](./docs/Development.md).
+
 ### Release process
 
 We use a pull request workflow, where changes are made on a branch and approved by one or more other maintainers before the developer can merge into `master` branch.
