@@ -33,7 +33,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
         {
             var dbEntity = DatabaseContext.HelpRequestEntities.Add(new Fixture().Build<HelpRequestEntity>().Create());
             DatabaseContext.SaveChanges();
-            var expectedResponse = dbEntity.Entity.ToResponse();
+            var expectedResponse = dbEntity.Entity;
             var requestUri = new Uri($"api/v3/help-requests/{dbEntity.Entity.Id}", UriKind.Relative);
             var response = Client.GetAsync(requestUri);
             var statusCode = response.Result.StatusCode;
@@ -92,6 +92,32 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
         }
 
         [Test]
+        public async Task GetMultipleHelpRequestsReturnsTheCorrectInformation()
+        {
+            // arrange
+            var firstName = "to-search-for";
+
+            var helpRequests = _fixture.CreateMany<HelpRequestEntity>().ToList();
+            helpRequests.ForEach(r => r.FirstName = firstName);
+
+            DatabaseContext.HelpRequestEntities.AddRange(helpRequests);
+            DatabaseContext.SaveChanges();
+
+            // act
+            var requestUri = new Uri(
+                $"api/v3/help-requests?firstname={firstName}", UriKind.Relative);
+            var response = Client.GetAsync(requestUri);
+
+            // assert
+            var responseBody = response.Result.Content;
+            var stringResponse = await responseBody.ReadAsStringAsync().ConfigureAwait(true);
+            var expectedResponse = helpRequests.First();
+            var deserializedBody = JsonConvert.DeserializeObject<List<HelpRequestGetResponse>>(stringResponse);
+
+            deserializedBody.Should().BeEquivalentTo(helpRequests);
+        }
+
+        [Test]
         public async Task GetHelpRequestsWithValidPostCodeReturnsRecord()
         {
             var helpRequests = _fixture.CreateMany<HelpRequestEntity>().ToList();
@@ -104,7 +130,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             statusCode.Should().Be(200);
             var responseBody = response.Result.Content;
             var stringResponse = await responseBody.ReadAsStringAsync().ConfigureAwait(true);
-            var expectedResponse = helpRequests.First().ToResponse();
+            var expectedResponse = helpRequests.First();
             var deserializedBody = JsonConvert.DeserializeObject<List<HelpRequestGetResponse>>(stringResponse);
             deserializedBody.Count.Should().Be(1);
             deserializedBody.Should().BeEquivalentTo(expectedResponse);
