@@ -56,6 +56,18 @@ namespace cv19ResSupportV3.V3.Infrastructure
         [Column("help_with_accessing_food")]
         public bool? HelpWithAccessingFood { get; set; }
 
+        [Column("help_with_accessing_supermarket_food")]
+        public bool? HelpWithAccessingSupermarketFood { get; set; }
+
+        [Column("help_with_completing_nss_form")]
+        public bool? HelpWithCompletingNssForm { get; set; }
+
+        [Column("help_with_shielding_guidance")]
+        public bool? HelpWithShieldingGuidance { get; set; }
+
+        [Column("help_with_no_needs_identified")]
+        public bool? HelpWithNoNeedsIdentified { get; set; }
+
         [Column("help_with_accessing_medicine")]
         public bool? HelpWithAccessingMedicine { get; set; }
 

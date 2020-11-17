@@ -37,8 +37,9 @@ namespace cv19ResSupportV3.Tests
             _factory = new MockWebApplicationFactory<TStartup>(_connection);
             Client = _factory.CreateClient();
             DatabaseContext = new HelpRequestsContext(_builder.Options);
-            DatabaseContext.Database.EnsureCreated();
+            DatabaseContext.Database.Migrate();
             _transaction = DatabaseContext.Database.BeginTransaction();
+            DatabaseContext.HelpRequestEntities.RemoveRange(DatabaseContext.HelpRequestEntities);
         }
 
         [TearDown]

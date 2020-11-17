@@ -9,15 +9,21 @@ services:
     ports:
       - 3000:3000
     environment:
-      - CONNECTION_STRING=Host=dev-database;Port=5432;Database=entitycorex;Username=postgres;Password=mypassword
+      - CONNECTION_STRING=Host=dev-database;Port=5432;Database=devdb;Username=postgres;Password=mypassword
+      - ASPNETCORE_ENVIRONMENT=Development
     links:
       - dev-database
   dev-database:
-    env_file:
-      - database.env
-    image: postgres:12
-    volumes:
-      - ./database:/docker-entrypoint-initdb.d
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=mypassword
+      - POSTGRES_DB=devdb
+    image: dev-database
+    build:
+      context: .
+      dockerfile: database/Dockerfile
+    ports:
+      - 5433:5432
 
   cv-19-res-support-api-v3-test:
     image: cv-19-res-support-api-v3-test
@@ -30,14 +36,17 @@ services:
       - DB_USERNAME=postgres
       - DB_PASSWORD=mypassword
       - DB_DATABASE=testdb
+      - ASPNETCORE_ENVIRONMENT=Test
     links:
       - test-database
   test-database:
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=mypassword
+      - POSTGRES_DB=testdb
     image: test-database
     build:
       context: .
       dockerfile: database/Dockerfile
-    ports:
-      - 5432:5432
-    env_file:
-      - database.env

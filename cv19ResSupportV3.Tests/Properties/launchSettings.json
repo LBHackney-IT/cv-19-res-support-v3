@@ -18,7 +18,7 @@
         "DefaultConnection": "host=test-database;port=5432;username=postgres;password=mypassword;database=testdb"
       },
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_ENVIRONMENT": "Test",
         "DB_HOST": "test-database",
         "DB_PORT": "5432",
         "DB_USERNAME": "postgres",
