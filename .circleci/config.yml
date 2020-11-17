@@ -197,11 +197,6 @@ workflows:
          filters:
            branches:
              only: master
-     - assume-role-production:
-         context: api-assume-role-production-context
-         filters:
-            branches:
-              only: master
      - permit-production-release:
          type: approval
          requires:
@@ -209,6 +204,13 @@ workflows:
          filters:
            branches:
              only: master
+     - assume-role-production:
+         context: api-assume-role-production-context
+         filters:
+           branches:
+             only: master
+         requires:
+           - permit-production-release
      - migrate-database-production:
          requires:
            - assume-role-production
