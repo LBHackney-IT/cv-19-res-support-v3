@@ -161,7 +161,6 @@ namespace cv19ResSupportV3.V3.Gateways
                 }
                 if (request.HelpWithNoNeedsIdentified != null)
                 {
-                    System.Diagnostics.Debug.WriteLine("\n \n \n HERE");
                     rec.HelpWithNoNeedsIdentified = request.HelpWithNoNeedsIdentified;
                 }
                 if (request.HelpWithAccessingMedicine != null)
