@@ -11,7 +11,7 @@ namespace cv19ResSupportV3.V3.Infrastructure
         }
         public DbSet<HelpRequestEntity> HelpRequestEntities { get; set; }
         public DbSet<LookupEntity> Lookups { get; set; }
-        public DbSet<HelpRequestCallsEntity> HelpRequestCallsEntities { get; set; }
+        public DbSet<HelpRequestCallEntity> HelpRequestCallEntities { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -204,7 +204,7 @@ namespace cv19ResSupportV3.V3.Infrastructure
                             .HasColumnType("character varying");;
                     }
                 );
-                        modelBuilder.Entity<HelpRequestCallsEntity>(entity =>
+                        modelBuilder.Entity<HelpRequestCallEntity>(entity =>
                             {
                                 entity.ToTable("help_request_calls");
                                 entity.HasKey(call => new {call.Id});

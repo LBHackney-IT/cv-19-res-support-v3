@@ -18,8 +18,7 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
         [SetUp]
         public void Setup()
         {
-//            _classUnderTest = new HelpRequestCallGateway(DatabaseContext);
-            _classUnderTest = new HelpRequestCallGateway();
+            _classUnderTest = new HelpRequestCallGateway(DatabaseContext);
         }
 
         [Test]

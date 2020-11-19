@@ -139,10 +139,10 @@ namespace cv19ResSupportV3.V3.Factories
             return new HelpRequestCallEntity()
             {
                 Id = helpRequestCall.Id,
-                helpRequestId = helpRequestCall.helpRequestId,
-                callType = helpRequestCall.callType,
-                callOutcome = helpRequestCall.callOutcome,
-                callDateTime = helpRequestCall.callDateTime
+                HelpRequestId = helpRequestCall.HelpRequestId,
+                CallType = helpRequestCall.CallType,
+                CallOutcome = helpRequestCall.CallOutcome,
+                CallDateTime = helpRequestCall.CallDateTime
             };
         }
     }

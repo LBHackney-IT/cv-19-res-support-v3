@@ -14,20 +14,20 @@ namespace cv19ResSupportV3.V3.Gateways
     public class HelpRequestCallGateway : IHelpRequestCallGateway
     {
 
-//        private readonly HelpRequestsCallContext _helpRequestsCallContext;
+        private readonly HelpRequestsContext _helpRequestsContext;
 
-//        public HelpRequestCallGateway(HelpRequestCallContext helpRequestCallContext)
-//        {
-//            _helpRequestContext = helpRequestCallContext;
-//        }
+        public HelpRequestCallGateway(HelpRequestsContext helpRequestsContext)
+        {
+            _helpRequestsContext = helpRequestsContext;
+        }
 
         public int CreateHelpRequestCall(HelpRequestCallEntity request)
         {
             if (request == null) return 0;
             try
             {
-//                _helpRequestCallContext.HelpRequestCallEntities.Add(request);
-//                _helpRequestCallContext.SaveChanges();
+                _helpRequestsContext.HelpRequestCallEntities.Add(request);
+                _helpRequestsContext.SaveChanges();
                 return request.Id;
             }
             catch (Exception e)

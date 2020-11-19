@@ -13,7 +13,7 @@ using Newtonsoft.Json;
 namespace cv19ResSupportV3.V3.Controllers
 {
     [ApiController]
-    [Route("api/v3/help-request-call")]
+    [Route("api/v3/help-requests")]
     [Produces("application/json")]
     [ApiVersion("3.0")]
     public class HelpRequestCallController : BaseController
@@ -30,12 +30,14 @@ namespace cv19ResSupportV3.V3.Controllers
         /// <response code="201">...</response>
         [ProducesResponseType(typeof(HelpRequestCreateResponse), StatusCodes.Status201Created)]
         [HttpPost]
-        public IActionResult CreateHelpRequestCall(HelpRequestCall request)
+        [Route("{id}/calls")]
+        public IActionResult CreateHelpRequestCall([FromRoute] int id, [FromBody] HelpRequestCall request)
         {
             try
             {
+                request.HelpRequestId = id;
                 var result = _createHelpRequestCallUseCase.Execute(request);
-                return Created(new Uri($"api/v3/help-request-call/{result.Id}", UriKind.Relative), result);
+                return Created(new Uri($"api/v3/help-requests/{id}/calls/{result.Id}", UriKind.Relative), result);
             }
             catch (Exception e)
             {

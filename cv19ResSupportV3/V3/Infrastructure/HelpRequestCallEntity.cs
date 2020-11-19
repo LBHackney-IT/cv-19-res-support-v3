@@ -7,14 +7,24 @@ namespace cv19ResSupportV3.V3.Infrastructure
     [Table("help_request_calls")]
     public class HelpRequestCallEntity
     {
-        [Column("id")] [Key] public int Id { get; set; }
+        [Column("id")]
+        [Key]
+        public int Id { get; set; }
 
-        [Column("help_request_id")] public bool? helpRequestId { get; set; }
+        [Column("help_request_id")]
+        [ForeignKey("HelpRequestEntity")]
+        public int HelpRequestId { get; set; }
 
-        [Column("call_type")] public bool? callType { get; set; }
+        [Column("call_type")]
+        public string CallType { get; set; }
 
-        [Column("call_outcome")] public string callOutcome { get; set; }
+        [Column("call_outcome")]
+        public string CallOutcome { get; set; }
 
-        [Column("call_date_time")] public string callDateTime { get; set; }
+        [Column("call_date_time")]
+        public DateTime CallDateTime { get; set; }
+
+        public HelpRequestEntity HelpRequestEntity { get; set; }
+
     }
 }
