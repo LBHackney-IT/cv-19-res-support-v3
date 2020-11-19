@@ -11,6 +11,8 @@ namespace cv19ResSupportV3.V3.Infrastructure
         }
         public DbSet<HelpRequestEntity> HelpRequestEntities { get; set; }
         public DbSet<LookupEntity> Lookups { get; set; }
+        public DbSet<HelpRequestCallsEntity> HelpRequestCallsEntities { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -202,6 +204,22 @@ namespace cv19ResSupportV3.V3.Infrastructure
                             .HasColumnType("character varying");;
                     }
                 );
+                        modelBuilder.Entity<HelpRequestCallsEntity>(entity =>
+                            {
+                                entity.ToTable("help_request_calls");
+                                entity.HasKey(call => new {call.Id});
+                                entity.Property(e => e.Id).HasColumnName("id");
+                                entity.Property(e => e.HelpRequestId).HasColumnName("help_request_id");
+                                entity.Property(e => e.CallType)
+                                    .HasColumnName("call_type")
+                                    .HasColumnType("character varying");
+                                entity.Property(e => e.CallOutcome)
+                                    .HasColumnName("call_outcome")
+                                    .HasColumnType("character varying");
+                                entity.Property(e => e.CallDateTime)
+                                    .HasColumnName("call_date_time");
+                            }
+                        );
         }
     }
 }
