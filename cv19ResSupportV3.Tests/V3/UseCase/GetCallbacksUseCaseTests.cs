@@ -30,7 +30,7 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
         [Test]
         public void ReturnsPopulatedHelpRequestListIfParamsProvided()
         {
-            var reqParams = new CallbackRequestParams() {Master = "true"};
+            var reqParams = new CallbackRequestParams() { Master = "true" };
             var stubbedRequests = _fixture.CreateMany<HelpRequestEntity>();
             foreach (var req in stubbedRequests)
             {

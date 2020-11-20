@@ -30,7 +30,7 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
         [Test]
         public void ReturnsPopulatedLookupsParamsProvided()
         {
-            var reqParams = new LookupQueryParams() {LookupGroup = "help_needed"};
+            var reqParams = new LookupQueryParams() { LookupGroup = "help_needed" };
             var stubbedLookups = _fixture.CreateMany<LookupEntity>();
             foreach (var req in stubbedLookups)
             {

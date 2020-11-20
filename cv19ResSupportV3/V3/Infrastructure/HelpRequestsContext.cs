@@ -17,14 +17,14 @@ namespace cv19ResSupportV3.V3.Infrastructure
             modelBuilder.Entity<HelpRequestEntity>(entity =>
                     {
                         entity.ToTable("i_need_help_resident_support_v3");
-                        entity.HasKey(helpRequest => new {helpRequest.Id});
+                        entity.HasKey(helpRequest => new { helpRequest.Id });
                         entity.Property(e => e.Id).HasColumnName("id");
                         entity.Property(e => e.IsOnBehalf)
                             .HasColumnName("is_on_behalf")
                             .HasColumnType("bool");
                         entity.Property(e => e.ConsentToCompleteOnBehalf)
                             .HasColumnName("consent_to_complete_on_behalf")
-                            .HasColumnType("bool");;
+                            .HasColumnType("bool"); ;
                         entity.Property(e => e.OnBehalfFirstName)
                             .HasColumnName("on_behalf_first_name")
                             .HasColumnType("character varying");
@@ -189,19 +189,19 @@ namespace cv19ResSupportV3.V3.Infrastructure
                     }
                 );
 
-                        modelBuilder.Entity<LookupEntity>(entity =>
-                    {
-                        entity.ToTable("inh_lookups");
-                        entity.HasKey(lookup => new {lookup.Id});
-                        entity.Property(e => e.Id).HasColumnName("id");
-                        entity.Property(e => e.LookupGroup)
-                            .HasColumnName("lookup_group")
-                            .HasColumnType("character varying");
-                        entity.Property(e => e.Lookup)
-                            .HasColumnName("lookup")
-                            .HasColumnType("character varying");;
-                    }
-                );
+            modelBuilder.Entity<LookupEntity>(entity =>
+        {
+            entity.ToTable("inh_lookups");
+            entity.HasKey(lookup => new { lookup.Id });
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.LookupGroup)
+                .HasColumnName("lookup_group")
+                .HasColumnType("character varying");
+            entity.Property(e => e.Lookup)
+                .HasColumnName("lookup")
+                .HasColumnType("character varying"); ;
+        }
+    );
         }
     }
 }
