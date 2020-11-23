@@ -48,7 +48,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             createdEntity.HelpRequestId.Should().Be(1);
             createdEntity.CallType.Should().Be(requestObject.CallType);
             createdEntity.CallOutcome.Should().Be(requestObject.CallOutcome);
-            createdEntity.CallDateTime. Should().BeCloseTo(requestObject.CallDateTime, 2000);
+            createdEntity.CallDateTime.Should().BeCloseTo(requestObject.CallDateTime, 2000);
         }
 
         [Test]

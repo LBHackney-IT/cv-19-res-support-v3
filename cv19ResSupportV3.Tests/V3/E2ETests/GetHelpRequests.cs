@@ -118,7 +118,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             {
                 options.Excluding(ex => ex.HelpRequestCalls);
                 return options;
-            } );
+            });
         }
 
         [Test]

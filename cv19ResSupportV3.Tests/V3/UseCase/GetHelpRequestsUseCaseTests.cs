@@ -27,7 +27,7 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
         [Test]
         public void ReturnsPopulatedHelpRequestListIfParamsProvided()
         {
-            var reqParams = new RequestQueryParams {Postcode = "test"};
+            var reqParams = new RequestQueryParams { Postcode = "test" };
             var stubbedRequests = EntityHelpers.createHelpRequestEntities();
             _mockGateway.Setup(x => x.SearchHelpRequests(reqParams)).Returns(stubbedRequests);
             var response = _classUnderTest.Execute(reqParams);

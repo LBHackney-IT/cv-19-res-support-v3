@@ -25,7 +25,7 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
         [Test]
         public void ReturnsPopulatedHelpRequestListIfParamsProvided()
         {
-            var reqParams = new CallbackRequestParams() {Master = "true"};
+            var reqParams = new CallbackRequestParams() { Master = "true" };
             var stubbedRequests = EntityHelpers.createHelpRequestEntities();
             foreach (var req in stubbedRequests)
             {
