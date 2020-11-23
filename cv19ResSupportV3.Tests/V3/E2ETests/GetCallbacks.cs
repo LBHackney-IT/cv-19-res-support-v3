@@ -2,14 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Amazon.Lambda.APIGatewayEvents;
-using AutoFixture;
 using cv19ResSupportV3.Tests.V3.Helper;
+using cv19ResSupportV3.Tests.V3.Helpers;
 using cv19ResSupportV3.V3.Boundary.Response;
-using cv19ResSupportV3.V3.Factories;
-using cv19ResSupportV3.V3.Infrastructure;
 using FluentAssertions;
-using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using NUnit.Framework;
 
@@ -18,8 +14,6 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
     [TestFixture]
     public class GetCallbacks : IntegrationTests<Startup>
     {
-        private Fixture _fixture = new Fixture();
-
         [SetUp]
         public void SetUp()
         {
@@ -32,7 +26,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
         [Test]
         public async Task GetCallbacksReturnsCallbacks()
         {
-            var helpRequests = _fixture.CreateMany<HelpRequestEntity>().ToList();
+            var helpRequests = EntityHelpers.createHelpRequestEntities();
             foreach (var request in helpRequests)
             {
                 request.CallbackRequired = true;
@@ -55,7 +49,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
         [Test]
         public async Task GetCallbacksWithNoCallbacksRecordedReturnsNothing()
         {
-            var helpRequests = _fixture.CreateMany<HelpRequestEntity>().ToList();
+            var helpRequests = EntityHelpers.createHelpRequestEntities();
             foreach (var request in helpRequests)
             {
                 request.InitialCallbackCompleted = true;
@@ -78,7 +72,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
         [Test]
         public async Task GetCallbacksMasterRecordsReturnsOnlyMasterRecords()
         {
-            var helpRequests = _fixture.CreateMany<HelpRequestEntity>().ToList();
+            var helpRequests = EntityHelpers.createHelpRequestEntities();
             int count = 0;
             foreach (var request in helpRequests)
             {
