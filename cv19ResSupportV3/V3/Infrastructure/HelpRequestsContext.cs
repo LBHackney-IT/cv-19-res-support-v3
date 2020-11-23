@@ -190,35 +190,35 @@ namespace cv19ResSupportV3.V3.Infrastructure
                             .HasColumnType("character varying");
                     }
                 );
-              modelBuilder.Entity<LookupEntity>(entity =>
-                    {
-                        entity.ToTable("inh_lookups");
-                        entity.HasKey(lookup => new {lookup.Id});
-                        entity.Property(e => e.Id).HasColumnName("id");
-                        entity.Property(e => e.LookupGroup)
-                            .HasColumnName("lookup_group")
-                            .HasColumnType("character varying");
-                        entity.Property(e => e.Lookup)
-                            .HasColumnName("lookup")
-                            .HasColumnType("character varying");;
-                    }
-                );
-                        modelBuilder.Entity<HelpRequestCallsEntity>(entity =>
-                            {
-                                entity.ToTable("help_request_calls");
-                                entity.HasKey(call => new {call.Id});
-                                entity.Property(e => e.Id).HasColumnName("id");
-                                entity.Property(e => e.HelpRequestId).HasColumnName("help_request_id");
-                                entity.Property(e => e.CallType)
-                                    .HasColumnName("call_type")
-                                    .HasColumnType("character varying");
-                                entity.Property(e => e.CallOutcome)
-                                    .HasColumnName("call_outcome")
-                                    .HasColumnType("character varying");
-                                entity.Property(e => e.CallDateTime)
-                                    .HasColumnName("call_date_time");
-                            }
-                        );
+            modelBuilder.Entity<LookupEntity>(entity =>
+                  {
+                      entity.ToTable("inh_lookups");
+                      entity.HasKey(lookup => new { lookup.Id });
+                      entity.Property(e => e.Id).HasColumnName("id");
+                      entity.Property(e => e.LookupGroup)
+                          .HasColumnName("lookup_group")
+                          .HasColumnType("character varying");
+                      entity.Property(e => e.Lookup)
+                          .HasColumnName("lookup")
+                          .HasColumnType("character varying"); ;
+                  }
+              );
+            modelBuilder.Entity<HelpRequestCallsEntity>(entity =>
+                {
+                    entity.ToTable("help_request_calls");
+                    entity.HasKey(call => new { call.Id });
+                    entity.Property(e => e.Id).HasColumnName("id");
+                    entity.Property(e => e.HelpRequestId).HasColumnName("help_request_id");
+                    entity.Property(e => e.CallType)
+                        .HasColumnName("call_type")
+                        .HasColumnType("character varying");
+                    entity.Property(e => e.CallOutcome)
+                        .HasColumnName("call_outcome")
+                        .HasColumnType("character varying");
+                    entity.Property(e => e.CallDateTime)
+                        .HasColumnName("call_date_time");
+                }
+            );
         }
     }
 }

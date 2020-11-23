@@ -81,7 +81,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
         {
             var dbEntity = DatabaseContext.HelpRequestEntities.Add(new Fixture().Build<HelpRequestEntity>().
                 With(x => x.Id, 1).
-                With( x => x.HelpWithCompletingNssForm, true).
+                With(x => x.HelpWithCompletingNssForm, true).
                 With(x => x.HelpWithShieldingGuidance, true).
                 With(x => x.HelpWithNoNeedsIdentified, true).
                 With(x => x.HelpWithAccessingSupermarketFood, false).Create());
