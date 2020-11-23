@@ -2,14 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Amazon.Lambda.APIGatewayEvents;
-using AutoFixture;
 using cv19ResSupportV3.Tests.V3.Helper;
+using cv19ResSupportV3.Tests.V3.Helpers;
 using cv19ResSupportV3.V3.Boundary.Response;
 using cv19ResSupportV3.V3.Factories;
 using cv19ResSupportV3.V3.Infrastructure;
 using FluentAssertions;
-using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using NUnit.Framework;
 
@@ -18,8 +16,6 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
     [TestFixture]
     public class GetHelpRequests : IntegrationTests<Startup>
     {
-        private Fixture _fixture = new Fixture();
-
         [SetUp]
         public void SetUp()
         {
@@ -31,7 +27,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
         [Test]
         public async Task GetHelpRequestsWithValidIdsReturnsTheCorrectInformation()
         {
-            var dbEntity = DatabaseContext.HelpRequestEntities.Add(new Fixture().Build<HelpRequestEntity>().Create());
+            var dbEntity = DatabaseContext.HelpRequestEntities.Add(EntityHelpers.createHelpRequestEntity());
             DatabaseContext.SaveChanges();
             var expectedResponse = dbEntity.Entity;
             var requestUri = new Uri($"api/v3/help-requests/{dbEntity.Entity.Id}", UriKind.Relative);
@@ -41,13 +37,17 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             var content = response.Result.Content;
             var stringContent = await content.ReadAsStringAsync().ConfigureAwait(true);
             var convertedResponse = JsonConvert.DeserializeObject<HelpRequestGetResponse>(stringContent);
-            convertedResponse.Should().BeEquivalentTo(expectedResponse);
+            convertedResponse.Should().BeEquivalentTo(expectedResponse, options =>
+            {
+                options.Excluding(ex => ex.HelpRequestCalls);
+                return options;
+            });
         }
 
         [Test]
         public async Task GetHelpRequestsWithoutIdsReturnsNothing()
         {
-            var dbEntity = DatabaseContext.HelpRequestEntities.Add(new Fixture().Build<HelpRequestEntity>().Create());
+            var dbEntity = DatabaseContext.HelpRequestEntities.Add(EntityHelpers.createHelpRequestEntity());
             DatabaseContext.SaveChanges();
             var expectedResponse = "[]";
             var requestUri = new Uri($"api/v3/help-requests", UriKind.Relative);
@@ -62,7 +62,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
         [Test]
         public async Task GetHelpRequestsWithAnValidFirstNameAndOtherParamsValidReturnsNothing()
         {
-            var helpRequests = _fixture.CreateMany<HelpRequestEntity>().ToList();
+            var helpRequests = EntityHelpers.createHelpRequestEntities();
             helpRequests.First().PostCode = "to-search-for";
             helpRequests.First().FirstName = "to-search-for";
             helpRequests.First().LastName = "to-search-for";
@@ -83,7 +83,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
         [Test]
         public void GetHelpRequestsWithInvalidIdsReturnsNotFound()
         {
-            var dbEntity = DatabaseContext.HelpRequestEntities.Add(new Fixture().Build<HelpRequestEntity>().Create());
+            var dbEntity = DatabaseContext.HelpRequestEntities.Add(EntityHelpers.createHelpRequestEntity());
             DatabaseContext.SaveChanges();
             var requestUri = new Uri($"api/v3/help-requests/{dbEntity.Entity.Id + 1}", UriKind.Relative);
             var response = Client.GetAsync(requestUri);
@@ -97,7 +97,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             // arrange
             var firstName = "to-search-for";
 
-            var helpRequests = _fixture.CreateMany<HelpRequestEntity>().ToList();
+            var helpRequests = EntityHelpers.createHelpRequestEntities();
             helpRequests.ForEach(r => r.FirstName = firstName);
 
             DatabaseContext.HelpRequestEntities.AddRange(helpRequests);
@@ -114,13 +114,17 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             var expectedResponse = helpRequests.First();
             var deserializedBody = JsonConvert.DeserializeObject<List<HelpRequestGetResponse>>(stringResponse);
 
-            deserializedBody.Should().BeEquivalentTo(helpRequests);
+            deserializedBody.Should().BeEquivalentTo(helpRequests, options =>
+            {
+                options.Excluding(ex => ex.HelpRequestCalls);
+                return options;
+            } );
         }
 
         [Test]
         public async Task GetHelpRequestsWithValidPostCodeReturnsRecord()
         {
-            var helpRequests = _fixture.CreateMany<HelpRequestEntity>().ToList();
+            var helpRequests = EntityHelpers.createHelpRequestEntities();
             helpRequests.First().PostCode = "to-search-for";
             DatabaseContext.HelpRequestEntities.AddRange(helpRequests);
             DatabaseContext.SaveChanges();
@@ -139,7 +143,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
         [Test]
         public async Task GetHelpRequestsWithValidFirstNameReturnsRecord()
         {
-            var helpRequests = _fixture.CreateMany<HelpRequestEntity>().ToList();
+            var helpRequests = EntityHelpers.createHelpRequestEntities();
             helpRequests.First().FirstName = "to-search-for";
             DatabaseContext.HelpRequestEntities.AddRange(helpRequests);
             DatabaseContext.SaveChanges();
@@ -158,7 +162,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
         [Test]
         public async Task GetHelpRequestsWithValidLastNameReturnsRecord()
         {
-            var helpRequests = _fixture.CreateMany<HelpRequestEntity>().ToList();
+            var helpRequests = EntityHelpers.createHelpRequestEntities();
             helpRequests.First().LastName = "to-search-for";
             DatabaseContext.HelpRequestEntities.AddRange(helpRequests);
             DatabaseContext.SaveChanges();
@@ -177,7 +181,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
         [Test]
         public async Task GetHelpRequestsWithValidPostCodeFirstNameAndLastNameReturnsRecord()
         {
-            var helpRequests = _fixture.CreateMany<HelpRequestEntity>().ToList();
+            var helpRequests = EntityHelpers.createHelpRequestEntities();
             helpRequests.First().PostCode = "to-search-for";
             helpRequests.First().FirstName = "to-search-for";
             helpRequests.First().LastName = "to-search-for";
@@ -198,7 +202,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
         [Test]
         public async Task GetHelpRequestsWithValidPostCodePartialReturnsRecord()
         {
-            var helpRequests = _fixture.CreateMany<HelpRequestEntity>().ToList();
+            var helpRequests = EntityHelpers.createHelpRequestEntities();
             helpRequests.First().PostCode = "to-search-for";
             DatabaseContext.HelpRequestEntities.AddRange(helpRequests);
             DatabaseContext.SaveChanges();

@@ -13,27 +13,37 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
     [TestFixture]
     public class CreateHelpRequestCallUseCaseTests
     {
-        private Mock<IHelpRequestCallGateway> _mockGateway;
+        private Mock<IHelpRequestCallGateway> _mockHelpRequestCallGateway;
         private CreateHelpRequestCallUseCase _classUnderTest;
 
         [SetUp]
         public void SetUp()
         {
-            _mockGateway = new Mock<IHelpRequestCallGateway>();
-            _classUnderTest = new CreateHelpRequestCallUseCase(_mockGateway.Object);
+            _mockHelpRequestCallGateway = new Mock<IHelpRequestCallGateway>();
+            _classUnderTest = new CreateHelpRequestCallUseCase(_mockHelpRequestCallGateway.Object);
         }
 
         [Test]
-        public void ExecuteSavesRequestToDatabase()
+        public void ExecuteWithValidIdSavesRequestToDatabase()
         {
+            int id = 1;
             var expectedResponse = new HelpRequestCallCreateResponse
             {
-                Id = 1
+                Id = id
             };
-            _mockGateway.Setup(s => s.CreateHelpRequestCall(It.IsAny<HelpRequestCallEntity>())).Returns(1);
+            _mockHelpRequestCallGateway.Setup(s => s.CreateHelpRequestCall(id,It.IsAny<HelpRequestCallEntity>())).Returns(id);
             var dataToSave = new Fixture().Build<HelpRequestCall>().Create();
-            var response = _classUnderTest.Execute(dataToSave);
+            var response = _classUnderTest.Execute(id, dataToSave);
             response.Should().BeEquivalentTo(expectedResponse);
+        }
+
+        [Test]
+        public void ExecuteWithInvalidIdReturnsNull()
+        {
+            int id = 1;
+            var dataToSave = new Fixture().Build<HelpRequestCall>().Create();
+            var response = _classUnderTest.Execute(id, dataToSave);
+            response.Id.Should().Be(0);
         }
     }
 }

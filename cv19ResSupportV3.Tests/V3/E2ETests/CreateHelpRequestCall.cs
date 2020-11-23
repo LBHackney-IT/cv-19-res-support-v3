@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using AutoFixture;
+using cv19ResSupportV3.Tests.V3.Helpers;
 using cv19ResSupportV3.V3.Boundary.Response;
 using cv19ResSupportV3.V3.Domain;
 using cv19ResSupportV3.V3.Infrastructure;
@@ -26,6 +27,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
         public async Task CreateHelpRequestCallReturnsTheCorrectInformation()
         {
             var helpRequestEntity = new Fixture().Build<HelpRequestEntity>()
+                .Without(h => h.HelpRequestCalls)
                 .With(x => x.Id, 1).Create();
             DatabaseContext.HelpRequestEntities.Add(helpRequestEntity);
             DatabaseContext.SaveChanges();
@@ -41,12 +43,26 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             Console.WriteLine("123456");
             Console.WriteLine(content);
             var stringContent = await content.ReadAsStringAsync().ConfigureAwait(true);
-            var convertedResponse = JsonConvert.DeserializeObject<HelpRequestCallCreateResponse>(stringContent);
+            // var convertedResponse = JsonConvert.DeserializeObject<HelpRequestCallCreateResponse>(stringContent);
             var createdEntity = DatabaseContext.HelpRequestCallEntities.Find(requestObject.Id);
             createdEntity.HelpRequestId.Should().Be(1);
             createdEntity.CallType.Should().Be(requestObject.CallType);
             createdEntity.CallOutcome.Should().Be(requestObject.CallOutcome);
             createdEntity.CallDateTime. Should().BeCloseTo(requestObject.CallDateTime, 2000);
         }
+
+        [Test]
+        public void AttemptToCreateCallOnNonExistentHelpRequestReturnsNotFound()
+        {
+            var requestObject = EntityHelpers.createHelpRequestEntity();
+            var data = JsonConvert.SerializeObject(requestObject);
+            HttpContent postContent = new StringContent(data, Encoding.UTF8, "application/json");
+            var uri = new Uri($"api/v3/help-requests/1/calls", UriKind.Relative);
+            var response = Client.PostAsync(uri, postContent);
+            postContent.Dispose();
+            var statusCode = response.Result.StatusCode;
+            statusCode.Should().Be(404);
+        }
+
     }
 }
