@@ -66,7 +66,7 @@ namespace cv19ResSupportV3.V3.Controllers
                 var result = _updateHelpRequestUseCase.Execute(request);
                 return Ok(result);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return BadRequest($"Record not updated. {e}");
             }
@@ -104,7 +104,7 @@ namespace cv19ResSupportV3.V3.Controllers
         /// <response code="400">There was an issue updating the record.</response>
         [HttpPatch]
         [Route("{id}")]
-        public IActionResult PatchHelpRequest([FromRoute]int id, [FromBody] HelpRequest request)
+        public IActionResult PatchHelpRequest([FromRoute] int id, [FromBody] HelpRequest request)
         {
             try
             {
