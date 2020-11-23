@@ -21,7 +21,7 @@ namespace cv19ResSupportV3.V3.Infrastructure.Migrations
                 .HasAnnotation("ProductVersion", "3.1.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            modelBuilder.Entity("cv19ResSupportV3.V3.Infrastructure.HelpRequestCallsEntity", b =>
+            modelBuilder.Entity("cv19ResSupportV3.V3.Infrastructure.HelpRequestCallEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -310,10 +310,10 @@ namespace cv19ResSupportV3.V3.Infrastructure.Migrations
                     b.ToTable("inh_lookups");
                 });
 
-            modelBuilder.Entity("cv19ResSupportV3.V3.Infrastructure.HelpRequestCallsEntity", b =>
+            modelBuilder.Entity("cv19ResSupportV3.V3.Infrastructure.HelpRequestCallEntity", b =>
                 {
                     b.HasOne("cv19ResSupportV3.V3.Infrastructure.HelpRequestEntity", "HelpRequestEntity")
-                        .WithMany("HelpRequestCallsEntities")
+                        .WithMany("HelpRequestCallEntities")
                         .HasForeignKey("HelpRequestId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

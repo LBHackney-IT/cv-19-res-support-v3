@@ -1,5 +1,6 @@
 using cv19ResSupportV3.V3.Infrastructure;
 using HelpRequest = cv19ResSupportV3.V3.Domain.HelpRequest;
+using HelpRequestCall = cv19ResSupportV3.V3.Domain.HelpRequestCall;
 
 namespace cv19ResSupportV3.V3.Factories
 {
@@ -130,6 +131,18 @@ namespace cv19ResSupportV3.V3.Factories
                 CaseNotes = helpRequest.CaseNotes,
                 AdviceNotes = helpRequest.AdviceNotes,
                 HelpNeeded = helpRequest.HelpNeeded
+            };
+        }
+
+        public static HelpRequestCallEntity ToEntity(this HelpRequestCall helpRequestCall)
+        {
+            return new HelpRequestCallEntity()
+            {
+                Id = helpRequestCall.Id,
+                HelpRequestId = helpRequestCall.HelpRequestId,
+                CallType = helpRequestCall.CallType,
+                CallOutcome = helpRequestCall.CallOutcome,
+                CallDateTime = helpRequestCall.CallDateTime
             };
         }
     }

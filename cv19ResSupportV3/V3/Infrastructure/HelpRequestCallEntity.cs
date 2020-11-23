@@ -4,14 +4,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace cv19ResSupportV3.V3.Infrastructure
 {
-
     [Table("help_request_calls")]
-    public class HelpRequestCallsEntity
+    public class HelpRequestCallEntity
     {
         [Column("id")]
         [Key]
         public int Id { get; set; }
-
 
         [Column("help_request_id")]
         [ForeignKey("HelpRequestEntity")]
@@ -24,8 +22,9 @@ namespace cv19ResSupportV3.V3.Infrastructure
         public string CallOutcome { get; set; }
 
         [Column("call_date_time")]
-        public DateTime? CallDateTime { get; set; }
+        public DateTime CallDateTime { get; set; }
 
         public HelpRequestEntity HelpRequestEntity { get; set; }
+
     }
 }

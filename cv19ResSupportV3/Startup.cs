@@ -126,6 +126,7 @@ namespace cv19ResSupportV3
         private static void RegisterGateways(IServiceCollection services)
         {
             services.AddScoped<IHelpRequestGateway, HelpRequestGateway>();
+            services.AddScoped<IHelpRequestCallGateway, HelpRequestCallGateway>();
         }
 
         private static void RegisterUseCases(IServiceCollection services)
@@ -137,6 +138,8 @@ namespace cv19ResSupportV3
             services.AddScoped<IGetHelpRequestUseCase, GetHelpRequestUseCase>();
             services.AddScoped<IGetCallbacksUseCase, GetCallbacksUseCase>();
             services.AddScoped<IGetLookupsUseCase, GetLookupsUseCase>();
+            services.AddScoped<ICreateHelpRequestUseCase, CreateHelpRequestUseCase>();
+            services.AddScoped<ICreateHelpRequestCallUseCase, CreateHelpRequestCallUseCase>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
