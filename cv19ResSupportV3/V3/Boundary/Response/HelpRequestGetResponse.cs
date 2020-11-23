@@ -22,6 +22,10 @@ namespace cv19ResSupportV3.V3.Boundary.Response
         public string AddressThirdLine { get; set; }
         public string GettingInTouchReason { get; set; }
         public bool? HelpWithAccessingFood { get; set; }
+        public bool? HelpWithAccessingSupermarketFood { get; set; }
+        public bool? HelpWithCompletingNssForm { get; set; }
+        public bool? HelpWithShieldingGuidance { get; set; }
+        public bool? HelpWithNoNeedsIdentified { get; set; }
         public bool? HelpWithAccessingMedicine { get; set; }
         public bool? HelpWithAccessingOtherEssentials { get; set; }
         public bool? HelpWithDebtAndMoney { get; set; }
