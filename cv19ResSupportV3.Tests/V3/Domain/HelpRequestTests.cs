@@ -9,11 +9,11 @@ namespace cv19ResSupportV3.Tests.V3.Domain
     public class EntityTests
     {
         [Test]
-         public void EntitiesHaveAnId()
-         {
-             var entity = new HelpRequest();
-             entity.Id.Should().Be(0);
-         }
+        public void EntitiesHaveAnId()
+        {
+            var entity = new HelpRequest();
+            entity.Id.Should().Be(0);
+        }
 
         [Test]
         public void EntitiesHaveADateTimeRecorded()

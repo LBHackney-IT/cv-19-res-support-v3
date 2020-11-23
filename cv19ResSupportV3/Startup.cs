@@ -37,7 +37,8 @@ namespace cv19ResSupportV3
         public static void ConfigureServices(IServiceCollection services)
         {
             services
-                .AddMvc(setupAction=> {
+                .AddMvc(setupAction =>
+                {
                     setupAction.EnableEndpointRouting = false;
                 }).AddJsonOptions(jsonOptions =>
                 {
