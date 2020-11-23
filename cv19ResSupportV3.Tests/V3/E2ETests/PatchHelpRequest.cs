@@ -83,7 +83,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             var dbEntity = DatabaseContext.HelpRequestEntities.Add(new Fixture().Build<HelpRequestEntity>().
                 Without(x => x.HelpRequestCalls).
                 With(x => x.Id, 1).
-                With( x => x.HelpWithCompletingNssForm, true).
+                With(x => x.HelpWithCompletingNssForm, true).
                 With(x => x.HelpWithShieldingGuidance, true).
                 With(x => x.HelpWithNoNeedsIdentified, true).
                 With(x => x.HelpWithAccessingSupermarketFood, false).Create());
@@ -126,7 +126,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             string changeValue = "to-test-for";
             var requestObject = DatabaseContext.HelpRequestEntities.First();
             var data = JsonConvert.SerializeObject(requestObject);
-            data = data.Replace(requestObject.OnBehalfFirstName, changeValue,StringComparison.InvariantCulture);
+            data = data.Replace(requestObject.OnBehalfFirstName, changeValue, StringComparison.InvariantCulture);
             HttpContent postContent = new StringContent(data, Encoding.UTF8, "application/json");
             var uri = new Uri($"api/v3/help-requests/{requestObject.Id}", UriKind.Relative);
             var response = Client.PatchAsync(uri, postContent);

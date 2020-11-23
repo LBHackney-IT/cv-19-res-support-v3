@@ -15,6 +15,6 @@ namespace cv19ResSupportV3.V3.Infrastructure
         public string LookupGroup { get; set; }
 
         [Column("lookup")]
-        public string Lookup{ get; set; }
+        public string Lookup { get; set; }
     }
 }
