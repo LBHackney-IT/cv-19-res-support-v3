@@ -27,7 +27,7 @@ namespace cv19ResSupportV3.V3.Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<DateTime?>("CallDateTime")
+                    b.Property<DateTime>("CallDateTime")
                         .HasColumnName("call_date_time")
                         .HasColumnType("timestamp without time zone");
 
@@ -311,7 +311,7 @@ namespace cv19ResSupportV3.V3.Infrastructure.Migrations
             modelBuilder.Entity("cv19ResSupportV3.V3.Infrastructure.HelpRequestCallEntity", b =>
                 {
                     b.HasOne("cv19ResSupportV3.V3.Infrastructure.HelpRequestEntity", "HelpRequestEntity")
-                        .WithMany()
+                        .WithMany("HelpRequestCalls")
                         .HasForeignKey("HelpRequestId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
