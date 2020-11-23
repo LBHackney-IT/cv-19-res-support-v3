@@ -7,6 +7,7 @@ using cv19ResSupportV3.V3.Boundary.Requests;
 using cv19ResSupportV3.V3.Factories;
 using cv19ResSupportV3.V3.Gateways;
 using cv19ResSupportV3.V3.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 using HelpRequest = cv19ResSupportV3.V3.Domain.HelpRequest;
 
 namespace cv19ResSupportV3.V3.Gateways
@@ -21,12 +22,16 @@ namespace cv19ResSupportV3.V3.Gateways
             _helpRequestsContext = helpRequestsContext;
         }
 
-        public int CreateHelpRequestCall(HelpRequestCallEntity request)
+        public int CreateHelpRequestCall(int id, HelpRequestCallEntity request)
         {
             if (request == null) return 0;
             try
             {
-                _helpRequestsContext.HelpRequestCallEntities.Add(request);
+                var helpRequest = _helpRequestsContext.HelpRequestEntities.Find(id);
+                if (helpRequest == null)
+                    throw new InvalidOperationException();
+                helpRequest.HelpRequestCalls.Add(request);
+                _helpRequestsContext.Entry(request).State = EntityState.Added;
                 _helpRequestsContext.SaveChanges();
                 return request.Id;
             }
