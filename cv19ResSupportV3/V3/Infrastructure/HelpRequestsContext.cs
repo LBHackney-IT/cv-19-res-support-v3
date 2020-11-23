@@ -218,6 +218,8 @@ namespace cv19ResSupportV3.V3.Infrastructure
                                     .HasColumnType("character varying");
                                 entity.Property(e => e.CallDateTime)
                                     .HasColumnName("call_date_time");
+                                entity.HasOne(e => e.HelpRequestEntity)
+                                    .WithMany(c => c.HelpRequestCalls);
                             }
                         );
         }
