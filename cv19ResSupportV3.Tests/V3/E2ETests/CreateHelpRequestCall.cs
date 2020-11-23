@@ -24,7 +24,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             E2ETestHelpers.ClearTable(DatabaseContext);
         }
         [Test]
-        public async Task CreateHelpRequestCallReturnsTheCorrectInformation()
+        public void CreateHelpRequestCallReturnsTheCorrectInformation()
         {
             var helpRequestEntity = new Fixture().Build<HelpRequestEntity>()
                 .Without(h => h.HelpRequestCalls)
@@ -39,11 +39,6 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             postContent.Dispose();
             var statusCode = response.Result.StatusCode;
             statusCode.Should().Be(201);
-            var content = response.Result.Content;
-            Console.WriteLine("123456");
-            Console.WriteLine(content);
-            var stringContent = await content.ReadAsStringAsync().ConfigureAwait(true);
-            // var convertedResponse = JsonConvert.DeserializeObject<HelpRequestCallCreateResponse>(stringContent);
             var createdEntity = DatabaseContext.HelpRequestCallEntities.Find(requestObject.Id);
             createdEntity.HelpRequestId.Should().Be(1);
             createdEntity.CallType.Should().Be(requestObject.CallType);
