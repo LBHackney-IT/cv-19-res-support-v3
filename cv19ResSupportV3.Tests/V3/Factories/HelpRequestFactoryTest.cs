@@ -1,4 +1,5 @@
 using AutoFixture;
+using cv19ResSupportV3.Tests.V3.Helpers;
 using cv19ResSupportV3.V3.Domain;
 using cv19ResSupportV3.V3.Factories;
 using cv19ResSupportV3.V3.Infrastructure;
@@ -14,7 +15,7 @@ namespace cv19ResSupportV3.Tests.V3.Factories
         [Test]
         public void CanMapADatabaseEntityToADomainObject()
         {
-            var databaseEntity = _fixture.Build<HelpRequestEntity>().Create();
+            var databaseEntity = EntityHelpers.createHelpRequestEntity();
             var entity = databaseEntity.ToDomain();
             databaseEntity.Should().BeEquivalentTo(entity);
         }

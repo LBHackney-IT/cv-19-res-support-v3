@@ -1,9 +1,6 @@
-using System.Linq;
-using AutoFixture;
-using cv19ResSupportV3.V3.Boundary.Requests;
+using cv19ResSupportV3.Tests.V3.Helpers;
 using cv19ResSupportV3.V3.Factories;
 using cv19ResSupportV3.V3.Gateways;
-using cv19ResSupportV3.V3.Infrastructure;
 using cv19ResSupportV3.V3.UseCase;
 using FluentAssertions;
 using Moq;
@@ -16,7 +13,6 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
     {
         private Mock<IHelpRequestGateway> _mockGateway;
         private GetHelpRequestUseCase _classUnderTest;
-        private Fixture _fixture = new Fixture();
 
         [SetUp]
         public void SetUp()
@@ -28,7 +24,7 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
         [Test]
         public void ReturnsASingleHelpRequest()
         {
-            var stubbedRequest = _fixture.Create<HelpRequestEntity>();
+            var stubbedRequest = EntityHelpers.createHelpRequestEntity();
             _mockGateway.Setup(x => x.GetHelpRequest(It.IsAny<int>())).Returns(stubbedRequest);
             var response = _classUnderTest.Execute(stubbedRequest.Id);
             response.Should().NotBeNull();

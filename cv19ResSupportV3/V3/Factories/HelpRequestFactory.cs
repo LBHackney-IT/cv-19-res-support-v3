@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using cv19ResSupportV3.V3.Infrastructure;
 using HelpRequest = cv19ResSupportV3.V3.Domain.HelpRequest;
 using HelpRequestCall = cv19ResSupportV3.V3.Domain.HelpRequestCall;
@@ -144,6 +146,23 @@ namespace cv19ResSupportV3.V3.Factories
                 CallOutcome = helpRequestCall.CallOutcome,
                 CallDateTime = helpRequestCall.CallDateTime
             };
+        }
+
+        public static HelpRequestCall ToDomain(this HelpRequestCallEntity helpRequestCallEntity)
+        {
+            return new HelpRequestCall()
+            {
+                Id = helpRequestCallEntity.Id,
+                HelpRequestId = helpRequestCallEntity.HelpRequestId,
+                CallType = helpRequestCallEntity.CallType,
+                CallOutcome = helpRequestCallEntity.CallOutcome,
+                CallDateTime = helpRequestCallEntity.CallDateTime
+            };
+        }
+
+        public static List<HelpRequestCall> ToDomain(this ICollection<HelpRequestCallEntity> helpRequestCallEntityList)
+        {
+            return helpRequestCallEntityList?.Select(hrItem => hrItem.ToDomain()).ToList();
         }
     }
 }

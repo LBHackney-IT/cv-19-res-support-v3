@@ -8,14 +8,14 @@ namespace cv19ResSupportV3.V3.UseCase
 {
     public class CreateHelpRequestCallUseCase : ICreateHelpRequestCallUseCase
     {
-        private IHelpRequestCallGateway _gateway;
-        public CreateHelpRequestCallUseCase(IHelpRequestCallGateway gateway)
+        private IHelpRequestCallGateway _helpRequestCallGateway;
+        public CreateHelpRequestCallUseCase(IHelpRequestCallGateway helpRequestCallGateway)
         {
-            _gateway = gateway;
+            _helpRequestCallGateway = helpRequestCallGateway;
         }
-        public HelpRequestCallCreateResponse Execute(HelpRequestCall request)
+        public HelpRequestCallCreateResponse Execute(int id, HelpRequestCall request)
         {
-            var response =  _gateway.CreateHelpRequestCall(request.ToEntity());
+            var response = _helpRequestCallGateway.CreateHelpRequestCall(id, request.ToEntity());
             return new HelpRequestCallCreateResponse
             {
                 Id = response

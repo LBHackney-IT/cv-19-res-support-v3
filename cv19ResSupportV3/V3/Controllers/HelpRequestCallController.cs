@@ -35,9 +35,12 @@ namespace cv19ResSupportV3.V3.Controllers
         {
             try
             {
-                request.HelpRequestId = id;
-                var result = _createHelpRequestCallUseCase.Execute(request);
+                var result = _createHelpRequestCallUseCase.Execute(id, request);
                 return Created(new Uri($"api/v3/help-requests/{id}/calls/{result.Id}", UriKind.Relative), result);
+            }
+            catch (InvalidOperationException e)
+            {
+                return NotFound($"Record with id {id} not found");
             }
             catch (Exception e)
             {

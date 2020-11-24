@@ -1,4 +1,5 @@
 using AutoFixture;
+using cv19ResSupportV3.Tests.V3.Helpers;
 using cv19ResSupportV3.V3.Domain;
 using cv19ResSupportV3.V3.Factories;
 using cv19ResSupportV3.V3.Gateways;
@@ -24,7 +25,7 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
         [Test]
         public void CreateHelpRequestReturnsTheRequestIfCreated()
         {
-            var helpRequest = _fixture.Create<HelpRequestEntity>();
+            var helpRequest = EntityHelpers.createHelpRequestEntity();
             var response = _classUnderTest.CreateHelpRequest(helpRequest);
             response.Should().Be(helpRequest.Id);
         }
@@ -47,6 +48,7 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
         {
 
             var helpRequest = _fixture.Build<HelpRequestEntity>()
+                .Without(x => x.HelpRequestCalls)
                 .With(x => x.HelpWithCompletingNssForm, true)
                 .With(x => x.HelpWithShieldingGuidance, true)
                 .With(x => x.HelpWithNoNeedsIdentified, true)

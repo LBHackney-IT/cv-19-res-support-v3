@@ -30,10 +30,11 @@ namespace cv19ResRupportV3.Tests.V3.Controllers
         [Test]
         public void ReturnsResponseWithStatus()
         {
-            var helpRequest = new Fixture().Build<HelpRequest>().Create();
+            var helpRequest = new Fixture().Build<HelpRequest>()
+                .Create();
             var request = new Fixture().Build<HelpRequestCall>().Create();
-            _fakeCreateHelpRequestCallUseCase.Setup(x => x.Execute(request))
-                .Returns(new HelpRequestCallCreateResponse(){Id = request.Id});
+            _fakeCreateHelpRequestCallUseCase.Setup(x => x.Execute(helpRequest.Id, request))
+                .Returns(new HelpRequestCallCreateResponse() { Id = request.Id });
             var response = _classUnderTest.CreateHelpRequestCall(helpRequest.Id, request) as CreatedResult;
             response.StatusCode.Should().Be(201);
         }

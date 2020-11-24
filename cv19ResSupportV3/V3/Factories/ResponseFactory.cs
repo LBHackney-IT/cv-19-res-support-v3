@@ -72,7 +72,8 @@ namespace cv19ResSupportV3.V3.Factories
                 CallbackRequired = hr.CallbackRequired,
                 CaseNotes = hr.CaseNotes,
                 AdviceNotes = hr.AdviceNotes,
-                HelpNeeded = hr.HelpNeeded
+                HelpNeeded = hr.HelpNeeded,
+                HelpRequestCalls = hr.HelpRequestCalls.ToDomain()
             };
         }
 
