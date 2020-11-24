@@ -1,6 +1,8 @@
+using System.Collections.Generic;
 using System.Linq;
 using cv19ResSupportV3.Tests.V3.Helpers;
 using cv19ResSupportV3.V3.Gateways;
+using cv19ResSupportV3.V3.Infrastructure;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -29,5 +31,17 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             response.Should().Be(helpRequestCall.Id);
         }
 
+        [Test]
+        public void GetCallsReturnsEmptyListIfNoCallsExist()
+        {
+            var id = 123;
+//            DatabaseContext.HelpRequestEntities.Add(EntityHelpers.createHelpRequestEntity());
+//            DatabaseContext.SaveChanges();
+//            var helpRequestEntity = DatabaseContext.HelpRequestEntities.First();
+//            var helpRequestCall = EntityHelpers.createHelpRequestCallEntity();
+//            helpRequestCall.HelpRequestId = helpRequestEntity.Id;
+            var response = _classUnderTest.GetHelpRequestCalls(id);
+            response.Should().BeNullOrEmpty();
+        }
     }
 }

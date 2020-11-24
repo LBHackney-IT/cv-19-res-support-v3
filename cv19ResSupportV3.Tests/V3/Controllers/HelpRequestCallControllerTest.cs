@@ -19,12 +19,14 @@ namespace cv19ResRupportV3.Tests.V3.Controllers
     {
         private HelpRequestCallController _classUnderTest;
         private Mock<ICreateHelpRequestCallUseCase> _fakeCreateHelpRequestCallUseCase;
+        private Mock<IGetHelpRequestCallsUseCase> _fakeGetHelpRequestCallsUseCase;
 
         [SetUp]
         public void SetUp()
         {
             _fakeCreateHelpRequestCallUseCase = new Mock<ICreateHelpRequestCallUseCase>();
-            _classUnderTest = new HelpRequestCallController(_fakeCreateHelpRequestCallUseCase.Object);
+            _fakeGetHelpRequestCallsUseCase = new Mock<IGetHelpRequestCallsUseCase>();
+            _classUnderTest = new HelpRequestCallController(_fakeCreateHelpRequestCallUseCase.Object, _fakeGetHelpRequestCallsUseCase.Object );
         }
 
         [Test]
@@ -37,6 +39,18 @@ namespace cv19ResRupportV3.Tests.V3.Controllers
                 .Returns(new HelpRequestCallCreateResponse() { Id = request.Id });
             var response = _classUnderTest.CreateHelpRequestCall(helpRequest.Id, request) as CreatedResult;
             response.StatusCode.Should().Be(201);
+        }
+
+
+        [Test]
+        public void GetCallsEndpointReturnsResponseWithStatus()
+        {
+            var id = 1;
+            _fakeGetHelpRequestCallsUseCase.Setup(x => x.Execute(id))
+                .Returns(new List<CallGetResponse>() { });
+            var response = _classUnderTest.GetCalls(id) as OkObjectResult;;
+            _fakeGetHelpRequestCallsUseCase.Verify(mock => mock.Execute(id), Times.Once());
+            response.StatusCode.Should().Be(200);
         }
     }
 }

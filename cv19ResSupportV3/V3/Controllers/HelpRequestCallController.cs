@@ -19,9 +19,12 @@ namespace cv19ResSupportV3.V3.Controllers
     public class HelpRequestCallController : BaseController
     {
         private readonly ICreateHelpRequestCallUseCase _createHelpRequestCallUseCase;
-        public HelpRequestCallController(ICreateHelpRequestCallUseCase createHelpRequestCallUseCase)
+        private readonly IGetHelpRequestCallsUseCase _getCallsUseCase;
+
+        public HelpRequestCallController(ICreateHelpRequestCallUseCase createHelpRequestCallUseCase, IGetHelpRequestCallsUseCase getCallsUseCase)
         {
             _createHelpRequestCallUseCase = createHelpRequestCallUseCase;
+            _getCallsUseCase = getCallsUseCase;
         }
 
         /// <summary>
@@ -48,6 +51,13 @@ namespace cv19ResSupportV3.V3.Controllers
             }
         }
 
-
+        [Route("{id}/calls")]
+        [ProducesResponseType(typeof(List<CallGetResponse>), StatusCodes.Status200OK)]
+        [HttpGet]
+        public IActionResult GetCalls(int id)
+        {
+            var result = _getCallsUseCase.Execute(id);
+            return Ok(result);
+        }
     }
 }

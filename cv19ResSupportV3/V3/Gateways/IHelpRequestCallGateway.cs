@@ -8,5 +8,6 @@ namespace cv19ResSupportV3.V3.Gateways
     public interface IHelpRequestCallGateway
     {
         int CreateHelpRequestCall(int id, HelpRequestCallEntity request);
+        List<HelpRequestCallEntity> GetHelpRequestCalls(in int id);
     }
 }

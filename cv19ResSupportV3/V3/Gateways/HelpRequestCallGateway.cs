@@ -43,6 +43,9 @@ namespace cv19ResSupportV3.V3.Gateways
             }
         }
 
-
+        public List<HelpRequestCallEntity> GetHelpRequestCalls(in int id)
+        {
+            return new List<HelpRequestCallEntity>();
+        }
     }
 }

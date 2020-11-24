@@ -93,5 +93,23 @@ namespace cv19ResSupportV3.V3.Factories
         {
             return lookupEntities.Select(le => le.ToResponse()).ToList();
         }
+
+        public static List<CallGetResponse> ToResponse(this IEnumerable<HelpRequestCallEntity> responseList)
+        {
+            return responseList.Select(responseItem => responseItem.ToResponse()).ToList();
+        }
+
+           public static CallGetResponse ToResponse(this HelpRequestCallEntity call)
+        {
+
+            return new CallGetResponse()
+            {
+                Id = call.Id,
+                HelpRequestId = call.HelpRequestId,
+                CallType = call.CallType,
+                CallOutcome = call.CallOutcome,
+                CallDateTime = call.CallDateTime
+            };
+        }
     }
 }
