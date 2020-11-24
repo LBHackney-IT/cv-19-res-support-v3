@@ -99,7 +99,7 @@ namespace cv19ResSupportV3.V3.Factories
             return responseList.Select(responseItem => responseItem.ToResponse()).ToList();
         }
 
-           public static CallGetResponse ToResponse(this HelpRequestCallEntity call)
+        public static CallGetResponse ToResponse(this HelpRequestCallEntity call)
         {
 
             return new CallGetResponse()

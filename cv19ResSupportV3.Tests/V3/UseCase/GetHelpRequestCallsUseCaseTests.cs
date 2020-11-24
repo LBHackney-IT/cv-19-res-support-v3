@@ -26,7 +26,7 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
         public void ReturnsPopulatedHelpRequestListIfParamsProvided()
         {
             var id = 1;
-            var stubbedResponse = new List<HelpRequestCallEntity>() {EntityHelpers.createHelpRequestCallEntity()};
+            var stubbedResponse = new List<HelpRequestCallEntity>() { EntityHelpers.createHelpRequestCallEntity() };
             _mockGateway.Setup(x => x.GetHelpRequestCalls(id)).Returns(stubbedResponse);
             var response = _classUnderTest.Execute(id);
             response.Should().NotBeNull();

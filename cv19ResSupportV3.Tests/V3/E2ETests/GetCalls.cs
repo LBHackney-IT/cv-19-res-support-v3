@@ -43,5 +43,37 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             DatabaseContext.HelpRequestEntities.Find(helpRequest.Id).HelpRequestCalls.Count.Should().Be(0);
             deserializedBody.Count.Should().Be(0);
         }
+
+        [Test]
+        public async Task ReturnsAListOfCallsIfCallsExistForAHelpRequest()
+        {
+            var helpRequest = EntityHelpers.createHelpRequestEntity(1);
+            var calls = EntityHelpers.createHelpRequestCallEntities();
+            helpRequest.CallbackRequired = true;
+            helpRequest.InitialCallbackCompleted = true;
+            helpRequest.DateTimeRecorded = DateTime.Today.AddDays(-2);
+            DatabaseContext.HelpRequestEntities.Add(helpRequest);
+
+            calls.ForEach(x => x.HelpRequestId = helpRequest.Id);
+            DatabaseContext.HelpRequestCallEntities.AddRange(calls);
+
+            DatabaseContext.SaveChanges();
+            var requestUri = new Uri($"api/v3/help-requests/{helpRequest.Id}/calls", UriKind.Relative);
+            var response = Client.GetAsync(requestUri);
+            var statusCode = response.Result.StatusCode;
+            statusCode.Should().Be(200);
+            var responseBody = response.Result.Content;
+            var stringResponse = await responseBody.ReadAsStringAsync().ConfigureAwait(true);
+            var deserializedBody = JsonConvert.DeserializeObject<List<CallGetResponse>>(stringResponse);
+            DatabaseContext.HelpRequestEntities.Find(helpRequest.Id).HelpRequestCalls.Count.Should().Be(3);
+            deserializedBody.Count.Should().Be(3);
+            deserializedBody[0].HelpRequestId.Should().Be(helpRequest.Id);
+
+            deserializedBody.Should().BeEquivalentTo(helpRequest.HelpRequestCalls, options =>
+            {
+                options.Excluding(ex => ex.HelpRequestEntity);
+                return options;
+            });
+        }
     }
 }

@@ -43,9 +43,12 @@ namespace cv19ResSupportV3.V3.Gateways
             }
         }
 
-        public List<HelpRequestCallEntity> GetHelpRequestCalls(in int id)
+        public List<HelpRequestCallEntity> GetHelpRequestCalls(int id)
         {
-            return new List<HelpRequestCallEntity>();
+            var helpRequest = _helpRequestsContext.HelpRequestEntities.Find(id);
+            if (helpRequest == null)
+                throw new InvalidOperationException();
+            return _helpRequestsContext.HelpRequestCallEntities.Where(q => q.HelpRequestId == id).ToList();
         }
     }
 }

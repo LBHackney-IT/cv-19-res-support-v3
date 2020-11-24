@@ -22,7 +22,7 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
         [Test]
         public void CreateHelpRequestCallReturnsTheRequestIfCreated()
         {
-            DatabaseContext.HelpRequestEntities.Add(EntityHelpers.createHelpRequestEntity());
+            DatabaseContext.HelpRequestEntities.Add(EntityHelpers.createHelpRequestEntity(2));
             DatabaseContext.SaveChanges();
             var helpRequestEntity = DatabaseContext.HelpRequestEntities.First();
             var helpRequestCall = EntityHelpers.createHelpRequestCallEntity();
@@ -35,11 +35,8 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
         public void GetCallsReturnsEmptyListIfNoCallsExist()
         {
             var id = 123;
-//            DatabaseContext.HelpRequestEntities.Add(EntityHelpers.createHelpRequestEntity());
-//            DatabaseContext.SaveChanges();
-//            var helpRequestEntity = DatabaseContext.HelpRequestEntities.First();
-//            var helpRequestCall = EntityHelpers.createHelpRequestCallEntity();
-//            helpRequestCall.HelpRequestId = helpRequestEntity.Id;
+            DatabaseContext.HelpRequestEntities.Add(EntityHelpers.createHelpRequestEntity(id));
+            DatabaseContext.SaveChanges();
             var response = _classUnderTest.GetHelpRequestCalls(id);
             response.Should().BeNullOrEmpty();
         }

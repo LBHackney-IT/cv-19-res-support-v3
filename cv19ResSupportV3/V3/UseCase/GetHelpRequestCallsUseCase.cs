@@ -7,7 +7,7 @@ using cv19ResSupportV3.V3.UseCase.Interfaces;
 
 namespace cv19ResSupportV3.V3.UseCase
 {
-    public class GetHelpRequestCallsUseCase :IGetHelpRequestCallsUseCase
+    public class GetHelpRequestCallsUseCase : IGetHelpRequestCallsUseCase
     {
         private readonly IHelpRequestCallGateway _gateway;
 
