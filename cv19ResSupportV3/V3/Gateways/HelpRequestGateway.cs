@@ -310,21 +310,6 @@ namespace cv19ResSupportV3.V3.Gateways
             }
         }
 
-        public List<HelpRequestEntity> GetHelpRequests()
-        {
-            try
-            {
-                return _helpRequestsContext.HelpRequestEntities.ToList();
-            }
-            catch (Exception e)
-            {
-                LambdaLogger.Log("GetHelpRequests error: ");
-                LambdaLogger.Log(e.Message);
-                throw;
-            }
-
-        }
-
         public List<HelpRequestEntity> GetCallbacks(CallbackRequestParams requestParams)
         {
             Expression<Func<HelpRequestEntity, bool>> queryHelpNeeded = x =>
