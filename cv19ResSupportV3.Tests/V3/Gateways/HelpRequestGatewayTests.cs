@@ -34,10 +34,26 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
         [Test]
         public void CreateDuplicateHelpRequestTheLatestAsMaster()
         {
-            var helpRequest = _fixture.Create<HelpRequest>();
-            helpRequest.Id = 0;
+            var helpRequest = _fixture.Build<HelpRequest>()
+                .With(x => x.Uprn, "123")
+                .With(x => x.DobMonth, "123")
+                .With(x => x.DobDay, "123")
+                .With(x => x.DobYear, "123")
+                .With(x => x.ContactTelephoneNumber, "123")
+                .With(x => x.ContactMobileNumber, "123")
+                .Create();
+
+            var helpRequest2 = _fixture.Build<HelpRequest>()
+                .With(x => x.Uprn, "123")
+                .With(x => x.DobMonth, "123")
+                .With(x => x.DobDay, "123")
+                .With(x => x.DobYear, "123")
+                .With(x => x.ContactTelephoneNumber, "123")
+                .With(x => x.ContactMobileNumber, "123")
+                .Create();
+
             var response1 = _classUnderTest.CreateHelpRequest(helpRequest.ToEntity());
-            var response2 = _classUnderTest.CreateHelpRequest(helpRequest.ToEntity());
+            var response2 = _classUnderTest.CreateHelpRequest(helpRequest2.ToEntity());
             var firstRecordToCheck = DatabaseContext.HelpRequestEntities.Find(response1);
             var secondRecordToCheck = DatabaseContext.HelpRequestEntities.Find(response2);
             firstRecordToCheck.RecordStatus.Should().Be("DUPLICATE");
