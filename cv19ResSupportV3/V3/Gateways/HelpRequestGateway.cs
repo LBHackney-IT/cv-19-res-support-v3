@@ -7,6 +7,7 @@ using cv19ResSupportV3.V3.Boundary.Requests;
 using cv19ResSupportV3.V3.Factories;
 using cv19ResSupportV3.V3.Gateways;
 using cv19ResSupportV3.V3.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 using HelpRequest = cv19ResSupportV3.V3.Domain.HelpRequest;
 
 namespace cv19ResSupportV3.V3.Gateways
@@ -85,8 +86,8 @@ namespace cv19ResSupportV3.V3.Gateways
             try
             {
                 var result = _helpRequestsContext.HelpRequestEntities
+                    .Include(x => x.HelpRequestCalls)
                     .FirstOrDefault(x => x.Id == id);
-                if (result != null) result.HelpRequestCalls = _helpRequestsContext.HelpRequestCallEntities.Where(q => q.HelpRequestId == id).ToList();
                 return result;
             }
             catch (Exception e)
