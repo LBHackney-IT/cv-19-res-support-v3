@@ -331,7 +331,7 @@ namespace cv19ResSupportV3.V3.Gateways
                 || x.HelpNeeded.Replace(" ", "").ToUpper().Equals(requestParams.HelpNeeded.Replace(" ", "").ToUpper());
             try
             {
-                var response = _helpRequestsContext.HelpRequestEntities
+                var response = _helpRequestsContext.HelpRequestEntities.Include(x => x.HelpRequestCalls)
                     .Where(x => (x.CallbackRequired == true || x.CallbackRequired == null ||
                                  (x.InitialCallbackCompleted == false && x.CallbackRequired == false)))
                     .Where(queryHelpNeeded)

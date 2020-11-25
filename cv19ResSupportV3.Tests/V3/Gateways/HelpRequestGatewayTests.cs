@@ -1,5 +1,7 @@
+using System.Linq;
 using AutoFixture;
 using cv19ResSupportV3.Tests.V3.Helpers;
+using cv19ResSupportV3.V3.Boundary.Requests;
 using cv19ResSupportV3.V3.Domain;
 using cv19ResSupportV3.V3.Factories;
 using cv19ResSupportV3.V3.Gateways;
@@ -95,6 +97,24 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             var response = _classUnderTest.GetHelpRequest(id);
             response.HelpRequestCalls.Count.Should().Be(3);
             response.HelpRequestCalls.Should().BeEquivalentTo(calls);
+        }
+
+        [Test]
+        public void GetAllCallbacksWithCallsListIfCallsExist()
+        {
+            var id = 124;
+            var helpRequest = EntityHelpers.createHelpRequestEntity(id);
+            DatabaseContext.HelpRequestEntities.Add(helpRequest);
+            helpRequest.CallbackRequired = true;
+
+            var calls = EntityHelpers.createHelpRequestCallEntities(3);
+            calls.ForEach(x => x.HelpRequestId = id);
+            DatabaseContext.HelpRequestCallEntities.AddRange(calls);
+            DatabaseContext.SaveChanges();
+            var response = _classUnderTest.GetCallbacks(new CallbackRequestParams() { HelpNeeded = "" });
+
+            response.First().HelpRequestCalls.Count.Should().Be(3);
+            response.First().HelpRequestCalls.Should().BeEquivalentTo(calls);
         }
     }
 }
