@@ -84,8 +84,10 @@ namespace cv19ResSupportV3.V3.Gateways
         {
             try
             {
-                return _helpRequestsContext.HelpRequestEntities
+                var result = _helpRequestsContext.HelpRequestEntities
                     .FirstOrDefault(x => x.Id == id);
+                if (result != null) result.HelpRequestCalls = _helpRequestsContext.HelpRequestCallEntities.Where(q => q.HelpRequestId == id).ToList();
+                return result;
             }
             catch (Exception e)
             {
