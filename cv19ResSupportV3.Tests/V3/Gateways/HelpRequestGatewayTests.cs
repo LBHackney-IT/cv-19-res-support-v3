@@ -116,5 +116,19 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             response.First().HelpRequestCalls.Count.Should().Be(3);
             response.First().HelpRequestCalls.Should().BeEquivalentTo(calls);
         }
+
+        [Test]
+        public void SearchRequestsReturnsCallsListIfCallsExist()
+        {
+            var id = 124;
+            DatabaseContext.HelpRequestEntities.Add(EntityHelpers.createHelpRequestEntity(id));
+            var calls = EntityHelpers.createHelpRequestCallEntities(3);
+            calls.ForEach(x => x.HelpRequestId = id);
+            DatabaseContext.HelpRequestCallEntities.AddRange(calls);
+            DatabaseContext.SaveChanges();
+            var response = _classUnderTest.SearchHelpRequests(new RequestQueryParams());
+            response.First().HelpRequestCalls.Count.Should().Be(3);
+            response.First().HelpRequestCalls.Should().BeEquivalentTo(calls);
+        }
     }
 }

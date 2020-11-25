@@ -219,7 +219,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
         }
 
         [Test]
-        public async Task GetHelpRequestsWithCalls()
+        public async Task GetHelpRequestWithCalls()
         {
             var helpRequest = EntityHelpers.createHelpRequestEntity();
             var calls = EntityHelpers.createHelpRequestCallEntities();
@@ -240,6 +240,37 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             var stringResponse = await responseBody.ReadAsStringAsync().ConfigureAwait(true);
             var deserializedBody = JsonConvert.DeserializeObject<HelpRequestGetResponse>(stringResponse);
             deserializedBody.HelpRequestCalls.Should().BeEquivalentTo(calls, options =>
+            {
+                options.Excluding(ex => ex.HelpRequestEntity);
+                return options;
+            });
+        }
+
+
+        [Test]
+        public async Task SearchHelpRequestsReturnsHelpRequestsWithCalls()
+        {
+            var helpRequest = EntityHelpers.createHelpRequestEntity();
+            var calls = EntityHelpers.createHelpRequestCallEntities();
+            helpRequest.CallbackRequired = true;
+            helpRequest.InitialCallbackCompleted = true;
+            helpRequest.DateTimeRecorded = DateTime.Today.AddDays(-2);
+            helpRequest.FirstName = "Sample";
+            calls.ForEach(x => x.HelpRequestId = helpRequest.Id);
+            helpRequest.HelpRequestCalls = calls;
+            DatabaseContext.HelpRequestEntities.Add(helpRequest);
+            DatabaseContext.HelpRequestCallEntities.AddRange(calls);
+            DatabaseContext.SaveChanges();
+
+            var requestUri = new Uri($"api/v3/help-requests?firstname=Sample", UriKind.Relative);
+            var response = Client.GetAsync(requestUri);
+            var statusCode = response.Result.StatusCode;
+            statusCode.Should().Be(200);
+            var responseBody = response.Result.Content;
+            var stringResponse = await responseBody.ReadAsStringAsync().ConfigureAwait(true);
+            var deserializedBody = JsonConvert.DeserializeObject<List<HelpRequestGetResponse>>(stringResponse);
+            deserializedBody.First().HelpRequestCalls.Count.Should().Be(3);
+            deserializedBody.First().HelpRequestCalls.Should().BeEquivalentTo(calls, options =>
             {
                 options.Excluding(ex => ex.HelpRequestEntity);
                 return options;

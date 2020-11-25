@@ -119,6 +119,7 @@ namespace cv19ResSupportV3.V3.Gateways
             try
             {
                 return _helpRequestsContext.HelpRequestEntities
+                    .Include(x => x.HelpRequestCalls)
                     .Where(queryPostCode)
                     .Where(queryFirstName)
                     .Where(queryLastName)
