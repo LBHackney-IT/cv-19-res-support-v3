@@ -1,8 +1,7 @@
-using System.Collections.Generic;
+using System;
 using System.Linq;
 using cv19ResSupportV3.Tests.V3.Helpers;
 using cv19ResSupportV3.V3.Gateways;
-using cv19ResSupportV3.V3.Infrastructure;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -39,6 +38,15 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             DatabaseContext.SaveChanges();
             var response = _classUnderTest.GetHelpRequestCalls(id);
             response.Should().BeNullOrEmpty();
+        }
+
+        [Test]
+        public void GetCallsThrowsInvalidOperationExceptionIfHelpRequestWithGivenIdDoesNotExist()
+        {
+            var id = 111;
+            _classUnderTest.Invoking(y => y.GetHelpRequestCalls(id))
+                .Should().Throw<InvalidOperationException>()
+                .WithMessage("Operation is not valid due to the current state of the object.");
         }
     }
 }

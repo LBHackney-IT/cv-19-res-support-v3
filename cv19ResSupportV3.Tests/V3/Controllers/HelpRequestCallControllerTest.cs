@@ -52,5 +52,25 @@ namespace cv19ResRupportV3.Tests.V3.Controllers
             _fakeGetHelpRequestCallsUseCase.Verify(mock => mock.Execute(id), Times.Once());
             response.StatusCode.Should().Be(200);
         }
+
+        [Test]
+        public void GetCallsReturns404InCaseOfInvalidOperationException()
+        {
+            var id = 112;
+            _fakeGetHelpRequestCallsUseCase.Setup(x => x.Execute(id))
+                .Throws(new InvalidOperationException());
+            var response = _classUnderTest.GetCalls(id) as NotFoundObjectResult;
+            response.StatusCode.Should().Be(404);
+        }
+
+        [Test]
+        public void GetCallsReturns400InCaseOfException()
+        {
+            var id = 112;
+            _fakeGetHelpRequestCallsUseCase.Setup(x => x.Execute(id))
+                .Throws(new Exception());
+            var response = _classUnderTest.GetCalls(id) as BadRequestObjectResult;
+            response.StatusCode.Should().Be(400);
+        }
     }
 }

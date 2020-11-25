@@ -56,8 +56,19 @@ namespace cv19ResSupportV3.V3.Controllers
         [HttpGet]
         public IActionResult GetCalls(int id)
         {
-            var result = _getCallsUseCase.Execute(id);
-            return Ok(result);
+            try
+            {
+                var result = _getCallsUseCase.Execute(id);
+                return Ok(result);
+            }
+            catch (InvalidOperationException e)
+            {
+                return NotFound($"Record with id {id} not found");
+            }
+            catch (Exception e)
+            {
+                return BadRequest($"Could not get calls for help request {id}. {e}");
+            }
         }
     }
 }

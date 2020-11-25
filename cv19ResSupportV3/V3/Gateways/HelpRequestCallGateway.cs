@@ -45,10 +45,20 @@ namespace cv19ResSupportV3.V3.Gateways
 
         public List<HelpRequestCallEntity> GetHelpRequestCalls(int id)
         {
-            var helpRequest = _helpRequestsContext.HelpRequestEntities.Find(id);
-            if (helpRequest == null)
-                throw new InvalidOperationException();
-            return _helpRequestsContext.HelpRequestCallEntities.Where(q => q.HelpRequestId == id).ToList();
+            try
+            {
+                var helpRequest = _helpRequestsContext.HelpRequestEntities.Find(id);
+                if (helpRequest == null)
+                    throw new InvalidOperationException();
+                return _helpRequestsContext.HelpRequestCallEntities.Where(q => q.HelpRequestId == id).ToList();
+            }
+            catch (Exception e)
+            {
+                LambdaLogger.Log("GetHelpRequestCalls error: ");
+                LambdaLogger.Log(e.Message);
+                throw;
+            }
+
         }
     }
 }
