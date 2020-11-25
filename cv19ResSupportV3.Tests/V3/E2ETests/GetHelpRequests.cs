@@ -217,5 +217,33 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             deserializedBody.Count.Should().Be(1);
             deserializedBody.Should().BeEquivalentTo(expectedResponse);
         }
+
+        [Test]
+        public async Task GetHelpRequestsWithCalls()
+        {
+            var helpRequest = EntityHelpers.createHelpRequestEntity();
+            var calls = EntityHelpers.createHelpRequestCallEntities();
+            helpRequest.CallbackRequired = true;
+            helpRequest.InitialCallbackCompleted = true;
+            helpRequest.DateTimeRecorded = DateTime.Today.AddDays(-2);
+            calls.ForEach(x => x.HelpRequestId = helpRequest.Id);
+            helpRequest.HelpRequestCalls = calls;
+            DatabaseContext.HelpRequestEntities.Add(helpRequest);
+            DatabaseContext.HelpRequestCallEntities.AddRange(calls);
+            DatabaseContext.SaveChanges();
+
+            var requestUri = new Uri($"api/v3/help-requests/{helpRequest.Id}", UriKind.Relative);
+            var response = Client.GetAsync(requestUri);
+            var statusCode = response.Result.StatusCode;
+            statusCode.Should().Be(200);
+            var responseBody = response.Result.Content;
+            var stringResponse = await responseBody.ReadAsStringAsync().ConfigureAwait(true);
+            var deserializedBody = JsonConvert.DeserializeObject<HelpRequestGetResponse>(stringResponse);
+            deserializedBody.HelpRequestCalls.Should().BeEquivalentTo(calls, options =>
+            {
+                options.Excluding(ex => ex.HelpRequestEntity);
+                return options;
+            });
+        }
     }
 }

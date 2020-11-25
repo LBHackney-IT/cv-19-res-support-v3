@@ -20,7 +20,7 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
         [Test]
         public void CreateHelpRequestCallReturnsTheRequestIfCreated()
         {
-            DatabaseContext.HelpRequestEntities.Add(EntityHelpers.createHelpRequestEntity());
+            DatabaseContext.HelpRequestEntities.Add(EntityHelpers.createHelpRequestEntity(5));
             DatabaseContext.SaveChanges();
             var helpRequestEntity = DatabaseContext.HelpRequestEntities.First();
             var helpRequestCall = EntityHelpers.createHelpRequestCallEntity();

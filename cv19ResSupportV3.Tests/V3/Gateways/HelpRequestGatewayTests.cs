@@ -5,7 +5,6 @@ using cv19ResSupportV3.V3.Factories;
 using cv19ResSupportV3.V3.Gateways;
 using cv19ResSupportV3.V3.Infrastructure;
 using FluentAssertions;
-using Newtonsoft.Json;
 using NUnit.Framework;
 
 namespace cv19ResSupportV3.Tests.V3.Gateways
@@ -72,7 +71,30 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             updatedEntity.HelpWithShieldingGuidance.Should().Be(false);
             updatedEntity.HelpWithNoNeedsIdentified.Should().Be(true);
             updatedEntity.HelpWithAccessingSupermarketFood.Should().Be(false);
+        }
 
+        [Test]
+        public void GetHelpRequestReturnsEmptyCallsListIfNoCallsExist()
+        {
+            var id = 123;
+            DatabaseContext.HelpRequestEntities.Add(EntityHelpers.createHelpRequestEntity(id));
+            DatabaseContext.SaveChanges();
+            var response = _classUnderTest.GetHelpRequest(id);
+            response.HelpRequestCalls.Should().BeNullOrEmpty();
+        }
+
+        [Test]
+        public void GetHelpRequestReturnsCallsListIfCallsExist()
+        {
+            var id = 124;
+            DatabaseContext.HelpRequestEntities.Add(EntityHelpers.createHelpRequestEntity(id));
+            var calls = EntityHelpers.createHelpRequestCallEntities(3);
+            calls.ForEach(x => x.HelpRequestId = id);
+            DatabaseContext.HelpRequestCallEntities.AddRange(calls);
+            DatabaseContext.SaveChanges();
+            var response = _classUnderTest.GetHelpRequest(id);
+            response.HelpRequestCalls.Count.Should().Be(3);
+            response.HelpRequestCalls.Should().BeEquivalentTo(calls);
         }
     }
 }
