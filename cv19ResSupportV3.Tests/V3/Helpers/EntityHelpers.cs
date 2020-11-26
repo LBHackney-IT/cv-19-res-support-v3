@@ -8,9 +8,10 @@ namespace cv19ResSupportV3.Tests.V3.Helpers
 {
     public static class EntityHelpers
     {
-        public static HelpRequestEntity createHelpRequestEntity()
+        public static HelpRequestEntity createHelpRequestEntity(int id = 1)
         {
             var helpRequestEntity = Randomm.Build<HelpRequestEntity>()
+                .With(x => x.Id, id)
                 .Without(h => h.HelpRequestCalls)
                 .Create();
             return helpRequestEntity;
@@ -30,6 +31,13 @@ namespace cv19ResSupportV3.Tests.V3.Helpers
             return Randomm.Build<HelpRequestCallEntity>()
                 .Without(h => h.HelpRequestEntity)
                 .Create();
+        }
+
+        public static List<HelpRequestCallEntity> createHelpRequestCallEntities(int count = 3)
+        {
+            var calls = Randomm.Build<HelpRequestCallEntity>()
+                .Without(h => h.HelpRequestEntity).CreateMany(count).ToList();
+            return calls;
         }
     }
 }

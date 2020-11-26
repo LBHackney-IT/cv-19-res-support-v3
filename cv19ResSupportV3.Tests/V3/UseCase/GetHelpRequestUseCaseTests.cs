@@ -30,5 +30,22 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
             response.Should().NotBeNull();
             response.Should().BeEquivalentTo(stubbedRequest.ToResponse());
         }
+
+        [Test]
+        public void ReturnsASingleHelpRequestWithCalls()
+        {
+            var stubbedRequest = EntityHelpers.createHelpRequestEntity(5);
+            var calls = EntityHelpers.createHelpRequestCallEntities();
+            calls.ForEach(x => x.HelpRequestId = 5);
+            stubbedRequest.HelpRequestCalls = calls;
+            _mockGateway.Setup(x => x.GetHelpRequest(It.IsAny<int>())).Returns(stubbedRequest);
+            var response = _classUnderTest.Execute(stubbedRequest.Id);
+            response.Should().NotBeNull();
+            response.HelpRequestCalls.Should().BeEquivalentTo(calls, options =>
+            {
+                options.Excluding(ex => ex.HelpRequestEntity);
+                return options;
+            });
+        }
     }
 }

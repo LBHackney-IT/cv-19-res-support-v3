@@ -7,6 +7,7 @@ using cv19ResSupportV3.V3.Boundary.Requests;
 using cv19ResSupportV3.V3.Factories;
 using cv19ResSupportV3.V3.Gateways;
 using cv19ResSupportV3.V3.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 using HelpRequest = cv19ResSupportV3.V3.Domain.HelpRequest;
 
 namespace cv19ResSupportV3.V3.Gateways
@@ -84,8 +85,10 @@ namespace cv19ResSupportV3.V3.Gateways
         {
             try
             {
-                return _helpRequestsContext.HelpRequestEntities
+                var result = _helpRequestsContext.HelpRequestEntities
+                    .Include(x => x.HelpRequestCalls)
                     .FirstOrDefault(x => x.Id == id);
+                return result;
             }
             catch (Exception e)
             {
@@ -116,6 +119,7 @@ namespace cv19ResSupportV3.V3.Gateways
             try
             {
                 return _helpRequestsContext.HelpRequestEntities
+                    .Include(x => x.HelpRequestCalls)
                     .Where(queryPostCode)
                     .Where(queryFirstName)
                     .Where(queryLastName)
@@ -306,21 +310,6 @@ namespace cv19ResSupportV3.V3.Gateways
             }
         }
 
-        public List<HelpRequestEntity> GetHelpRequests()
-        {
-            try
-            {
-                return _helpRequestsContext.HelpRequestEntities.ToList();
-            }
-            catch (Exception e)
-            {
-                LambdaLogger.Log("GetHelpRequests error: ");
-                LambdaLogger.Log(e.Message);
-                throw;
-            }
-
-        }
-
         public List<HelpRequestEntity> GetCallbacks(CallbackRequestParams requestParams)
         {
             Expression<Func<HelpRequestEntity, bool>> queryHelpNeeded = x =>
@@ -328,7 +317,7 @@ namespace cv19ResSupportV3.V3.Gateways
                 || x.HelpNeeded.Replace(" ", "").ToUpper().Equals(requestParams.HelpNeeded.Replace(" ", "").ToUpper());
             try
             {
-                var response = _helpRequestsContext.HelpRequestEntities
+                var response = _helpRequestsContext.HelpRequestEntities.Include(x => x.HelpRequestCalls)
                     .Where(x => (x.CallbackRequired == true || x.CallbackRequired == null ||
                                  (x.InitialCallbackCompleted == false && x.CallbackRequired == false)))
                     .Where(queryHelpNeeded)
