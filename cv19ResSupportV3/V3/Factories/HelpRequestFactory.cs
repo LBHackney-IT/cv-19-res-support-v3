@@ -143,6 +143,7 @@ namespace cv19ResSupportV3.V3.Factories
                 Id = helpRequestCall.Id,
                 HelpRequestId = helpRequestCall.HelpRequestId,
                 CallType = helpRequestCall.CallType,
+                CallDirection = helpRequestCall.CallDirection,
                 CallOutcome = helpRequestCall.CallOutcome,
                 CallDateTime = helpRequestCall.CallDateTime
             };
@@ -155,6 +156,7 @@ namespace cv19ResSupportV3.V3.Factories
                 Id = helpRequestCallEntity.Id,
                 HelpRequestId = helpRequestCallEntity.HelpRequestId,
                 CallType = helpRequestCallEntity.CallType,
+                CallDirection = helpRequestCallEntity.CallDirection,
                 CallOutcome = helpRequestCallEntity.CallOutcome,
                 CallDateTime = helpRequestCallEntity.CallDateTime
             };

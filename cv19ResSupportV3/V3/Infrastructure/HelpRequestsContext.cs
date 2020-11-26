@@ -213,6 +213,9 @@ namespace cv19ResSupportV3.V3.Infrastructure
                     entity.Property(e => e.CallType)
                         .HasColumnName("call_type")
                         .HasColumnType("character varying");
+                    entity.Property(e => e.CallDirection)
+                        .HasColumnName("call_direction")
+                        .HasColumnType("character varying");
                     entity.Property(e => e.CallOutcome)
                         .HasColumnName("call_outcome")
                         .HasColumnType("character varying");

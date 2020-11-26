@@ -42,6 +42,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             var createdEntity = DatabaseContext.HelpRequestCallEntities.Find(requestObject.Id);
             createdEntity.HelpRequestId.Should().Be(1);
             createdEntity.CallType.Should().Be(requestObject.CallType);
+            createdEntity.CallDirection.Should().Be(requestObject.CallDirection);
             createdEntity.CallOutcome.Should().Be(requestObject.CallOutcome);
             createdEntity.CallDateTime.Should().BeCloseTo(requestObject.CallDateTime, 2000);
         }
