@@ -26,6 +26,9 @@ namespace cv19ResSupportV3.V3.Infrastructure
         [Column("call_date_time")]
         public DateTime CallDateTime { get; set; }
 
+        [Column("caller")]
+        public string Caller { get; set; }
+
         public HelpRequestEntity HelpRequestEntity { get; set; }
 
     }
