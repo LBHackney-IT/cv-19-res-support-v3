@@ -88,7 +88,7 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             }
             DatabaseContext.HelpRequestEntities.AddRange(helpRequests);
             DatabaseContext.SaveChanges();
-            var hrParams = new CallbackRequestParams {HelpNeeded = null, Master = "True"};
+            var hrParams = new CallbackRequestParams { HelpNeeded = null, Master = "True" };
             var response = _classUnderTest.GetCallbacks(hrParams);
             response.Should().BeEquivalentTo(helpRequests);
         }
@@ -105,7 +105,7 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             }
             DatabaseContext.HelpRequestEntities.AddRange(helpRequests);
             DatabaseContext.SaveChanges();
-            var hrParams = new CallbackRequestParams {HelpNeeded = null, Master = "True"};
+            var hrParams = new CallbackRequestParams { HelpNeeded = null, Master = "True" };
             var response = _classUnderTest.GetCallbacks(hrParams);
             response.Should().BeEquivalentTo(helpRequests);
         }
