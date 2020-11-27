@@ -18,6 +18,8 @@ namespace cv19ResSupportV3.V3.Infrastructure
         [Column("call_type")]
         public string CallType { get; set; }
 
+        [Column("call_direction")]
+        public string CallDirection { get; set; }
         [Column("call_outcome")]
         public string CallOutcome { get; set; }
 
