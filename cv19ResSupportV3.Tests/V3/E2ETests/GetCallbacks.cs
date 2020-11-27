@@ -104,6 +104,26 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
         }
 
         [Test]
+        public async Task GetCallbacksMasterWithWhiteSpaceStillReturnsMasterRecords()
+        {
+            var helpRequests = EntityHelpers.createHelpRequestEntities();
+            foreach (var request in helpRequests)
+            {
+                request.InitialCallbackCompleted = true;
+                request.CallbackRequired = true;
+                request.RecordStatus = "MASTER ";
+            }
+            DatabaseContext.HelpRequestEntities.AddRange(helpRequests);
+            DatabaseContext.SaveChanges();
+            var requestUri = new Uri($"api/v3/help-requests/callbacks?master=true", UriKind.Relative);
+            var response = Client.GetAsync(requestUri);
+            var responseBody = response.Result.Content;
+            var stringResponse = await responseBody.ReadAsStringAsync().ConfigureAwait(true);
+            var deserializedBody = JsonConvert.DeserializeObject<List<HelpRequestGetResponse>>(stringResponse);
+            deserializedBody.Count.Should().Be(helpRequests.Count);
+        }
+
+        [Test]
         public async Task GetCallbacksReturnsCallbacksWithHelpRequestCalls()
         {
             var helpRequest = EntityHelpers.createHelpRequestEntity();
@@ -133,5 +153,8 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
                 return options;
             });
         }
+
+
+
     }
 }

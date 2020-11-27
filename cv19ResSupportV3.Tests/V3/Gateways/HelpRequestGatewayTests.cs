@@ -146,5 +146,40 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             response.First().HelpRequestCalls.Count.Should().Be(3);
             response.First().HelpRequestCalls.Should().BeEquivalentTo(calls);
         }
+
+        [Test]
+        public void GetCallbacksReturnsCallbacks()
+        {
+            var helpRequests = EntityHelpers.createHelpRequestEntities();
+            foreach (var request in helpRequests)
+            {
+                request.InitialCallbackCompleted = true;
+                request.CallbackRequired = true;
+                request.RecordStatus = "MASTER";
+            }
+            DatabaseContext.HelpRequestEntities.AddRange(helpRequests);
+            DatabaseContext.SaveChanges();
+            var hrParams = new CallbackRequestParams { HelpNeeded = null, Master = "True" };
+            var response = _classUnderTest.GetCallbacks(hrParams);
+            response.Should().BeEquivalentTo(helpRequests);
+        }
+
+        [Test]
+        public void GetCallbacksWithWhitespaceInRequestParamStillReturnsCallbacks()
+        {
+            var helpRequests = EntityHelpers.createHelpRequestEntities();
+            foreach (var request in helpRequests)
+            {
+                request.InitialCallbackCompleted = true;
+                request.CallbackRequired = true;
+                request.RecordStatus = "MASTER ";
+            }
+            DatabaseContext.HelpRequestEntities.AddRange(helpRequests);
+            DatabaseContext.SaveChanges();
+            var hrParams = new CallbackRequestParams { HelpNeeded = null, Master = "True" };
+            var response = _classUnderTest.GetCallbacks(hrParams);
+            response.Should().BeEquivalentTo(helpRequests);
+        }
+
     }
 }

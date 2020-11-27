@@ -326,7 +326,7 @@ namespace cv19ResSupportV3.V3.Gateways
                     .ToList();
                 if (!string.IsNullOrWhiteSpace(requestParams.Master))
                 {
-                    return response.Where(x => x.RecordStatus != null && x.RecordStatus.ToUpper() == "MASTER").ToList();
+                    return response.Where(x => x.RecordStatus != null && x.RecordStatus.Replace(" ", "").ToUpper() == "MASTER").ToList();
                 }
                 return response;
             }
