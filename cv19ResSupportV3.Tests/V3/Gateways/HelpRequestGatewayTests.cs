@@ -1,5 +1,6 @@
 using AutoFixture;
 using cv19ResSupportV3.Tests.V3.Helpers;
+using cv19ResSupportV3.V3.Boundary.Requests;
 using cv19ResSupportV3.V3.Domain;
 using cv19ResSupportV3.V3.Factories;
 using cv19ResSupportV3.V3.Gateways;
@@ -74,5 +75,40 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             updatedEntity.HelpWithAccessingSupermarketFood.Should().Be(false);
 
         }
+
+        [Test]
+        public void GetCallbacksReturnsCallbacks()
+        {
+            var helpRequests = EntityHelpers.createHelpRequestEntities();
+            foreach (var request in helpRequests)
+            {
+                request.InitialCallbackCompleted = true;
+                request.CallbackRequired = true;
+                request.RecordStatus = "MASTER";
+            }
+            DatabaseContext.HelpRequestEntities.AddRange(helpRequests);
+            DatabaseContext.SaveChanges();
+            var hrParams = new CallbackRequestParams {HelpNeeded = null, Master = "True"};
+            var response = _classUnderTest.GetCallbacks(hrParams);
+            response.Should().BeEquivalentTo(helpRequests);
+        }
+
+        [Test]
+        public void GetCallbacksWithWhitespaceInRequestParamStillReturnsCallbacks()
+        {
+            var helpRequests = EntityHelpers.createHelpRequestEntities();
+            foreach (var request in helpRequests)
+            {
+                request.InitialCallbackCompleted = true;
+                request.CallbackRequired = true;
+                request.RecordStatus = "MASTER ";
+            }
+            DatabaseContext.HelpRequestEntities.AddRange(helpRequests);
+            DatabaseContext.SaveChanges();
+            var hrParams = new CallbackRequestParams {HelpNeeded = null, Master = "True"};
+            var response = _classUnderTest.GetCallbacks(hrParams);
+            response.Should().BeEquivalentTo(helpRequests);
+        }
+
     }
 }
