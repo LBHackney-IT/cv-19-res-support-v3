@@ -1,5 +1,8 @@
+using System.Collections.Generic;
+using System.Linq;
 using cv19ResSupportV3.V3.Infrastructure;
 using HelpRequest = cv19ResSupportV3.V3.Domain.HelpRequest;
+using HelpRequestCall = cv19ResSupportV3.V3.Domain.HelpRequestCall;
 
 namespace cv19ResSupportV3.V3.Factories
 {
@@ -25,10 +28,10 @@ namespace cv19ResSupportV3.V3.Factories
                 AddressThirdLine = helpRequestEntity.AddressThirdLine,
                 GettingInTouchReason = helpRequestEntity.GettingInTouchReason,
                 HelpWithAccessingFood = helpRequestEntity.HelpWithAccessingFood,
-                HelpWithAccessingSupermarketFood  = helpRequestEntity.HelpWithAccessingSupermarketFood,
-                HelpWithCompletingNssForm  = helpRequestEntity.HelpWithCompletingNssForm,
-                HelpWithShieldingGuidance  = helpRequestEntity.HelpWithShieldingGuidance,
-                HelpWithNoNeedsIdentified  = helpRequestEntity.HelpWithNoNeedsIdentified,
+                HelpWithAccessingSupermarketFood = helpRequestEntity.HelpWithAccessingSupermarketFood,
+                HelpWithCompletingNssForm = helpRequestEntity.HelpWithCompletingNssForm,
+                HelpWithShieldingGuidance = helpRequestEntity.HelpWithShieldingGuidance,
+                HelpWithNoNeedsIdentified = helpRequestEntity.HelpWithNoNeedsIdentified,
                 HelpWithAccessingMedicine = helpRequestEntity.HelpWithAccessingMedicine,
                 HelpWithAccessingOtherEssentials = helpRequestEntity.HelpWithAccessingOtherEssentials,
                 HelpWithDebtAndMoney = helpRequestEntity.HelpWithDebtAndMoney,
@@ -89,10 +92,10 @@ namespace cv19ResSupportV3.V3.Factories
                 AddressThirdLine = helpRequest.AddressThirdLine,
                 GettingInTouchReason = helpRequest.GettingInTouchReason,
                 HelpWithAccessingFood = helpRequest.HelpWithAccessingFood,
-                HelpWithAccessingSupermarketFood  = helpRequest.HelpWithAccessingSupermarketFood,
-                HelpWithCompletingNssForm  = helpRequest.HelpWithCompletingNssForm,
-                HelpWithShieldingGuidance  = helpRequest.HelpWithShieldingGuidance,
-                HelpWithNoNeedsIdentified  = helpRequest.HelpWithNoNeedsIdentified,
+                HelpWithAccessingSupermarketFood = helpRequest.HelpWithAccessingSupermarketFood,
+                HelpWithCompletingNssForm = helpRequest.HelpWithCompletingNssForm,
+                HelpWithShieldingGuidance = helpRequest.HelpWithShieldingGuidance,
+                HelpWithNoNeedsIdentified = helpRequest.HelpWithNoNeedsIdentified,
                 HelpWithAccessingMedicine = helpRequest.HelpWithAccessingMedicine,
                 HelpWithAccessingOtherEssentials = helpRequest.HelpWithAccessingOtherEssentials,
                 HelpWithDebtAndMoney = helpRequest.HelpWithDebtAndMoney,
@@ -131,6 +134,39 @@ namespace cv19ResSupportV3.V3.Factories
                 AdviceNotes = helpRequest.AdviceNotes,
                 HelpNeeded = helpRequest.HelpNeeded
             };
+        }
+
+        public static HelpRequestCallEntity ToEntity(this HelpRequestCall helpRequestCall)
+        {
+            return new HelpRequestCallEntity()
+            {
+                Id = helpRequestCall.Id,
+                HelpRequestId = helpRequestCall.HelpRequestId,
+                CallType = helpRequestCall.CallType,
+                CallDirection = helpRequestCall.CallDirection,
+                CallOutcome = helpRequestCall.CallOutcome,
+                CallDateTime = helpRequestCall.CallDateTime,
+                CallHandler = helpRequestCall.CallHandler
+            };
+        }
+
+        public static HelpRequestCall ToDomain(this HelpRequestCallEntity helpRequestCallEntity)
+        {
+            return new HelpRequestCall()
+            {
+                Id = helpRequestCallEntity.Id,
+                HelpRequestId = helpRequestCallEntity.HelpRequestId,
+                CallType = helpRequestCallEntity.CallType,
+                CallDirection = helpRequestCallEntity.CallDirection,
+                CallOutcome = helpRequestCallEntity.CallOutcome,
+                CallDateTime = helpRequestCallEntity.CallDateTime,
+                CallHandler = helpRequestCallEntity.CallHandler
+            };
+        }
+
+        public static List<HelpRequestCall> ToDomain(this ICollection<HelpRequestCallEntity> helpRequestCallEntityList)
+        {
+            return helpRequestCallEntityList?.Select(hrItem => hrItem.ToDomain()).ToList();
         }
     }
 }

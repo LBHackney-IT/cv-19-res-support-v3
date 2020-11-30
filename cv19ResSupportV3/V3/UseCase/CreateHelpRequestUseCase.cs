@@ -15,7 +15,7 @@ namespace cv19ResSupportV3.V3.UseCase
         }
         public HelpRequestCreateResponse Execute(HelpRequest request)
         {
-            var response =  _gateway.CreateHelpRequest(request.ToEntity());
+            var response = _gateway.CreateHelpRequest(request.ToEntity());
             return new HelpRequestCreateResponse
             {
                 Id = response

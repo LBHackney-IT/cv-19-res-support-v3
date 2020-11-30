@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using AutoFixture;
+using cv19ResSupportV3.Tests.V3.Helpers;
 using cv19ResSupportV3.V3.Boundary.Response;
 using cv19ResSupportV3.V3.Domain;
 using cv19ResSupportV3.V3.Infrastructure;
@@ -27,7 +28,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
         [Test]
         public async Task PatchResidentInformationWithPatchableFieldUpdatesTheRecord()
         {
-            var dbEntity = DatabaseContext.HelpRequestEntities.Add(new Fixture().Build<HelpRequestEntity>().Create());
+            var dbEntity = DatabaseContext.HelpRequestEntities.Add(EntityHelpers.createHelpRequestEntity());
             DatabaseContext.SaveChanges();
             var requestObject = DatabaseContext.HelpRequestEntities.First();
             requestObject.FirstName = "to-test-for";
@@ -49,7 +50,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
         [Test]
         public async Task PatchResidentInformationWithPatchableAddressFieldUpdatesTheRecord()
         {
-            var dbEntity = DatabaseContext.HelpRequestEntities.Add(new Fixture().Build<HelpRequestEntity>().Create());
+            var dbEntity = DatabaseContext.HelpRequestEntities.Add(EntityHelpers.createHelpRequestEntity());
             DatabaseContext.SaveChanges();
             var requestObject = DatabaseContext.HelpRequestEntities.First();
             requestObject.AddressFirstLine = "7 test road";
@@ -80,8 +81,9 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
         public async Task PatchResidentInformationWithHelpNeededFieldUpdatesTheRecord()
         {
             var dbEntity = DatabaseContext.HelpRequestEntities.Add(new Fixture().Build<HelpRequestEntity>().
+                Without(x => x.HelpRequestCalls).
                 With(x => x.Id, 1).
-                With( x => x.HelpWithCompletingNssForm, true).
+                With(x => x.HelpWithCompletingNssForm, true).
                 With(x => x.HelpWithShieldingGuidance, true).
                 With(x => x.HelpWithNoNeedsIdentified, true).
                 With(x => x.HelpWithAccessingSupermarketFood, false).Create());
@@ -119,12 +121,12 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
         [Test]
         public async Task PatchResidentInformationWithNonPatchableFieldDoesNotUpdateTheRecord()
         {
-            var dbEntity = DatabaseContext.HelpRequestEntities.Add(new Fixture().Build<HelpRequestEntity>().Create());
+            var dbEntity = DatabaseContext.HelpRequestEntities.Add(EntityHelpers.createHelpRequestEntity());
             DatabaseContext.SaveChanges();
             string changeValue = "to-test-for";
             var requestObject = DatabaseContext.HelpRequestEntities.First();
             var data = JsonConvert.SerializeObject(requestObject);
-            data = data.Replace(requestObject.OnBehalfFirstName, changeValue,StringComparison.InvariantCulture);
+            data = data.Replace(requestObject.OnBehalfFirstName, changeValue, StringComparison.InvariantCulture);
             HttpContent postContent = new StringContent(data, Encoding.UTF8, "application/json");
             var uri = new Uri($"api/v3/help-requests/{requestObject.Id}", UriKind.Relative);
             var response = Client.PatchAsync(uri, postContent);

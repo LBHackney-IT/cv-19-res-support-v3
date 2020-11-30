@@ -1,12 +1,18 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using cv19ResSupportV3.V3.Domain;
 
 namespace cv19ResSupportV3.V3.Infrastructure
 {
     [Table("i_need_help_resident_support_v3")]
     public class HelpRequestEntity
     {
+        public HelpRequestEntity()
+        {
+            HelpRequestCalls = new List<HelpRequestCallEntity>();
+        }
         [Column("id")]
         [Key]
         public int Id { get; set; }
@@ -177,5 +183,7 @@ namespace cv19ResSupportV3.V3.Infrastructure
         public string AdviceNotes { get; set; }
         [Column("help_needed")]
         public string HelpNeeded { get; set; }
+
+        public List<HelpRequestCallEntity> HelpRequestCalls { get; set; }
     }
 }

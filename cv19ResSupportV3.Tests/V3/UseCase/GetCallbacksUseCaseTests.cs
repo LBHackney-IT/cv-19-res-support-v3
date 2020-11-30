@@ -1,13 +1,9 @@
-using System.Collections.Generic;
-using System.Linq;
-using AutoFixture;
+using cv19ResSupportV3.Tests.V3.Helpers;
 using cv19ResSupportV3.V3.Boundary.Requests;
 using cv19ResSupportV3.V3.Factories;
 using cv19ResSupportV3.V3.Gateways;
-using cv19ResSupportV3.V3.Infrastructure;
 using cv19ResSupportV3.V3.UseCase;
 using FluentAssertions;
-using Microsoft.AspNetCore.Mvc.Diagnostics;
 using Moq;
 using NUnit.Framework;
 
@@ -18,7 +14,6 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
     {
         private Mock<IHelpRequestGateway> _mockGateway;
         private GetCallbacksUseCase _classUnderTest;
-        private Fixture _fixture = new Fixture();
 
         [SetUp]
         public void SetUp()
@@ -30,13 +25,13 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
         [Test]
         public void ReturnsPopulatedHelpRequestListIfParamsProvided()
         {
-            var reqParams = new CallbackRequestParams() {Master = "true"};
-            var stubbedRequests = _fixture.CreateMany<HelpRequestEntity>();
+            var reqParams = new CallbackRequestParams() { Master = "true" };
+            var stubbedRequests = EntityHelpers.createHelpRequestEntities();
             foreach (var req in stubbedRequests)
             {
                 req.RecordStatus = "MASTER";
             }
-            _mockGateway.Setup(x => x.GetCallbacks(reqParams)).Returns(stubbedRequests.ToList());
+            _mockGateway.Setup(x => x.GetCallbacks(reqParams)).Returns(stubbedRequests);
             var response = _classUnderTest.Execute(reqParams);
             response.Should().NotBeNull();
             response.Should().BeEquivalentTo(stubbedRequests.ToResponse());
@@ -46,9 +41,9 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
         public void ReturnsAllCallbacksIfNoParamsProvided()
         {
             var reqParams = new CallbackRequestParams();
-            var stubbedRequests = _fixture.CreateMany<HelpRequestEntity>();
+            var stubbedRequests = EntityHelpers.createHelpRequestEntities();
             var expectedResponse = stubbedRequests.ToResponse();
-            _mockGateway.Setup(x => x.GetCallbacks(reqParams)).Returns(stubbedRequests.ToList());
+            _mockGateway.Setup(x => x.GetCallbacks(reqParams)).Returns(stubbedRequests);
             var response = _classUnderTest.Execute(reqParams);
             response.Should().NotBeNull();
             response.Should().BeEquivalentTo(expectedResponse);

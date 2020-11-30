@@ -63,5 +63,6 @@ namespace cv19ResSupportV3.V3.Boundary.Response
         public string CaseNotes { get; set; }
         public string AdviceNotes { get; set; }
         public string HelpNeeded { get; set; }
+        public List<HelpRequestCall> HelpRequestCalls { get; set; }
     }
 }

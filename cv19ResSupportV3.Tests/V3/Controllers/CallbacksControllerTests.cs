@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using AutoFixture;
+using cv19ResSupportV3.Tests.V3.Helpers;
 using cv19ResSupportV3.V3.Boundary.Requests;
 using cv19ResSupportV3.V3.Boundary.Response;
 using cv19ResSupportV3.V3.Controllers;
@@ -34,7 +35,7 @@ namespace cv19ResRupportV3.Tests.V3.Controllers
         [Test]
         public void ReturnsResponseWithStatus()
         {
-            var requests = new Fixture().CreateMany<HelpRequestEntity>();
+            var requests = EntityHelpers.createHelpRequestEntities();
             var reqParams = new CallbackRequestParams();
             _getCallbacksUseCase.Setup(x => x.Execute(reqParams))
                 .Returns(requests.ToResponse());
