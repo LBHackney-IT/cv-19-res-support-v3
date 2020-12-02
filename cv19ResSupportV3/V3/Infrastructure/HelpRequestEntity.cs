@@ -184,6 +184,9 @@ namespace cv19ResSupportV3.V3.Infrastructure
         [Column("help_needed")]
         public string HelpNeeded { get; set; }
 
+        [Column("nhs_ctas_id")]
+        public string NhsCtasId { get; set; }
+
         public List<HelpRequestCallEntity> HelpRequestCalls { get; set; }
     }
 }

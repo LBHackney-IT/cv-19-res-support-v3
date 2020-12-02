@@ -68,7 +68,8 @@ namespace cv19ResSupportV3.V3.Factories
                 InitialCallbackCompleted = helpRequestEntity.InitialCallbackCompleted,
                 CaseNotes = helpRequestEntity.CaseNotes,
                 AdviceNotes = helpRequestEntity.AdviceNotes,
-                HelpNeeded = helpRequestEntity.HelpNeeded
+                HelpNeeded = helpRequestEntity.HelpNeeded,
+                NhsCtasId = helpRequestEntity.NhsCtasId
             };
         }
 
@@ -132,7 +133,8 @@ namespace cv19ResSupportV3.V3.Factories
                 InitialCallbackCompleted = helpRequest.InitialCallbackCompleted,
                 CaseNotes = helpRequest.CaseNotes,
                 AdviceNotes = helpRequest.AdviceNotes,
-                HelpNeeded = helpRequest.HelpNeeded
+                HelpNeeded = helpRequest.HelpNeeded,
+                NhsCtasId = helpRequest.NhsCtasId
             };
         }
 
