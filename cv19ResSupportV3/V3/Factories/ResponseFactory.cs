@@ -74,6 +74,7 @@ namespace cv19ResSupportV3.V3.Factories
                 AdviceNotes = hr.AdviceNotes,
                 HelpNeeded = hr.HelpNeeded,
                 NhsCtasId = hr.NhsCtasId,
+                NhsNumber = hr.NhsNumber,
                 HelpRequestCalls = hr.HelpRequestCalls.ToDomain()
             };
         }
