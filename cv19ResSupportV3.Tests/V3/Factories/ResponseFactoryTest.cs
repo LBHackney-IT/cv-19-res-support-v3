@@ -16,6 +16,7 @@ namespace cv19ResSupportV3.Tests.V3.Factories
             responseObject.Should().BeEquivalentTo(entityObject, options =>
             {
                 options.Excluding(ex => ex.HelpRequestCalls);
+                options.Excluding(ex => ex.NhsNumber);
                 return options;
             });
         }
@@ -28,6 +29,7 @@ namespace cv19ResSupportV3.Tests.V3.Factories
             responseObjects.Should().BeEquivalentTo(entityObjects, options =>
             {
                 options.Excluding(ex => ex.HelpRequestCalls);
+                options.Excluding(ex => ex.NhsNumber);
                 return options;
             });
         }
