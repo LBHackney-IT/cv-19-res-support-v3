@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using cv19ResSupportV3.V3.Infrastructure;
@@ -9,9 +10,10 @@ using cv19ResSupportV3.V3.Infrastructure;
 namespace cv19ResSupportV3.V3.Infrastructure.Migrations
 {
     [DbContext(typeof(HelpRequestsContext))]
-    partial class HelpRequestsContextModelSnapshot : ModelSnapshot
+    [Migration("20201207120525_AddNhsNumberToHelpRequestTable")]
+    partial class AddNhsNumberToHelpRequestTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

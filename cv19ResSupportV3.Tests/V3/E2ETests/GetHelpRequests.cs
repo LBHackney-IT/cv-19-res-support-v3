@@ -134,7 +134,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             statusCode.Should().Be(200);
             var responseBody = response.Result.Content;
             var stringResponse = await responseBody.ReadAsStringAsync().ConfigureAwait(true);
-            var expectedResponse = helpRequests.First();
+            var expectedResponse = helpRequests.First().ToResponse();
             var deserializedBody = JsonConvert.DeserializeObject<List<HelpRequestGetResponse>>(stringResponse);
             deserializedBody.Count.Should().Be(1);
             deserializedBody.Should().BeEquivalentTo(expectedResponse);

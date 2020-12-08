@@ -69,6 +69,7 @@ namespace cv19ResSupportV3.V3.Factories
                 CaseNotes = helpRequestEntity.CaseNotes,
                 AdviceNotes = helpRequestEntity.AdviceNotes,
                 HelpNeeded = helpRequestEntity.HelpNeeded,
+                NhsNumber = helpRequestEntity.NhsNumber,
                 NhsCtasId = helpRequestEntity.NhsCtasId
             };
         }
@@ -134,6 +135,7 @@ namespace cv19ResSupportV3.V3.Factories
                 CaseNotes = helpRequest.CaseNotes,
                 AdviceNotes = helpRequest.AdviceNotes,
                 HelpNeeded = helpRequest.HelpNeeded,
+                NhsNumber = helpRequest.NhsNumber,
                 NhsCtasId = helpRequest.NhsCtasId
             };
         }
