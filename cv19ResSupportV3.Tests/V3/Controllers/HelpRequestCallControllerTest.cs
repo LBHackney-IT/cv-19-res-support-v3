@@ -34,7 +34,7 @@ namespace cv19ResRupportV3.Tests.V3.Controllers
                 .Create();
             var request = new Fixture().Build<HelpRequestCall>().Create();
             _fakeCreateHelpRequestCallUseCase.Setup(x => x.Execute(helpRequest.Id, request))
-                .Returns(new HelpRequestCallCreateResponse() { Id = request.Id });
+                .Returns(request.Id);
             var response = _classUnderTest.CreateHelpRequestCall(helpRequest.Id, request) as CreatedResult;
             response.StatusCode.Should().Be(201);
         }

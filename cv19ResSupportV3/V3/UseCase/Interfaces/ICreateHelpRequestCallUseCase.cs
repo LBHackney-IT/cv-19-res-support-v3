@@ -5,6 +5,6 @@ namespace cv19ResSupportV3.V3.UseCase.Interfaces
 {
     public interface ICreateHelpRequestCallUseCase
     {
-        HelpRequestCallCreateResponse Execute(int id, HelpRequestCall request);
+        int Execute(int id, HelpRequestCall request);
     }
 }

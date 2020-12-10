@@ -35,8 +35,9 @@ namespace cv19ResSupportV3.V3.Controllers
         {
             try
             {
-                var result = _createHelpRequestCallUseCase.Execute(id, request);
-                return Created(new Uri($"api/v3/help-requests/{id}/calls/{result.Id}", UriKind.Relative), result);
+                var callId = _createHelpRequestCallUseCase.Execute(id, request);
+                var result = new HelpRequestCallCreateResponse() { Id = callId };
+                return Created(new Uri($"api/v3/help-requests/{id}/calls/{callId}", UriKind.Relative), result);
             }
             catch (InvalidOperationException e)
             {

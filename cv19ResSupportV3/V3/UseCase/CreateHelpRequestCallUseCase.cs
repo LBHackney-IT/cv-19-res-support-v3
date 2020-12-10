@@ -13,13 +13,9 @@ namespace cv19ResSupportV3.V3.UseCase
         {
             _helpRequestCallGateway = helpRequestCallGateway;
         }
-        public HelpRequestCallCreateResponse Execute(int id, HelpRequestCall request)
+        public int Execute(int id, HelpRequestCall request)
         {
-            var response = _helpRequestCallGateway.CreateHelpRequestCall(id, request.ToEntity());
-            return new HelpRequestCallCreateResponse
-            {
-                Id = response
-            };
+            return _helpRequestCallGateway.CreateHelpRequestCall(id, request.ToEntity());
         }
     }
 }

@@ -27,14 +27,10 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
         public void ExecuteWithValidIdSavesRequestToDatabase()
         {
             int id = 1;
-            var expectedResponse = new HelpRequestCallCreateResponse
-            {
-                Id = id
-            };
             _mockHelpRequestCallGateway.Setup(s => s.CreateHelpRequestCall(id, It.IsAny<HelpRequestCallEntity>())).Returns(id);
             var dataToSave = new Fixture().Build<HelpRequestCall>().Create();
             var response = _classUnderTest.Execute(id, dataToSave);
-            response.Should().BeEquivalentTo(expectedResponse);
+            response.Should().Be(id);
         }
 
         [Test]
@@ -43,7 +39,7 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
             int id = 1;
             var dataToSave = new Fixture().Build<HelpRequestCall>().Create();
             var response = _classUnderTest.Execute(id, dataToSave);
-            response.Id.Should().Be(0);
+            response.Should().Be(0);
         }
     }
 }
