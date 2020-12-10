@@ -4,6 +4,7 @@ using System.Diagnostics;
 using cv19ResSupportV3.V3.Boundary.Requests;
 using cv19ResSupportV3.V3.Boundary.Response;
 using cv19ResSupportV3.V3.Domain;
+using cv19ResSupportV3.V3.Factories;
 using cv19ResSupportV3.V3.UseCase;
 using cv19ResSupportV3.V3.UseCase.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -39,11 +40,12 @@ namespace cv19ResSupportV3.V3.Controllers
         /// <response code="201">...</response>
         [ProducesResponseType(typeof(HelpRequestCreateResponse), StatusCodes.Status201Created)]
         [HttpPost]
-        public IActionResult CreateHelpRequest(HelpRequest request)
+        public IActionResult CreateHelpRequest(HelpRequestCreateRequestBoundary request)
         {
             try
             {
-                var result = _createHelpRequestUseCase.Execute(request);
+                var domain = request.ToDomain();
+                var result = _createHelpRequestUseCase.Execute(domain);
                 return Created(new Uri($"api/v3/help-requests/{result.Id}", UriKind.Relative), result);
             }
             catch (Exception e)
