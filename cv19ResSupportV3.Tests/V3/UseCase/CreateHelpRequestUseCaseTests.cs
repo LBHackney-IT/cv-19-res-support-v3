@@ -26,14 +26,10 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
         [Test]
         public void ExecuteSavesRequestToDatabase()
         {
-            var expectedResponse = new HelpRequestCreateResponse
-            {
-                Id = 1
-            };
             _mockGateway.Setup(s => s.CreateHelpRequest(It.IsAny<HelpRequestEntity>())).Returns(1);
             var dataToSave = new Fixture().Build<HelpRequest>().Create();
             var response = _classUnderTest.Execute(dataToSave);
-            response.Should().BeEquivalentTo(expectedResponse);
+            response.Should().Be(1);
         }
     }
 }

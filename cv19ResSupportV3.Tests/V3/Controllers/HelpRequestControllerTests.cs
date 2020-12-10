@@ -44,7 +44,7 @@ namespace cv19ResRupportV3.Tests.V3.Controllers
         {
             var request = new Fixture().Build<HelpRequestCreateRequestBoundary>().Create();
             _fakeCreateHelpRequestUseCase.Setup(x => x.Execute(It.Is<HelpRequest>(o => o.Id == request.Id)))
-                .Returns(new HelpRequestCreateResponse() { Id = request.Id });
+                .Returns(request.Id);
             var response = _classUnderTest.CreateHelpRequest(request) as CreatedResult;
             response.StatusCode.Should().Be(201);
         }

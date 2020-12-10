@@ -45,8 +45,9 @@ namespace cv19ResSupportV3.V3.Controllers
             try
             {
                 var domain = request.ToDomain();
-                var result = _createHelpRequestUseCase.Execute(domain);
-                return Created(new Uri($"api/v3/help-requests/{result.Id}", UriKind.Relative), result);
+                var id = _createHelpRequestUseCase.Execute(domain);
+                var result = new HelpRequestCreateResponse() { Id = id };
+                return Created(new Uri($"api/v3/help-requests/{id}", UriKind.Relative), result);
             }
             catch (Exception e)
             {
