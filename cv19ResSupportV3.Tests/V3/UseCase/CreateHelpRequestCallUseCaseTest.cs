@@ -28,7 +28,7 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
         public void ExecuteWithValidIdSavesRequestToDatabase()
         {
             int id = 1;
-            _mockHelpRequestCallGateway.Setup(s => s.CreateHelpRequestCall(id, It.IsAny<HelpRequestCallEntity>())).Returns(id);
+            _mockHelpRequestCallGateway.Setup(s => s.CreateHelpRequestCall(id, It.IsAny<CreateHelpRequestCall>())).Returns(id);
             var dataToSave = new Fixture().Build<CreateHelpRequestCall>().Create();
             var response = _classUnderTest.Execute(id, dataToSave);
             response.Should().Be(id);

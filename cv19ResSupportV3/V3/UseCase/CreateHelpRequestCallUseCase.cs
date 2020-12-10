@@ -17,7 +17,7 @@ namespace cv19ResSupportV3.V3.UseCase
         }
         public int Execute(int id, CreateHelpRequestCall command)
         {
-            return _helpRequestCallGateway.CreateHelpRequestCall(id, command.ToEntity());
+            return _helpRequestCallGateway.CreateHelpRequestCall(id, command);
         }
     }
 }

@@ -1,5 +1,7 @@
 using System.Linq;
+using AutoFixture;
 using cv19ResSupportV3.Tests.V3.Helpers;
+using cv19ResSupportV3.V3.Domain.Commands;
 using cv19ResSupportV3.V3.Gateways;
 using FluentAssertions;
 using NUnit.Framework;
@@ -23,10 +25,11 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             DatabaseContext.HelpRequestEntities.Add(EntityHelpers.createHelpRequestEntity(5));
             DatabaseContext.SaveChanges();
             var helpRequestEntity = DatabaseContext.HelpRequestEntities.First();
-            var helpRequestCall = EntityHelpers.createHelpRequestCallEntity();
-            helpRequestCall.HelpRequestId = helpRequestEntity.Id;
-            var response = _classUnderTest.CreateHelpRequestCall(helpRequestEntity.Id, helpRequestCall);
-            response.Should().Be(helpRequestCall.Id);
+            var command = new Fixture().Build<CreateHelpRequestCall>().Create();
+            command.HelpRequestId = helpRequestEntity.Id;
+            var response = _classUnderTest.CreateHelpRequestCall(helpRequestEntity.Id, command);
+            var persistedCall = DatabaseContext.HelpRequestCallEntities.OrderByDescending(x => x.Id).First();
+            response.Should().Be(persistedCall.Id);
         }
 
     }
