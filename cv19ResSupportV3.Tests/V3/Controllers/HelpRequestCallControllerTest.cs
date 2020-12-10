@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using AutoFixture;
+using cv19ResSupportV3.V3.Boundary.Requests;
 using cv19ResSupportV3.V3.Boundary.Response;
 using cv19ResSupportV3.V3.Controllers;
 using cv19ResSupportV3.V3.Domain;
+using cv19ResSupportV3.V3.Domain.Commands;
 using cv19ResSupportV3.V3.UseCase;
 using cv19ResSupportV3.V3.UseCase.Interfaces;
 using FluentAssertions;
@@ -32,9 +34,9 @@ namespace cv19ResRupportV3.Tests.V3.Controllers
         {
             var helpRequest = new Fixture().Build<HelpRequest>()
                 .Create();
-            var request = new Fixture().Build<HelpRequestCall>().Create();
-            _fakeCreateHelpRequestCallUseCase.Setup(x => x.Execute(helpRequest.Id, request))
-                .Returns(request.Id);
+            var request = new Fixture().Build<CreateHelpRequestCallRequest>().Create();
+            _fakeCreateHelpRequestCallUseCase.Setup(x => x.Execute(helpRequest.Id, It.IsAny<CreateHelpRequestCall>()))
+                .Returns(1);
             var response = _classUnderTest.CreateHelpRequestCall(helpRequest.Id, request) as CreatedResult;
             response.StatusCode.Should().Be(201);
         }

@@ -1,6 +1,7 @@
 using AutoFixture;
 using cv19ResSupportV3.V3.Boundary.Response;
 using cv19ResSupportV3.V3.Domain;
+using cv19ResSupportV3.V3.Domain.Commands;
 using cv19ResSupportV3.V3.Factories;
 using cv19ResSupportV3.V3.Gateways;
 using cv19ResSupportV3.V3.Infrastructure;
@@ -28,7 +29,7 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
         {
             int id = 1;
             _mockHelpRequestCallGateway.Setup(s => s.CreateHelpRequestCall(id, It.IsAny<HelpRequestCallEntity>())).Returns(id);
-            var dataToSave = new Fixture().Build<HelpRequestCall>().Create();
+            var dataToSave = new Fixture().Build<CreateHelpRequestCall>().Create();
             var response = _classUnderTest.Execute(id, dataToSave);
             response.Should().Be(id);
         }
@@ -37,7 +38,7 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
         public void ExecuteWithInvalidIdReturnsNull()
         {
             int id = 1;
-            var dataToSave = new Fixture().Build<HelpRequestCall>().Create();
+            var dataToSave = new Fixture().Build<CreateHelpRequestCall>().Create();
             var response = _classUnderTest.Execute(id, dataToSave);
             response.Should().Be(0);
         }
