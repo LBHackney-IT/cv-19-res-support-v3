@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoFixture;
 using cv19ResSupportV3.V3.Boundary.Response;
+using cv19ResSupportV3.V3.Boundary.Requests;
 using cv19ResSupportV3.V3.Domain;
 using FluentAssertions;
 using Newtonsoft.Json;
@@ -18,7 +19,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
         public async Task GetResidentInformationByIdReturnsTheCorrectInformation()
         {
             DatabaseContext.Database.RollbackTransaction();
-            var requestObject = new Fixture().Build<HelpRequest>().Create();
+            var requestObject = new Fixture().Build<HelpRequestCreateRequestBoundary>().Create();
             var data = JsonConvert.SerializeObject(requestObject);
             HttpContent postContent = new StringContent(data, Encoding.UTF8, "application/json");
             var uri = new Uri($"api/v3/help-requests", UriKind.Relative);

@@ -13,13 +13,10 @@ namespace cv19ResSupportV3.V3.UseCase
         {
             _gateway = gateway;
         }
-        public HelpRequestCreateResponse Execute(HelpRequest request)
+        public int Execute(HelpRequest request)
         {
             var response = _gateway.CreateHelpRequest(request.ToEntity());
-            return new HelpRequestCreateResponse
-            {
-                Id = response
-            };
+            return response;
         }
     }
 }
