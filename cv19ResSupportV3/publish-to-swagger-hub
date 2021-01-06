@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+
+# Exit on any failure
+set -e
+
+if [ -z "$SWAGGERHUB_API_KEY" ]
+then
+    echo "You must configure SWAGGERHUB_API_KEY"
+    exit 1
+fi
+
+if [ ! -x "$(command -v npm)" ]
+then
+    echo "Node must be installed"
+    exit 1
+fi
+
+if [ ! -x "$(command -v swaggerhub)" ]
+then
+    echo "Installing swaggerhub-cli"
+    npm i -g --silent swaggerhub-cli
+fi
+
+owner="Hackney"
+api_name="here-to-help"
+api_version="v3.0"
+
+if [ "$1" = "production"  ]
+then
+    swagger_version="$api_version"
+    echo "Stage is production, therefore will name this version '${swagger_version}'"
+else
+    suffix="$(git branch --show-current)"
+    # The following suffix interpolation replaces forward slashes with underscores
+    swagger_version="${api_version}-${suffix//\//_}"
+    echo "Stage is not production, therefore will name this version after the branch. ${swagger_version}"
+fi
+
+tmp_dir="$(mktemp -d)"
+json_file="${tmp_dir}/swagger.json"
+
+(
+cd cv19ResSupportV3
+dotnet tool restore
+
+dotnet build -c Release -o out
+dotnet swagger tofile --output "${json_file}" ./out/cv19ResSupportV3.dll "${api_version}"
+)
+
+swagger_path="${owner}/${api_name}/${swagger_version}"
+
+if [ -z "$(swaggerhub api:get "${swagger_path}")" ]
+then
+    swaggerhub api:create "$swagger_path" --file "${json_file}"
+else
+    swaggerhub api:update "$swagger_path" --file "${json_file}"
+fi
+
+echo "Cleaning up ${tmp_dir}"
+rm -rf "$tmp_dir"
