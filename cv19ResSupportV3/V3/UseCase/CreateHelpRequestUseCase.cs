@@ -15,6 +15,7 @@ namespace cv19ResSupportV3.V3.UseCase
         }
         public int Execute(HelpRequest request)
         {
+
             var response = _gateway.CreateHelpRequest(request.ToEntity());
             return response;
         }
