@@ -60,13 +60,15 @@ namespace cv19ResSupportV3.V3.Controllers
         /// </summary>
         /// <response code="200">The record has been updated</response>
         /// <response code="400">There was an issue updating the record.</response>
-        [ProducesResponseType(typeof(HelpRequestCreateResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(HelpRequestUpdateResponse), StatusCodes.Status200OK)]
         [HttpPut]
-        public IActionResult UpdateHelpRequest(HelpRequest request)
+        public IActionResult UpdateHelpRequest(HelpRequestUpdateRequest request)
         {
             try
             {
-                var result = _updateHelpRequestUseCase.Execute(request);
+                var domain = request.ToDomain();
+                var response = _updateHelpRequestUseCase.Execute(domain);
+                var result = response.ToResponse();
                 return Ok(result);
             }
             catch (Exception e)
