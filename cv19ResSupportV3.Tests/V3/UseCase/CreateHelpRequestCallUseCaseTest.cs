@@ -9,6 +9,7 @@ using cv19ResSupportV3.V3.UseCase;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+
 namespace cv19ResSupportV3.Tests.V3.UseCase
 {
     [TestFixture]
@@ -25,19 +26,37 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
         }
 
         [Test]
-        public void ExecuteWithValidIdSavesRequestToDatabase()
+        public void ItPersistsTheCallWhenTheRequestExists()
         {
-            int id = 1;
-            _mockHelpRequestCallGateway.Setup(s => s.CreateHelpRequestCall(id, It.IsAny<CreateHelpRequestCall>())).Returns(id);
-            var dataToSave = new Fixture().Create<CreateHelpRequestCall>();
-            var response = _classUnderTest.Execute(id, dataToSave);
-            response.Should().Be(id);
+            int requestId = 123;
+            var command = new Fixture().Create<CreateHelpRequestCall>();
+            _classUnderTest.Execute(requestId, command);
+            _mockHelpRequestCallGateway.Verify(
+                g => g.CreateHelpRequestCall(
+                    requestId,
+                    It.Is<CreateHelpRequestCall>(c =>
+                        c.HelpRequestId == command.HelpRequestId
+                    )
+                ), Times.Once);
         }
 
         [Test]
-        public void ExecuteWithInvalidIdReturnsNull()
+        public void ItReturnsTheResultingCallId()
         {
-            int id = 1;
+            int requestId = 123;
+            int resultingCallId = 1;
+            _mockHelpRequestCallGateway
+                .Setup(s => s.CreateHelpRequestCall(requestId, It.IsAny<CreateHelpRequestCall>()))
+                .Returns(resultingCallId);
+            var command = new Fixture().Create<CreateHelpRequestCall>();
+            var response = _classUnderTest.Execute(requestId, command);
+            response.Should().Be(resultingCallId);
+        }
+
+        [Test]
+        public void ItReturnsNullWhenHelpRequestDoesNotExist()
+        {
+            int id = 1234;
             var dataToSave = new Fixture().Create<CreateHelpRequestCall>();
             var response = _classUnderTest.Execute(id, dataToSave);
             response.Should().Be(0);
