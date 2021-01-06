@@ -41,7 +41,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             statusCode.Should().Be(200);
             var responseBody = response.Result.Content;
             var stringResponse = await responseBody.ReadAsStringAsync().ConfigureAwait(true);
-            var deserializedBody = JsonConvert.DeserializeObject<List<HelpRequestGetResponse>>(stringResponse);
+            var deserializedBody = JsonConvert.DeserializeObject<List<HelpRequestResponse>>(stringResponse);
             DatabaseContext.HelpRequestEntities.Count().Should().Be(helpRequests.Count);
             deserializedBody.Count.Should().Be(helpRequests.Count);
         }
@@ -64,7 +64,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             statusCode.Should().Be(200);
             var responseBody = response.Result.Content;
             var stringResponse = await responseBody.ReadAsStringAsync().ConfigureAwait(true);
-            var deserializedBody = JsonConvert.DeserializeObject<List<HelpRequestGetResponse>>(stringResponse);
+            var deserializedBody = JsonConvert.DeserializeObject<List<HelpRequestResponse>>(stringResponse);
             DatabaseContext.HelpRequestEntities.Count().Should().Be(helpRequests.Count);
             deserializedBody.Count.Should().Be(0);
         }
@@ -99,7 +99,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             var responseBody = response.Result.Content;
             int expectedResponse = helpRequests.Count(a => a.RecordStatus == "MASTER");
             var stringResponse = await responseBody.ReadAsStringAsync().ConfigureAwait(true);
-            var deserializedBody = JsonConvert.DeserializeObject<List<HelpRequestGetResponse>>(stringResponse);
+            var deserializedBody = JsonConvert.DeserializeObject<List<HelpRequestResponse>>(stringResponse);
             deserializedBody.Count.Should().Be(expectedResponse);
         }
 
@@ -119,7 +119,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             var response = Client.GetAsync(requestUri);
             var responseBody = response.Result.Content;
             var stringResponse = await responseBody.ReadAsStringAsync().ConfigureAwait(true);
-            var deserializedBody = JsonConvert.DeserializeObject<List<HelpRequestGetResponse>>(stringResponse);
+            var deserializedBody = JsonConvert.DeserializeObject<List<HelpRequestResponse>>(stringResponse);
             deserializedBody.Count.Should().Be(helpRequests.Count);
         }
 
@@ -143,7 +143,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             statusCode.Should().Be(200);
             var responseBody = response.Result.Content;
             var stringResponse = await responseBody.ReadAsStringAsync().ConfigureAwait(true);
-            var deserializedBody = JsonConvert.DeserializeObject<List<HelpRequestGetResponse>>(stringResponse);
+            var deserializedBody = JsonConvert.DeserializeObject<List<HelpRequestResponse>>(stringResponse);
             DatabaseContext.HelpRequestEntities.Count().Should().Be(1);
             deserializedBody.Count.Should().Be(1);
             deserializedBody.First().HelpRequestCalls.Count.Should().Be(3);

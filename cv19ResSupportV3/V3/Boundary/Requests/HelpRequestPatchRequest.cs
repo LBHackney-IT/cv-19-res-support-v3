@@ -1,19 +1,9 @@
 using System;
-using System.Collections.Generic;
-using cv19ResSupportV3.V3.Domain;
 
-namespace cv19ResSupportV3.V3.Boundary.Response
+namespace cv19ResSupportV3.V3.Boundary.Requests
 {
-    public class HelpRequestGetResponse
+    public class HelpRequestPatchRequest
     {
-        public int Id { get; set; }
-        public bool? IsOnBehalf { get; set; }
-        public bool? ConsentToCompleteOnBehalf { get; set; }
-        public string OnBehalfFirstName { get; set; }
-        public string OnBehalfLastName { get; set; }
-        public string OnBehalfEmailAddress { get; set; }
-        public string OnBehalfContactNumber { get; set; }
-        public string RelationshipWithResident { get; set; }
         public string PostCode { get; set; }
         public string Uprn { get; set; }
         public string Ward { get; set; }
@@ -32,17 +22,7 @@ namespace cv19ResSupportV3.V3.Boundary.Response
         public bool? HelpWithHealth { get; set; }
         public bool? HelpWithMentalHealth { get; set; }
         public bool? HelpWithAccessingInternet { get; set; }
-        public bool? HelpWithHousing { get; set; }
-        public bool? HelpWithJobsOrTraining { get; set; }
-        public bool? HelpWithChildrenAndSchools { get; set; }
-        public bool? HelpWithDisabilities { get; set; }
         public bool? HelpWithSomethingElse { get; set; }
-        public bool? MedicineDeliveryHelpNeeded { get; set; }
-        public bool? IsPharmacistAbleToDeliver { get; set; }
-        public string WhenIsMedicinesDelivered { get; set; }
-        public string NameAddressPharmacist { get; set; }
-        public string UrgentEssentials { get; set; }
-        public string UrgentEssentialsAnythingElse { get; set; }
         public string CurrentSupport { get; set; }
         public string CurrentSupportFeedback { get; set; }
         public string FirstName { get; set; }
@@ -63,8 +43,5 @@ namespace cv19ResSupportV3.V3.Boundary.Response
         public string CaseNotes { get; set; }
         public string AdviceNotes { get; set; }
         public string HelpNeeded { get; set; }
-        public string NhsNumber { get; set; }
-        public string NhsCtasId { get; set; }
-        public List<HelpRequestCall> HelpRequestCalls { get; set; }
     }
 }

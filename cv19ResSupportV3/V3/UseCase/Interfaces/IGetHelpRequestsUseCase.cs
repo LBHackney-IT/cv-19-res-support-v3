@@ -6,6 +6,6 @@ namespace cv19ResSupportV3.V3.UseCase
 {
     public interface IGetHelpRequestsUseCase
     {
-        List<HelpRequestGetResponse> Execute(RequestQueryParams queryParams);
+        List<HelpRequestResponse> Execute(RequestQueryParams queryParams);
     }
 }

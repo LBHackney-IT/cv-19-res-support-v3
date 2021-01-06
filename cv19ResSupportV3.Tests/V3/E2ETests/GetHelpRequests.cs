@@ -36,7 +36,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             statusCode.Should().Be(200);
             var content = response.Result.Content;
             var stringContent = await content.ReadAsStringAsync().ConfigureAwait(true);
-            var convertedResponse = JsonConvert.DeserializeObject<HelpRequestGetResponse>(stringContent);
+            var convertedResponse = JsonConvert.DeserializeObject<HelpRequestResponse>(stringContent);
             convertedResponse.Should().BeEquivalentTo(expectedResponse, options =>
             {
                 options.Excluding(ex => ex.HelpRequestCalls);
@@ -75,8 +75,8 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             statusCode.Should().Be(200);
             var responseBody = response.Result.Content;
             var stringResponse = await responseBody.ReadAsStringAsync().ConfigureAwait(true);
-            var expectedResponse = new HelpRequestGetResponse();
-            var deserializedBody = JsonConvert.DeserializeObject<List<HelpRequestGetResponse>>(stringResponse);
+            var expectedResponse = new HelpRequestResponse();
+            var deserializedBody = JsonConvert.DeserializeObject<List<HelpRequestResponse>>(stringResponse);
             deserializedBody.Count.Should().Be(0);
         }
 
@@ -112,7 +112,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             var responseBody = response.Result.Content;
             var stringResponse = await responseBody.ReadAsStringAsync().ConfigureAwait(true);
             var expectedResponse = helpRequests.First();
-            var deserializedBody = JsonConvert.DeserializeObject<List<HelpRequestGetResponse>>(stringResponse);
+            var deserializedBody = JsonConvert.DeserializeObject<List<HelpRequestResponse>>(stringResponse);
 
             deserializedBody.Should().BeEquivalentTo(helpRequests, options =>
             {
@@ -135,7 +135,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             var responseBody = response.Result.Content;
             var stringResponse = await responseBody.ReadAsStringAsync().ConfigureAwait(true);
             var expectedResponse = helpRequests.First().ToResponse();
-            var deserializedBody = JsonConvert.DeserializeObject<List<HelpRequestGetResponse>>(stringResponse);
+            var deserializedBody = JsonConvert.DeserializeObject<List<HelpRequestResponse>>(stringResponse);
             deserializedBody.Count.Should().Be(1);
             deserializedBody.Should().BeEquivalentTo(expectedResponse);
         }
@@ -154,7 +154,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             var responseBody = response.Result.Content;
             var stringResponse = await responseBody.ReadAsStringAsync().ConfigureAwait(true);
             var expectedResponse = helpRequests.First().ToResponse();
-            var deserializedBody = JsonConvert.DeserializeObject<List<HelpRequestGetResponse>>(stringResponse);
+            var deserializedBody = JsonConvert.DeserializeObject<List<HelpRequestResponse>>(stringResponse);
             deserializedBody.Count.Should().Be(1);
             deserializedBody.Should().BeEquivalentTo(expectedResponse);
         }
@@ -173,7 +173,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             var responseBody = response.Result.Content;
             var stringResponse = await responseBody.ReadAsStringAsync().ConfigureAwait(true);
             var expectedResponse = helpRequests.First().ToResponse();
-            var deserializedBody = JsonConvert.DeserializeObject<List<HelpRequestGetResponse>>(stringResponse);
+            var deserializedBody = JsonConvert.DeserializeObject<List<HelpRequestResponse>>(stringResponse);
             deserializedBody.Count.Should().Be(1);
             deserializedBody.Should().BeEquivalentTo(expectedResponse);
         }
@@ -194,7 +194,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             var responseBody = response.Result.Content;
             var stringResponse = await responseBody.ReadAsStringAsync().ConfigureAwait(true);
             var expectedResponse = helpRequests.First().ToResponse();
-            var deserializedBody = JsonConvert.DeserializeObject<List<HelpRequestGetResponse>>(stringResponse);
+            var deserializedBody = JsonConvert.DeserializeObject<List<HelpRequestResponse>>(stringResponse);
             deserializedBody.Count.Should().Be(1);
             deserializedBody.Should().BeEquivalentTo(expectedResponse);
         }
@@ -213,7 +213,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             var responseBody = response.Result.Content;
             var stringResponse = await responseBody.ReadAsStringAsync().ConfigureAwait(true);
             var expectedResponse = helpRequests.First().ToResponse();
-            var deserializedBody = JsonConvert.DeserializeObject<List<HelpRequestGetResponse>>(stringResponse);
+            var deserializedBody = JsonConvert.DeserializeObject<List<HelpRequestResponse>>(stringResponse);
             deserializedBody.Count.Should().Be(1);
             deserializedBody.Should().BeEquivalentTo(expectedResponse);
         }
@@ -238,7 +238,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             statusCode.Should().Be(200);
             var responseBody = response.Result.Content;
             var stringResponse = await responseBody.ReadAsStringAsync().ConfigureAwait(true);
-            var deserializedBody = JsonConvert.DeserializeObject<HelpRequestGetResponse>(stringResponse);
+            var deserializedBody = JsonConvert.DeserializeObject<HelpRequestResponse>(stringResponse);
             deserializedBody.HelpRequestCalls.Should().BeEquivalentTo(calls, options =>
             {
                 options.Excluding(ex => ex.HelpRequestEntity);
@@ -268,7 +268,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             statusCode.Should().Be(200);
             var responseBody = response.Result.Content;
             var stringResponse = await responseBody.ReadAsStringAsync().ConfigureAwait(true);
-            var deserializedBody = JsonConvert.DeserializeObject<List<HelpRequestGetResponse>>(stringResponse);
+            var deserializedBody = JsonConvert.DeserializeObject<List<HelpRequestResponse>>(stringResponse);
             deserializedBody.First().HelpRequestCalls.Count.Should().Be(3);
             deserializedBody.First().HelpRequestCalls.Should().BeEquivalentTo(calls, options =>
             {

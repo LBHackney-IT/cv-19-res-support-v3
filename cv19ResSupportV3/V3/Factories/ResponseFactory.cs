@@ -8,13 +8,13 @@ namespace cv19ResSupportV3.V3.Factories
 {
     public static class ResponseFactory
     {
-        public static HelpRequestGetResponse ToResponse(this HelpRequestEntity hr)
+        public static HelpRequestResponse ToResponse(this HelpRequestEntity hr)
         {
             if (hr == null)
             {
                 return null;
             }
-            return new HelpRequestGetResponse()
+            return new HelpRequestResponse()
             {
                 Id = hr.Id,
                 IsOnBehalf = hr.IsOnBehalf,
@@ -79,13 +79,14 @@ namespace cv19ResSupportV3.V3.Factories
             };
         }
 
-          public static HelpRequestGetResponse ToResponse(this HelpRequest hr)
+        public static HelpRequestResponse ToResponse(this HelpRequest hr)
         {
             if (hr == null)
             {
                 return null;
             }
-            return new HelpRequestGetResponse()
+
+            return new HelpRequestResponse()
             {
                 Id = hr.Id,
                 IsOnBehalf = hr.IsOnBehalf,
@@ -150,7 +151,7 @@ namespace cv19ResSupportV3.V3.Factories
             };
         }
 
-        public static List<HelpRequestGetResponse> ToResponse(this IEnumerable<HelpRequestEntity> responseList)
+        public static List<HelpRequestResponse> ToResponse(this IEnumerable<HelpRequestEntity> responseList)
         {
             return responseList.Select(responseItem => responseItem.ToResponse()).ToList();
         }
@@ -160,7 +161,7 @@ namespace cv19ResSupportV3.V3.Factories
             return responseList.Select(responseItem => responseItem.ToDomain()).ToList();
         }
 
-        public static List<HelpRequestGetResponse> ToResponse(this IEnumerable<HelpRequest> responseList)
+        public static List<HelpRequestResponse> ToResponse(this IEnumerable<HelpRequest> responseList)
         {
             return responseList.Select(responseItem => responseItem.ToResponse()).ToList();
         }

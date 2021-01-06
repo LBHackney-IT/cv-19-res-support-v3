@@ -27,7 +27,7 @@ namespace cv19ResSupportV3.V3.Controllers
         /// Returns a list of help requests requiring a callback.
         /// </summary>
         /// <response code="200">A list of 0 or more callbacks returned.</response>
-        [ProducesResponseType(typeof(List<HelpRequestGetResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(List<HelpRequestResponse>), StatusCodes.Status200OK)]
         [HttpGet]
         public IActionResult GetCallbacks([FromQuery] CallbackRequestParams requestParams)
         {

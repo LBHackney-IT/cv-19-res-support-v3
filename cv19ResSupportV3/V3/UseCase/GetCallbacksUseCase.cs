@@ -15,7 +15,7 @@ namespace cv19ResSupportV3.V3.UseCase
             _gateway = gateway;
         }
 
-        public List<HelpRequestGetResponse> Execute(CallbackRequestParams requestParams)
+        public List<HelpRequestResponse> Execute(CallbackRequestParams requestParams)
         {
             return _gateway.GetCallbacks(requestParams).ToResponse();
         }

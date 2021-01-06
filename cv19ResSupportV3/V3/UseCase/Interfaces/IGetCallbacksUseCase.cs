@@ -6,6 +6,6 @@ namespace cv19ResSupportV3.V3.UseCase
 {
     public interface IGetCallbacksUseCase
     {
-        List<HelpRequestGetResponse> Execute(CallbackRequestParams requestParams);
+        List<HelpRequestResponse> Execute(CallbackRequestParams requestParams);
     }
 }

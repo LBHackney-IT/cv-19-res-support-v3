@@ -5,6 +5,6 @@ namespace cv19ResSupportV3.V3.UseCase
 {
     public interface IGetHelpRequestUseCase
     {
-        HelpRequestGetResponse Execute(int id);
+        HelpRequestResponse Execute(int id);
     }
 }

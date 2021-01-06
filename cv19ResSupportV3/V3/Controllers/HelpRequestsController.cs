@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using cv19ResSupportV3.V3.Boundary.Requests;
 using cv19ResSupportV3.V3.Boundary.Response;
-using cv19ResSupportV3.V3.Domain;
 using cv19ResSupportV3.V3.Factories;
 using cv19ResSupportV3.V3.Factories.Commands;
 using cv19ResSupportV3.V3.UseCase;
@@ -61,13 +60,15 @@ namespace cv19ResSupportV3.V3.Controllers
         /// </summary>
         /// <response code="200">The record has been updated</response>
         /// <response code="400">There was an issue updating the record.</response>
-        [ProducesResponseType(typeof(HelpRequestCreateResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(HelpRequestResponse), StatusCodes.Status200OK)]
         [HttpPut]
-        public IActionResult UpdateHelpRequest(HelpRequest request)
+        public IActionResult UpdateHelpRequest(HelpRequestUpdateRequest request)
         {
             try
             {
-                var result = _updateHelpRequestUseCase.Execute(request);
+                var domain = request.ToDomain();
+                var response = _updateHelpRequestUseCase.Execute(domain);
+                var result = response.ToResponse();
                 return Ok(result);
             }
             catch (Exception e)
@@ -108,11 +109,12 @@ namespace cv19ResSupportV3.V3.Controllers
         /// <response code="400">There was an issue updating the record.</response>
         [HttpPatch]
         [Route("{id}")]
-        public IActionResult PatchHelpRequest([FromRoute] int id, [FromBody] HelpRequest request)
+        public IActionResult PatchHelpRequest([FromRoute] int id, [FromBody] HelpRequestPatchRequest request)
         {
             try
             {
-                _patchHelpRequestUseCase.Execute(id, request);
+                var domain = request.ToDomain();
+                _patchHelpRequestUseCase.Execute(id, domain);
                 return Ok();
             }
             catch (Exception e)
@@ -126,7 +128,7 @@ namespace cv19ResSupportV3.V3.Controllers
         /// Returns a list of help requests matching the provided search parameters
         /// </summary>
         /// <response code="200">A list of 0 or more help requests was returned.</response>
-        [ProducesResponseType(typeof(List<HelpRequestGetResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(List<HelpRequestResponse>), StatusCodes.Status200OK)]
         [HttpGet]
         public IActionResult GetHelpRequests([FromQuery] RequestQueryParams requestParams)
         {
@@ -140,7 +142,7 @@ namespace cv19ResSupportV3.V3.Controllers
         /// </summary>
         /// <response code="200">Record retrieved successfully</response>
         /// <response code="404">A record with the specified id was not found</response>
-        [ProducesResponseType(typeof(HelpRequest), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(HelpRequestResponse), StatusCodes.Status200OK)]
         [HttpGet]
         [Route("{id}")]
         public IActionResult GetHelpRequest(int id)

@@ -16,11 +16,11 @@ namespace cv19ResSupportV3.V3.UseCase
             _gateway = gateway;
         }
 
-        public List<HelpRequestGetResponse> Execute(RequestQueryParams queryParams)
+        public List<HelpRequestResponse> Execute(RequestQueryParams queryParams)
         {
             if (queryParams.Postcode == null && queryParams.FirstName == null && queryParams.LastName == null)
             {
-                return new List<HelpRequestGetResponse>();
+                return new List<HelpRequestResponse>();
             }
             return _gateway.SearchHelpRequests(queryParams).ToResponse();
         }

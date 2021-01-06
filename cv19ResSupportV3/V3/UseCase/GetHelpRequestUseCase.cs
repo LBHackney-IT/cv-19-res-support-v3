@@ -15,7 +15,7 @@ namespace cv19ResSupportV3.V3.UseCase
             _gateway = gateway;
         }
 
-        public HelpRequestGetResponse Execute(int id)
+        public HelpRequestResponse Execute(int id)
         {
             return _gateway.GetHelpRequest(id).ToResponse();
         }
