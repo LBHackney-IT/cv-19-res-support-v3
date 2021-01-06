@@ -143,6 +143,7 @@ namespace cv19ResSupportV3.V3.Controllers
         /// <response code="200">Record retrieved successfully</response>
         /// <response code="404">A record with the specified id was not found</response>
         [ProducesResponseType(typeof(HelpRequestResponse), StatusCodes.Status200OK)]
+
         [HttpGet]
         [Route("{id}")]
         public IActionResult GetHelpRequest(int id)
