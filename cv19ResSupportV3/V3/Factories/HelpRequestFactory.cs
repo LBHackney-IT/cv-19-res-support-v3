@@ -210,7 +210,7 @@ namespace cv19ResSupportV3.V3.Factories
             };
         }
 
-         public static HelpRequest ToDomain(this HelpRequestUpdateRequest helpRequestEntity)
+        public static HelpRequest ToDomain(this HelpRequestUpdateRequest helpRequestEntity)
         {
             return new HelpRequest()
             {
@@ -276,7 +276,7 @@ namespace cv19ResSupportV3.V3.Factories
             };
         }
 
-          public static HelpRequest ToDomain(this HelpRequestPatchRequest helpRequestEntity)
+        public static HelpRequest ToDomain(this HelpRequestPatchRequest helpRequestEntity)
         {
             return new HelpRequest()
             {
@@ -321,7 +321,7 @@ namespace cv19ResSupportV3.V3.Factories
             };
         }
 
-         public static HelpRequestCallEntity ToEntity(this HelpRequestCall helpRequestCall)
+        public static HelpRequestCallEntity ToEntity(this HelpRequestCall helpRequestCall)
         {
             return new HelpRequestCallEntity()
             {

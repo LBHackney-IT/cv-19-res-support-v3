@@ -80,6 +80,7 @@ namespace cv19ResSupportV3.V3.Factories
         }
 
         public static HelpRequestResponse ToResponse(this HelpRequest hr)
+
         {
             if (hr == null)
             {
