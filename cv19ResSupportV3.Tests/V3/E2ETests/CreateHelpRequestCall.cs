@@ -29,7 +29,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
                 .With(x => x.Id, 1).Create();
             DatabaseContext.HelpRequestEntities.Add(helpRequestEntity);
             DatabaseContext.SaveChanges();
-            var requestObject = new Fixture().Build<CreateHelpRequestCallRequest>().Create();
+            var requestObject = new Fixture().Create<CreateHelpRequestCallRequest>();
             var data = JsonConvert.SerializeObject(requestObject);
             HttpContent postContent = new StringContent(data, Encoding.UTF8, "application/json");
             var uri = new Uri($"api/v3/help-requests/1/calls", UriKind.Relative);

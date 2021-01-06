@@ -25,7 +25,7 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             DatabaseContext.HelpRequestEntities.Add(EntityHelpers.createHelpRequestEntity(5));
             DatabaseContext.SaveChanges();
             var helpRequestEntity = DatabaseContext.HelpRequestEntities.First();
-            var command = new Fixture().Build<CreateHelpRequestCall>().Create();
+            var command = new Fixture().Create<CreateHelpRequestCall>();
             command.HelpRequestId = helpRequestEntity.Id;
             var response = _classUnderTest.CreateHelpRequestCall(helpRequestEntity.Id, command);
             var persistedCall = DatabaseContext.HelpRequestCallEntities.OrderByDescending(x => x.Id).First();

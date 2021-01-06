@@ -14,7 +14,7 @@ namespace cv19ResSupportV3.Tests.V3.Factories.Commands
         [Test]
         public void RequestToCommand()
         {
-            var request = new Fixture().Build<CreateHelpRequestCallRequest>().Create();
+            var request = new Fixture().Create<CreateHelpRequestCallRequest>();
 
             var command = request.ToCommand();
 
@@ -24,7 +24,7 @@ namespace cv19ResSupportV3.Tests.V3.Factories.Commands
         [Test]
         public void CommandToEntity()
         {
-            var command = new Fixture().Build<CreateHelpRequestCall>().Create();
+            var command = new Fixture().Create<CreateHelpRequestCall>();
 
             var entity = command.ToEntity();
 

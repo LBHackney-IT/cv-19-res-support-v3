@@ -29,7 +29,7 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
         {
             int id = 1;
             _mockHelpRequestCallGateway.Setup(s => s.CreateHelpRequestCall(id, It.IsAny<CreateHelpRequestCall>())).Returns(id);
-            var dataToSave = new Fixture().Build<CreateHelpRequestCall>().Create();
+            var dataToSave = new Fixture().Create<CreateHelpRequestCall>();
             var response = _classUnderTest.Execute(id, dataToSave);
             response.Should().Be(id);
         }
@@ -38,7 +38,7 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
         public void ExecuteWithInvalidIdReturnsNull()
         {
             int id = 1;
-            var dataToSave = new Fixture().Build<CreateHelpRequestCall>().Create();
+            var dataToSave = new Fixture().Create<CreateHelpRequestCall>();
             var response = _classUnderTest.Execute(id, dataToSave);
             response.Should().Be(0);
         }
