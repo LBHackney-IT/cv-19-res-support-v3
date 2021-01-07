@@ -155,6 +155,16 @@ namespace cv19ResSupportV3.V3.Factories
             return responseList.Select(responseItem => responseItem.ToResponse()).ToList();
         }
 
+        public static List<HelpRequest> ToDomain(this IEnumerable<HelpRequestEntity> responseList)
+        {
+            return responseList.Select(responseItem => responseItem.ToDomain()).ToList();
+        }
+
+        public static List<HelpRequestGetResponse> ToResponse(this IEnumerable<HelpRequest> responseList)
+        {
+            return responseList.Select(responseItem => responseItem.ToResponse()).ToList();
+        }
+
         public static LookupResponse ToResponse(this LookupEntity lookup)
         {
             return lookup == null

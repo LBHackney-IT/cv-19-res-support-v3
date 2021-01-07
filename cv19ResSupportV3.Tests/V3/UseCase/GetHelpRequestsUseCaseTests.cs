@@ -29,7 +29,7 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
         {
             var reqParams = new RequestQueryParams { Postcode = "test" };
             var stubbedRequests = EntityHelpers.createHelpRequestEntities();
-            _mockGateway.Setup(x => x.SearchHelpRequests(reqParams)).Returns(stubbedRequests);
+            _mockGateway.Setup(x => x.SearchHelpRequests(reqParams)).Returns(stubbedRequests.ToDomain());
             var response = _classUnderTest.Execute(reqParams);
             response.Should().NotBeNull();
             response.Should().BeEquivalentTo(stubbedRequests.ToResponse());
@@ -41,7 +41,7 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
             var reqParams = new RequestQueryParams();
             var stubbedRequests = EntityHelpers.createHelpRequestEntities();
             var expectedResponse = new List<HelpRequestEntity>();
-            _mockGateway.Setup(x => x.SearchHelpRequests(reqParams)).Returns(stubbedRequests);
+            _mockGateway.Setup(x => x.SearchHelpRequests(reqParams)).Returns(stubbedRequests.ToDomain());
             var response = _classUnderTest.Execute(reqParams);
             response.Should().NotBeNull();
             response.Should().BeEquivalentTo(expectedResponse);

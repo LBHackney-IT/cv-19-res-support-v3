@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using AutoFixture;
 using cv19ResSupportV3.Tests.V3.Helpers;
@@ -7,6 +8,7 @@ using cv19ResSupportV3.V3.Factories;
 using cv19ResSupportV3.V3.Gateways;
 using cv19ResSupportV3.V3.Infrastructure;
 using FluentAssertions;
+using LBHFSSPublicAPI.Tests.TestHelpers;
 using NUnit.Framework;
 
 namespace cv19ResSupportV3.Tests.V3.Gateways
@@ -142,14 +144,20 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
         public void SearchRequestsReturnsCallsListIfCallsExist()
         {
             var id = 124;
-            DatabaseContext.HelpRequestEntities.Add(EntityHelpers.createHelpRequestEntity(id));
+            var helpRequestEntity = Randomm.Build<HelpRequestEntity>()
+                .With(x => x.Id, id)
+                .With(x => x.FirstName , "name")
+                .Without(h => h.HelpRequestCalls)
+                .Create();
+            DatabaseContext.HelpRequestEntities.Add(helpRequestEntity);
             var calls = EntityHelpers.createHelpRequestCallEntities(3);
             calls.ForEach(x => x.HelpRequestId = id);
             DatabaseContext.HelpRequestCallEntities.AddRange(calls);
             DatabaseContext.SaveChanges();
-            var response = _classUnderTest.SearchHelpRequests(new RequestQueryParams());
+            var response = _classUnderTest.SearchHelpRequests(new RequestQueryParams(){FirstName = "name"});
             response.First().HelpRequestCalls.Count.Should().Be(3);
-            response.First().HelpRequestCalls.Should().BeEquivalentTo(calls);
+            var callsDomain = calls.ToDomain();
+            response.First().HelpRequestCalls.Should().BeEquivalentTo(callsDomain);
         }
 
         [Test]

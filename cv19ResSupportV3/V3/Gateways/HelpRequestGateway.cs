@@ -99,7 +99,7 @@ namespace cv19ResSupportV3.V3.Gateways
             }
         }
 
-        public List<HelpRequestEntity> SearchHelpRequests(RequestQueryParams queryParams)
+        public List<HelpRequest> SearchHelpRequests(RequestQueryParams queryParams)
         {
             Expression<Func<HelpRequestEntity, bool>> queryPostCode = x =>
                 string.IsNullOrWhiteSpace(queryParams.Postcode)
@@ -125,7 +125,8 @@ namespace cv19ResSupportV3.V3.Gateways
                     .Where(queryFirstName)
                     .Where(queryLastName)
                     .Where(queryHelpNeeded)
-                    .ToList();
+                    .ToList()
+                    .ToDomain();
             }
             catch (Exception e)
             {
