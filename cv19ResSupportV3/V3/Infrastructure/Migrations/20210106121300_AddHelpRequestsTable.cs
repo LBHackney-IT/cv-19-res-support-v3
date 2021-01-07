@@ -24,6 +24,10 @@ namespace cv19ResSupportV3.V3.Infrastructure.Migrations
                                 relationship_with_resident = table.Column<string>(type: "character varying", nullable: true),
                                 getting_in_touch_reason = table.Column<string>(type: "character varying", nullable: true),
                                 help_with_accessing_food = table.Column<bool>(type: "bool", nullable: true),
+                                help_with_accessing_supermarket_food = table.Column<bool>(type: "bool", nullable: true),
+                                help_with_completing_nss_form = table.Column<bool>(type: "bool", nullable: true),
+                                help_with_shielding_guidance = table.Column<bool>(type: "bool", nullable: true),
+                                help_with_no_needs_identified = table.Column<bool>(type: "bool", nullable: true),
                                 help_with_accessing_medicine = table.Column<bool>(type: "bool", nullable: true),
                                 help_with_accessing_other_essentials = table.Column<bool>(type: "bool", nullable: true),
                                 help_with_debt_and_money = table.Column<bool>(type: "bool", nullable: true),
@@ -46,8 +50,8 @@ namespace cv19ResSupportV3.V3.Infrastructure.Migrations
                                 callback_required = table.Column<bool>(type: "bool", nullable: true),
                                 initial_callback_completed = table.Column<bool>(type: "bool", nullable: true),
                                 advice_notes = table.Column<string>(type: "character varying", nullable: true),
-                                help_needed = table.Column<string>(type: "character varying", nullable: true)
-
+                                help_needed = table.Column<string>(type: "character varying", nullable: true),
+                                nhs_ctas_id = table.Column<string>(type: "character varying", nullable: true)
                             },
                             constraints: table =>
                             {
@@ -67,8 +71,8 @@ namespace cv19ResSupportV3.V3.Infrastructure.Migrations
 
             migrationBuilder.Sql(
                 @"
-                    INSERT INTO help_requests (id, resident_id, is_on_behalf, consent_to_complete_on_behalf, on_behalf_first_name, on_behalf_last_name, on_behalf_email_address, on_behalf_contact_number, relationship_with_resident, getting_in_touch_reason, help_with_accessing_food, help_with_accessing_medicine, help_with_accessing_other_essentials, help_with_debt_and_money, help_with_health, help_with_mental_health, help_with_accessing_internet, help_with_something_else, help_with_housing, help_with_jobs_or_training, help_with_children_and_schools, help_with_disabilities, medicine_delivery_help_needed, when_is_medicines_delivered, urgent_essentials, urgent_essentials_anything_else, current_support, current_support_feedback, date_time_recorded, record_status, callback_required, initial_callback_completed, advice_notes, help_needed)
-                    SELECT i_need_help_resident_support_v3.id, residents.id AS resident_id, is_on_behalf, consent_to_complete_on_behalf, on_behalf_first_name, on_behalf_last_name, on_behalf_email_address, on_behalf_contact_number, relationship_with_resident, getting_in_touch_reason, help_with_accessing_food, help_with_accessing_medicine, help_with_accessing_other_essentials, help_with_debt_and_money, help_with_health, help_with_mental_health, help_with_accessing_internet, help_with_something_else, help_with_housing, help_with_jobs_or_training, help_with_children_and_schools, help_with_disabilities, medicine_delivery_help_needed, when_is_medicines_delivered, urgent_essentials, urgent_essentials_anything_else, current_support, current_support_feedback, date_time_recorded, i_need_help_resident_support_v3.record_status, callback_required, initial_callback_completed, advice_notes, help_needed
+                    INSERT INTO help_requests (id, resident_id, is_on_behalf, consent_to_complete_on_behalf, on_behalf_first_name, on_behalf_last_name, on_behalf_email_address, on_behalf_contact_number, relationship_with_resident, getting_in_touch_reason, help_with_accessing_food, help_with_accessing_supermarket_food, help_with_completing_nss_form, help_with_shielding_guidance, help_with_no_needs_identified,  help_with_accessing_medicine, help_with_accessing_other_essentials, help_with_debt_and_money, help_with_health, help_with_mental_health, help_with_accessing_internet, help_with_something_else, help_with_housing, help_with_jobs_or_training, help_with_children_and_schools, help_with_disabilities, medicine_delivery_help_needed, when_is_medicines_delivered, urgent_essentials, urgent_essentials_anything_else, current_support, current_support_feedback, date_time_recorded, record_status, callback_required, initial_callback_completed, advice_notes, help_needed, nhs_ctas_id)
+                    SELECT i_need_help_resident_support_v3.id, residents.id , is_on_behalf, consent_to_complete_on_behalf, on_behalf_first_name, on_behalf_last_name, on_behalf_email_address, on_behalf_contact_number, relationship_with_resident, getting_in_touch_reason, help_with_accessing_food, help_with_accessing_supermarket_food, help_with_completing_nss_form, help_with_shielding_guidance, help_with_no_needs_identified, help_with_accessing_medicine, help_with_accessing_other_essentials, help_with_debt_and_money, help_with_health, help_with_mental_health, help_with_accessing_internet, help_with_something_else, help_with_housing, help_with_jobs_or_training, help_with_children_and_schools, help_with_disabilities, medicine_delivery_help_needed, when_is_medicines_delivered, urgent_essentials, urgent_essentials_anything_else, current_support, current_support_feedback, date_time_recorded, i_need_help_resident_support_v3.record_status, callback_required, initial_callback_completed, advice_notes, help_needed, nhs_ctas_id
                     FROM i_need_help_resident_support_v3
                     JOIN residents ON residents.temp_help_request_id = i_need_help_resident_support_v3.id;
                  "
