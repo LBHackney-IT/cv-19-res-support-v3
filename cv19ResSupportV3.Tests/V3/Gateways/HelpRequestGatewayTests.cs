@@ -26,7 +26,8 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
         [Test]
         public void CreateHelpRequestReturnsTheRequestIfCreated()
         {
-            var helpRequest = EntityHelpers.createHelpRequestEntity();
+            var helpRequestEntity = EntityHelpers.createHelpRequestEntity();
+            var helpRequest = helpRequestEntity.ToDomain();
             var response = _classUnderTest.CreateHelpRequest(helpRequest);
             response.Should().Be(helpRequest.Id);
         }
@@ -52,8 +53,8 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
                 .With(x => x.ContactMobileNumber, "123")
                 .Create();
 
-            var response1 = _classUnderTest.CreateHelpRequest(helpRequest.ToEntity());
-            var response2 = _classUnderTest.CreateHelpRequest(helpRequest2.ToEntity());
+            var response1 = _classUnderTest.CreateHelpRequest(helpRequest);
+            var response2 = _classUnderTest.CreateHelpRequest(helpRequest2);
             var firstRecordToCheck = DatabaseContext.HelpRequestEntities.Find(response1);
             var secondRecordToCheck = DatabaseContext.HelpRequestEntities.Find(response2);
             firstRecordToCheck.RecordStatus.Should().Be("DUPLICATE");
@@ -73,7 +74,7 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
 
             var dbEntity = DatabaseContext.HelpRequestEntities.Add(helpRequest);
             DatabaseContext.SaveChanges();
-            var patchRequestObject = new HelpRequestEntity()
+            var patchRequestObject = new HelpRequest()
             {
                 HelpWithCompletingNssForm = false,
                 HelpWithShieldingGuidance = false,

@@ -7,12 +7,12 @@ namespace cv19ResSupportV3.V3.Gateways
 {
     public interface IHelpRequestGateway
     {
-        int CreateHelpRequest(HelpRequestEntity request);
+        int CreateHelpRequest(HelpRequest request);
         List<LookupEntity> GetLookups(LookupQueryParams requestParams);
         List<HelpRequestEntity> GetCallbacks(CallbackRequestParams requestParams);
-        HelpRequestEntity UpdateHelpRequest(HelpRequestEntity request);
+        HelpRequest UpdateHelpRequest(HelpRequest request);
         HelpRequestEntity GetHelpRequest(int id);
         List<HelpRequestEntity> SearchHelpRequests(RequestQueryParams queryParams);
-        void PatchHelpRequest(int id, HelpRequestEntity request);
+        void PatchHelpRequest(int id, HelpRequest request);
     }
 }

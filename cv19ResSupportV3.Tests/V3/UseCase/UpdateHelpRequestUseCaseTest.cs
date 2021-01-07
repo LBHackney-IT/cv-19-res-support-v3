@@ -30,7 +30,7 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
         public void ExecuteUpdatesRequestInDatabase()
         {
             var request = _fixture.Create<HelpRequest>();
-            _mockGateway.Setup(s => s.UpdateHelpRequest(It.IsAny<HelpRequestEntity>())).Returns(request.ToEntity());
+            _mockGateway.Setup(s => s.UpdateHelpRequest(It.IsAny<HelpRequest>())).Returns(request);
             var response = _classUnderTest.Execute(request);
             response.Should().BeEquivalentTo(request);
         }

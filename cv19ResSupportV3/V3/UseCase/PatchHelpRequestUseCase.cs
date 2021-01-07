@@ -15,7 +15,7 @@ namespace cv19ResSupportV3.V3.UseCase
 
         public void Execute(int id, HelpRequest request)
         {
-            _gateway.PatchHelpRequest(id, request.ToEntity());
+            _gateway.PatchHelpRequest(id, request);
         }
     }
 }

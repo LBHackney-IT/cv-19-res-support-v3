@@ -26,7 +26,7 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
         [Test]
         public void ExecuteSavesRequestToDatabase()
         {
-            _mockGateway.Setup(s => s.CreateHelpRequest(It.IsAny<HelpRequestEntity>())).Returns(1);
+            _mockGateway.Setup(s => s.CreateHelpRequest(It.IsAny<HelpRequest>())).Returns(1);
             var dataToSave = new Fixture().Build<HelpRequest>().Create();
             var response = _classUnderTest.Execute(dataToSave);
             response.Should().Be(1);

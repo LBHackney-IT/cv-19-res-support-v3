@@ -22,16 +22,17 @@ namespace cv19ResSupportV3.V3.Gateways
             _helpRequestsContext = helpRequestsContext;
         }
 
-        public int CreateHelpRequest(HelpRequestEntity request)
+        public int CreateHelpRequest(HelpRequest request)
         {
-            if (request == null) return 0;
-            SetRecordStatus(request);
-            request.CallbackRequired ??= true;
+            var requestEntity = request.ToEntity();
+            if (requestEntity == null) return 0;
+            SetRecordStatus(requestEntity);
+            requestEntity.CallbackRequired ??= true;
             try
             {
-                _helpRequestsContext.HelpRequestEntities.Add(request);
+                _helpRequestsContext.HelpRequestEntities.Add(requestEntity);
                 _helpRequestsContext.SaveChanges();
-                return request.Id;
+                return requestEntity.Id;
             }
             catch (Exception e)
             {
@@ -63,7 +64,7 @@ namespace cv19ResSupportV3.V3.Gateways
             }
         }
 
-        public HelpRequestEntity UpdateHelpRequest(HelpRequestEntity request)
+        public HelpRequest UpdateHelpRequest(HelpRequest request)
         {
             if (request == null) return null;
             try
@@ -71,7 +72,7 @@ namespace cv19ResSupportV3.V3.Gateways
                 var entity = _helpRequestsContext.HelpRequestEntities.Find(request.Id);
                 _helpRequestsContext.Entry(entity).CurrentValues.SetValues(request);
                 _helpRequestsContext.SaveChanges();
-                return entity;
+                return entity.ToDomain();
             }
             catch (Exception e)
             {
@@ -134,7 +135,7 @@ namespace cv19ResSupportV3.V3.Gateways
             }
         }
 
-        public void PatchHelpRequest(int id, HelpRequestEntity request)
+        public void PatchHelpRequest(int id, HelpRequest request)
         {
             try
             {

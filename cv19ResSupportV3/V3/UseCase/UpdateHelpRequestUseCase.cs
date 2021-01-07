@@ -16,7 +16,7 @@ namespace cv19ResSupportV3.V3.UseCase
 
         public HelpRequest Execute(HelpRequest request)
         {
-            return _gateway.UpdateHelpRequest(request.ToEntity()).ToDomain();
+            return _gateway.UpdateHelpRequest(request);
         }
     }
 }
