@@ -35,7 +35,7 @@ namespace cv19ResSupportV3.V3.Infrastructure.Migrations
                                 record_status = table.Column<string>(type: "character varying", nullable: true),
                                 case_notes = table.Column<string>(type: "character varying", nullable: true),
                                 nhs_number = table.Column<string>(type: "character varying", nullable: true),
-                                temp_help_request_id = table.Column<int>(nullable: false)
+                                temp_help_request_id = table.Column<string>(type: "character varying", nullable: true)
                             },
                             constraints: table =>
                             {
@@ -49,9 +49,65 @@ namespace cv19ResSupportV3.V3.Infrastructure.Migrations
 
             migrationBuilder.Sql(
                 @"
-INSERT INTO residents (postcode, uprn, ward, address_first_line, address_second_line, address_third_line, is_pharmacist_able_to_deliver, name_address_pharmacist, first_name, last_name, dob_month, dob_year, dob_day, contact_telephone_number, contact_mobile_number, email_address, gp_surgery_details, number_of_children_under_18, consent_to_share, record_status, case_notes, nhs_number, temp_help_request_id)
-SELECT postcode, uprn, ward, address_first_line, address_second_line, address_third_line, is_pharmacist_able_to_deliver, name_address_pharmacist, first_name, last_name, dob_month, dob_year, dob_day, contact_telephone_number, contact_mobile_number, email_address, gp_surgery_details, number_of_children_under_18, consent_to_share, record_status, case_notes, nhs_number, id AS temp_help_request_id
-FROM i_need_help_resident_support_v3;
+INSERT INTO residents (
+first_name,
+last_name,
+dob_day,
+dob_month,
+dob_year,
+contact_mobile_number,
+contact_telephone_number,
+email_address,
+address_first_line,
+address_second_line,
+address_third_line,
+postcode,
+uprn,
+ward,
+is_pharmacist_able_to_deliver,
+name_address_pharmacist,
+gp_surgery_details,
+number_of_children_under_18,
+consent_to_share,
+record_status,
+case_notes,
+nhs_number,
+temp_help_request_id
+)
+SELECT
+    trim(first_name) as first_name,
+    trim(last_name) as last_name,
+    trim(dob_day) as dob_day,
+    trim(dob_month) as dob_month,
+    trim(dob_year) as dob_year,
+    string_agg(contact_mobile_number, ' / ') as contact_mobile_number,
+    string_agg(contact_telephone_number, ' / ') as contact_telephone_number,
+    string_agg(email_address, ' / ') as email_address,
+    string_agg(address_first_line, ' / ') as address_first_line,
+    string_agg(address_second_line, ' / ') as address_second_line,
+    string_agg(address_third_line, ' / ') as address_third_line,
+    string_agg(postcode, ' / ') as postcode,
+    string_agg(uprn, ' / ') as uprn,
+    string_agg(ward, ' / ') as ward,
+    bool_or(is_pharmacist_able_to_deliver) as is_pharmacist_able_to_deliver,
+    string_agg(name_address_pharmacist, ' / ') as name_address_pharmacist,
+    string_agg(gp_surgery_details, ' / ') as gp_surgery_details,
+    string_agg(number_of_children_under_18, ' / ') as number_of_children_under_18,
+    bool_or(consent_to_share) as consent_to_share,
+    string_agg(record_status, ' / ') as record_status,
+    string_agg(case_notes, ' / ') as case_notes,
+    string_agg(nhs_number, ' / ') as nhs_number,
+    string_agg(cast(temp_help_request_id as varchar), ' / ') AS temp_help_request_id
+FROM (
+     SELECT postcode, uprn, ward, address_first_line, address_second_line, address_third_line, is_pharmacist_able_to_deliver, name_address_pharmacist, first_name, last_name, dob_month, dob_year, dob_day, contact_telephone_number, contact_mobile_number, email_address, gp_surgery_details, number_of_children_under_18, consent_to_share, record_status, case_notes, nhs_number, id AS temp_help_request_id
+FROM i_need_help_resident_support_v3
+         ) as new_res
+GROUP BY
+    trim(first_name),
+    trim(last_name),
+    trim(dob_day),
+    trim(dob_month),
+    trim(dob_year);
 ");
 
         }
