@@ -82,14 +82,14 @@ namespace cv19ResSupportV3.V3.Gateways
             }
         }
 
-        public HelpRequestEntity GetHelpRequest(int id)
+        public HelpRequest GetHelpRequest(int id)
         {
             try
             {
                 var result = _helpRequestsContext.HelpRequestEntities
                     .Include(x => x.HelpRequestCalls)
                     .FirstOrDefault(x => x.Id == id);
-                return result;
+                return result?.ToDomain();
             }
             catch (Exception e)
             {

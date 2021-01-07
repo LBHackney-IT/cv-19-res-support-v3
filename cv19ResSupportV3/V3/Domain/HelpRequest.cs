@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace cv19ResSupportV3.V3.Domain
 {
@@ -63,5 +64,6 @@ namespace cv19ResSupportV3.V3.Domain
         public string HelpNeeded { get; set; }
         public string NhsNumber { get; set; }
         public string NhsCtasId { get; set; }
+        public List<HelpRequestCall> HelpRequestCalls { get; set; }
     }
 }

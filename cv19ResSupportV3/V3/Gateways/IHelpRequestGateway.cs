@@ -11,7 +11,7 @@ namespace cv19ResSupportV3.V3.Gateways
         List<LookupEntity> GetLookups(LookupQueryParams requestParams);
         List<HelpRequestEntity> GetCallbacks(CallbackRequestParams requestParams);
         HelpRequest UpdateHelpRequest(HelpRequest request);
-        HelpRequestEntity GetHelpRequest(int id);
+        HelpRequest GetHelpRequest(int id);
         List<HelpRequestEntity> SearchHelpRequests(RequestQueryParams queryParams);
         void PatchHelpRequest(int id, HelpRequest request);
     }

@@ -31,5 +31,17 @@ namespace cv19ResSupportV3.Tests.V3.Factories
                 return options;
             });
         }
+
+        [Test]
+        public void CanMapADomainToAResponseObject()
+        {
+            var entityObject = EntityHelpers.createHelpRequestEntity().ToDomain();
+            var responseObject = entityObject.ToResponse();
+            responseObject.Should().BeEquivalentTo(entityObject, options =>
+            {
+                return options;
+            });
+        }
+
     }
 }

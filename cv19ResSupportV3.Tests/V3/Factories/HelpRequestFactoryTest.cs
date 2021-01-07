@@ -15,9 +15,9 @@ namespace cv19ResSupportV3.Tests.V3.Factories
         [Test]
         public void CanMapADatabaseEntityToADomainObject()
         {
-            var databaseEntity = EntityHelpers.createHelpRequestEntity();
-            var entity = databaseEntity.ToDomain();
-            databaseEntity.Should().BeEquivalentTo(entity);
+            var entityObject = EntityHelpers.createHelpRequestEntity();
+            var domaiObject = entityObject.ToDomain();
+            entityObject.Should().BeEquivalentTo(domaiObject);
         }
 
         [Test]

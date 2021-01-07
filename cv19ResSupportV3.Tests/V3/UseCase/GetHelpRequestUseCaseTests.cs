@@ -25,7 +25,7 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
         public void ReturnsASingleHelpRequest()
         {
             var stubbedRequest = EntityHelpers.createHelpRequestEntity();
-            _mockGateway.Setup(x => x.GetHelpRequest(It.IsAny<int>())).Returns(stubbedRequest);
+            _mockGateway.Setup(x => x.GetHelpRequest(It.IsAny<int>())).Returns(stubbedRequest.ToDomain());
             var response = _classUnderTest.Execute(stubbedRequest.Id);
             response.Should().NotBeNull();
             response.Should().BeEquivalentTo(stubbedRequest.ToResponse());
@@ -38,7 +38,7 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
             var calls = EntityHelpers.createHelpRequestCallEntities();
             calls.ForEach(x => x.HelpRequestId = 5);
             stubbedRequest.HelpRequestCalls = calls;
-            _mockGateway.Setup(x => x.GetHelpRequest(It.IsAny<int>())).Returns(stubbedRequest);
+            _mockGateway.Setup(x => x.GetHelpRequest(It.IsAny<int>())).Returns(stubbedRequest.ToDomain());
             var response = _classUnderTest.Execute(stubbedRequest.Id);
             response.Should().NotBeNull();
             response.HelpRequestCalls.Should().BeEquivalentTo(calls, options =>

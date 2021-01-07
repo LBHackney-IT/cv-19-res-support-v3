@@ -71,7 +71,8 @@ namespace cv19ResSupportV3.V3.Factories
                 AdviceNotes = helpRequestEntity.AdviceNotes,
                 HelpNeeded = helpRequestEntity.HelpNeeded,
                 NhsNumber = helpRequestEntity.NhsNumber,
-                NhsCtasId = helpRequestEntity.NhsCtasId
+                NhsCtasId = helpRequestEntity.NhsCtasId,
+                HelpRequestCalls = helpRequestEntity.HelpRequestCalls.ToDomain()
             };
         }
 
@@ -137,7 +138,7 @@ namespace cv19ResSupportV3.V3.Factories
                 AdviceNotes = helpRequestEntity.AdviceNotes,
                 HelpNeeded = helpRequestEntity.HelpNeeded,
                 NhsNumber = helpRequestEntity.NhsNumber,
-                NhsCtasId = helpRequestEntity.NhsCtasId
+                NhsCtasId = helpRequestEntity.NhsCtasId,
             };
         }
 
@@ -203,7 +204,8 @@ namespace cv19ResSupportV3.V3.Factories
                 AdviceNotes = helpRequest.AdviceNotes,
                 HelpNeeded = helpRequest.HelpNeeded,
                 NhsNumber = helpRequest.NhsNumber,
-                NhsCtasId = helpRequest.NhsCtasId
+                NhsCtasId = helpRequest.NhsCtasId,
+                HelpRequestCalls = helpRequest.HelpRequestCalls.ToEntity()
             };
         }
 
@@ -239,5 +241,12 @@ namespace cv19ResSupportV3.V3.Factories
         {
             return helpRequestCallEntityList?.Select(hrItem => hrItem.ToDomain()).ToList();
         }
+
+
+        public static List<HelpRequestCallEntity> ToEntity(this ICollection<HelpRequestCall> helpRequestCallList)
+        {
+            return helpRequestCallList?.Select(hrItem => hrItem.ToEntity()).ToList();
+        }
+
     }
 }

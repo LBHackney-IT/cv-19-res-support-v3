@@ -113,7 +113,11 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             DatabaseContext.SaveChanges();
             var response = _classUnderTest.GetHelpRequest(id);
             response.HelpRequestCalls.Count.Should().Be(3);
-            response.HelpRequestCalls.Should().BeEquivalentTo(calls);
+            response.HelpRequestCalls.Should().BeEquivalentTo(calls, options =>
+            {
+                options.Excluding(ex => ex.HelpRequestEntity);
+                return options;
+            });
         }
 
         [Test]
