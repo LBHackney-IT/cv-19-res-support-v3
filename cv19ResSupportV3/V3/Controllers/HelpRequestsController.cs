@@ -5,6 +5,7 @@ using cv19ResSupportV3.V3.Boundary.Requests;
 using cv19ResSupportV3.V3.Boundary.Response;
 using cv19ResSupportV3.V3.Domain;
 using cv19ResSupportV3.V3.Factories;
+using cv19ResSupportV3.V3.Factories.Commands;
 using cv19ResSupportV3.V3.UseCase;
 using cv19ResSupportV3.V3.UseCase.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -44,8 +45,8 @@ namespace cv19ResSupportV3.V3.Controllers
         {
             try
             {
-                var domain = request.ToDomain();
-                var id = _createHelpRequestUseCase.Execute(domain);
+                var command = request.ToCommand();
+                var id = _createHelpRequestUseCase.Execute(command);
                 var result = new HelpRequestCreateResponse() { Id = id };
                 return Created(new Uri($"api/v3/help-requests/{id}", UriKind.Relative), result);
             }

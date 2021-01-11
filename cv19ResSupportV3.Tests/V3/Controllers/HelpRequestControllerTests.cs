@@ -5,6 +5,7 @@ using cv19ResSupportV3.V3.Boundary.Response;
 using cv19ResSupportV3.V3.Boundary.Requests;
 using cv19ResSupportV3.V3.Controllers;
 using cv19ResSupportV3.V3.Domain;
+using cv19ResSupportV3.V3.Domain.Commands;
 using cv19ResSupportV3.V3.Factories;
 using cv19ResSupportV3.V3.UseCase;
 using cv19ResSupportV3.V3.UseCase.Interfaces;
@@ -43,8 +44,8 @@ namespace cv19ResRupportV3.Tests.V3.Controllers
         public void ReturnsResponseWithStatus()
         {
             var request = new Fixture().Build<HelpRequestCreateRequestBoundary>().Create();
-            _fakeCreateHelpRequestUseCase.Setup(x => x.Execute(It.Is<HelpRequest>(o => o.Id == request.Id)))
-                .Returns(request.Id);
+            _fakeCreateHelpRequestUseCase.Setup(x => x.Execute(It.Is<CreateHelpRequest>(o => o.Uprn == request.Uprn)))
+                .Returns(3);
             var response = _classUnderTest.CreateHelpRequest(request) as CreatedResult;
             response.StatusCode.Should().Be(201);
         }

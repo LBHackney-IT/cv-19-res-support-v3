@@ -4,6 +4,7 @@ using AutoFixture;
 using cv19ResSupportV3.Tests.V3.Helpers;
 using cv19ResSupportV3.V3.Boundary.Requests;
 using cv19ResSupportV3.V3.Domain;
+using cv19ResSupportV3.V3.Domain.Commands;
 using cv19ResSupportV3.V3.Factories;
 using cv19ResSupportV3.V3.Gateways;
 using cv19ResSupportV3.V3.Infrastructure;
@@ -28,16 +29,22 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
         [Test]
         public void CreateHelpRequestReturnsTheRequestIfCreated()
         {
-            var helpRequestEntity = EntityHelpers.createHelpRequestEntity();
-            var helpRequest = helpRequestEntity.ToDomain();
-            var response = _classUnderTest.CreateHelpRequest(helpRequest);
-            response.Should().Be(helpRequest.Id);
+            var helpRequestCommand = new CreateHelpRequest(){
+                IsOnBehalf = true,
+                ConsentToCompleteOnBehalf = true,
+                OnBehalfFirstName = "Tim",
+                RecordStatus="MASTER",
+                CallbackRequired = true
+            };
+            var response = _classUnderTest.CreateHelpRequest(helpRequestCommand);
+            var createdRecord = DatabaseContext.HelpRequestEntities.Find(response);
+            createdRecord.Should().BeEquivalentTo(helpRequestCommand);
         }
 
         [Test]
         public void CreateDuplicateHelpRequestTheLatestAsMaster()
         {
-            var helpRequest = _fixture.Build<HelpRequest>()
+            var helpRequest = _fixture.Build<CreateHelpRequest>()
                 .With(x => x.Uprn, "123")
                 .With(x => x.DobMonth, "123")
                 .With(x => x.DobDay, "123")
@@ -46,7 +53,7 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
                 .With(x => x.ContactMobileNumber, "123")
                 .Create();
 
-            var helpRequest2 = _fixture.Build<HelpRequest>()
+            var helpRequest2 = _fixture.Build<CreateHelpRequest>()
                 .With(x => x.Uprn, "123")
                 .With(x => x.DobMonth, "123")
                 .With(x => x.DobDay, "123")

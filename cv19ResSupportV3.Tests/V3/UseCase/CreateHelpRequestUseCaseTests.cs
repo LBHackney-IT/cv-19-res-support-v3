@@ -1,6 +1,7 @@
 using AutoFixture;
 using cv19ResSupportV3.V3.Boundary.Response;
 using cv19ResSupportV3.V3.Domain;
+using cv19ResSupportV3.V3.Domain.Commands;
 using cv19ResSupportV3.V3.Factories;
 using cv19ResSupportV3.V3.Gateways;
 using cv19ResSupportV3.V3.Infrastructure;
@@ -26,8 +27,8 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
         [Test]
         public void ExecuteSavesRequestToDatabase()
         {
-            _mockGateway.Setup(s => s.CreateHelpRequest(It.IsAny<HelpRequest>())).Returns(1);
-            var dataToSave = new Fixture().Build<HelpRequest>().Create();
+            _mockGateway.Setup(s => s.CreateHelpRequest(It.IsAny<CreateHelpRequest>())).Returns(1);
+            var dataToSave = new Fixture().Build<CreateHelpRequest>().Create();
             var response = _classUnderTest.Execute(dataToSave);
             response.Should().Be(1);
         }
