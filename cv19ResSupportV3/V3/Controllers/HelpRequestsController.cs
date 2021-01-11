@@ -113,8 +113,9 @@ namespace cv19ResSupportV3.V3.Controllers
         {
             try
             {
-                var domain = request.ToDomain();
-                _patchHelpRequestUseCase.Execute(id, domain);
+
+                var command = request.ToCommand();
+                _patchHelpRequestUseCase.Execute(id, command);
                 return Ok();
             }
             catch (Exception e)

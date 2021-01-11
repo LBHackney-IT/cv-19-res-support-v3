@@ -83,7 +83,7 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
 
             var dbEntity = DatabaseContext.HelpRequestEntities.Add(helpRequest);
             DatabaseContext.SaveChanges();
-            var patchRequestObject = new HelpRequest()
+            var patchRequestObject = new PatchHelpRequest()
             {
                 HelpWithCompletingNssForm = false,
                 HelpWithShieldingGuidance = false,
