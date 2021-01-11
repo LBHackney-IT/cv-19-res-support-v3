@@ -14,6 +14,6 @@ namespace cv19ResSupportV3.V3.Gateways
         HelpRequest UpdateHelpRequest(UpdateHelpRequest command);
         HelpRequest GetHelpRequest(int id);
         List<HelpRequest> SearchHelpRequests(RequestQueryParams queryParams);
-        void PatchHelpRequest(int id, HelpRequest request);
+        void PatchHelpRequest(int id, PatchHelpRequest request);
     }
 }

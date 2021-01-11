@@ -139,171 +139,172 @@ namespace cv19ResSupportV3.V3.Gateways
             }
         }
 
-        public void PatchHelpRequest(int id, HelpRequest request)
+        public void PatchHelpRequest(int id, PatchHelpRequest command)
         {
             try
             {
+                var requestEntity = command.ToEntity();
                 var rec = _helpRequestsContext.HelpRequestEntities.SingleOrDefault(x => x.Id == id);
-                if (request == null)
+                if (requestEntity == null)
                 {
                     throw new Exception("Record not found.");
                 }
-                if (request.GettingInTouchReason != null)
+                if (requestEntity.GettingInTouchReason != null)
                 {
-                    rec.GettingInTouchReason = request.GettingInTouchReason;
+                    rec.GettingInTouchReason = requestEntity.GettingInTouchReason;
                 }
-                if (request.HelpWithAccessingFood != null)
+                if (requestEntity.HelpWithAccessingFood != null)
                 {
-                    rec.HelpWithAccessingFood = request.HelpWithAccessingFood;
+                    rec.HelpWithAccessingFood = requestEntity.HelpWithAccessingFood;
                 }
-                if (request.HelpWithAccessingSupermarketFood != null)
+                if (requestEntity.HelpWithAccessingSupermarketFood != null)
                 {
-                    rec.HelpWithAccessingSupermarketFood = request.HelpWithAccessingSupermarketFood;
+                    rec.HelpWithAccessingSupermarketFood = requestEntity.HelpWithAccessingSupermarketFood;
                 }
-                if (request.HelpWithCompletingNssForm != null)
+                if (requestEntity.HelpWithCompletingNssForm != null)
                 {
-                    rec.HelpWithCompletingNssForm = request.HelpWithCompletingNssForm;
+                    rec.HelpWithCompletingNssForm = requestEntity.HelpWithCompletingNssForm;
                 }
-                if (request.HelpWithShieldingGuidance != null)
+                if (requestEntity.HelpWithShieldingGuidance != null)
                 {
-                    rec.HelpWithShieldingGuidance = request.HelpWithShieldingGuidance;
+                    rec.HelpWithShieldingGuidance = requestEntity.HelpWithShieldingGuidance;
                 }
-                if (request.HelpWithNoNeedsIdentified != null)
+                if (requestEntity.HelpWithNoNeedsIdentified != null)
                 {
-                    rec.HelpWithNoNeedsIdentified = request.HelpWithNoNeedsIdentified;
+                    rec.HelpWithNoNeedsIdentified = requestEntity.HelpWithNoNeedsIdentified;
                 }
-                if (request.HelpWithAccessingMedicine != null)
+                if (requestEntity.HelpWithAccessingMedicine != null)
                 {
-                    rec.HelpWithAccessingMedicine = request.HelpWithAccessingMedicine;
+                    rec.HelpWithAccessingMedicine = requestEntity.HelpWithAccessingMedicine;
                 }
-                if (request.HelpWithAccessingOtherEssentials != null)
+                if (requestEntity.HelpWithAccessingOtherEssentials != null)
                 {
-                    rec.HelpWithAccessingOtherEssentials = request.HelpWithAccessingOtherEssentials;
+                    rec.HelpWithAccessingOtherEssentials = requestEntity.HelpWithAccessingOtherEssentials;
                 }
-                if (request.HelpWithDebtAndMoney != null)
+                if (requestEntity.HelpWithDebtAndMoney != null)
                 {
-                    rec.HelpWithDebtAndMoney = request.HelpWithDebtAndMoney;
+                    rec.HelpWithDebtAndMoney = requestEntity.HelpWithDebtAndMoney;
                 }
-                if (request.HelpWithMentalHealth != null)
+                if (requestEntity.HelpWithMentalHealth != null)
                 {
-                    rec.HelpWithMentalHealth = request.HelpWithMentalHealth;
+                    rec.HelpWithMentalHealth = requestEntity.HelpWithMentalHealth;
                 }
-                if (request.HelpWithHealth != null)
+                if (requestEntity.HelpWithHealth != null)
                 {
-                    rec.HelpWithHealth = request.HelpWithHealth;
+                    rec.HelpWithHealth = requestEntity.HelpWithHealth;
                 }
-                if (request.HelpWithAccessingInternet != null)
+                if (requestEntity.HelpWithAccessingInternet != null)
                 {
-                    rec.HelpWithAccessingInternet = request.HelpWithAccessingInternet;
+                    rec.HelpWithAccessingInternet = requestEntity.HelpWithAccessingInternet;
                 }
-                if (request.HelpWithSomethingElse != null)
+                if (requestEntity.HelpWithSomethingElse != null)
                 {
-                    rec.HelpWithSomethingElse = request.HelpWithSomethingElse;
+                    rec.HelpWithSomethingElse = requestEntity.HelpWithSomethingElse;
                 }
-                if (request.CurrentSupport != null)
+                if (requestEntity.CurrentSupport != null)
                 {
-                    rec.CurrentSupport = request.CurrentSupport;
-                }
-
-                if (request.CurrentSupportFeedback != null)
-                {
-                    rec.CurrentSupportFeedback = request.CurrentSupportFeedback;
+                    rec.CurrentSupport = requestEntity.CurrentSupport;
                 }
 
-                if (request.FirstName != null)
+                if (requestEntity.CurrentSupportFeedback != null)
                 {
-                    rec.FirstName = request.FirstName;
+                    rec.CurrentSupportFeedback = requestEntity.CurrentSupportFeedback;
                 }
 
-                if (request.LastName != null)
+                if (requestEntity.FirstName != null)
                 {
-                    rec.LastName = request.LastName;
+                    rec.FirstName = requestEntity.FirstName;
                 }
 
-                if (request.DobMonth != null)
+                if (requestEntity.LastName != null)
                 {
-                    rec.DobMonth = request.DobMonth;
+                    rec.LastName = requestEntity.LastName;
                 }
 
-                if (request.DobYear != null)
+                if (requestEntity.DobMonth != null)
                 {
-                    rec.DobYear = request.DobYear;
+                    rec.DobMonth = requestEntity.DobMonth;
                 }
 
-                if (request.DobDay != null)
+                if (requestEntity.DobYear != null)
                 {
-                    rec.DobDay = request.DobDay;
+                    rec.DobYear = requestEntity.DobYear;
                 }
 
-                if (request.ContactTelephoneNumber != null)
+                if (requestEntity.DobDay != null)
                 {
-                    rec.ContactTelephoneNumber = request.ContactTelephoneNumber;
+                    rec.DobDay = requestEntity.DobDay;
                 }
 
-                if (request.ContactMobileNumber != null)
+                if (requestEntity.ContactTelephoneNumber != null)
                 {
-                    rec.ContactMobileNumber = request.ContactMobileNumber;
+                    rec.ContactTelephoneNumber = requestEntity.ContactTelephoneNumber;
                 }
 
-                if (request.EmailAddress != null)
+                if (requestEntity.ContactMobileNumber != null)
                 {
-                    rec.EmailAddress = request.EmailAddress;
+                    rec.ContactMobileNumber = requestEntity.ContactMobileNumber;
                 }
 
-                if (request.AddressFirstLine != null && request.PostCode != null)
+                if (requestEntity.EmailAddress != null)
+                {
+                    rec.EmailAddress = requestEntity.EmailAddress;
+                }
+
+                if (requestEntity.AddressFirstLine != null && requestEntity.PostCode != null)
                 {
                     // update new address fields
-                    rec.AddressFirstLine = request.AddressFirstLine;
-                    rec.AddressSecondLine = request.AddressSecondLine;
-                    rec.AddressThirdLine = request.AddressThirdLine;
-                    rec.PostCode = request.PostCode;
-                    rec.Uprn = request.Uprn;
-                    rec.Ward = request.Ward;
+                    rec.AddressFirstLine = requestEntity.AddressFirstLine;
+                    rec.AddressSecondLine = requestEntity.AddressSecondLine;
+                    rec.AddressThirdLine = requestEntity.AddressThirdLine;
+                    rec.PostCode = requestEntity.PostCode;
+                    rec.Uprn = requestEntity.Uprn;
+                    rec.Ward = requestEntity.Ward;
                 }
 
-                if (request.GpSurgeryDetails != null)
+                if (requestEntity.GpSurgeryDetails != null)
                 {
-                    rec.GpSurgeryDetails = request.GpSurgeryDetails;
+                    rec.GpSurgeryDetails = requestEntity.GpSurgeryDetails;
                 }
 
-                if (request.NumberOfChildrenUnder18 != null)
+                if (requestEntity.NumberOfChildrenUnder18 != null)
                 {
-                    rec.NumberOfChildrenUnder18 = request.NumberOfChildrenUnder18;
+                    rec.NumberOfChildrenUnder18 = requestEntity.NumberOfChildrenUnder18;
                 }
 
-                if (request.ConsentToShare != null)
+                if (requestEntity.ConsentToShare != null)
                 {
-                    rec.ConsentToShare = request.ConsentToShare;
+                    rec.ConsentToShare = requestEntity.ConsentToShare;
                 }
 
-                if (request.CaseNotes != null)
+                if (requestEntity.CaseNotes != null)
                 {
-                    rec.CaseNotes = request.CaseNotes;
+                    rec.CaseNotes = requestEntity.CaseNotes;
                 }
 
-                if (request.AdviceNotes != null)
+                if (requestEntity.AdviceNotes != null)
                 {
-                    rec.AdviceNotes = request.AdviceNotes;
+                    rec.AdviceNotes = requestEntity.AdviceNotes;
                 }
 
-                if (request.InitialCallbackCompleted != null)
+                if (requestEntity.InitialCallbackCompleted != null)
                 {
-                    rec.InitialCallbackCompleted = request.InitialCallbackCompleted;
+                    rec.InitialCallbackCompleted = requestEntity.InitialCallbackCompleted;
                 }
 
-                if (request.CallbackRequired != null)
+                if (requestEntity.CallbackRequired != null)
                 {
-                    rec.CallbackRequired = request.CallbackRequired;
+                    rec.CallbackRequired = requestEntity.CallbackRequired;
                 }
 
-                if (request.RecordStatus != null)
+                if (requestEntity.RecordStatus != null)
                 {
-                    rec.RecordStatus = request.RecordStatus;
+                    rec.RecordStatus = requestEntity.RecordStatus;
                 }
 
-                if (request.HelpNeeded != null)
+                if (requestEntity.HelpNeeded != null)
                 {
-                    rec.HelpNeeded = request.HelpNeeded;
+                    rec.HelpNeeded = requestEntity.HelpNeeded;
                 }
                 _helpRequestsContext.SaveChanges();
             }
