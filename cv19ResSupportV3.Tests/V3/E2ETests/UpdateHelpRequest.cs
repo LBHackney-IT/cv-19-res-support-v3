@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoFixture;
 using cv19ResSupportV3.Tests.V3.Helpers;
+using cv19ResSupportV3.V3.Boundary.Requests;
 using cv19ResSupportV3.V3.Boundary.Response;
 using cv19ResSupportV3.V3.Domain;
 using cv19ResSupportV3.V3.Infrastructure;
@@ -61,7 +62,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
 
             DatabaseContext.SaveChanges();
 
-            var updateRequestObject = new HelpRequestEntity()
+            var updateRequestObject = new HelpRequestCreateRequestBoundary()
             {
                 HelpWithCompletingNssForm = false,
                 HelpWithShieldingGuidance = false,

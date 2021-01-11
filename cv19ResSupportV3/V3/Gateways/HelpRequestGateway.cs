@@ -27,6 +27,7 @@ namespace cv19ResSupportV3.V3.Gateways
         public int CreateHelpRequest(CreateHelpRequest command)
         {
             var requestEntity = command.ToEntity();
+            //check the resident by firstName, lastName, DoB
             if (requestEntity == null) return 0;
             SetRecordStatus(requestEntity);
             requestEntity.CallbackRequired ??= true;
@@ -66,13 +67,13 @@ namespace cv19ResSupportV3.V3.Gateways
             }
         }
 
-        public HelpRequest UpdateHelpRequest(HelpRequest request)
+        public HelpRequest UpdateHelpRequest(UpdateHelpRequest command)
         {
-            if (request == null) return null;
+            if (command == null) return null;
             try
             {
-                var entity = _helpRequestsContext.HelpRequestEntities.Find(request.Id);
-                _helpRequestsContext.Entry(entity).CurrentValues.SetValues(request);
+                var entity = _helpRequestsContext.HelpRequestEntities.Find(command.Id);
+                _helpRequestsContext.Entry(entity).CurrentValues.SetValues(command);
                 _helpRequestsContext.SaveChanges();
                 return entity.ToDomain();
             }

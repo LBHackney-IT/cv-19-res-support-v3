@@ -66,8 +66,8 @@ namespace cv19ResSupportV3.V3.Controllers
         {
             try
             {
-                var domain = request.ToDomain();
-                var response = _updateHelpRequestUseCase.Execute(domain);
+                var command = request.ToCommand();
+                var response = _updateHelpRequestUseCase.Execute(command);
                 var result = response.ToResponse();
                 return Ok(result);
             }
