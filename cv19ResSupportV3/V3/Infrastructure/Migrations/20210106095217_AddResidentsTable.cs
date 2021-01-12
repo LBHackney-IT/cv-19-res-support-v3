@@ -33,7 +33,6 @@ namespace cv19ResSupportV3.V3.Infrastructure.Migrations
                                 number_of_children_under_18 = table.Column<string>(type: "character varying", nullable: true),
                                 consent_to_share = table.Column<bool>(type: "bool", nullable: true),
                                 record_status = table.Column<string>(type: "character varying", nullable: true),
-                                case_notes = table.Column<string>(type: "character varying", nullable: true),
                                 nhs_number = table.Column<string>(type: "character varying", nullable: true),
                                 temp_help_request_id = table.Column<string>(type: "character varying", nullable: true)
                             },
@@ -70,7 +69,6 @@ gp_surgery_details,
 number_of_children_under_18,
 consent_to_share,
 record_status,
-case_notes,
 nhs_number,
 temp_help_request_id
 )
@@ -95,11 +93,10 @@ SELECT
     string_agg(number_of_children_under_18, ' / ') as number_of_children_under_18,
     bool_or(consent_to_share) as consent_to_share,
     string_agg(record_status, ' / ') as record_status,
-    string_agg(case_notes, ' / ') as case_notes,
     string_agg(nhs_number, ' / ') as nhs_number,
     string_agg(cast(temp_help_request_id as varchar), ' / ') AS temp_help_request_id
 FROM (
-     SELECT postcode, uprn, ward, address_first_line, address_second_line, address_third_line, is_pharmacist_able_to_deliver, name_address_pharmacist, first_name, last_name, dob_month, dob_year, dob_day, contact_telephone_number, contact_mobile_number, email_address, gp_surgery_details, number_of_children_under_18, consent_to_share, record_status, case_notes, nhs_number, id AS temp_help_request_id
+     SELECT postcode, uprn, ward, address_first_line, address_second_line, address_third_line, is_pharmacist_able_to_deliver, name_address_pharmacist, first_name, last_name, dob_month, dob_year, dob_day, contact_telephone_number, contact_mobile_number, email_address, gp_surgery_details, number_of_children_under_18, consent_to_share, record_status, nhs_number, id AS temp_help_request_id
 FROM i_need_help_resident_support_v3
          ) as new_res
 GROUP BY
