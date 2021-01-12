@@ -144,7 +144,10 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             var response = _classUnderTest.GetCallbacks(new CallbackRequestParams() { HelpNeeded = "" });
 
             response.First().HelpRequestCalls.Count.Should().Be(3);
-            response.First().HelpRequestCalls.Should().BeEquivalentTo(calls);
+            response.First().HelpRequestCalls.Should().BeEquivalentTo(calls, options => {
+                options.Excluding(ex => ex.HelpRequestEntity);
+                return options;
+            });
         }
 
         [Test]

@@ -31,7 +31,7 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
             {
                 req.RecordStatus = "MASTER";
             }
-            _mockGateway.Setup(x => x.GetCallbacks(reqParams)).Returns(stubbedRequests);
+            _mockGateway.Setup(x => x.GetCallbacks(reqParams)).Returns(stubbedRequests.ToDomain());
             var response = _classUnderTest.Execute(reqParams);
             response.Should().NotBeNull();
             response.Should().BeEquivalentTo(stubbedRequests.ToResponse());
@@ -43,7 +43,7 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
             var reqParams = new CallbackRequestParams();
             var stubbedRequests = EntityHelpers.createHelpRequestEntities();
             var expectedResponse = stubbedRequests.ToResponse();
-            _mockGateway.Setup(x => x.GetCallbacks(reqParams)).Returns(stubbedRequests);
+            _mockGateway.Setup(x => x.GetCallbacks(reqParams)).Returns(stubbedRequests.ToDomain());
             var response = _classUnderTest.Execute(reqParams);
             response.Should().NotBeNull();
             response.Should().BeEquivalentTo(expectedResponse);

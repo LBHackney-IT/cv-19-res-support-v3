@@ -10,7 +10,7 @@ namespace cv19ResSupportV3.V3.Gateways
     {
         int CreateHelpRequest(CreateHelpRequest command);
         List<LookupEntity> GetLookups(LookupQueryParams requestParams);
-        List<HelpRequestEntity> GetCallbacks(CallbackRequestParams requestParams);
+        List<HelpRequest> GetCallbacks(CallbackRequestParams requestParams);
         HelpRequest UpdateHelpRequest(UpdateHelpRequest command);
         HelpRequest GetHelpRequest(int id);
         List<HelpRequest> SearchHelpRequests(RequestQueryParams queryParams);
