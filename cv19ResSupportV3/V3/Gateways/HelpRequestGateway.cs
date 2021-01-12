@@ -104,23 +104,23 @@ namespace cv19ResSupportV3.V3.Gateways
             }
         }
 
-        public List<HelpRequest> SearchHelpRequests(RequestQueryParams queryParams)
+        public List<HelpRequest> SearchHelpRequests(SearchRequest command)
         {
             Expression<Func<HelpRequestEntity, bool>> queryPostCode = x =>
-                string.IsNullOrWhiteSpace(queryParams.Postcode)
-                || x.PostCode.Replace(" ", "").ToUpper().Contains(queryParams.Postcode.Replace(" ", "").ToUpper());
+                string.IsNullOrWhiteSpace(command.Postcode)
+                || x.PostCode.Replace(" ", "").ToUpper().Contains(command.Postcode.Replace(" ", "").ToUpper());
 
             Expression<Func<HelpRequestEntity, bool>> queryFirstName = x =>
-                string.IsNullOrWhiteSpace(queryParams.FirstName)
-                || x.FirstName.Replace(" ", "").ToUpper().Contains(queryParams.FirstName.Replace(" ", "").ToUpper());
+                string.IsNullOrWhiteSpace(command.FirstName)
+                || x.FirstName.Replace(" ", "").ToUpper().Contains(command.FirstName.Replace(" ", "").ToUpper());
 
             Expression<Func<HelpRequestEntity, bool>> queryLastName = x =>
-                string.IsNullOrWhiteSpace(queryParams.LastName)
-                || x.LastName.Replace(" ", "").ToUpper().Contains(queryParams.LastName.Replace(" ", "").ToUpper());
+                string.IsNullOrWhiteSpace(command.LastName)
+                || x.LastName.Replace(" ", "").ToUpper().Contains(command.LastName.Replace(" ", "").ToUpper());
 
             Expression<Func<HelpRequestEntity, bool>> queryHelpNeeded = x =>
-                string.IsNullOrWhiteSpace(queryParams.HelpNeeded)
-                || x.HelpNeeded.Replace(" ", "").ToUpper().Equals(queryParams.HelpNeeded.Replace(" ", "").ToUpper());
+                string.IsNullOrWhiteSpace(command.HelpNeeded)
+                || x.HelpNeeded.Replace(" ", "").ToUpper().Equals(command.HelpNeeded.Replace(" ", "").ToUpper());
 
             try
             {

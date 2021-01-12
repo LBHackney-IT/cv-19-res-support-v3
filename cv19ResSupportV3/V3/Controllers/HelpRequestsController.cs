@@ -134,8 +134,10 @@ namespace cv19ResSupportV3.V3.Controllers
         public IActionResult GetHelpRequests([FromQuery] RequestQueryParams requestParams)
         {
             Console.WriteLine(JsonConvert.SerializeObject(requestParams));
-            var result = _getHelpRequestsUseCase.Execute(requestParams);
-            return Ok(result);
+            var command = requestParams.ToCommand();
+            var result = _getHelpRequestsUseCase.Execute(command);
+            var response = result.ToResponse();
+            return Ok(response);
         }
 
         /// <summary>

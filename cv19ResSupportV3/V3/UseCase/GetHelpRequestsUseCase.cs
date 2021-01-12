@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using cv19ResSupportV3.V3.Boundary.Requests;
 using cv19ResSupportV3.V3.Boundary.Response;
+using cv19ResSupportV3.V3.Domain;
+using cv19ResSupportV3.V3.Domain.Commands;
 using cv19ResSupportV3.V3.Factories;
 using cv19ResSupportV3.V3.Gateways;
 
@@ -16,13 +18,13 @@ namespace cv19ResSupportV3.V3.UseCase
             _gateway = gateway;
         }
 
-        public List<HelpRequestResponse> Execute(RequestQueryParams queryParams)
+        public List<HelpRequest> Execute(SearchRequest command)
         {
-            if (queryParams.Postcode == null && queryParams.FirstName == null && queryParams.LastName == null)
+            if (command.Postcode == null && command.FirstName == null && command.LastName == null)
             {
-                return new List<HelpRequestResponse>();
+                return new List<HelpRequest>();
             }
-            return _gateway.SearchHelpRequests(queryParams).ToResponse();
+            return _gateway.SearchHelpRequests(command);
         }
     }
 }

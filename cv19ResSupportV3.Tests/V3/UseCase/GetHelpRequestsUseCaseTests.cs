@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using cv19ResSupportV3.Tests.V3.Helpers;
 using cv19ResSupportV3.V3.Boundary.Requests;
+using cv19ResSupportV3.V3.Domain.Commands;
 using cv19ResSupportV3.V3.Factories;
 using cv19ResSupportV3.V3.Gateways;
 using cv19ResSupportV3.V3.Infrastructure;
@@ -27,7 +28,7 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
         [Test]
         public void ReturnsPopulatedHelpRequestListIfParamsProvided()
         {
-            var reqParams = new RequestQueryParams { Postcode = "test" };
+            var reqParams = new SearchRequest() { Postcode = "test" };
             var stubbedRequests = EntityHelpers.createHelpRequestEntities();
             _mockGateway.Setup(x => x.SearchHelpRequests(reqParams)).Returns(stubbedRequests.ToDomain());
             var response = _classUnderTest.Execute(reqParams);
@@ -38,7 +39,7 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
         [Test]
         public void ReturnsEmptyHelpRequestListIfNoParamsProvided()
         {
-            var reqParams = new RequestQueryParams();
+            var reqParams = new SearchRequest();
             var stubbedRequests = EntityHelpers.createHelpRequestEntities();
             var expectedResponse = new List<HelpRequestEntity>();
             _mockGateway.Setup(x => x.SearchHelpRequests(reqParams)).Returns(stubbedRequests.ToDomain());

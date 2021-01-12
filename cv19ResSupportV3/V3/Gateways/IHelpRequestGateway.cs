@@ -14,7 +14,7 @@ namespace cv19ResSupportV3.V3.Gateways
         List<HelpRequest> GetCallbacks(CallbackQuery command);
         HelpRequest UpdateHelpRequest(UpdateHelpRequest command);
         HelpRequest GetHelpRequest(int id);
-        List<HelpRequest> SearchHelpRequests(RequestQueryParams queryParams);
+        List<HelpRequest> SearchHelpRequests(SearchRequest command);
         void PatchHelpRequest(int id, PatchHelpRequest request);
     }
 }

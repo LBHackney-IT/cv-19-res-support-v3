@@ -164,7 +164,7 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             calls.ForEach(x => x.HelpRequestId = id);
             DatabaseContext.HelpRequestCallEntities.AddRange(calls);
             DatabaseContext.SaveChanges();
-            var response = _classUnderTest.SearchHelpRequests(new RequestQueryParams(){FirstName = "name"});
+            var response = _classUnderTest.SearchHelpRequests(new SearchRequest(){FirstName = "name"});
             response.First().HelpRequestCalls.Count.Should().Be(3);
             var callsDomain = calls.ToDomain();
             response.First().HelpRequestCalls.Should().BeEquivalentTo(callsDomain);
