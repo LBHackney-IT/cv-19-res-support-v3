@@ -19,7 +19,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
         public async Task GetResidentInformationByIdReturnsTheCorrectInformation()
         {
             DatabaseContext.Database.RollbackTransaction();
-            var requestObject = new Fixture().Build<HelpRequestCreateRequestBoundary>().Create();
+            var requestObject = new Fixture().Create<HelpRequestCreateRequestBoundary>();
             var data = JsonConvert.SerializeObject(requestObject);
             HttpContent postContent = new StringContent(data, Encoding.UTF8, "application/json");
             var uri = new Uri($"api/v3/help-requests", UriKind.Relative);
