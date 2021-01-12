@@ -27,6 +27,7 @@ namespace cv19ResSupportV3.V3.Infrastructure.Migrations
             migrationBuilder.DropColumn(name: "consent_to_share", table: "help_requests" );
             migrationBuilder.DropColumn(name: "record_status", table: "help_requests" );
             migrationBuilder.DropColumn(name: "nhs_number", table: "help_requests" );
+            migrationBuilder.DropColumn(name: "case_notes", table: "help_requests" );
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -52,6 +53,7 @@ namespace cv19ResSupportV3.V3.Infrastructure.Migrations
             migrationBuilder.AddColumn<bool>(name: "consent_to_share", table: "help_requests", nullable: true);
             migrationBuilder.AddColumn<string>(name: "record_status", table: "help_requests", nullable: true);
             migrationBuilder.AddColumn<string>(name: "nhs_number", table: "help_requests", nullable: true);
+            migrationBuilder.AddColumn<string>(name: "case_notes", table: "help_requests", nullable: true);
         }
     }
 }
