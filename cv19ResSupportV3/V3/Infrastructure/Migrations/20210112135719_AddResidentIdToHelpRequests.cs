@@ -12,6 +12,15 @@ namespace cv19ResSupportV3.V3.Infrastructure.Migrations
                 type: "int",
                 nullable: true);
 
+            migrationBuilder.AddForeignKey(
+                name: "FK_help_request_resident_id",
+                "help_requests",
+                "resident_id",
+                "residents",
+                default,
+                default,
+                "id"
+                );
 
             migrationBuilder.Sql(
                 @"
