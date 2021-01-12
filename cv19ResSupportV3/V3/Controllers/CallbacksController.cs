@@ -5,6 +5,7 @@ using cv19ResSupportV3.V3.Boundary.Requests;
 using cv19ResSupportV3.V3.Boundary.Response;
 using cv19ResSupportV3.V3.Domain;
 using cv19ResSupportV3.V3.Factories;
+using cv19ResSupportV3.V3.Factories.Commands;
 using cv19ResSupportV3.V3.UseCase;
 using cv19ResSupportV3.V3.UseCase.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -32,7 +33,8 @@ namespace cv19ResSupportV3.V3.Controllers
         [HttpGet]
         public IActionResult GetCallbacks([FromQuery] CallbackRequestParams requestParams)
         {
-            var result = _getCallbacksUseCase.Execute(requestParams);
+            var command = requestParams.ToCommand();
+            var result = _getCallbacksUseCase.Execute(command);
             var response = result.ToResponse();
             return Ok(response);
         }

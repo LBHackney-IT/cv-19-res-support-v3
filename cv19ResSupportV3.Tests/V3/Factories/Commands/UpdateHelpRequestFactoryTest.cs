@@ -1,3 +1,4 @@
+using AutoFixture;
 using cv19ResSupportV3.V3.Boundary.Requests;
 using cv19ResSupportV3.V3.Domain.Commands;
 using cv19ResSupportV3.V3.Factories.Commands;
@@ -9,18 +10,14 @@ namespace cv19ResSupportV3.Tests.V3.Factories.Commands
 {
     public class UpdateHelpRequestFactoryTest
     {
-        [Test]
-        public void CanMapUpdateHelpRequestCommandToHelpRequestEntity()
-        {
-            var entity = new UpdateHelpRequest();
-            var command = entity.ToEntity();
-            command.Should().BeOfType<HelpRequestEntity>();
-        }
+        Fixture _fixture = new Fixture();
+
         [Test]
         public void CanMapHelpRequestPatchRequestToPatchHelpRequestCommand()
         {
-            var request = new HelpRequestUpdateRequest();
+            var request = _fixture.Build<HelpRequestUpdateRequest>().Create();
             var command = request.ToCommand();
+            command.Should().BeEquivalentTo(request);
             command.Should().BeOfType<UpdateHelpRequest>();
         }
     }

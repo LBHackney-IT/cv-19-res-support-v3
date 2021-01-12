@@ -8,6 +8,7 @@ using cv19ResSupportV3.V3.Boundary.Response;
 using cv19ResSupportV3.V3.Controllers;
 using cv19ResSupportV3.V3.Domain;
 using cv19ResSupportV3.V3.Factories;
+using cv19ResSupportV3.V3.Factories.Commands;
 using cv19ResSupportV3.V3.Infrastructure;
 using cv19ResSupportV3.V3.UseCase;
 using cv19ResSupportV3.V3.UseCase.Interfaces;
@@ -37,7 +38,7 @@ namespace cv19ResRupportV3.Tests.V3.Controllers
         {
             var requests = EntityHelpers.createHelpRequestEntities();
             var reqParams = new CallbackRequestParams();
-            _getCallbacksUseCase.Setup(x => x.Execute(reqParams))
+            _getCallbacksUseCase.Setup(x => x.Execute(reqParams.ToCommand()))
                 .Returns(requests.ToDomain());
             var response = _classUnderTest.GetCallbacks(reqParams) as OkObjectResult;
             response.Should().NotBeNull();

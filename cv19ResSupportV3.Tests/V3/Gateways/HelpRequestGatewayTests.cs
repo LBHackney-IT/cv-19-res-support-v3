@@ -141,7 +141,7 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             calls.ForEach(x => x.HelpRequestId = id);
             DatabaseContext.HelpRequestCallEntities.AddRange(calls);
             DatabaseContext.SaveChanges();
-            var response = _classUnderTest.GetCallbacks(new CallbackRequestParams() { HelpNeeded = "" });
+            var response = _classUnderTest.GetCallbacks(new CallbackQuery() { HelpNeeded = "" });
 
             response.First().HelpRequestCalls.Count.Should().Be(3);
             response.First().HelpRequestCalls.Should().BeEquivalentTo(calls, options => {
@@ -182,7 +182,7 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             }
             DatabaseContext.HelpRequestEntities.AddRange(helpRequests);
             DatabaseContext.SaveChanges();
-            var hrParams = new CallbackRequestParams { HelpNeeded = null, Master = "True" };
+            var hrParams = new CallbackQuery() { HelpNeeded = null, Master = "True" };
             var response = _classUnderTest.GetCallbacks(hrParams);
             response.Should().BeEquivalentTo(helpRequests);
         }
@@ -199,7 +199,7 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             }
             DatabaseContext.HelpRequestEntities.AddRange(helpRequests);
             DatabaseContext.SaveChanges();
-            var hrParams = new CallbackRequestParams { HelpNeeded = null, Master = "True" };
+            var hrParams = new CallbackQuery() { HelpNeeded = null, Master = "True" };
             var response = _classUnderTest.GetCallbacks(hrParams);
             response.Should().BeEquivalentTo(helpRequests);
         }

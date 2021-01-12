@@ -318,11 +318,11 @@ namespace cv19ResSupportV3.V3.Gateways
             }
         }
 
-        public List<HelpRequest> GetCallbacks(CallbackRequestParams requestParams)
+        public List<HelpRequest> GetCallbacks(CallbackQuery command)
         {
             Expression<Func<HelpRequestEntity, bool>> queryHelpNeeded = x =>
-                string.IsNullOrWhiteSpace(requestParams.HelpNeeded)
-                || x.HelpNeeded.Replace(" ", "").ToUpper().Equals(requestParams.HelpNeeded.Replace(" ", "").ToUpper());
+                string.IsNullOrWhiteSpace(command.HelpNeeded)
+                || x.HelpNeeded.Replace(" ", "").ToUpper().Equals(command.HelpNeeded.Replace(" ", "").ToUpper());
             try
             {
                 var response = _helpRequestsContext.HelpRequestEntities.Include(x => x.HelpRequestCalls)
@@ -332,7 +332,7 @@ namespace cv19ResSupportV3.V3.Gateways
                     .OrderByDescending(x => x.InitialCallbackCompleted)
                     .ThenBy(x => x.DateTimeRecorded)
                     .ToList();
-                if (!string.IsNullOrWhiteSpace(requestParams.Master))
+                if (!string.IsNullOrWhiteSpace(command.Master))
                 {
                     return response.Where(x => x.RecordStatus != null && x.RecordStatus.Replace(" ", "").ToUpper() == "MASTER").ToList().ToDomain();
                 }

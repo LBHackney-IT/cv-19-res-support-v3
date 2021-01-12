@@ -154,17 +154,17 @@ namespace cv19ResSupportV3.V3.Factories
 
         public static List<HelpRequestResponse> ToResponse(this IEnumerable<HelpRequestEntity> responseList)
         {
-            return responseList.Select(responseItem => responseItem.ToResponse()).ToList();
+            return responseList?.Select(responseItem => responseItem.ToResponse()).ToList();
         }
 
         public static List<HelpRequest> ToDomain(this IEnumerable<HelpRequestEntity> responseList)
         {
-            return responseList.Select(responseItem => responseItem.ToDomain()).ToList();
+            return responseList?.Select(responseItem => responseItem.ToDomain()).ToList();
         }
 
         public static List<HelpRequestResponse> ToResponse(this IEnumerable<HelpRequest> responseList)
         {
-            return responseList.Select(responseItem => responseItem.ToResponse()).ToList();
+            return responseList?.Select(responseItem => responseItem.ToResponse()).ToList();
         }
 
         public static LookupResponse ToResponse(this LookupEntity lookup)
@@ -176,7 +176,7 @@ namespace cv19ResSupportV3.V3.Factories
 
         public static List<LookupResponse> ToResponse(this IEnumerable<LookupEntity> lookupEntities)
         {
-            return lookupEntities.Select(le => le.ToResponse()).ToList();
+            return lookupEntities?.Select(le => le.ToResponse()).ToList();
         }
 
         public static LookupResponse ToResponse(this LookupDomain lookup)
@@ -188,7 +188,7 @@ namespace cv19ResSupportV3.V3.Factories
 
         public static List<LookupResponse> ToResponse(this IEnumerable<LookupDomain> lookup)
         {
-            return lookup.Select(l => l.ToResponse()).ToList();
+            return lookup?.Select(l => l.ToResponse()).ToList();
         }
     }
 }

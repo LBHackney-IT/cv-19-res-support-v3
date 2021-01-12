@@ -1,5 +1,6 @@
 using cv19ResSupportV3.Tests.V3.Helpers;
 using cv19ResSupportV3.V3.Boundary.Requests;
+using cv19ResSupportV3.V3.Domain.Commands;
 using cv19ResSupportV3.V3.Factories;
 using cv19ResSupportV3.V3.Gateways;
 using cv19ResSupportV3.V3.UseCase;
@@ -25,7 +26,7 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
         [Test]
         public void ReturnsPopulatedHelpRequestListIfParamsProvided()
         {
-            var reqParams = new CallbackRequestParams() { Master = "true" };
+            var reqParams = new CallbackQuery() { Master = "true" };
             var stubbedRequests = EntityHelpers.createHelpRequestEntities();
             foreach (var req in stubbedRequests)
             {
@@ -40,9 +41,9 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
         [Test]
         public void ReturnsAllCallbacksIfNoParamsProvided()
         {
-            var reqParams = new CallbackRequestParams();
+            var reqParams = new CallbackQuery();
             var stubbedRequests = EntityHelpers.createHelpRequestEntities();
-            var expectedResponse = stubbedRequests.ToResponse();
+            var expectedResponse = stubbedRequests.ToDomain();
             _mockGateway.Setup(x => x.GetCallbacks(reqParams)).Returns(stubbedRequests.ToDomain());
             var response = _classUnderTest.Execute(reqParams);
             response.Should().NotBeNull();
