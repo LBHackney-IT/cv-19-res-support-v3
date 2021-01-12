@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace cv19ResSupportV3.V3.Infrastructure.Migrations
 {
@@ -6,7 +6,7 @@ namespace cv19ResSupportV3.V3.Infrastructure.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.RenameTable (
+            migrationBuilder.RenameTable(
                 name: "i_need_help_resident_support_v3",
                 newName: "help_requests"
             );
@@ -14,7 +14,7 @@ namespace cv19ResSupportV3.V3.Infrastructure.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.RenameTable (
+            migrationBuilder.RenameTable(
                 name: "help_requests",
                 newName: "i_need_help_resident_support_v3"
             );

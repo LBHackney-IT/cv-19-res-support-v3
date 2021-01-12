@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace cv19ResSupportV3.V3.Infrastructure.Migrations
 {
@@ -6,7 +6,7 @@ namespace cv19ResSupportV3.V3.Infrastructure.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(name: "temp_help_request_id", table: "residents" );
+            migrationBuilder.DropColumn(name: "temp_help_request_id", table: "residents");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
