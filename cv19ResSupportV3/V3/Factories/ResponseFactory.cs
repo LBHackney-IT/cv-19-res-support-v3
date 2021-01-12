@@ -178,5 +178,17 @@ namespace cv19ResSupportV3.V3.Factories
         {
             return lookupEntities.Select(le => le.ToResponse()).ToList();
         }
+
+        public static LookupResponse ToResponse(this LookupDomain lookup)
+        {
+            return lookup == null
+                ? null
+                : new LookupResponse { LookupGroup = lookup.LookupGroup, Lookup = lookup.Lookup };
+        }
+
+        public static List<LookupResponse> ToResponse(this IEnumerable<LookupDomain> lookup)
+        {
+            return lookup.Select(l => l.ToResponse()).ToList();
+        }
     }
 }
