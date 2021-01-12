@@ -4,6 +4,8 @@ using System.Diagnostics;
 using cv19ResSupportV3.V3.Boundary.Requests;
 using cv19ResSupportV3.V3.Boundary.Response;
 using cv19ResSupportV3.V3.Domain;
+using cv19ResSupportV3.V3.Domain.Queries;
+using cv19ResSupportV3.V3.Factories;
 using cv19ResSupportV3.V3.UseCase;
 using cv19ResSupportV3.V3.UseCase.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -31,7 +33,11 @@ namespace cv19ResSupportV3.V3.Controllers
         [HttpGet]
         public IActionResult GetLookups([FromQuery] LookupQueryParams requestParams)
         {
-            var result = _getLookupsUseCase.Execute(requestParams);
+            var query = new LookupQuery()
+            {
+                LookupGroup = requestParams.LookupGroup
+            };
+            var result = _getLookupsUseCase.Execute(query).ToResponse();
             return Ok(result);
         }
 

@@ -4,7 +4,9 @@ using System.Linq;
 using System.Linq.Expressions;
 using Amazon.Lambda.Core;
 using cv19ResSupportV3.V3.Boundary.Requests;
+using cv19ResSupportV3.V3.Domain;
 using cv19ResSupportV3.V3.Domain.Commands;
+using cv19ResSupportV3.V3.Domain.Queries;
 using cv19ResSupportV3.V3.Factories;
 using cv19ResSupportV3.V3.Factories.Commands;
 using cv19ResSupportV3.V3.Gateways;
@@ -45,11 +47,11 @@ namespace cv19ResSupportV3.V3.Gateways
             }
         }
 
-        public List<LookupEntity> GetLookups(LookupQueryParams requestParams)
+        public List<LookupDomain> GetLookups(LookupQuery command)
         {
             Expression<Func<LookupEntity, bool>> queryLookups = x =>
-                string.IsNullOrWhiteSpace(requestParams.LookupGroup)
-                || x.LookupGroup.Replace(" ", "").ToUpper().Equals(requestParams.LookupGroup.Replace(" ", "").ToUpper());
+                string.IsNullOrWhiteSpace(command.LookupGroup)
+                || x.LookupGroup.Replace(" ", "").ToUpper().Equals(command.LookupGroup.Replace(" ", "").ToUpper());
             try
             {
                 var response = _helpRequestsContext.Lookups
@@ -57,7 +59,7 @@ namespace cv19ResSupportV3.V3.Gateways
                     .OrderBy(x => x.LookupGroup)
                     .ThenBy(x => x.Lookup)
                     .ToList();
-                return response;
+                return response.ToDomain();
             }
             catch (Exception e)
             {
