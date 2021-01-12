@@ -28,3 +28,7 @@ lint:
 	-dotnet tool install -g dotnet-format
 	dotnet tool update -g dotnet-format
 	dotnet format
+
+.PHONY: publish-to-swagger-hub
+publish-to-swagger-hub:
+	cv19ResSupportV3/publish-to-swagger-hub

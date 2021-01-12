@@ -42,7 +42,7 @@ namespace cv19ResRupportV3.Tests.V3.Controllers
         [Test]
         public void ReturnsResponseWithStatus()
         {
-            var request = new Fixture().Build<HelpRequestCreateRequestBoundary>().Create();
+            var request = new Fixture().Create<HelpRequestCreateRequestBoundary>();
             _fakeCreateHelpRequestUseCase.Setup(x => x.Execute(It.Is<HelpRequest>(o => o.Id == request.Id)))
                 .Returns(request.Id);
             var response = _classUnderTest.CreateHelpRequest(request) as CreatedResult;
