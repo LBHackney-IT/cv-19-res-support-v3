@@ -8,7 +8,7 @@ namespace cv19ResSupportV3.V3.Factories.Commands
 {
     public static class CreateHelpRequestFactory
     {
-          public static HelpRequestEntity ToEntity(this CreateHelpRequest helpRequest)
+        public static HelpRequestEntity ToEntity(this CreateHelpRequest helpRequest)
         {
             return new HelpRequestEntity()
             {

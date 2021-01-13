@@ -39,7 +39,7 @@ namespace cv19ResRupportV3.Tests.V3.Controllers
             var lookups = new Fixture().CreateMany<LookupDomain>().ToList();
             _getLookupsUseCase.Setup(x => x.Execute(It.IsAny<LookupQuery>()))
                 .Returns(lookups);
-            var response = _classUnderTest.GetLookups(new LookupQueryParams(){LookupGroup = "one"}) as OkObjectResult;
+            var response = _classUnderTest.GetLookups(new LookupQueryParams() { LookupGroup = "one" }) as OkObjectResult;
             response.Should().NotBeNull();
             response.StatusCode.Should().Be(200);
         }

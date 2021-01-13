@@ -31,11 +31,11 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
         {
             var request = new UpdateHelpRequest()
             {
-                Id=7
+                Id = 7
             };
             var result = new HelpRequest()
             {
-                Id=7
+                Id = 7
             };
             _mockGateway.Setup(s => s.UpdateHelpRequest(It.IsAny<UpdateHelpRequest>())).Returns(result);
             var response = _classUnderTest.Execute(request);

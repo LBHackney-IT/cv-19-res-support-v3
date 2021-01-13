@@ -9,7 +9,12 @@ namespace cv19ResSupportV3.V3.Infrastructure
     [Table("help_requests")]
     public class HelpRequestEntityNew
     {
+        public HelpRequestEntityNew()
+        {
+            CaseNotes = new List<CaseNoteEntity>();
+            HelpRequestCalls = new List<HelpRequestCallEntity>();
 
+        }
         [Column("id")] [Key] public int Id { get; set; }
 
         [Column("resident_id")] [ForeignKey("ResidentEntity")] public int ResidentId { get; set; }
@@ -102,6 +107,8 @@ namespace cv19ResSupportV3.V3.Infrastructure
         [Column("nhs_ctas_id")] public string NhsCtasId { get; set; }
 
         public ResidentEntity ResidentEntity { get; set; }
+        public List<CaseNoteEntity> CaseNotes { get; set; }
+        public List<HelpRequestCallEntity> HelpRequestCalls { get; set; }
 
     }
 }

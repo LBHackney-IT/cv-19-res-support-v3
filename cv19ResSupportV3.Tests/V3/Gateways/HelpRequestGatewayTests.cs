@@ -29,11 +29,12 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
         [Test]
         public void CreateHelpRequestReturnsTheRequestIfCreated()
         {
-            var helpRequestCommand = new CreateHelpRequest(){
+            var helpRequestCommand = new CreateHelpRequest()
+            {
                 IsOnBehalf = true,
                 ConsentToCompleteOnBehalf = true,
                 OnBehalfFirstName = "Tim",
-                RecordStatus="MASTER",
+                RecordStatus = "MASTER",
                 CallbackRequired = true
             };
             var response = _classUnderTest.CreateHelpRequest(helpRequestCommand);
@@ -144,7 +145,8 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             var response = _classUnderTest.GetCallbacks(new CallbackQuery() { HelpNeeded = "" });
 
             response.First().HelpRequestCalls.Count.Should().Be(3);
-            response.First().HelpRequestCalls.Should().BeEquivalentTo(calls, options => {
+            response.First().HelpRequestCalls.Should().BeEquivalentTo(calls, options =>
+            {
                 options.Excluding(ex => ex.HelpRequestEntity);
                 return options;
             });
@@ -156,7 +158,7 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             var id = 124;
             var helpRequestEntity = Randomm.Build<HelpRequestEntity>()
                 .With(x => x.Id, id)
-                .With(x => x.FirstName , "name")
+                .With(x => x.FirstName, "name")
                 .Without(h => h.HelpRequestCalls)
                 .Create();
             DatabaseContext.HelpRequestEntities.Add(helpRequestEntity);
@@ -164,7 +166,7 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             calls.ForEach(x => x.HelpRequestId = id);
             DatabaseContext.HelpRequestCallEntities.AddRange(calls);
             DatabaseContext.SaveChanges();
-            var response = _classUnderTest.SearchHelpRequests(new SearchRequest(){FirstName = "name"});
+            var response = _classUnderTest.SearchHelpRequests(new SearchRequest() { FirstName = "name" });
             response.First().HelpRequestCalls.Count.Should().Be(3);
             var callsDomain = calls.ToDomain();
             response.First().HelpRequestCalls.Should().BeEquivalentTo(callsDomain);

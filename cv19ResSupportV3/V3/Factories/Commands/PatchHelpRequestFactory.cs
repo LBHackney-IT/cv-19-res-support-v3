@@ -50,7 +50,7 @@ namespace cv19ResSupportV3.V3.Factories.Commands
                 HelpNeeded = helpRequest.HelpNeeded,
             };
         }
-         public static PatchHelpRequest ToCommand(this HelpRequestPatchRequest helpRequest)
+        public static PatchHelpRequest ToCommand(this HelpRequestPatchRequest helpRequest)
         {
             return new PatchHelpRequest()
             {

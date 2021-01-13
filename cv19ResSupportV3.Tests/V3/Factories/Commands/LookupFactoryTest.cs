@@ -13,8 +13,8 @@ namespace cv19ResSupportV3.Tests.V3.Factories.Commands
         [Test]
         public void CanMapADatabaseEntityToADomainObject()
         {
-            var entityObject = new LookupEntity() {Id = 1, Lookup = "lookup", LookupGroup = "Group"};
-            var domainObject = new LookupDomain() {Id = 1, Lookup = "lookup", LookupGroup = "Group"};
+            var entityObject = new LookupEntity() { Id = 1, Lookup = "lookup", LookupGroup = "Group" };
+            var domainObject = new LookupDomain() { Id = 1, Lookup = "lookup", LookupGroup = "Group" };
 
             var result = entityObject.ToDomain();
             result.Should().BeEquivalentTo(domainObject);
@@ -22,12 +22,12 @@ namespace cv19ResSupportV3.Tests.V3.Factories.Commands
         [Test]
         public void CanMapADatabaseEntityListToADomainList()
         {
-            var entityList = new List<LookupEntity> (){new LookupEntity() {Id = 1, Lookup = "lookup", LookupGroup = "Group"}, new LookupEntity() {Id = 2, Lookup = "lookup2", LookupGroup = "Group2"}};
-            var domainList = new List<LookupDomain> (){new LookupDomain() {Id = 1, Lookup = "lookup", LookupGroup = "Group"}, new LookupDomain() {Id = 2, Lookup = "lookup2", LookupGroup = "Group2"}};
+            var entityList = new List<LookupEntity>() { new LookupEntity() { Id = 1, Lookup = "lookup", LookupGroup = "Group" }, new LookupEntity() { Id = 2, Lookup = "lookup2", LookupGroup = "Group2" } };
+            var domainList = new List<LookupDomain>() { new LookupDomain() { Id = 1, Lookup = "lookup", LookupGroup = "Group" }, new LookupDomain() { Id = 2, Lookup = "lookup2", LookupGroup = "Group2" } };
 
             var result = entityList.ToDomain();
             result.Should().BeEquivalentTo(domainList);
         }
     }
-    }
+}
 

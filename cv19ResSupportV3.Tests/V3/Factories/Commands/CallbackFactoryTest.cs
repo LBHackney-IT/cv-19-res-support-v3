@@ -13,7 +13,7 @@ namespace cv19ResSupportV3.Tests.V3.Factories.Commands
         [Test]
         public void CanMapACallbackRequestToACommand()
         {
-            var requestObject = new CallbackRequestParams() { HelpNeeded = "Help"};
+            var requestObject = new CallbackRequestParams() { HelpNeeded = "Help" };
             var command = requestObject.ToCommand();
             command.Should().BeEquivalentTo(requestObject);
         }
