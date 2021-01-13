@@ -16,6 +16,8 @@ namespace cv19ResSupportV3.V3.UseCase
         }
         public int Execute(CreateHelpRequest command)
         {
+            // Call other use cases, get resident, create resident...
+
 
             var response = _gateway.CreateHelpRequest(command);
             return response;

@@ -24,14 +24,16 @@ namespace cv19ResSupportV3.V3.Controllers
         private readonly IPatchHelpRequestUseCase _patchHelpRequestUseCase;
         private readonly IGetHelpRequestsUseCase _getHelpRequestsUseCase;
         private readonly IGetHelpRequestUseCase _getHelpRequestUseCase;
+        private readonly ICreateResidentAndHelpRequestUseCase _createResidentAndHelpRequestUse;
         public HelpRequestsController(ICreateHelpRequestUseCase createHelpRequestUseCase, IGetHelpRequestsUseCase getHelpRequestsUseCase,
-            IUpdateHelpRequestUseCase updateHelpRequestUseCase, IGetHelpRequestUseCase getHelpRequestUseCase, IPatchHelpRequestUseCase patchHelpRequestUseCase)
+            IUpdateHelpRequestUseCase updateHelpRequestUseCase, IGetHelpRequestUseCase getHelpRequestUseCase, IPatchHelpRequestUseCase patchHelpRequestUseCase, ICreateResidentAndHelpRequestUseCase createResidentAndHelpRequestUseCase)
         {
             _createHelpRequestUseCase = createHelpRequestUseCase;
             _updateHelpRequestUseCase = updateHelpRequestUseCase;
             _patchHelpRequestUseCase = patchHelpRequestUseCase;
             _getHelpRequestsUseCase = getHelpRequestsUseCase;
             _getHelpRequestUseCase = getHelpRequestUseCase;
+            _createHelpRequestUseCase = createHelpRequestUseCase;
         }
 
         /// <summary>
@@ -40,12 +42,12 @@ namespace cv19ResSupportV3.V3.Controllers
         /// <response code="201">...</response>
         [ProducesResponseType(typeof(HelpRequestCreateResponse), StatusCodes.Status201Created)]
         [HttpPost]
-        public IActionResult CreateHelpRequest(HelpRequestCreateRequestBoundary request)
+        public IActionResult CreateResidentAndHelpRequest(HelpRequestCreateRequestBoundary request)
         {
             try
             {
                 var command = request.ToCommand();
-                var id = _createHelpRequestUseCase.Execute(command);
+                var id = _createResidentAndHelpRequestUse.Execute(command);
                 var result = new HelpRequestCreateResponse() { Id = id };
                 return Created(new Uri($"api/v3/help-requests/{id}", UriKind.Relative), result);
             }

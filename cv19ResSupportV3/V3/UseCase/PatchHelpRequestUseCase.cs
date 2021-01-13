@@ -14,9 +14,9 @@ namespace cv19ResSupportV3.V3.UseCase
             _gateway = gateway;
         }
 
-        public void Execute(int id, PatchHelpRequest request)
+        public void Execute(int id, PatchHelpRequest command)
         {
-            _gateway.PatchHelpRequest(id, request);
+            _gateway.PatchHelpRequest(id, command);
         }
     }
 }

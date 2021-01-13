@@ -29,6 +29,7 @@ namespace cv19ResSupportV3.V3.Gateways
         public int CreateHelpRequest(CreateHelpRequest command)
         {
             var requestEntity = command.ToEntity();
+
             //check the resident by firstName, lastName, DoB
             if (requestEntity == null) return 0;
             SetRecordStatus(requestEntity);

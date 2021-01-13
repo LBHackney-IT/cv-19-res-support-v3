@@ -26,6 +26,7 @@ namespace cv19ResRupportV3.Tests.V3.Controllers
         private Mock<IPatchHelpRequestUseCase> _fakePatchHelpRequestUseCase;
         private Mock<IGetHelpRequestsUseCase> _fakeGetHelpRequestsUseCase;
         private Mock<IGetHelpRequestUseCase> _fakeGetHelpRequestUseCase;
+        private Mock<ICreateResidentAndHelpRequestUseCase> _fakeCreateResidentAndHelpRequestUseCase;
 
         [SetUp]
         public void SetUp()
@@ -35,18 +36,19 @@ namespace cv19ResRupportV3.Tests.V3.Controllers
             _fakePatchHelpRequestUseCase = new Mock<IPatchHelpRequestUseCase>();
             _fakeGetHelpRequestsUseCase = new Mock<IGetHelpRequestsUseCase>();
             _fakeGetHelpRequestUseCase = new Mock<IGetHelpRequestUseCase>();
+            _fakeCreateResidentAndHelpRequestUseCase = new Mock<ICreateResidentAndHelpRequestUseCase>();
             _classUnderTest = new HelpRequestsController(_fakeCreateHelpRequestUseCase.Object,
-                _fakeGetHelpRequestsUseCase.Object, _fakeUpdateHelpRequestUseCase.Object,
-                _fakeGetHelpRequestUseCase.Object, _fakePatchHelpRequestUseCase.Object);
+            _fakeGetHelpRequestsUseCase.Object, _fakeUpdateHelpRequestUseCase.Object,
+            _fakeGetHelpRequestUseCase.Object, _fakePatchHelpRequestUseCase.Object, _fakeCreateResidentAndHelpRequestUseCase.Object);
         }
 
         [Test]
         public void ReturnsResponseWithStatus()
         {
             var request = new Fixture().Build<HelpRequestCreateRequestBoundary>().Create();
-            _fakeCreateHelpRequestUseCase.Setup(x => x.Execute(It.Is<CreateHelpRequest>(o => o.Uprn == request.Uprn)))
+            _fakeCreateResidentAndHelpRequestUseCase.Setup(x => x.Execute(It.Is<CreateResidentAndHelpRequest>(o => o.Uprn == request.Uprn)))
                 .Returns(3);
-            var response = _classUnderTest.CreateHelpRequest(request) as CreatedResult;
+            var response = _classUnderTest.CreateResidentAndHelpRequest(request) as CreatedResult;
             response.StatusCode.Should().Be(201);
         }
     }
