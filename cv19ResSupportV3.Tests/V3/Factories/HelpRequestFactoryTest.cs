@@ -23,7 +23,7 @@ namespace cv19ResSupportV3.Tests.V3.Factories
         [Test]
         public void CanMapADatabaseDomainToAnEntityObject()
         {
-            var domainObject = _fixture.Build<HelpRequest>().Create();
+            var domainObject = _fixture.Create<HelpRequest>();
             var entityObject = domainObject.ToEntity();
             entityObject.Should().BeEquivalentTo(domainObject);
         }

@@ -30,7 +30,6 @@ namespace cv19ResSupportV3
         }
 
         public IConfiguration Configuration { get; }
-        private static List<ApiVersionDescription> _apiVersions { get; set; }
         private const string ApiName = "cv-19-resident-support";
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -45,12 +44,21 @@ namespace cv19ResSupportV3
                     jsonOptions.JsonSerializerOptions.PropertyNamingPolicy = null;
                 })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
-            services.AddApiVersioning(o =>
+
+            var versions = new List<ApiVersion>();
+            versions.Add(new ApiVersion(3, 0));
+
+            foreach (var apiVersion in versions)
             {
-                o.DefaultApiVersion = new ApiVersion(3, 0);
-                o.AssumeDefaultVersionWhenUnspecified = true; // assume that the caller wants the default version if they don't specify
-                o.ApiVersionReader = new UrlSegmentApiVersionReader(); // read the version number from the url segment header)
-            });
+                services.AddApiVersioning(o =>
+                {
+                    o.DefaultApiVersion = apiVersion;
+                    o.AssumeDefaultVersionWhenUnspecified =
+                        true; // assume that the caller wants the default version if they don't specify
+                    o.ApiVersionReader =
+                        new UrlSegmentApiVersionReader(); // read the version number from the url segment header)
+                });
+            }
 
             services.AddSingleton<IApiVersionDescriptionProvider, DefaultApiVersionDescriptionProvider>();
 
@@ -92,15 +100,17 @@ namespace cv19ResSupportV3
                 });
 
                 //Get every ApiVersion attribute specified and create swagger docs for them
-                foreach (var apiVersion in _apiVersions)
+                foreach (var apiVersion in versions)
                 {
-                    var version = $"v{apiVersion.ApiVersion.ToString()}";
-                    c.SwaggerDoc(version, new OpenApiInfo
-                    {
-                        Title = $"{ApiName}-api {version}",
-                        Version = version,
-                        Description = $"{ApiName} version {version}. Please check older versions for deprecated endpoints."
-                    });
+                    var version = $"v{apiVersion.ToString()}";
+                    c.SwaggerDoc(version,
+                        new OpenApiInfo
+                        {
+                            Title = $"{ApiName}-api {version}",
+                            Version = version,
+                            Description =
+                                $"{ApiName} version {version}. Please check older versions for deprecated endpoints."
+                        });
                 }
 
                 c.CustomSchemaIds(x => x.FullName);
@@ -158,12 +168,12 @@ namespace cv19ResSupportV3
 
             //Get All ApiVersions,
             var api = app.ApplicationServices.GetService<IApiVersionDescriptionProvider>();
-            _apiVersions = api.ApiVersionDescriptions.ToList();
+            var apiVersions = api.ApiVersionDescriptions.ToList();
 
             //Swagger ui to view the swagger.json file
             app.UseSwaggerUI(c =>
             {
-                foreach (var apiVersionDescription in _apiVersions)
+                foreach (var apiVersionDescription in apiVersions)
                 {
                     //Create a swagger endpoint for each swagger version
                     c.SwaggerEndpoint($"{apiVersionDescription.GetFormattedApiVersion()}/swagger.json",

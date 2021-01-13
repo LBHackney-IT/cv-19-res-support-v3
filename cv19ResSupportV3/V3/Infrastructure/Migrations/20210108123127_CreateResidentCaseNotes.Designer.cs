@@ -10,8 +10,8 @@ using cv19ResSupportV3.V3.Infrastructure;
 namespace cv19ResSupportV3.V3.Infrastructure.Migrations
 {
     [DbContext(typeof(HelpRequestsContext))]
-    [Migration("20210106121300_AddHelpRequestsTable")]
-    partial class AddHelpRequestsTable
+    [Migration("20210108123127_CreateResidentCaseNotes")]
+    partial class CreateResidentCaseNotes
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
