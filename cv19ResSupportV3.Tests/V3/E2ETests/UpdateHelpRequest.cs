@@ -62,7 +62,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
 
             DatabaseContext.SaveChanges();
 
-            var updateRequestObject = new HelpRequestCreateRequestBoundary()
+            var updateRequestObject = new HelpRequestUpdateRequest()
             {
                 HelpWithCompletingNssForm = false,
                 HelpWithShieldingGuidance = false,

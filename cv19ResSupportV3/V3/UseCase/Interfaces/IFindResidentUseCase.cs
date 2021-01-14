@@ -4,6 +4,6 @@ namespace cv19ResSupportV3.V3.UseCase.Interfaces
 {
     public interface IFindResidentUseCase
     {
-        int Execute(FindResident command);
+        int? Execute(FindResident command);
     }
 }

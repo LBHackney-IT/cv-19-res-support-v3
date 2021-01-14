@@ -34,7 +34,6 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
                 IsOnBehalf = true,
                 ConsentToCompleteOnBehalf = true,
                 OnBehalfFirstName = "Tim",
-                RecordStatus = "MASTER",
                 CallbackRequired = true
             };
             var response = _classUnderTest.CreateHelpRequest(helpRequestCommand);
@@ -46,21 +45,21 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
         public void CreateDuplicateHelpRequestTheLatestAsMaster()
         {
             var helpRequest = _fixture.Build<CreateHelpRequest>()
-                .With(x => x.Uprn, "123")
-                .With(x => x.DobMonth, "123")
-                .With(x => x.DobDay, "123")
-                .With(x => x.DobYear, "123")
-                .With(x => x.ContactTelephoneNumber, "123")
-                .With(x => x.ContactMobileNumber, "123")
+//                .With(x => x.Uprn, "123")
+//                .With(x => x.DobMonth, "123")
+//                .With(x => x.DobDay, "123")
+//                .With(x => x.DobYear, "123")
+//                .With(x => x.ContactTelephoneNumber, "123")
+//                .With(x => x.ContactMobileNumber, "123")
                 .Create();
 
             var helpRequest2 = _fixture.Build<CreateHelpRequest>()
-                .With(x => x.Uprn, "123")
-                .With(x => x.DobMonth, "123")
-                .With(x => x.DobDay, "123")
-                .With(x => x.DobYear, "123")
-                .With(x => x.ContactTelephoneNumber, "123")
-                .With(x => x.ContactMobileNumber, "123")
+//                .With(x => x.Uprn, "123")
+//                .With(x => x.DobMonth, "123")
+//                .With(x => x.DobDay, "123")
+//                .With(x => x.DobYear, "123")
+//                .With(x => x.ContactTelephoneNumber, "123")
+//                .With(x => x.ContactMobileNumber, "123")
                 .Create();
 
             var response1 = _classUnderTest.CreateHelpRequest(helpRequest);

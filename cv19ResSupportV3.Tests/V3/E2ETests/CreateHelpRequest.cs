@@ -30,15 +30,15 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             var content = response.Result.Content;
             var stringContent = await content.ReadAsStringAsync().ConfigureAwait(true);
             var convertedResponse = JsonConvert.DeserializeObject<HelpRequestCreateResponse>(stringContent);
-            var createdEntity = DatabaseContext.HelpRequestEntities.Find(convertedResponse.Id);
-            createdEntity.Uprn.Should().BeEquivalentTo(requestObject.Uprn);
-            createdEntity.FirstName.Should().BeEquivalentTo(requestObject.FirstName);
-            createdEntity.LastName.Should().BeEquivalentTo(requestObject.LastName);
-            createdEntity.RecordStatus.Should().Be("MASTER");
-            createdEntity.HelpWithAccessingSupermarketFood.Should().Be(requestObject.HelpWithAccessingSupermarketFood);
-            createdEntity.HelpWithCompletingNssForm.Should().Be(requestObject.HelpWithCompletingNssForm);
-            createdEntity.HelpWithShieldingGuidance.Should().Be(requestObject.HelpWithShieldingGuidance);
-            createdEntity.HelpWithNoNeedsIdentified.Should().Be(requestObject.HelpWithNoNeedsIdentified);
+            var helpRequestEntity = DatabaseContext.HelpRequestEntitiesNew.Find(convertedResponse.Id);
+            var residentEntity = DatabaseContext.ResidentEntities.Find(helpRequestEntity.ResidentId);
+            residentEntity.FirstName.Should().BeEquivalentTo(requestObject.FirstName);
+            residentEntity.LastName.Should().BeEquivalentTo(requestObject.LastName);
+            residentEntity.Uprn.Should().BeEquivalentTo(requestObject.Uprn);
+            helpRequestEntity.HelpWithAccessingSupermarketFood.Should().Be(requestObject.HelpWithAccessingSupermarketFood);
+            helpRequestEntity.HelpWithCompletingNssForm.Should().Be(requestObject.HelpWithCompletingNssForm);
+            helpRequestEntity.HelpWithShieldingGuidance.Should().Be(requestObject.HelpWithShieldingGuidance);
+            helpRequestEntity.HelpWithNoNeedsIdentified.Should().Be(requestObject.HelpWithNoNeedsIdentified);
             DatabaseContext.Database.BeginTransaction();
         }
     }

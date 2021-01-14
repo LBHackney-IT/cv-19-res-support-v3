@@ -6,6 +6,6 @@ namespace cv19ResSupportV3.V3.UseCase.Interfaces
 {
     public interface ICreateHelpRequestUseCase
     {
-        int Execute(CreateHelpRequest command);
+        int Execute(int resident_id, CreateHelpRequest command);
     }
 }

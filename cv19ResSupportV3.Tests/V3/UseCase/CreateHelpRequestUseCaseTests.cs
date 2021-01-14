@@ -29,7 +29,7 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
         {
             _mockGateway.Setup(s => s.CreateHelpRequest(It.IsAny<CreateHelpRequest>())).Returns(1);
             var dataToSave = new Fixture().Build<CreateHelpRequest>().Create();
-            var response = _classUnderTest.Execute(dataToSave);
+            var response = _classUnderTest.Execute(1, dataToSave);
             response.Should().Be(1);
         }
     }

@@ -81,7 +81,6 @@ namespace cv19ResSupportV3.V3.Factories
         {
             return new HelpRequest()
             {
-                Id = helpRequestEntity.Id,
                 IsOnBehalf = helpRequestEntity.IsOnBehalf,
                 ConsentToCompleteOnBehalf = helpRequestEntity.ConsentToCompleteOnBehalf,
                 OnBehalfFirstName = helpRequestEntity.OnBehalfFirstName,

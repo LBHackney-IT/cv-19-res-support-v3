@@ -46,7 +46,7 @@ namespace cv19ResRupportV3.Tests.V3.Controllers
         public void ReturnsResponseWithStatus()
         {
             var request = new Fixture().Build<HelpRequestCreateRequestBoundary>().Create();
-            _fakeCreateResidentAndHelpRequestUseCase.Setup(x => x.Execute(It.Is<CreateResidentAndHelpRequest>(o => o.Uprn == request.Uprn)))
+            _fakeCreateResidentAndHelpRequestUseCase.Setup(x => x.Execute(It.IsAny<CreateResidentAndHelpRequest>()))
                 .Returns(3);
             var response = _classUnderTest.CreateResidentAndHelpRequest(request) as CreatedResult;
             response.StatusCode.Should().Be(201);

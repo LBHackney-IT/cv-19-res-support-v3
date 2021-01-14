@@ -7,6 +7,7 @@ using NUnit.Framework;
 
 namespace cv19ResSupportV3.Tests.V3.Factories.Commands
 {
+    [TestFixture]
     public class PatchHelpRequestFactoryTest
     {
         [Test]
