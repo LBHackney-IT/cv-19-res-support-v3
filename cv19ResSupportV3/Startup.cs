@@ -141,6 +141,7 @@ namespace cv19ResSupportV3
 
         private static void RegisterUseCases(IServiceCollection services)
         {
+            services.AddScoped<ICreateResidentAndHelpRequestUseCase, CreateResidentAndHelpRequestUseCase>();
             services.AddScoped<ICreateHelpRequestUseCase, CreateHelpRequestUseCase>();
             services.AddScoped<IUpdateHelpRequestUseCase, UpdateHelpRequestUseCase>();
             services.AddScoped<IPatchHelpRequestUseCase, PatchHelpRequestUseCase>();

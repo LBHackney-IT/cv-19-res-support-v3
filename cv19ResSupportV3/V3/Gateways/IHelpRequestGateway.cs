@@ -9,7 +9,7 @@ namespace cv19ResSupportV3.V3.Gateways
 {
     public interface IHelpRequestGateway
     {
-        int CreateHelpRequest(CreateHelpRequest command);
+        int CreateHelpRequest(int residentId, CreateHelpRequest command);
         List<LookupDomain> GetLookups(LookupQuery command);
         List<HelpRequest> GetCallbacks(CallbackQuery command);
         HelpRequest UpdateHelpRequest(UpdateHelpRequest command);

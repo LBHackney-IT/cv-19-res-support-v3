@@ -20,6 +20,7 @@ namespace cv19ResSupportV3.V3.UseCase
             var resident = _createResidentUseCase.Execute(command.ToCreateResidentCommand());
 
             return  _createHelpRequestUseCase.Execute(resident.Id, command.ToCreateHelpRequestCommand());
+
         }
     }
 }

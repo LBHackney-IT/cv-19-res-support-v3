@@ -11,13 +11,6 @@ namespace cv19ResSupportV3.Tests.V3.Factories.Commands
     public class PatchHelpRequestFactoryTest
     {
         [Test]
-        public void CanMapPatchHelpRequestCommandToHelpRequestEntity()
-        {
-            var entity = new PatchHelpRequest();
-            var command = entity.ToEntity();
-            command.Should().BeOfType<HelpRequestEntity>();
-        }
-        [Test]
         public void CanMapHelpRequestPatchRequestToPatchHelpRequestCommand()
         {
             var request = new HelpRequestPatchRequest();

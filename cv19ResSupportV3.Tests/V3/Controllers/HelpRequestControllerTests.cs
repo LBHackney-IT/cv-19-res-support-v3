@@ -49,6 +49,7 @@ namespace cv19ResRupportV3.Tests.V3.Controllers
             _fakeCreateResidentAndHelpRequestUseCase.Setup(x => x.Execute(It.IsAny<CreateResidentAndHelpRequest>()))
                 .Returns(3);
             var response = _classUnderTest.CreateResidentAndHelpRequest(request) as CreatedResult;
+            _fakeCreateResidentAndHelpRequestUseCase.Verify(m => m.Execute(It.IsAny<CreateResidentAndHelpRequest>()), Times.Once());
             response.StatusCode.Should().Be(201);
         }
     }
