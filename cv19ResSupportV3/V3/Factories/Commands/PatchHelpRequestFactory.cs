@@ -6,9 +6,9 @@ namespace cv19ResSupportV3.V3.Factories.Commands
 {
     public static class PatchHelpRequestFactory
     {
-        public static HelpRequestEntity ToEntity(this PatchHelpRequest helpRequest)
+        public static HelpRequestEntityOld ToEntity(this PatchHelpRequest helpRequest)
         {
-            return new HelpRequestEntity()
+            return new HelpRequestEntityOld()
             {
                 PostCode = helpRequest.PostCode,
                 Uprn = helpRequest.Uprn,

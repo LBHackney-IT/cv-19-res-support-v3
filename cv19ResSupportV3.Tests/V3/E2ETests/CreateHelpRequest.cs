@@ -30,7 +30,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             var content = response.Result.Content;
             var stringContent = await content.ReadAsStringAsync().ConfigureAwait(true);
             var convertedResponse = JsonConvert.DeserializeObject<HelpRequestCreateResponse>(stringContent);
-            var helpRequestEntity = DatabaseContext.HelpRequestEntitiesNew.Find(convertedResponse.Id);
+            var helpRequestEntity = DatabaseContext.HelpRequestEntities.Find(convertedResponse.Id);
             var residentEntity = DatabaseContext.ResidentEntities.Find(helpRequestEntity.ResidentId);
             residentEntity.FirstName.Should().BeEquivalentTo(requestObject.FirstName);
             residentEntity.LastName.Should().BeEquivalentTo(requestObject.LastName);

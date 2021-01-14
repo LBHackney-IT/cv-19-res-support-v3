@@ -8,7 +8,7 @@ namespace cv19ResSupportV3.V3.Factories
 {
     public static class ResponseFactory
     {
-        public static HelpRequestResponse ToResponse(this HelpRequestEntity hr)
+        public static HelpRequestResponse ToResponse(this HelpRequestEntityOld hr)
         {
             if (hr == null)
             {
@@ -151,12 +151,12 @@ namespace cv19ResSupportV3.V3.Factories
             };
         }
 
-        public static List<HelpRequestResponse> ToResponse(this IEnumerable<HelpRequestEntity> responseList)
+        public static List<HelpRequestResponse> ToResponse(this IEnumerable<HelpRequestEntityOld> responseList)
         {
             return responseList?.Select(responseItem => responseItem.ToResponse()).ToList();
         }
 
-        public static List<HelpRequest> ToDomain(this IEnumerable<HelpRequestEntity> responseList)
+        public static List<HelpRequest> ToDomain(this IEnumerable<HelpRequestEntityOld> responseList)
         {
             return responseList?.Select(responseItem => responseItem.ToDomain()).ToList();
         }

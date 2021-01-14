@@ -1,4 +1,4 @@
-using cv19ResSupportV3.Tests.V3.Helpers;
+//using cv19ResSupportV3.Tests.V3.Helpers;
 using cv19ResSupportV3.V3.Boundary.Requests;
 using cv19ResSupportV3.V3.Domain.Commands;
 using cv19ResSupportV3.V3.Factories;
@@ -23,31 +23,31 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
             _classUnderTest = new GetCallbacksUseCase(_mockGateway.Object);
         }
 
-        [Test]
-        public void ReturnsPopulatedHelpRequestListIfParamsProvided()
-        {
-            var reqParams = new CallbackQuery() { Master = "true" };
-            var stubbedRequests = EntityHelpers.createHelpRequestEntities();
-            foreach (var req in stubbedRequests)
-            {
-                req.RecordStatus = "MASTER";
-            }
-            _mockGateway.Setup(x => x.GetCallbacks(reqParams)).Returns(stubbedRequests.ToDomain());
-            var response = _classUnderTest.Execute(reqParams);
-            response.Should().NotBeNull();
-            response.Should().BeEquivalentTo(stubbedRequests.ToResponse());
-        }
+//        [Test]
+//        public void ReturnsPopulatedHelpRequestListIfParamsProvided()
+//        {
+//            var reqParams = new CallbackQuery() { Master = "true" };
+//            var stubbedRequests = EntityHelpers.createHelpRequestEntities();
+//            foreach (var req in stubbedRequests)
+//            {
+//                req.RecordStatus = "MASTER";
+//            }
+//            _mockGateway.Setup(x => x.GetCallbacks(reqParams)).Returns(stubbedRequests.ToDomain());
+//            var response = _classUnderTest.Execute(reqParams);
+//            response.Should().NotBeNull();
+//            response.Should().BeEquivalentTo(stubbedRequests.ToResponse());
+//        }
 
-        [Test]
-        public void ReturnsAllCallbacksIfNoParamsProvided()
-        {
-            var reqParams = new CallbackQuery();
-            var stubbedRequests = EntityHelpers.createHelpRequestEntities();
-            var expectedResponse = stubbedRequests.ToDomain();
-            _mockGateway.Setup(x => x.GetCallbacks(reqParams)).Returns(stubbedRequests.ToDomain());
-            var response = _classUnderTest.Execute(reqParams);
-            response.Should().NotBeNull();
-            response.Should().BeEquivalentTo(expectedResponse);
-        }
+//        [Test]
+//        public void ReturnsAllCallbacksIfNoParamsProvided()
+//        {
+//            var reqParams = new CallbackQuery();
+//            var stubbedRequests = EntityHelpers.createHelpRequestEntities();
+//            var expectedResponse = stubbedRequests.ToDomain();
+//            _mockGateway.Setup(x => x.GetCallbacks(reqParams)).Returns(stubbedRequests.ToDomain());
+//            var response = _classUnderTest.Execute(reqParams);
+//            response.Should().NotBeNull();
+//            response.Should().BeEquivalentTo(expectedResponse);
+//        }
     }
 }

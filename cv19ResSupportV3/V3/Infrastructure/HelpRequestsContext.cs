@@ -9,10 +9,9 @@ namespace cv19ResSupportV3.V3.Infrastructure
         public HelpRequestsContext(DbContextOptions options) : base(options)
         {
         }
-        public DbSet<HelpRequestEntity> HelpRequestEntities { get; set; }
         public DbSet<LookupEntity> Lookups { get; set; }
         public DbSet<HelpRequestCallEntity> HelpRequestCallEntities { get; set; }
-        public DbSet<HelpRequestEntityNew> HelpRequestEntitiesNew { get; set; }
+        public DbSet<HelpRequestEntity> HelpRequestEntities { get; set; }
         public DbSet<ResidentEntity> ResidentEntities { get; set; }
 
 
@@ -86,11 +85,9 @@ namespace cv19ResSupportV3.V3.Infrastructure
                        entity.Property(e => e.NhsNumber)
                            .HasColumnName("nhs_number")
                            .HasColumnType("character varying");
-                       entity.Property(e => e.TempHelpRequestId)
-                           .HasColumnName("temp_help_request_id");
                    }
                );
-            modelBuilder.Entity<HelpRequestEntityNew>(entity =>
+            modelBuilder.Entity<HelpRequestEntity>(entity =>
                    {
                        entity.ToTable("help_requests");
                        entity.HasKey(helpRequest => new { helpRequest.Id });
@@ -204,16 +201,13 @@ namespace cv19ResSupportV3.V3.Infrastructure
                        entity.Property(e => e.CurrentSupportFeedback)
                            .HasColumnName("current_support_feedback")
                            .HasColumnType("character varying");
-                       entity.Property(e => e.RecordStatus)
-                           .HasColumnName("record_status")
-                           .HasColumnType("character varying");
                        entity.HasOne(e => e.ResidentEntity)
                            .WithMany(c => c.HelpRequestsNew);
                    }
                );
             modelBuilder.Entity<CaseNoteEntity>(entity =>
                 {
-                    entity.ToTable("case_notes");
+                    entity.ToTable("resident_case_notes");
                     entity.HasKey(caseNote => new { caseNote.Id });
                     entity.Property(e => e.Id).HasColumnName("id");
                     entity.Property(e => e.CaseNote)
