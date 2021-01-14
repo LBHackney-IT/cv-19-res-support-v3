@@ -1,31 +1,30 @@
 using AutoFixture;
 using cv19ResSupportV3.V3.Domain.Commands;
 using cv19ResSupportV3.V3.Factories.Commands;
-using cv19ResSupportV3.V3.Infrastructure;
 using FluentAssertions;
 using NUnit.Framework;
 
 namespace cv19ResSupportV3.Tests.V3.Factories.Commands
 {
     [TestFixture]
-    public class FindResidentFactoryTest
+    public class MergeResidentFactoryTest
     {
         Fixture _fixture = new Fixture();
         [Test]
-        public void CanMapCreateResidentAndHelpRequestToFindResidentCommand()
+        public void CanMapCreateResidentAndHelpRequestToUpdateResidentCommand()
         {
             var request = _fixture.Build<CreateResidentAndHelpRequest>().Create();
-            var command = request.ToFindResidentCommand();
+            var command = request.ToUpdateResidentCommand();
             request.Should().BeEquivalentTo(command);
-            command.Should().BeOfType<FindResident>();
+            command.Should().BeOfType<UpdateResident>();
         }
         [Test]
-        public void CanMapCreateResidenToFindResidentCommand()
+        public void CanMapCreateResidentToUpdateResidentCommand()
         {
             var request = _fixture.Build<CreateResident>().Create();
-            var command = request.ToFindResidentCommand();
+            var command = request.ToUpdateResidentCommand();
             request.Should().BeEquivalentTo(command);
-            command.Should().BeOfType<FindResident>();
+            command.Should().BeOfType<UpdateResident>();
         }
     }
 }
