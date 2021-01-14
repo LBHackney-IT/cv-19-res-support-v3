@@ -7,6 +7,7 @@ namespace cv19ResSupportV3.V3.Factories.Commands
     {
         public static CreateResidentAndHelpRequest ToCommand(this HelpRequestCreateRequestBoundary helpRequest)
         {
+            if (helpRequest==null) return null;
             return new CreateResidentAndHelpRequest()
             {
                 IsOnBehalf = helpRequest.IsOnBehalf,

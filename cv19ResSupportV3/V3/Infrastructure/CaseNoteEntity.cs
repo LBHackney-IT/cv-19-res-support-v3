@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace cv19ResSupportV3.V3.Infrastructure
 {
-    [Table("case_notes")]
+    [Table("resident_case_notes")]
     public class CaseNoteEntity
     {
         [Column("id")]
@@ -18,12 +18,12 @@ namespace cv19ResSupportV3.V3.Infrastructure
         [Column("help_request_id")]
         [ForeignKey("HelpRequestEntity")]
         public int HelpRequestId { get; set; }
-        [Column("case_note")]
+        [Column("case_notes")]
         public string CaseNote { get; set; }
 
 
         public ResidentEntity ResidentEntity { get; set; }
-        public HelpRequestEntityNew HelpRequestEntity { get; set; }
+      public HelpRequestEntity HelpRequestEntity { get; set; }
 
     }
 }

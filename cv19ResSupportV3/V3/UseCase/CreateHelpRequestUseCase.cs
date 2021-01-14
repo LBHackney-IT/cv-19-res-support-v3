@@ -9,14 +9,14 @@ namespace cv19ResSupportV3.V3.UseCase
 {
     public class CreateHelpRequestUseCase : ICreateHelpRequestUseCase
     {
-        private IHelpRequestGateway _gateway;
+        private readonly IHelpRequestGateway _gateway;
         public CreateHelpRequestUseCase(IHelpRequestGateway gateway)
         {
             _gateway = gateway;
         }
-        public int Execute(int resident_id, CreateHelpRequest command)
+        public int Execute(int residentId, CreateHelpRequest command)
         {
-            var response = _gateway.CreateHelpRequest(command);
+            var response = _gateway.CreateHelpRequest(residentId, command);
             return response;
         }
     }

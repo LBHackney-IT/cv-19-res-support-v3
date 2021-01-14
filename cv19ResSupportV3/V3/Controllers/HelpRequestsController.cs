@@ -34,6 +34,7 @@ namespace cv19ResSupportV3.V3.Controllers
             _getHelpRequestsUseCase = getHelpRequestsUseCase;
             _getHelpRequestUseCase = getHelpRequestUseCase;
             _createHelpRequestUseCase = createHelpRequestUseCase;
+            _createResidentAndHelpRequestUse = createResidentAndHelpRequestUseCase;
         }
 
         /// <summary>
