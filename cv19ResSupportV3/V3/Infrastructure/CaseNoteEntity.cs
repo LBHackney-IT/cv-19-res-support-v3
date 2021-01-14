@@ -23,7 +23,7 @@ namespace cv19ResSupportV3.V3.Infrastructure
 
 
         public ResidentEntity ResidentEntity { get; set; }
-      public HelpRequestEntity HelpRequestEntity { get; set; }
+        public HelpRequestEntity HelpRequestEntity { get; set; }
 
     }
 }

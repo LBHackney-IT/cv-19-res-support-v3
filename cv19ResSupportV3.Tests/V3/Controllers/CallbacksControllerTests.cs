@@ -33,16 +33,16 @@ namespace cv19ResRupportV3.Tests.V3.Controllers
             _classUnderTest = new CallbacksController(_getCallbacksUseCase.Object);
         }
 
-//        [Test]
-//        public void ReturnsResponseWithStatus()
-//        {
-//            var requests = EntityHelpers.createHelpRequestEntities();
-//            var reqParams = new CallbackRequestParams();
-//            _getCallbacksUseCase.Setup(x => x.Execute(reqParams.ToCommand()))
-//                .Returns(requests.ToDomain());
-//            var response = _classUnderTest.GetCallbacks(reqParams) as OkObjectResult;
-//            response.Should().NotBeNull();
-//            response.StatusCode.Should().Be(200);
-//        }
+        //        [Test]
+        //        public void ReturnsResponseWithStatus()
+        //        {
+        //            var requests = EntityHelpers.createHelpRequestEntities();
+        //            var reqParams = new CallbackRequestParams();
+        //            _getCallbacksUseCase.Setup(x => x.Execute(reqParams.ToCommand()))
+        //                .Returns(requests.ToDomain());
+        //            var response = _classUnderTest.GetCallbacks(reqParams) as OkObjectResult;
+        //            response.Should().NotBeNull();
+        //            response.StatusCode.Should().Be(200);
+        //        }
     }
 }
