@@ -48,6 +48,18 @@ namespace cv19ResSupportV3.V3.Gateways
                 throw;
             }
         }
+        public Resident CreateResident(CreateResident command)
+        {
+            return new Resident();
+        }
+        public Resident UpdateResident(int residentId, UpdateResident command)
+        {
+            return new Resident();
+        }
+        public int? FindResident(FindResident command)
+        {
+            return null;
+        }
 
         public List<LookupDomain> GetLookups(LookupQuery command)
         {

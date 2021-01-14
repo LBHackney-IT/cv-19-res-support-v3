@@ -1,6 +1,6 @@
 namespace cv19ResSupportV3.V3.Domain.Commands
 {
-    public class MergeResident
+    public class UpdateResident
     {
         public string PostCode { get; set; }
         public string Uprn { get; set; }

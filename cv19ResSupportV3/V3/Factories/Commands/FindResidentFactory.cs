@@ -16,5 +16,17 @@ namespace cv19ResSupportV3.V3.Factories.Commands
                 DobDay = helpRequest.DobDay,
             };
         }
+        public static FindResident ToFindResidentCommand(this CreateResident command)
+        {
+            return new FindResident()
+            {
+                Uprn = command.Uprn,
+                FirstName = command.FirstName,
+                LastName = command.LastName,
+                DobMonth = command.DobMonth,
+                DobYear = command.DobYear,
+                DobDay = command.DobDay,
+            };
+        }
     }
 }
