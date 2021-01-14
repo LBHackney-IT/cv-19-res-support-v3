@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using AutoFixture;
-//using cv19ResSupportV3.Tests.V3.Helpers;
+using cv19ResSupportV3.Tests.V3.Helpers;
 using cv19ResSupportV3.V3.Boundary.Requests;
 using cv19ResSupportV3.V3.Domain;
 using cv19ResSupportV3.V3.Domain.Commands;
@@ -122,33 +122,68 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
         //            updatedEntity.HelpWithAccessingSupermarketFood.Should().Be(false);
         //        }
         //
-        //        [Test]
-        //        public void GetHelpRequestReturnsEmptyCallsListIfNoCallsExist()
-        //        {
-        //            var id = 123;
-        //            DatabaseContext.HelpRequestEntities.Add(EntityHelpers.createHelpRequestEntity(id));
-        //            DatabaseContext.SaveChanges();
-        //            var response = _classUnderTest.GetHelpRequest(id);
-        //            response.HelpRequestCalls.Should().BeNullOrEmpty();
-        //        }
-        //
-        //        [Test]
-        //        public void GetHelpRequestReturnsCallsListIfCallsExist()
-        //        {
-        //            var id = 124;
-        //            DatabaseContext.HelpRequestEntities.Add(EntityHelpers.createHelpRequestEntity(id));
-        //            var calls = EntityHelpers.createHelpRequestCallEntities(3);
-        //            calls.ForEach(x => x.HelpRequestId = id);
-        //            DatabaseContext.HelpRequestCallEntities.AddRange(calls);
-        //            DatabaseContext.SaveChanges();
-        //            var response = _classUnderTest.GetHelpRequest(id);
-        //            response.HelpRequestCalls.Count.Should().Be(3);
-        //            response.HelpRequestCalls.Should().BeEquivalentTo(calls, options =>
-        //            {
-        //                options.Excluding(ex => ex.HelpRequestEntity);
-        //                return options;
-        //            });
-        //        }
+
+        [Test]
+        public void GetHelpRequestReturnsEmptyCallsListIfNoCallsExist()
+        {
+            var id = 123;
+            var residentId = 111;
+            DatabaseContext.ResidentEntities.Add(EntityHelpers.createResident(residentId));
+            DatabaseContext.HelpRequestEntities.Add(EntityHelpers.createHelpRequestEntity(id, residentId));
+            DatabaseContext.SaveChanges();
+            var response = _classUnderTest.GetHelpRequest(id);
+            response.HelpRequestCalls.Should().BeNullOrEmpty();
+        }
+
+        [Test]
+        public void GetHelpRequestReturnsCallsListIfCallsExist()
+        {
+            var id = 124;
+            var residentId = 112;
+            DatabaseContext.ResidentEntities.Add(EntityHelpers.createResident(residentId));
+            DatabaseContext.HelpRequestEntities.Add(EntityHelpers.createHelpRequestEntity(id, residentId));
+            var calls = EntityHelpers.createHelpRequestCallEntities(3);
+            calls.ForEach(x => x.HelpRequestId = id);
+            DatabaseContext.HelpRequestCallEntities.AddRange(calls);
+            DatabaseContext.SaveChanges();
+            var response = _classUnderTest.GetHelpRequest(id);
+            response.HelpRequestCalls.Count.Should().Be(3);
+            response.HelpRequestCalls.Should().BeEquivalentTo(calls, options =>
+            {
+                options.Excluding(ex => ex.HelpRequestEntity);
+                return options;
+            });
+        }
+
+        [Test]
+        public void GetResidentReturnsResidentIfItExist()
+        {
+            var residentId = 111;
+            var residentEntity = EntityHelpers.createResident(residentId);
+            DatabaseContext.ResidentEntities.Add(residentEntity);
+            DatabaseContext.SaveChanges();
+            var response = _classUnderTest.GetResident(residentId);
+            residentEntity.Should().BeEquivalentTo(response);
+        }
+
+        [Test]
+        public void GetHelpRequestReturnsHelpRequestIfItExist()
+        {
+            var id = 120;
+            var residentId = 101;
+            DatabaseContext.ResidentEntities.Add(EntityHelpers.createResident(residentId));
+            var helpRequestEntity = EntityHelpers.createHelpRequestEntity(id, residentId);
+            DatabaseContext.HelpRequestEntities.Add(helpRequestEntity);
+            DatabaseContext.SaveChanges();
+            var response = _classUnderTest.GetHelpRequest(id);
+            response.Should().BeEquivalentTo(helpRequestEntity, options =>
+            {
+                options.Excluding(ex => ex.CaseNotes);
+                options.Excluding(ex => ex.ResidentEntity);
+                return options;
+            });
+        }
+
         //
         //        [Test]
         //        public void GetAllCallbacksWithCallsListIfCallsExist()

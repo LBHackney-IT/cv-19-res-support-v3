@@ -7,6 +7,8 @@ namespace cv19ResSupportV3.V3.Boundary.Response
     public class HelpRequestResponse
     {
         public int Id { get; set; }
+        public int ResidentId { get; set; }
+
         public bool? IsOnBehalf { get; set; }
         public bool? ConsentToCompleteOnBehalf { get; set; }
         public string OnBehalfFirstName { get; set; }
@@ -60,7 +62,7 @@ namespace cv19ResSupportV3.V3.Boundary.Response
         public string RecordStatus { get; set; }
         public bool? InitialCallbackCompleted { get; set; }
         public bool? CallbackRequired { get; set; }
-        public string CaseNotes { get; set; }
+        public List<ResidentCaseNote> CaseNotes { get; set; }
         public string AdviceNotes { get; set; }
         public string HelpNeeded { get; set; }
         public string NhsNumber { get; set; }

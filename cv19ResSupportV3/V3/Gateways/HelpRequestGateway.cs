@@ -90,14 +90,15 @@ namespace cv19ResSupportV3.V3.Gateways
             return new HelpRequest();
         }
 
-        public HelpRequest GetHelpRequest(int id)
+        public Resident GetResident(int id)
         {
             try
             {
-                //                var result = _helpRequestsContext.HelpRequestEntities
-                //                    .Include(x => x.HelpRequestCalls)
-                //                    .FirstOrDefault(x => x.Id == id);
-                //                return result?.ToDomain();
+                var resident = _helpRequestsContext.ResidentEntities
+                    .Include(x => x.CaseNotes)
+                    .FirstOrDefault(x => x.Id == id);
+                if (resident == null) return null;
+                return resident.ToDomain();
             }
             catch (Exception e)
             {
@@ -105,7 +106,25 @@ namespace cv19ResSupportV3.V3.Gateways
                 LambdaLogger.Log(e.Message);
                 throw;
             }
-            return new HelpRequest();
+        }
+
+        public HelpRequest GetHelpRequest(int id)
+        {
+            try
+            {
+                var helpRequest = _helpRequestsContext.HelpRequestEntities
+                    .Include(x => x.HelpRequestCalls)
+                    .FirstOrDefault(x => x.Id == id);
+                if (helpRequest == null) return null;
+                helpRequest.ToDomain();
+                return helpRequest.ToDomain();
+            }
+            catch (Exception e)
+            {
+                LambdaLogger.Log("GetHelpRequest error: ");
+                LambdaLogger.Log(e.Message);
+                throw;
+            }
         }
 
         public List<HelpRequest> SearchHelpRequests(SearchRequest command)

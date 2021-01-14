@@ -202,7 +202,7 @@ namespace cv19ResSupportV3.V3.Infrastructure
                            .HasColumnName("current_support_feedback")
                            .HasColumnType("character varying");
                        entity.HasOne(e => e.ResidentEntity)
-                           .WithMany(c => c.HelpRequestsNew);
+                           .WithMany(c => c.HelpRequests);
                    }
                );
             modelBuilder.Entity<CaseNoteEntity>(entity =>
