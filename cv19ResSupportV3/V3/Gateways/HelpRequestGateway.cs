@@ -110,21 +110,21 @@ namespace cv19ResSupportV3.V3.Gateways
 
         public List<HelpRequest> SearchHelpRequests(SearchRequest command)
         {
-            Expression<Func<HelpRequestEntityOld, bool>> queryPostCode = x =>
-                string.IsNullOrWhiteSpace(command.Postcode)
-                || x.PostCode.Replace(" ", "").ToUpper().Contains(command.Postcode.Replace(" ", "").ToUpper());
-
-            Expression<Func<HelpRequestEntityOld, bool>> queryFirstName = x =>
-                string.IsNullOrWhiteSpace(command.FirstName)
-                || x.FirstName.Replace(" ", "").ToUpper().Contains(command.FirstName.Replace(" ", "").ToUpper());
-
-            Expression<Func<HelpRequestEntityOld, bool>> queryLastName = x =>
-                string.IsNullOrWhiteSpace(command.LastName)
-                || x.LastName.Replace(" ", "").ToUpper().Contains(command.LastName.Replace(" ", "").ToUpper());
-
-            Expression<Func<HelpRequestEntityOld, bool>> queryHelpNeeded = x =>
-                string.IsNullOrWhiteSpace(command.HelpNeeded)
-                || x.HelpNeeded.Replace(" ", "").ToUpper().Equals(command.HelpNeeded.Replace(" ", "").ToUpper());
+//            Expression<Func<HelpRequestEntityOld, bool>> queryPostCode = x =>
+//                string.IsNullOrWhiteSpace(command.Postcode)
+//                || x.PostCode.Replace(" ", "").ToUpper().Contains(command.Postcode.Replace(" ", "").ToUpper());
+//
+//            Expression<Func<HelpRequestEntityOld, bool>> queryFirstName = x =>
+//                string.IsNullOrWhiteSpace(command.FirstName)
+//                || x.FirstName.Replace(" ", "").ToUpper().Contains(command.FirstName.Replace(" ", "").ToUpper());
+//
+//            Expression<Func<HelpRequestEntityOld, bool>> queryLastName = x =>
+//                string.IsNullOrWhiteSpace(command.LastName)
+//                || x.LastName.Replace(" ", "").ToUpper().Contains(command.LastName.Replace(" ", "").ToUpper());
+//
+//            Expression<Func<HelpRequestEntityOld, bool>> queryHelpNeeded = x =>
+//                string.IsNullOrWhiteSpace(command.HelpNeeded)
+//                || x.HelpNeeded.Replace(" ", "").ToUpper().Equals(command.HelpNeeded.Replace(" ", "").ToUpper());
 
             try
             {
@@ -325,9 +325,9 @@ namespace cv19ResSupportV3.V3.Gateways
 
         public List<HelpRequest> GetCallbacks(CallbackQuery command)
         {
-            Expression<Func<HelpRequestEntityOld, bool>> queryHelpNeeded = x =>
-                string.IsNullOrWhiteSpace(command.HelpNeeded)
-                || x.HelpNeeded.Replace(" ", "").ToUpper().Equals(command.HelpNeeded.Replace(" ", "").ToUpper());
+//            Expression<Func<HelpRequestEntityOld, bool>> queryHelpNeeded = x =>
+//                string.IsNullOrWhiteSpace(command.HelpNeeded)
+//                || x.HelpNeeded.Replace(" ", "").ToUpper().Equals(command.HelpNeeded.Replace(" ", "").ToUpper());
             try
             {
 //                var response = _helpRequestsContext.HelpRequestEntities.Include(x => x.HelpRequestCalls)
@@ -352,8 +352,8 @@ namespace cv19ResSupportV3.V3.Gateways
             return new List<HelpRequest>();
         }
 
-        private void SetRecordStatus(HelpRequestEntityOld request)
-        {
+//        private void SetRecordStatus(HelpRequestEntityOld request)
+//        {
 //            request.RecordStatus = "MASTER";
 //            var duplicates = _helpRequestsContext.HelpRequestEntities
 //                .Where(x => x.Uprn == request.Uprn && x.DobMonth == request.DobMonth
@@ -377,6 +377,6 @@ namespace cv19ResSupportV3.V3.Gateways
 //                    request.RecordStatus = "EXCEPTION";
 //                }
 //            }
-        }
+//        }
     }
 }

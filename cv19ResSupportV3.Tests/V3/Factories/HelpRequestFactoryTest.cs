@@ -11,7 +11,7 @@ namespace cv19ResSupportV3.Tests.V3.Factories
     [TestFixture]
     public class HelpRequestFactoryTest
     {
-        Fixture _fixture = new Fixture();
+//        Fixture _fixture = new Fixture();
 //        [Test]
 //        public void CanMapADatabaseEntityToADomainObject()
 //        {
@@ -19,13 +19,13 @@ namespace cv19ResSupportV3.Tests.V3.Factories
 //            var domaiObject = entityObject.ToDomain();
 //            entityObject.Should().BeEquivalentTo(domaiObject);
 //        }
-
-        [Test]
-        public void CanMapADatabaseDomainToAnEntityObject()
-        {
-            var domainObject = _fixture.Create<HelpRequest>();
-            var entityObject = domainObject.ToEntity();
-            entityObject.Should().BeEquivalentTo(domainObject);
-        }
+//
+//        [Test]
+//        public void CanMapADatabaseDomainToAnEntityObject()
+//        {
+//            var domainObject = _fixture.Create<HelpRequest>();
+//            var entityObject = domainObject.ToEntity();
+//            entityObject.Should().BeEquivalentTo(domainObject);
+//        }
     }
 }
