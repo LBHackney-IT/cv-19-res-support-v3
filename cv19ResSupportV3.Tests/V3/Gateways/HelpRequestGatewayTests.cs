@@ -350,25 +350,36 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
         //            });
         //        }
         //
-        //        [Test]
-        //        public void SearchRequestsReturnsCallsListIfCallsExist()
-        //        {
-        //            var id = 124;
-        //            var helpRequestEntity = Randomm.Build<HelpRequestEntity>()
-        //                .With(x => x.Id, id)
-        //                .With(x => x.FirstName, "name")
-        //                .Without(h => h.HelpRequestCalls)
-        //                .Create();
-        //            DatabaseContext.HelpRequestEntities.Add(helpRequestEntity);
-        //            var calls = EntityHelpers.createHelpRequestCallEntities(3);
-        //            calls.ForEach(x => x.HelpRequestId = id);
-        //            DatabaseContext.HelpRequestCallEntities.AddRange(calls);
-        //            DatabaseContext.SaveChanges();
-        //            var response = _classUnderTest.SearchHelpRequests(new SearchRequest() { FirstName = "name" });
-        //            response.First().HelpRequestCalls.Count.Should().Be(3);
-        //            var callsDomain = calls.ToDomain();
-        //            response.First().HelpRequestCalls.Should().BeEquivalentTo(callsDomain);
-        //        }
+        [Test]
+        public void SearchRequestsReturnsCallsListIfCallsExist()
+        {
+            var id = 124;
+            var residentEntity = Randomm.Build<ResidentEntity>()
+                .With(x => x.Id, id)
+                .With(x => x.FirstName, "name")
+                .Without(h => h.CaseNotes)
+                .Without(h => h.HelpRequests)
+                .Create();
+            var helpRequestEntity = Randomm.Build<HelpRequestEntity>()
+                .With(x => x.Id, 8)
+                .With(x => x.ResidentId, residentEntity.Id)
+                .Without(h => h.ResidentEntity)
+                .Without(h => h.CaseNotes)
+                .Without(h => h.HelpRequestCalls)
+                .Create();
+            DatabaseContext.ResidentEntities.Add(residentEntity);
+            DatabaseContext.HelpRequestEntities.Add(helpRequestEntity);
+            var calls = EntityHelpers.createHelpRequestCallEntities(3);
+            calls.ForEach(x => x.HelpRequestId = 8);
+            DatabaseContext.HelpRequestCallEntities.AddRange(calls);
+            DatabaseContext.SaveChanges();
+            var response = _classUnderTest.SearchHelpRequests(new SearchRequest() { FirstName = "name" });
+            response.First().HelpRequestCalls.Count.Should().Be(3);
+            var callsDomain = calls.ToDomain();
+            response.First().HelpRequestCalls.Should().BeEquivalentTo(callsDomain);
+            response.First().ResidentId.Should().Be(id);
+            response.First().Id.Should().Be(8);
+        }
         //
         //        [Test]
         //        public void GetCallbacksReturnsCallbacks()

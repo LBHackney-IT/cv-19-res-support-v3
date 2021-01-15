@@ -27,8 +27,9 @@ namespace cv19ResSupportV3.V3.UseCase
             }
 
             var helpRequests = _gateway.SearchHelpRequests(command);
+            if (helpRequests==null) return new List<HelpRequestResponse>();
 
-            var result = helpRequests?.Select(helpRequest =>
+            var result = helpRequests.Select(helpRequest =>
                 {
                     var resident = _gateway.GetResident(helpRequest.ResidentId);
                     return helpRequest.ToResponse(resident);

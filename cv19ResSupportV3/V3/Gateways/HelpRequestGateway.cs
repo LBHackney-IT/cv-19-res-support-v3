@@ -204,32 +204,33 @@ namespace cv19ResSupportV3.V3.Gateways
 
         public List<HelpRequest> SearchHelpRequests(SearchRequest command)
         {
-            //            Expression<Func<HelpRequestEntityOld, bool>> queryPostCode = x =>
-            //                string.IsNullOrWhiteSpace(command.Postcode)
-            //                || x.PostCode.Replace(" ", "").ToUpper().Contains(command.Postcode.Replace(" ", "").ToUpper());
-            //
-            //            Expression<Func<HelpRequestEntityOld, bool>> queryFirstName = x =>
-            //                string.IsNullOrWhiteSpace(command.FirstName)
-            //                || x.FirstName.Replace(" ", "").ToUpper().Contains(command.FirstName.Replace(" ", "").ToUpper());
-            //
-            //            Expression<Func<HelpRequestEntityOld, bool>> queryLastName = x =>
-            //                string.IsNullOrWhiteSpace(command.LastName)
-            //                || x.LastName.Replace(" ", "").ToUpper().Contains(command.LastName.Replace(" ", "").ToUpper());
-            //
-            //            Expression<Func<HelpRequestEntityOld, bool>> queryHelpNeeded = x =>
-            //                string.IsNullOrWhiteSpace(command.HelpNeeded)
-            //                || x.HelpNeeded.Replace(" ", "").ToUpper().Equals(command.HelpNeeded.Replace(" ", "").ToUpper());
+            Expression<Func<HelpRequestEntity, bool>> queryPostCode = x =>
+                string.IsNullOrWhiteSpace(command.Postcode)
+                || x.ResidentEntity.PostCode.Replace(" ", "").ToUpper().Contains(command.Postcode.Replace(" ", "").ToUpper());
+
+            Expression<Func<HelpRequestEntity, bool>> queryFirstName = x =>
+                string.IsNullOrWhiteSpace(command.FirstName)
+                || x.ResidentEntity.FirstName.Replace(" ", "").ToUpper().Contains(command.FirstName.Replace(" ", "").ToUpper());
+
+            Expression<Func<HelpRequestEntity, bool>> queryLastName = x =>
+                string.IsNullOrWhiteSpace(command.LastName)
+                || x.ResidentEntity.LastName.Replace(" ", "").ToUpper().Contains(command.LastName.Replace(" ", "").ToUpper());
+
+            Expression<Func<HelpRequestEntity, bool>> queryHelpNeeded = x =>
+                string.IsNullOrWhiteSpace(command.HelpNeeded)
+                || x.HelpNeeded.Replace(" ", "").ToUpper().Equals(command.HelpNeeded.Replace(" ", "").ToUpper());
+
 
             try
             {
-                //                return _helpRequestsContext.HelpRequestEntities
-                //                    .Include(x => x.HelpRequestCalls)
-                //                    .Where(queryPostCode)
-                //                    .Where(queryFirstName)
-                //                    .Where(queryLastName)
-                //                    .Where(queryHelpNeeded)
-                //                    .ToList()
-                //                    .ToDomain();
+                return _helpRequestsContext.HelpRequestEntities
+                    .Include(x => x.HelpRequestCalls)
+                    .Where(queryPostCode)
+                    .Where(queryFirstName)
+                    .Where(queryLastName)
+                    .Where(queryHelpNeeded)
+                    .ToList()
+                    .ToDomain();
             }
             catch (Exception e)
             {
@@ -237,7 +238,6 @@ namespace cv19ResSupportV3.V3.Gateways
                 LambdaLogger.Log(e.Message);
                 throw;
             }
-            return new List<HelpRequest>();
         }
 
         public void PatchHelpRequest(int id, PatchHelpRequest command)
