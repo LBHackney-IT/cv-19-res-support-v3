@@ -146,11 +146,12 @@ namespace cv19ResSupportV3
             services.AddScoped<IUpdateHelpRequestUseCase, UpdateHelpRequestUseCase>();
             services.AddScoped<IPatchHelpRequestUseCase, PatchHelpRequestUseCase>();
             services.AddScoped<IGetHelpRequestsUseCase, GetHelpRequestsUseCase>();
-            services.AddScoped<IGetHelpRequestUseCase, GetHelpRequestUseCase>();
+            services.AddScoped<IGetResidentAndHelpRequestUseCase, GetResidentAndHelpRequestUseCase>();
             services.AddScoped<IGetCallbacksUseCase, GetCallbacksUseCase>();
             services.AddScoped<IGetLookupsUseCase, GetLookupsUseCase>();
             services.AddScoped<ICreateHelpRequestUseCase, CreateHelpRequestUseCase>();
             services.AddScoped<ICreateHelpRequestCallUseCase, CreateHelpRequestCallUseCase>();
+            services.AddScoped<ICreateResidentUseCase, CreateResidentUseCase>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -11,7 +11,7 @@ namespace cv19ResSupportV3.V3.Infrastructure
     {
         public ResidentEntity()
         {
-            HelpRequestsNew = new List<HelpRequestEntity>();
+            HelpRequests = new List<HelpRequestEntity>();
             CaseNotes = new List<CaseNoteEntity>();
         }
         [Column("id")]
@@ -82,7 +82,7 @@ namespace cv19ResSupportV3.V3.Infrastructure
         [Column("nhs_number")]
         public string NhsNumber { get; set; }
 
-        public List<HelpRequestEntity> HelpRequestsNew { get; set; }
+        public List<HelpRequestEntity> HelpRequests { get; set; }
         public List<CaseNoteEntity> CaseNotes { get; set; }
     }
 }

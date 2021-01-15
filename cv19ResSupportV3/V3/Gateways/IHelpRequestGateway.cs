@@ -14,6 +14,7 @@ namespace cv19ResSupportV3.V3.Gateways
         List<HelpRequest> GetCallbacks(CallbackQuery command);
         HelpRequest UpdateHelpRequest(UpdateHelpRequest command);
         HelpRequest GetHelpRequest(int id);
+        Resident GetResident(int id);
         List<HelpRequest> SearchHelpRequests(SearchRequest command);
         void PatchHelpRequest(int id, PatchHelpRequest command);
         int? FindResident(FindResident command);

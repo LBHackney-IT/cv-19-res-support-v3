@@ -168,22 +168,38 @@ namespace cv19ResSupportV3.V3.Gateways
             return new HelpRequest();
         }
 
+        public Resident GetResident(int id)
+        {
+            try
+            {
+                var resident = _helpRequestsContext.ResidentEntities
+                    .Include(x => x.CaseNotes)
+                    .FirstOrDefault(x => x.Id == id);
+                return resident?.ToDomain();
+            }
+            catch (Exception e)
+            {
+                LambdaLogger.Log("GetResident error: ");
+                LambdaLogger.Log(e.Message);
+                throw;
+            }
+        }
+
         public HelpRequest GetHelpRequest(int id)
         {
             try
             {
-                //                var result = _helpRequestsContext.HelpRequestEntities
-                //                    .Include(x => x.HelpRequestCalls)
-                //                    .FirstOrDefault(x => x.Id == id);
-                //                return result?.ToDomain();
+                var helpRequest = _helpRequestsContext.HelpRequestEntities
+                    .Include(x => x.HelpRequestCalls)
+                    .FirstOrDefault(x => x.Id == id);
+                return helpRequest?.ToDomain();
             }
             catch (Exception e)
             {
-                LambdaLogger.Log("GetHelpRequest error: ");
+                LambdaLogger.Log("GetResidentAndHelpRequest error: ");
                 LambdaLogger.Log(e.Message);
                 throw;
             }
-            return new HelpRequest();
         }
 
         public List<HelpRequest> SearchHelpRequests(SearchRequest command)
