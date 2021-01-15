@@ -1,7 +1,6 @@
 using System;
 using Amazon.Lambda.Core;
 using cv19ResSupportV3.V3.Boundary.Response;
-using cv19ResSupportV3.V3.Domain;
 using cv19ResSupportV3.V3.Factories;
 using cv19ResSupportV3.V3.Gateways;
 

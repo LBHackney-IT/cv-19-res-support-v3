@@ -35,15 +35,15 @@ namespace cv19ResRupportV3.Tests.V3.Controllers
         }
 
         [Test]
-                 public void ReturnsResponseWithStatus()
-                 {
-                     var requests = EntityHelpers.createHelpRequestEntities();
-                     var reqParams = new CallbackRequestParams();
-                     _getCallbacksUseCase.Setup(x => x.Execute(reqParams.ToCommand()))
-                         .Returns(requests.ToDomain().ToResponse());
-                     var response = _classUnderTest.GetCallbacks(reqParams) as OkObjectResult;
-                     response.Should().NotBeNull();
-                     response.StatusCode.Should().Be(200);
-                 }
+        public void ReturnsResponseWithStatus()
+        {
+            var requests = EntityHelpers.createHelpRequestEntities();
+            var reqParams = new CallbackRequestParams();
+            _getCallbacksUseCase.Setup(x => x.Execute(reqParams.ToCommand()))
+                .Returns(requests.ToDomain().ToResponse());
+            var response = _classUnderTest.GetCallbacks(reqParams) as OkObjectResult;
+            response.Should().NotBeNull();
+            response.StatusCode.Should().Be(200);
+        }
     }
 }

@@ -1,4 +1,3 @@
-using System;
 using cv19ResSupportV3.V3.Domain.Commands;
 using cv19ResSupportV3.V3.Factories.Commands;
 using cv19ResSupportV3.V3.UseCase.Interfaces;
@@ -19,7 +18,7 @@ namespace cv19ResSupportV3.V3.UseCase
         {
             var resident = _createResidentUseCase.Execute(command.ToCreateResidentCommand());
 
-            return  _createHelpRequestUseCase.Execute(resident.Id, command.ToCreateHelpRequestCommand());
+            return _createHelpRequestUseCase.Execute(resident.Id, command.ToCreateHelpRequestCommand());
 
         }
     }

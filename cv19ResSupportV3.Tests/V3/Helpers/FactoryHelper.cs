@@ -6,7 +6,7 @@ namespace cv19ResSupportV3.Tests.V3.Helpers
 {
     public static class FactoryHelper
     {
-           public static HelpRequest ToDomain(this ResidentEntity resident, HelpRequestEntity helpRequest)
+        public static HelpRequest ToDomain(this ResidentEntity resident, HelpRequestEntity helpRequest)
         {
             return new HelpRequest()
             {

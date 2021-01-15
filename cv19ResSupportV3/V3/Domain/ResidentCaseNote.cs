@@ -1,5 +1,3 @@
-using System;
-
 namespace cv19ResSupportV3.V3.Domain
 {
     public class ResidentCaseNote

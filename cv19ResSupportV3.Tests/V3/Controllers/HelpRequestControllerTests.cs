@@ -57,7 +57,7 @@ namespace cv19ResRupportV3.Tests.V3.Controllers
         {
             var id = 1;
             _fakeGetResidentAndHelpRequestUseCase.Setup(x => x.Execute(It.IsAny<int>()))
-                .Returns(new HelpRequestResponse(){Id = 1});
+                .Returns(new HelpRequestResponse() { Id = 1 });
             var response = _classUnderTest.GetResidentAndHelpRequest(id) as OkObjectResult;
             _fakeGetResidentAndHelpRequestUseCase.Verify(m => m.Execute(It.Is<int>(x => x == id)), Times.Once());
             response.StatusCode.Should().Be(200);
@@ -66,7 +66,7 @@ namespace cv19ResRupportV3.Tests.V3.Controllers
         [Test]
         public void GetResidentsAndHelpRequestsReturnsResponseWithStatus()
         {
-            var searchParams = new RequestQueryParams(){Postcode = "ABC"};
+            var searchParams = new RequestQueryParams() { Postcode = "ABC" };
             _fakeGetResidentsAndHelpRequestsUseCase.Setup(x => x.Execute(It.IsAny<SearchRequest>()))
                 .Returns(new List<HelpRequestResponse>());
             var response = _classUnderTest.GetResidentsAndHelpRequests(searchParams) as OkObjectResult;

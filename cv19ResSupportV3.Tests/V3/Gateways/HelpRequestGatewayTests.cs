@@ -66,7 +66,7 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
         [Test]
         public void FindResidentWithUprnAndNameReturnsTheResidentIdIfItExists()
         {
-            var existingResident = new ResidentEntity {Uprn = "uprn", FirstName = "FirstName", LastName = "LastName"};
+            var existingResident = new ResidentEntity { Uprn = "uprn", FirstName = "FirstName", LastName = "LastName" };
 
             var findResidentCommand = new FindResident
             {
@@ -84,7 +84,10 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             var createdRecord = DatabaseContext.ResidentEntities.Find(response);
             var expectedRecord = new ResidentEntity
             {
-                Id = existingResident.Id, Uprn = "uprn", FirstName = "FirstName", LastName = "LastName"
+                Id = existingResident.Id,
+                Uprn = "uprn",
+                FirstName = "FirstName",
+                LastName = "LastName"
             };
 
             createdRecord.Should().BeEquivalentTo(expectedRecord);
@@ -144,7 +147,10 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
 
             var updateResidentCommand = new UpdateResident
             {
-                Uprn = "Uprn", DobDay = "NewDay", DobMonth = "NewMonth", DobYear = "NewYear"
+                Uprn = "Uprn",
+                DobDay = "NewDay",
+                DobMonth = "NewMonth",
+                DobYear = "NewYear"
             };
 
             DatabaseContext.ResidentEntities.Add(existingResident);
@@ -340,7 +346,7 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             calls.ForEach(x => x.HelpRequestId = 8);
             DatabaseContext.HelpRequestCallEntities.AddRange(calls);
             DatabaseContext.SaveChanges();
-            var response = _classUnderTest.SearchHelpRequests(new SearchRequest() {FirstName = "name"});
+            var response = _classUnderTest.SearchHelpRequests(new SearchRequest() { FirstName = "name" });
             response.First().HelpRequestCalls.Count.Should().Be(3);
             var callsDomain = calls.ToDomain();
             response.First().HelpRequestCalls.Should().BeEquivalentTo(callsDomain);
@@ -366,7 +372,7 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             DatabaseContext.ResidentEntities.Add(resident);
             DatabaseContext.HelpRequestEntities.AddRange(helpRequests);
             DatabaseContext.SaveChanges();
-            var hrParams = new CallbackQuery() {HelpNeeded = "help request"};
+            var hrParams = new CallbackQuery() { HelpNeeded = "help request" };
             var response = _classUnderTest.GetCallbacks(hrParams);
             response.Should().BeEquivalentTo(helpRequests, options =>
             {
@@ -375,7 +381,7 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
                 return options;
             });
 
-            var hrParams2 = new CallbackQuery() {HelpNeeded = "something else"};
+            var hrParams2 = new CallbackQuery() { HelpNeeded = "something else" };
             var response2 = _classUnderTest.GetCallbacks(hrParams2);
             response2.Should().BeNullOrEmpty();
         }
@@ -397,7 +403,7 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             DatabaseContext.ResidentEntities.Add(resident);
             DatabaseContext.HelpRequestEntities.AddRange(helpRequests);
             DatabaseContext.SaveChanges();
-            var hrParams = new CallbackQuery() {HelpNeeded = "shielding"};
+            var hrParams = new CallbackQuery() { HelpNeeded = "shielding" };
             var response = _classUnderTest.GetCallbacks(hrParams);
             response.Should().BeEquivalentTo(helpRequests, options =>
             {

@@ -31,7 +31,7 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
         [Test]
         public void CreatesANewResidentIfItDoesntExistAndSavesANewHelpRequest()
         {
-            _fakeCreateResidentUseCase.Setup(s => s.Execute(It.IsAny<CreateResident>())).Returns(new Resident(){Id = 1});
+            _fakeCreateResidentUseCase.Setup(s => s.Execute(It.IsAny<CreateResident>())).Returns(new Resident() { Id = 1 });
             _fakeCreateHelpRequestUseCase.Setup(s => s.Execute(It.IsAny<int>(), It.IsAny<CreateHelpRequest>())).Returns(2);
 
             var dataToSave = new Fixture().Build<CreateResidentAndHelpRequest>().Create();

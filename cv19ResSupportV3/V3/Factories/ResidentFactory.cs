@@ -6,7 +6,7 @@ namespace cv19ResSupportV3.V3.Factories
 {
     public static class ResidentDomain
     {
-         public static Resident ToResidentDomain(this ResidentEntity residentEntity)
+        public static Resident ToResidentDomain(this ResidentEntity residentEntity)
         {
             return new Resident
             {
@@ -34,31 +34,31 @@ namespace cv19ResSupportV3.V3.Factories
                 CaseNotes = residentEntity.CaseNotes.ToDomain()
             };
         }
-         public static ResidentEntity ToResidentEntity(this CreateResident command)
-         {
-             return new ResidentEntity
-             {
-                 PostCode = command.PostCode,
-                 Uprn = command.Uprn,
-                 Ward = command.Ward,
-                 AddressFirstLine = command.AddressFirstLine,
-                 AddressSecondLine = command.AddressSecondLine,
-                 AddressThirdLine = command.AddressThirdLine,
-                 IsPharmacistAbleToDeliver = command.IsPharmacistAbleToDeliver,
-                 NameAddressPharmacist = command.NameAddressPharmacist,
-                 FirstName = command.FirstName,
-                 LastName = command.LastName,
-                 DobMonth = command.DobMonth,
-                 DobYear = command.DobYear,
-                 DobDay = command.DobDay,
-                 ContactTelephoneNumber = command.ContactTelephoneNumber,
-                 ContactMobileNumber = command.ContactMobileNumber,
-                 EmailAddress = command.EmailAddress,
-                 GpSurgeryDetails = command.GpSurgeryDetails,
-                 NumberOfChildrenUnder18 = command.NumberOfChildrenUnder18,
-                 ConsentToShare = command.ConsentToShare,
-                 NhsNumber = command.NhsNumber
-             };
-         }
+        public static ResidentEntity ToResidentEntity(this CreateResident command)
+        {
+            return new ResidentEntity
+            {
+                PostCode = command.PostCode,
+                Uprn = command.Uprn,
+                Ward = command.Ward,
+                AddressFirstLine = command.AddressFirstLine,
+                AddressSecondLine = command.AddressSecondLine,
+                AddressThirdLine = command.AddressThirdLine,
+                IsPharmacistAbleToDeliver = command.IsPharmacistAbleToDeliver,
+                NameAddressPharmacist = command.NameAddressPharmacist,
+                FirstName = command.FirstName,
+                LastName = command.LastName,
+                DobMonth = command.DobMonth,
+                DobYear = command.DobYear,
+                DobDay = command.DobDay,
+                ContactTelephoneNumber = command.ContactTelephoneNumber,
+                ContactMobileNumber = command.ContactMobileNumber,
+                EmailAddress = command.EmailAddress,
+                GpSurgeryDetails = command.GpSurgeryDetails,
+                NumberOfChildrenUnder18 = command.NumberOfChildrenUnder18,
+                ConsentToShare = command.ConsentToShare,
+                NhsNumber = command.NhsNumber
+            };
+        }
     }
 }

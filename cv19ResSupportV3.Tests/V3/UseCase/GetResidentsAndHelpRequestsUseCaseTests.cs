@@ -32,9 +32,9 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
         [Test]
         public void ReturnsPopulatedHelpRequestListIfParamsProvided()
         {
-            var reqParams = new SearchRequest() {Postcode = "test"};
-            var stubbedRequests = new List<HelpRequest>(){new HelpRequest(){Id = 1, ResidentId = 2}, new HelpRequest(){Id = 3, ResidentId = 2}};
-            var stubbedResident = new Resident(){Id = 2, FirstName = "Tom"};
+            var reqParams = new SearchRequest() { Postcode = "test" };
+            var stubbedRequests = new List<HelpRequest>() { new HelpRequest() { Id = 1, ResidentId = 2 }, new HelpRequest() { Id = 3, ResidentId = 2 } };
+            var stubbedResident = new Resident() { Id = 2, FirstName = "Tom" };
             _mockGateway.Setup(x => x.SearchHelpRequests(reqParams)).Returns(stubbedRequests);
             _mockGateway.Setup(x => x.GetResident(2)).Returns(stubbedResident);
             var response = _classUnderTest.Execute(reqParams);

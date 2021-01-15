@@ -1,16 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
 using Amazon.Lambda.Core;
-using cv19ResSupportV3.V3.Boundary.Requests;
 using cv19ResSupportV3.V3.Domain.Commands;
-using cv19ResSupportV3.V3.Factories;
 using cv19ResSupportV3.V3.Factories.Commands;
-using cv19ResSupportV3.V3.Gateways;
 using cv19ResSupportV3.V3.Infrastructure;
 using Microsoft.EntityFrameworkCore;
-using HelpRequest = cv19ResSupportV3.V3.Domain.HelpRequest;
 
 namespace cv19ResSupportV3.V3.Gateways
 {

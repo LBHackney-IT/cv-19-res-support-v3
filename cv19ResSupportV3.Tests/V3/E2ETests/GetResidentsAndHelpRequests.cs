@@ -30,7 +30,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
         {
             var residentId = 500;
             var postcode = "ABC";
-            var residentEntity  = Randomm.Build<ResidentEntity>()
+            var residentEntity = Randomm.Build<ResidentEntity>()
                                         .With(x => x.Id, residentId)
                                         .With(x => x.PostCode, postcode)
                                         .Without(h => h.CaseNotes)
