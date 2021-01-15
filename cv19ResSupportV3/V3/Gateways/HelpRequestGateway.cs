@@ -109,12 +109,11 @@ namespace cv19ResSupportV3.V3.Gateways
                 var resident = _helpRequestsContext.ResidentEntities
                     .Include(x => x.CaseNotes)
                     .FirstOrDefault(x => x.Id == id);
-                if (resident == null) return null;
-                return resident.ToDomain();
+                return resident?.ToDomain();
             }
             catch (Exception e)
             {
-                LambdaLogger.Log("GetHelpRequest error: ");
+                LambdaLogger.Log("GetResident error: ");
                 LambdaLogger.Log(e.Message);
                 throw;
             }
@@ -127,13 +126,11 @@ namespace cv19ResSupportV3.V3.Gateways
                 var helpRequest = _helpRequestsContext.HelpRequestEntities
                     .Include(x => x.HelpRequestCalls)
                     .FirstOrDefault(x => x.Id == id);
-                if (helpRequest == null) return null;
-                helpRequest.ToDomain();
-                return helpRequest.ToDomain();
+                return helpRequest?.ToDomain();
             }
             catch (Exception e)
             {
-                LambdaLogger.Log("GetHelpRequest error: ");
+                LambdaLogger.Log("GetResidentAndHelpRequest error: ");
                 LambdaLogger.Log(e.Message);
                 throw;
             }

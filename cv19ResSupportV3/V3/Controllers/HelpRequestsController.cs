@@ -23,16 +23,16 @@ namespace cv19ResSupportV3.V3.Controllers
         private readonly IUpdateHelpRequestUseCase _updateHelpRequestUseCase;
         private readonly IPatchHelpRequestUseCase _patchHelpRequestUseCase;
         private readonly IGetHelpRequestsUseCase _getHelpRequestsUseCase;
-        private readonly IGetHelpRequestUseCase _getHelpRequestUseCase;
+        private readonly IGetResidentAndHelpRequestUseCase _getResidentAndHelpRequestUseCase;
         private readonly ICreateResidentAndHelpRequestUseCase _createResidentAndHelpRequestUse;
         public HelpRequestsController(ICreateHelpRequestUseCase createHelpRequestUseCase, IGetHelpRequestsUseCase getHelpRequestsUseCase,
-            IUpdateHelpRequestUseCase updateHelpRequestUseCase, IGetHelpRequestUseCase getHelpRequestUseCase, IPatchHelpRequestUseCase patchHelpRequestUseCase, ICreateResidentAndHelpRequestUseCase createResidentAndHelpRequestUseCase)
+            IUpdateHelpRequestUseCase updateHelpRequestUseCase, IGetResidentAndHelpRequestUseCase getResidentAndHelpRequestUseCase, IPatchHelpRequestUseCase patchHelpRequestUseCase, ICreateResidentAndHelpRequestUseCase createResidentAndHelpRequestUseCase)
         {
             _createHelpRequestUseCase = createHelpRequestUseCase;
             _updateHelpRequestUseCase = updateHelpRequestUseCase;
             _patchHelpRequestUseCase = patchHelpRequestUseCase;
             _getHelpRequestsUseCase = getHelpRequestsUseCase;
-            _getHelpRequestUseCase = getHelpRequestUseCase;
+            _getResidentAndHelpRequestUseCase = getResidentAndHelpRequestUseCase;
             _createHelpRequestUseCase = createHelpRequestUseCase;
             _createResidentAndHelpRequestUse = createResidentAndHelpRequestUseCase;
         }
@@ -150,9 +150,9 @@ namespace cv19ResSupportV3.V3.Controllers
         [ProducesResponseType(typeof(HelpRequestResponse), StatusCodes.Status200OK)]
         [HttpGet]
         [Route("{id}")]
-        public IActionResult GetHelpRequest(int id)
+        public IActionResult GetResidentAndHelpRequest(int id)
         {
-            var result = _getHelpRequestUseCase.Execute(id);
+            var result = _getResidentAndHelpRequestUseCase.Execute(id);
             if (result == null)
                 return NotFound();
             return Ok(result);

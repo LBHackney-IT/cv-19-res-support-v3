@@ -12,13 +12,13 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
     public class GetHelpRequestUseCaseTests
     {
         private Mock<IHelpRequestGateway> _mockGateway;
-        private GetHelpRequestUseCase _classUnderTest;
+        private GetResidentAndHelpRequestUseCase _classUnderTest;
 
         [SetUp]
         public void SetUp()
         {
             _mockGateway = new Mock<IHelpRequestGateway>();
-            _classUnderTest = new GetHelpRequestUseCase(_mockGateway.Object);
+            _classUnderTest = new GetResidentAndHelpRequestUseCase(_mockGateway.Object);
         }
 
         [Test]

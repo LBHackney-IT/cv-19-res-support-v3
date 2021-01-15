@@ -25,7 +25,7 @@ namespace cv19ResRupportV3.Tests.V3.Controllers
         private Mock<IUpdateHelpRequestUseCase> _fakeUpdateHelpRequestUseCase;
         private Mock<IPatchHelpRequestUseCase> _fakePatchHelpRequestUseCase;
         private Mock<IGetHelpRequestsUseCase> _fakeGetHelpRequestsUseCase;
-        private Mock<IGetHelpRequestUseCase> _fakeGetHelpRequestUseCase;
+        private Mock<IGetResidentAndHelpRequestUseCase> _fakeGetResidentAndHelpRequestUseCase;
         private Mock<ICreateResidentAndHelpRequestUseCase> _fakeCreateResidentAndHelpRequestUseCase;
 
         [SetUp]
@@ -35,15 +35,15 @@ namespace cv19ResRupportV3.Tests.V3.Controllers
             _fakeUpdateHelpRequestUseCase = new Mock<IUpdateHelpRequestUseCase>();
             _fakePatchHelpRequestUseCase = new Mock<IPatchHelpRequestUseCase>();
             _fakeGetHelpRequestsUseCase = new Mock<IGetHelpRequestsUseCase>();
-            _fakeGetHelpRequestUseCase = new Mock<IGetHelpRequestUseCase>();
+            _fakeGetResidentAndHelpRequestUseCase = new Mock<IGetResidentAndHelpRequestUseCase>();
             _fakeCreateResidentAndHelpRequestUseCase = new Mock<ICreateResidentAndHelpRequestUseCase>();
             _classUnderTest = new HelpRequestsController(_fakeCreateHelpRequestUseCase.Object,
             _fakeGetHelpRequestsUseCase.Object, _fakeUpdateHelpRequestUseCase.Object,
-            _fakeGetHelpRequestUseCase.Object, _fakePatchHelpRequestUseCase.Object, _fakeCreateResidentAndHelpRequestUseCase.Object);
+            _fakeGetResidentAndHelpRequestUseCase.Object, _fakePatchHelpRequestUseCase.Object, _fakeCreateResidentAndHelpRequestUseCase.Object);
         }
 
         [Test]
-        public void ReturnsResponseWithStatus()
+        public void CreateReturnsResponseWithStatus()
         {
             var request = new Fixture().Build<HelpRequestCreateRequestBoundary>().Create();
             _fakeCreateResidentAndHelpRequestUseCase.Setup(x => x.Execute(It.IsAny<CreateResidentAndHelpRequest>()))
@@ -51,6 +51,17 @@ namespace cv19ResRupportV3.Tests.V3.Controllers
             var response = _classUnderTest.CreateResidentAndHelpRequest(request) as CreatedResult;
             _fakeCreateResidentAndHelpRequestUseCase.Verify(m => m.Execute(It.IsAny<CreateResidentAndHelpRequest>()), Times.Once());
             response.StatusCode.Should().Be(201);
+        }
+
+        [Test]
+        public void GetResidentAndHelpRequestReturnsResponseWithStatus()
+        {
+            var id = 1;
+            _fakeGetResidentAndHelpRequestUseCase.Setup(x => x.Execute(It.IsAny<int>()))
+                .Returns(new HelpRequestResponse(){Id = 1});
+            var response = _classUnderTest.GetResidentAndHelpRequest(id) as OkObjectResult;
+            _fakeGetResidentAndHelpRequestUseCase.Verify(m => m.Execute(It.Is<int>(x => x == id)), Times.Once());
+            response.StatusCode.Should().Be(200);
         }
     }
 }

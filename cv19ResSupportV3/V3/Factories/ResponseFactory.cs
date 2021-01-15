@@ -143,7 +143,7 @@ namespace cv19ResSupportV3.V3.Factories
                 NumberOfChildrenUnder18 = resident.NumberOfChildrenUnder18,
                 ConsentToShare = resident.ConsentToShare,
                 DateTimeRecorded = helpRequest.DateTimeRecorded,
-                RecordStatus = helpRequest.RecordStatus,
+                RecordStatus = resident.RecordStatus,
                 InitialCallbackCompleted = helpRequest.InitialCallbackCompleted,
                 CallbackRequired = helpRequest.CallbackRequired,
                 CaseNotes = resident.CaseNotes,
