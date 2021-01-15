@@ -8,6 +8,6 @@ namespace cv19ResSupportV3.V3.UseCase
 {
     public interface IGetCallbacksUseCase
     {
-        List<HelpRequest> Execute(CallbackQuery requestParams);
+        List<HelpRequestResponse> Execute(CallbackQuery requestParams);
     }
 }

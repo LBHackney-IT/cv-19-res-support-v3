@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using cv19ResSupportV3.V3.Boundary.Requests;
 using cv19ResSupportV3.V3.Boundary.Response;
 using cv19ResSupportV3.V3.Domain;
@@ -17,9 +18,11 @@ namespace cv19ResSupportV3.V3.UseCase
             _gateway = gateway;
         }
 
-        public List<HelpRequest> Execute(CallbackQuery command)
+        public List<HelpRequestResponse> Execute(CallbackQuery command)
         {
-            return _gateway.GetCallbacks(command);
+            var helpRequests = _gateway.GetCallbacks(command);
+            var result = helpRequests?.Select(hr => hr.ToResponse(_gateway.GetResident(hr.ResidentId))).ToList();
+            return result;
         }
     }
 }

@@ -419,23 +419,19 @@ namespace cv19ResSupportV3.V3.Gateways
 
         public List<HelpRequest> GetCallbacks(CallbackQuery command)
         {
-            //            Expression<Func<HelpRequestEntityOld, bool>> queryHelpNeeded = x =>
-            //                string.IsNullOrWhiteSpace(command.HelpNeeded)
-            //                || x.HelpNeeded.Replace(" ", "").ToUpper().Equals(command.HelpNeeded.Replace(" ", "").ToUpper());
+            Expression<Func<HelpRequestEntity, bool>> queryHelpNeeded = x =>
+                string.IsNullOrWhiteSpace(command.HelpNeeded)
+                || x.HelpNeeded.Replace(" ", "").ToUpper().Equals(command.HelpNeeded.Replace(" ", "").ToUpper());
             try
             {
-                //                var response = _helpRequestsContext.HelpRequestEntities.Include(x => x.HelpRequestCalls)
-                //                    .Where(x => (x.CallbackRequired == true || x.CallbackRequired == null ||
-                //                                 (x.InitialCallbackCompleted == false && x.CallbackRequired == false)))
-                //                    .Where(queryHelpNeeded)
-                //                    .OrderByDescending(x => x.InitialCallbackCompleted)
-                //                    .ThenBy(x => x.DateTimeRecorded)
-                //                    .ToList();
-                //                if (!string.IsNullOrWhiteSpace(command.Master))
-                //                {
-                //                    return response.Where(x => x.RecordStatus != null && x.RecordStatus.Replace(" ", "").ToUpper() == "MASTER").ToList().ToDomain();
-                //                }
-                //                return response.ToDomain();
+                var response = _helpRequestsContext.HelpRequestEntities.Include(x => x.HelpRequestCalls)
+                    .Where(x => (x.CallbackRequired == true || x.CallbackRequired == null ||
+                                 (x.InitialCallbackCompleted == false && x.CallbackRequired == false)))
+                    .Where(queryHelpNeeded)
+                    .OrderByDescending(x => x.InitialCallbackCompleted)
+                    .ThenBy(x => x.DateTimeRecorded)
+                    .ToList();
+                return response.ToDomain();
             }
             catch (Exception e)
             {

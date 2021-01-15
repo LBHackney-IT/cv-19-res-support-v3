@@ -54,11 +54,11 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             };
 
             createdRecord.Should().BeEquivalentTo(expectedRecord, options =>
-             {
-                 options.Excluding(ex => ex.ResidentEntity);
-                 options.Excluding(ex => ex.HelpRequestCalls);
-                 return options;
-             });
+            {
+                options.Excluding(ex => ex.ResidentEntity);
+                options.Excluding(ex => ex.HelpRequestCalls);
+                return options;
+            });
             resident.Id.Should().Be(createdRecord.ResidentId);
         }
 
@@ -66,12 +66,7 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
         [Test]
         public void FindResidentWithUprnAndNameReturnsTheResidentIdIfItExists()
         {
-            var existingResident = new ResidentEntity
-            {
-                Uprn = "uprn",
-                FirstName = "FirstName",
-                LastName = "LastName"
-            };
+            var existingResident = new ResidentEntity {Uprn = "uprn", FirstName = "FirstName", LastName = "LastName"};
 
             var findResidentCommand = new FindResident
             {
@@ -87,12 +82,9 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             DatabaseContext.SaveChanges();
             var response = _classUnderTest.FindResident(findResidentCommand);
             var createdRecord = DatabaseContext.ResidentEntities.Find(response);
-            var expectedRecord =  new ResidentEntity
+            var expectedRecord = new ResidentEntity
             {
-                Id = existingResident.Id,
-                Uprn = "uprn",
-                FirstName = "FirstName",
-                LastName = "LastName"
+                Id = existingResident.Id, Uprn = "uprn", FirstName = "FirstName", LastName = "LastName"
             };
 
             createdRecord.Should().BeEquivalentTo(expectedRecord);
@@ -124,7 +116,7 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             DatabaseContext.SaveChanges();
             var response = _classUnderTest.FindResident(findResidentCommand);
             var createdRecord = DatabaseContext.ResidentEntities.Find(response);
-            var expectedRecord =  new ResidentEntity
+            var expectedRecord = new ResidentEntity
             {
                 Id = existingResident.Id,
                 FirstName = "FirstName",
@@ -136,6 +128,7 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
 
             createdRecord.Should().BeEquivalentTo(expectedRecord);
         }
+
         [Test]
         public void UpdateResidentReturnsTheUpdatedResident()
         {
@@ -151,17 +144,14 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
 
             var updateResidentCommand = new UpdateResident
             {
-                Uprn = "Uprn",
-                DobDay = "NewDay",
-                DobMonth = "NewMonth",
-                DobYear = "NewYear"
+                Uprn = "Uprn", DobDay = "NewDay", DobMonth = "NewMonth", DobYear = "NewYear"
             };
 
             DatabaseContext.ResidentEntities.Add(existingResident);
             DatabaseContext.SaveChanges();
             var response = _classUnderTest.UpdateResident(existingResident.Id, updateResidentCommand);
             var createdRecord = DatabaseContext.ResidentEntities.Find(response.Id);
-            var expectedRecord =  new ResidentEntity
+            var expectedRecord = new ResidentEntity
             {
                 Id = existingResident.Id,
                 FirstName = existingResident.FirstName,
@@ -191,7 +181,7 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
 
             var response = _classUnderTest.CreateResident(createResidentCommand);
             var createdRecord = DatabaseContext.ResidentEntities.Find(response.Id);
-            var expectedRecord =  new ResidentEntity
+            var expectedRecord = new ResidentEntity
             {
                 Id = response.Id,
                 FirstName = createResidentCommand.FirstName,
@@ -327,29 +317,6 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             });
         }
 
-        //
-        //        [Test]
-        //        public void GetAllCallbacksWithCallsListIfCallsExist()
-        //        {
-        //            var id = 124;
-        //            var helpRequest = EntityHelpers.createHelpRequestEntity(id);
-        //            DatabaseContext.HelpRequestEntities.Add(helpRequest);
-        //            helpRequest.CallbackRequired = true;
-        //
-        //            var calls = EntityHelpers.createHelpRequestCallEntities(3);
-        //            calls.ForEach(x => x.HelpRequestId = id);
-        //            DatabaseContext.HelpRequestCallEntities.AddRange(calls);
-        //            DatabaseContext.SaveChanges();
-        //            var response = _classUnderTest.GetCallbacks(new CallbackQuery() { HelpNeeded = "" });
-        //
-        //            response.First().HelpRequestCalls.Count.Should().Be(3);
-        //            response.First().HelpRequestCalls.Should().BeEquivalentTo(calls, options =>
-        //            {
-        //                options.Excluding(ex => ex.HelpRequestEntity);
-        //                return options;
-        //            });
-        //        }
-        //
         [Test]
         public void SearchRequestsReturnsCallsListIfCallsExist()
         {
@@ -373,47 +340,97 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             calls.ForEach(x => x.HelpRequestId = 8);
             DatabaseContext.HelpRequestCallEntities.AddRange(calls);
             DatabaseContext.SaveChanges();
-            var response = _classUnderTest.SearchHelpRequests(new SearchRequest() { FirstName = "name" });
+            var response = _classUnderTest.SearchHelpRequests(new SearchRequest() {FirstName = "name"});
             response.First().HelpRequestCalls.Count.Should().Be(3);
             var callsDomain = calls.ToDomain();
             response.First().HelpRequestCalls.Should().BeEquivalentTo(callsDomain);
             response.First().ResidentId.Should().Be(id);
             response.First().Id.Should().Be(8);
         }
-        //
-        //        [Test]
-        //        public void GetCallbacksReturnsCallbacks()
-        //        {
-        //            var helpRequests = EntityHelpers.createHelpRequestEntities();
-        //            foreach (var request in helpRequests)
-        //            {
-        //                request.InitialCallbackCompleted = true;
-        //                request.CallbackRequired = true;
-        //                request.RecordStatus = "MASTER";
-        //            }
-        //            DatabaseContext.HelpRequestEntities.AddRange(helpRequests);
-        //            DatabaseContext.SaveChanges();
-        //            var hrParams = new CallbackQuery() { HelpNeeded = null, Master = "True" };
-        //            var response = _classUnderTest.GetCallbacks(hrParams);
-        //            response.Should().BeEquivalentTo(helpRequests);
-        //        }
-        //
-        //        [Test]
-        //        public void GetCallbacksWithWhitespaceInRequestParamStillReturnsCallbacks()
-        //        {
-        //            var helpRequests = EntityHelpers.createHelpRequestEntities();
-        //            foreach (var request in helpRequests)
-        //            {
-        //                request.InitialCallbackCompleted = true;
-        //                request.CallbackRequired = true;
-        //                request.RecordStatus = "MASTER ";
-        //            }
-        //            DatabaseContext.HelpRequestEntities.AddRange(helpRequests);
-        //            DatabaseContext.SaveChanges();
-        //            var hrParams = new CallbackQuery() { HelpNeeded = null, Master = "True" };
-        //            var response = _classUnderTest.GetCallbacks(hrParams);
-        //            response.Should().BeEquivalentTo(helpRequests);
-        //        }
 
+        [Test]
+        public void GetCallbacksReturnsCallbacks()
+        {
+            var resident = EntityHelpers.createResident();
+            var residentId = 809;
+            resident.Id = residentId;
+            var helpRequests = EntityHelpers.createHelpRequestEntities();
+            foreach (var request in helpRequests)
+            {
+                request.InitialCallbackCompleted = true;
+                request.CallbackRequired = true;
+                request.HelpNeeded = "help request";
+                request.ResidentId = residentId;
+            }
+
+            DatabaseContext.ResidentEntities.Add(resident);
+            DatabaseContext.HelpRequestEntities.AddRange(helpRequests);
+            DatabaseContext.SaveChanges();
+            var hrParams = new CallbackQuery() {HelpNeeded = "help request"};
+            var response = _classUnderTest.GetCallbacks(hrParams);
+            response.Should().BeEquivalentTo(helpRequests, options =>
+            {
+                options.Excluding(x => x.CaseNotes);
+                options.Excluding(x => x.ResidentEntity);
+                return options;
+            });
+
+            var hrParams2 = new CallbackQuery() {HelpNeeded = "something else"};
+            var response2 = _classUnderTest.GetCallbacks(hrParams2);
+            response2.Should().BeNullOrEmpty();
+        }
+
+        [Test]
+        public void GetCallbacksWithWhitespaceInRequestParamStillReturnsCallbacks()
+        {
+            var resident = EntityHelpers.createResident();
+            var residentId = 808;
+            resident.Id = residentId;
+            var helpRequests = EntityHelpers.createHelpRequestEntities();
+            foreach (var request in helpRequests)
+            {
+                request.InitialCallbackCompleted = true;
+                request.CallbackRequired = true;
+                request.HelpNeeded = "shielding ";
+                request.ResidentId = residentId;
+            }
+            DatabaseContext.ResidentEntities.Add(resident);
+            DatabaseContext.HelpRequestEntities.AddRange(helpRequests);
+            DatabaseContext.SaveChanges();
+            var hrParams = new CallbackQuery() {HelpNeeded = "shielding"};
+            var response = _classUnderTest.GetCallbacks(hrParams);
+            response.Should().BeEquivalentTo(helpRequests, options =>
+            {
+                options.Excluding(x => x.CaseNotes);
+                options.Excluding(x => x.ResidentEntity);
+                return options;
+            });
+        }
+
+        [Test]
+        public void GetAllCallbacksWithCallsListIfCallsExist()
+        {
+            var resident = EntityHelpers.createResident();
+            var residentId = 808;
+            resident.Id = residentId;
+            var id = 124;
+            var helpRequest = EntityHelpers.createHelpRequestEntity(id);
+            helpRequest.CallbackRequired = true;
+            helpRequest.ResidentId = residentId;
+            DatabaseContext.ResidentEntities.Add(resident);
+            DatabaseContext.HelpRequestEntities.Add(helpRequest);
+            var calls = EntityHelpers.createHelpRequestCallEntities(3);
+            calls.ForEach(x => x.HelpRequestId = id);
+            DatabaseContext.HelpRequestCallEntities.AddRange(calls);
+            DatabaseContext.SaveChanges();
+            var response = _classUnderTest.GetCallbacks(new CallbackQuery() { HelpNeeded = "" });
+
+            response.First().HelpRequestCalls.Count.Should().Be(3);
+            response.First().HelpRequestCalls.Should().BeEquivalentTo(calls, options =>
+            {
+                options.Excluding(ex => ex.HelpRequestEntity);
+                return options;
+            });
+        }
     }
 }

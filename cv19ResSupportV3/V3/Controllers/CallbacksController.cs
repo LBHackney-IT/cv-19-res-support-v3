@@ -35,8 +35,7 @@ namespace cv19ResSupportV3.V3.Controllers
         {
             var command = requestParams.ToCommand();
             var result = _getCallbacksUseCase.Execute(command);
-            var response = result.ToResponse();
-            return Ok(response);
+            return Ok(result);
         }
 
     }

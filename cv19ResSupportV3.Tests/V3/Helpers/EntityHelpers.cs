@@ -33,6 +33,8 @@ namespace cv19ResSupportV3.Tests.V3.Helpers
         {
             var helpRequestEntities = Randomm.Build<HelpRequestEntity>()
                 .Without(h => h.HelpRequestCalls)
+                .Without(h => h.CaseNotes)
+                .Without(h => h.ResidentEntity)
                 .With(x => x.ResidentId, residentId)
                 .CreateMany(count)
                 .ToList();
