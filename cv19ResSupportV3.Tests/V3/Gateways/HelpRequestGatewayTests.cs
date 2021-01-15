@@ -62,6 +62,149 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             resident.Id.Should().Be(createdRecord.ResidentId);
         }
 
+
+        [Test]
+        public void FindResidentWithUprnAndNameReturnsTheResidentIdIfItExists()
+        {
+            var existingResident = new ResidentEntity
+            {
+                Uprn = "uprn",
+                FirstName = "FirstName",
+                LastName = "LastName"
+            };
+
+            var findResidentCommand = new FindResident
+            {
+                Uprn = "uprn",
+                FirstName = "FirstName",
+                LastName = "LastName",
+                DobDay = "Day",
+                DobMonth = "Month",
+                DobYear = "Year"
+            };
+
+            DatabaseContext.ResidentEntities.Add(existingResident);
+            DatabaseContext.SaveChanges();
+            var response = _classUnderTest.FindResident(findResidentCommand);
+            var createdRecord = DatabaseContext.ResidentEntities.Find(response);
+            var expectedRecord =  new ResidentEntity
+            {
+                Id = existingResident.Id,
+                Uprn = "uprn",
+                FirstName = "FirstName",
+                LastName = "LastName"
+            };
+
+            createdRecord.Should().BeEquivalentTo(expectedRecord);
+        }
+
+        [Test]
+        public void FindResidentWithDobandNameReturnsTheResidentIdIfItExists()
+        {
+            var existingResident = new ResidentEntity
+            {
+                FirstName = "FirstName",
+                LastName = "LastName",
+                DobDay = "Day",
+                DobMonth = "Month",
+                DobYear = "Year"
+            };
+
+            var findResidentCommand = new FindResident
+            {
+                Uprn = "uprn",
+                FirstName = "FirstName",
+                LastName = "LastName",
+                DobDay = "Day",
+                DobMonth = "Month",
+                DobYear = "Year"
+            };
+
+            DatabaseContext.ResidentEntities.Add(existingResident);
+            DatabaseContext.SaveChanges();
+            var response = _classUnderTest.FindResident(findResidentCommand);
+            var createdRecord = DatabaseContext.ResidentEntities.Find(response);
+            var expectedRecord =  new ResidentEntity
+            {
+                Id = existingResident.Id,
+                FirstName = "FirstName",
+                LastName = "LastName",
+                DobDay = "Day",
+                DobMonth = "Month",
+                DobYear = "Year"
+            };
+
+            createdRecord.Should().BeEquivalentTo(expectedRecord);
+        }
+        [Test]
+        public void UpdateResidentReturnsTheResident()
+        {
+            var existingResident = new ResidentEntity
+            {
+                FirstName = "FirstName",
+                LastName = "LastName",
+                DobDay = "Day",
+                DobMonth = "Month",
+                DobYear = "Year",
+                Uprn = "Uprn"
+            };
+
+            var updateResidentCommand = new UpdateResident
+            {
+                Uprn = "Uprn",
+                DobDay = "NewDay",
+                DobMonth = "NewMonth",
+                DobYear = "NewYear"
+            };
+
+            DatabaseContext.ResidentEntities.Add(existingResident);
+            DatabaseContext.SaveChanges();
+            var response = _classUnderTest.UpdateResident(existingResident.Id, updateResidentCommand);
+            var createdRecord = DatabaseContext.ResidentEntities.Find(response.Id);
+            var expectedRecord =  new ResidentEntity
+            {
+                Id = existingResident.Id,
+                FirstName = existingResident.FirstName,
+                LastName = existingResident.LastName,
+                DobDay = updateResidentCommand.DobDay,
+                DobMonth = updateResidentCommand.DobMonth,
+                DobYear = updateResidentCommand.DobYear,
+                Uprn = existingResident.Uprn
+            };
+
+            createdRecord.Should().BeEquivalentTo(expectedRecord);
+        }
+
+        [Test]
+        public void CreateResidentReturnsTheResidentId()
+        {
+            var createResidentCommand = new CreateResident
+            {
+                FirstName = "FirstName",
+                LastName = "LastName",
+                DobDay = "Day",
+                DobMonth = "Month",
+                DobYear = "Year",
+                Uprn = "Uprn"
+            };
+
+
+            var response = _classUnderTest.CreateResident(createResidentCommand);
+            var createdRecord = DatabaseContext.ResidentEntities.Find(response.Id);
+            var expectedRecord =  new ResidentEntity
+            {
+                Id = response.Id,
+                FirstName = createResidentCommand.FirstName,
+                LastName = createResidentCommand.LastName,
+                DobDay = createResidentCommand.DobDay,
+                DobMonth = createResidentCommand.DobMonth,
+                DobYear = createResidentCommand.DobYear,
+                Uprn = createResidentCommand.Uprn
+            };
+
+            createdRecord.Should().BeEquivalentTo(expectedRecord);
+        }
+
         //        [Test]
         //        public void CreateDuplicateHelpRequestTheLatestAsMaster()
         //        {

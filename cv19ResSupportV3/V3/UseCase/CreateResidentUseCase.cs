@@ -16,6 +16,10 @@ namespace cv19ResSupportV3.V3.UseCase
         public Resident Execute(CreateResident command)
         {
             var existingResidentId = _gateway.FindResident(command.ToFindResidentCommand());
+            //get resident with id
+            //update the resident fields
+            //if numbers are same dodnt conc
+            //if null dont add
             if (existingResidentId != null) return _gateway.UpdateResident((int)existingResidentId, command.ToUpdateResidentCommand());
             var resident = _gateway.CreateResident(command);
             return resident;

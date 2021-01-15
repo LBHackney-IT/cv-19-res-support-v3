@@ -50,15 +50,81 @@ namespace cv19ResSupportV3.V3.Gateways
         }
         public Resident CreateResident(CreateResident command)
         {
-            return new Resident();
+            var requestEntity = command.ToResidentEntity();
+            if (requestEntity == null) return null;
+
+            try
+            {
+                _helpRequestsContext.ResidentEntities.Add(requestEntity);
+                _helpRequestsContext.SaveChanges();
+                var resident = _helpRequestsContext.ResidentEntities.Find(requestEntity.Id);
+                return resident.ToResidentDomain();
+
+            }
+            catch (Exception e)
+            {
+                LambdaLogger.Log("CreateHelpRequest error: ");
+                LambdaLogger.Log(e.Message);
+                throw;
+            }
         }
         public Resident UpdateResident(int residentId, UpdateResident command)
         {
-            return new Resident();
+            try
+            {
+                var requestEntity = _helpRequestsContext.ResidentEntities.Find(residentId);
+                _helpRequestsContext.Entry(requestEntity).CurrentValues.SetValues(command);
+                _helpRequestsContext.SaveChanges();
+                var updatedResidentEntity = _helpRequestsContext.ResidentEntities.Find(residentId);
+                return updatedResidentEntity.ToResidentDomain();
+            }
+            catch (Exception e)
+            {
+                LambdaLogger.Log("UpdateResident error: ");
+                LambdaLogger.Log(e.Message);
+                throw;
+            }
+
         }
         public int? FindResident(FindResident command)
         {
-            return null;
+            try
+            {
+                if (command.Uprn != null)
+                {
+                    var response = _helpRequestsContext.ResidentEntities.FirstOrDefault(x => x.Uprn == command.Uprn &&
+                                                                                             x.FirstName ==
+                                                                                             command.FirstName &&
+                                                                                             x.LastName ==
+                                                                                             command.LastName);
+                    if (response != null)
+                    {
+                        return response.Id;
+                    }
+                }
+
+                if (command.DobDay != null || command.DobMonth != null || command.DobYear != null)
+                {
+                    var response = _helpRequestsContext.ResidentEntities.FirstOrDefault(x =>
+                        x.DobDay == command.DobDay &&
+                        x.DobMonth == command.DobMonth &&
+                        x.DobYear == command.DobYear &&
+                        x.FirstName == command.FirstName &&
+                        x.LastName == command.LastName);
+                    if (response != null)
+                    {
+                        return response.Id;
+                    }
+                }
+
+                return null;
+            }
+            catch (Exception e)
+            {
+                LambdaLogger.Log("FindResident error: ");
+                LambdaLogger.Log(e.Message);
+                throw;
+            }
         }
 
         public List<LookupDomain> GetLookups(LookupQuery command)

@@ -31,7 +31,7 @@ namespace cv19ResSupportV3.V3.Factories.Commands
         }
         public static UpdateResident ToUpdateResidentCommand(this CreateResident helpRequest)
         {
-            return new UpdateResident()
+            return new UpdateResident
             {
                 PostCode = helpRequest.PostCode,
                 Uprn = helpRequest.Uprn,
