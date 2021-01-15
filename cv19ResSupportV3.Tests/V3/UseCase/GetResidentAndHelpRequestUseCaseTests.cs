@@ -9,7 +9,7 @@ using NUnit.Framework;
 namespace cv19ResSupportV3.Tests.V3.UseCase
 {
     [TestFixture]
-    public class GetHelpRequestUseCaseTests
+    public class GetResidentAndHelpRequestUseCaseTests
     {
         private Mock<IHelpRequestGateway> _mockGateway;
         private GetResidentAndHelpRequestUseCase _classUnderTest;

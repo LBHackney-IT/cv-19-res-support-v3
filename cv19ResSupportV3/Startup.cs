@@ -145,7 +145,7 @@ namespace cv19ResSupportV3
             services.AddScoped<ICreateHelpRequestUseCase, CreateHelpRequestUseCase>();
             services.AddScoped<IUpdateHelpRequestUseCase, UpdateHelpRequestUseCase>();
             services.AddScoped<IPatchHelpRequestUseCase, PatchHelpRequestUseCase>();
-            services.AddScoped<IGetHelpRequestsUseCase, GetHelpRequestsUseCase>();
+            services.AddScoped<IGetResidentsAndHelpRequestsUseCase, GetResidentsAndHelpRequestsUseCase>();
             services.AddScoped<IGetResidentAndHelpRequestUseCase, GetResidentAndHelpRequestUseCase>();
             services.AddScoped<IGetCallbacksUseCase, GetCallbacksUseCase>();
             services.AddScoped<IGetLookupsUseCase, GetLookupsUseCase>();

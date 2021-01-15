@@ -6,8 +6,8 @@ using cv19ResSupportV3.V3.Domain.Commands;
 
 namespace cv19ResSupportV3.V3.UseCase
 {
-    public interface IGetHelpRequestsUseCase
+    public interface IGetResidentsAndHelpRequestsUseCase
     {
-        List<HelpRequest> Execute(SearchRequest command);
+        List<HelpRequestResponse> Execute(SearchRequest command);
     }
 }

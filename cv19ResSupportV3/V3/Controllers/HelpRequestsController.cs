@@ -22,16 +22,16 @@ namespace cv19ResSupportV3.V3.Controllers
         private readonly ICreateHelpRequestUseCase _createHelpRequestUseCase;
         private readonly IUpdateHelpRequestUseCase _updateHelpRequestUseCase;
         private readonly IPatchHelpRequestUseCase _patchHelpRequestUseCase;
-        private readonly IGetHelpRequestsUseCase _getHelpRequestsUseCase;
+        private readonly IGetResidentsAndHelpRequestsUseCase _getResidentsAndHelpRequestsUseCase;
         private readonly IGetResidentAndHelpRequestUseCase _getResidentAndHelpRequestUseCase;
         private readonly ICreateResidentAndHelpRequestUseCase _createResidentAndHelpRequestUse;
-        public HelpRequestsController(ICreateHelpRequestUseCase createHelpRequestUseCase, IGetHelpRequestsUseCase getHelpRequestsUseCase,
+        public HelpRequestsController(ICreateHelpRequestUseCase createHelpRequestUseCase, IGetResidentsAndHelpRequestsUseCase getResidentsAndHelpRequestsUseCase,
             IUpdateHelpRequestUseCase updateHelpRequestUseCase, IGetResidentAndHelpRequestUseCase getResidentAndHelpRequestUseCase, IPatchHelpRequestUseCase patchHelpRequestUseCase, ICreateResidentAndHelpRequestUseCase createResidentAndHelpRequestUseCase)
         {
             _createHelpRequestUseCase = createHelpRequestUseCase;
             _updateHelpRequestUseCase = updateHelpRequestUseCase;
             _patchHelpRequestUseCase = patchHelpRequestUseCase;
-            _getHelpRequestsUseCase = getHelpRequestsUseCase;
+            _getResidentsAndHelpRequestsUseCase = getResidentsAndHelpRequestsUseCase;
             _getResidentAndHelpRequestUseCase = getResidentAndHelpRequestUseCase;
             _createHelpRequestUseCase = createHelpRequestUseCase;
             _createResidentAndHelpRequestUse = createResidentAndHelpRequestUseCase;
@@ -133,13 +133,12 @@ namespace cv19ResSupportV3.V3.Controllers
         /// <response code="200">A list of 0 or more help requests was returned.</response>
         [ProducesResponseType(typeof(List<HelpRequestResponse>), StatusCodes.Status200OK)]
         [HttpGet]
-        public IActionResult GetHelpRequests([FromQuery] RequestQueryParams requestParams)
+        public IActionResult GetResidentsAndHelpRequests([FromQuery] RequestQueryParams requestParams)
         {
             Console.WriteLine(JsonConvert.SerializeObject(requestParams));
             var command = requestParams.ToCommand();
-            var result = _getHelpRequestsUseCase.Execute(command);
-            var response = result.ToResponse();
-            return Ok(response);
+            var result = _getResidentsAndHelpRequestsUseCase.Execute(command);
+            return Ok(result);
         }
 
         /// <summary>
