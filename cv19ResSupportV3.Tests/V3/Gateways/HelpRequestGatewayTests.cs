@@ -137,7 +137,7 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             createdRecord.Should().BeEquivalentTo(expectedRecord);
         }
         [Test]
-        public void UpdateResidentReturnsTheResident()
+        public void UpdateResidentReturnsTheUpdatedResident()
         {
             var existingResident = new ResidentEntity
             {

@@ -30,7 +30,8 @@ namespace cv19ResSupportV3.V3.Factories
                 GpSurgeryDetails = residentEntity.GpSurgeryDetails,
                 NumberOfChildrenUnder18 = residentEntity.NumberOfChildrenUnder18,
                 ConsentToShare = residentEntity.ConsentToShare,
-                NhsNumber = residentEntity.NhsNumber
+                NhsNumber = residentEntity.NhsNumber,
+                CaseNotes = residentEntity.CaseNotes.ToDomain()
             };
         }
          public static ResidentEntity ToResidentEntity(this CreateResident command)
