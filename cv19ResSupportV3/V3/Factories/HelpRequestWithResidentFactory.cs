@@ -1,17 +1,21 @@
 using cv19ResSupportV3.V3.Domain;
-using cv19ResSupportV3.V3.Factories;
 using cv19ResSupportV3.V3.Infrastructure;
 
-namespace cv19ResSupportV3.Tests.V3.Helpers
+namespace cv19ResSupportV3.V3.Factories
 {
-    public static class FactoryHelper
+    public static class HelpRequestWithResidentFactory
     {
-        public static HelpRequestWithResident ToDomain(this ResidentEntity resident, HelpRequestEntity helpRequest)
+        public static HelpRequestWithResident ToHelpRequestWithResidentDomain(this HelpRequestEntity helpRequest)
         {
+            if (helpRequest == null || helpRequest.ResidentEntity == null)
+            {
+                return null;
+            }
+
             return new HelpRequestWithResident()
             {
                 Id = helpRequest.Id,
-                ResidentId = resident.Id,
+                ResidentId = helpRequest.ResidentEntity.Id,
                 IsOnBehalf = helpRequest.IsOnBehalf,
                 ConsentToCompleteOnBehalf = helpRequest.ConsentToCompleteOnBehalf,
                 OnBehalfFirstName = helpRequest.OnBehalfFirstName,
@@ -19,12 +23,12 @@ namespace cv19ResSupportV3.Tests.V3.Helpers
                 OnBehalfEmailAddress = helpRequest.OnBehalfEmailAddress,
                 OnBehalfContactNumber = helpRequest.OnBehalfContactNumber,
                 RelationshipWithResident = helpRequest.RelationshipWithResident,
-                PostCode = resident.PostCode,
-                Uprn = resident.Uprn,
-                Ward = resident.Ward,
-                AddressFirstLine = resident.AddressFirstLine,
-                AddressSecondLine = resident.AddressSecondLine,
-                AddressThirdLine = resident.AddressThirdLine,
+                PostCode = helpRequest.ResidentEntity.PostCode,
+                Uprn = helpRequest.ResidentEntity.Uprn,
+                Ward = helpRequest.ResidentEntity.Ward,
+                AddressFirstLine = helpRequest.ResidentEntity.AddressFirstLine,
+                AddressSecondLine = helpRequest.ResidentEntity.AddressSecondLine,
+                AddressThirdLine = helpRequest.ResidentEntity.AddressThirdLine,
                 GettingInTouchReason = helpRequest.GettingInTouchReason,
                 HelpWithAccessingFood = helpRequest.HelpWithAccessingFood,
                 HelpWithAccessingSupermarketFood = helpRequest.HelpWithAccessingSupermarketFood,
@@ -43,34 +47,34 @@ namespace cv19ResSupportV3.Tests.V3.Helpers
                 HelpWithDisabilities = helpRequest.HelpWithDisabilities,
                 HelpWithSomethingElse = helpRequest.HelpWithSomethingElse,
                 MedicineDeliveryHelpNeeded = helpRequest.MedicineDeliveryHelpNeeded,
-                IsPharmacistAbleToDeliver = resident.IsPharmacistAbleToDeliver,
+                IsPharmacistAbleToDeliver = helpRequest.ResidentEntity.IsPharmacistAbleToDeliver,
                 WhenIsMedicinesDelivered = helpRequest.WhenIsMedicinesDelivered,
-                NameAddressPharmacist = resident.NameAddressPharmacist,
+                NameAddressPharmacist = helpRequest.ResidentEntity.NameAddressPharmacist,
                 UrgentEssentials = helpRequest.UrgentEssentials,
                 UrgentEssentialsAnythingElse = helpRequest.UrgentEssentialsAnythingElse,
                 CurrentSupport = helpRequest.CurrentSupport,
                 CurrentSupportFeedback = helpRequest.CurrentSupportFeedback,
-                FirstName = resident.FirstName,
-                LastName = resident.LastName,
-                DobMonth = resident.DobMonth,
-                DobYear = resident.DobYear,
-                DobDay = resident.DobDay,
-                ContactTelephoneNumber = resident.ContactTelephoneNumber,
-                ContactMobileNumber = resident.ContactMobileNumber,
-                EmailAddress = resident.EmailAddress,
-                GpSurgeryDetails = resident.GpSurgeryDetails,
-                NumberOfChildrenUnder18 = resident.NumberOfChildrenUnder18,
-                ConsentToShare = resident.ConsentToShare,
+                FirstName = helpRequest.ResidentEntity.FirstName,
+                LastName = helpRequest.ResidentEntity.LastName,
+                DobMonth = helpRequest.ResidentEntity.DobMonth,
+                DobYear = helpRequest.ResidentEntity.DobYear,
+                DobDay = helpRequest.ResidentEntity.DobDay,
+                ContactTelephoneNumber = helpRequest.ResidentEntity.ContactTelephoneNumber,
+                ContactMobileNumber = helpRequest.ResidentEntity.ContactMobileNumber,
+                EmailAddress = helpRequest.ResidentEntity.EmailAddress,
+                GpSurgeryDetails = helpRequest.ResidentEntity.GpSurgeryDetails,
+                NumberOfChildrenUnder18 = helpRequest.ResidentEntity.NumberOfChildrenUnder18,
+                ConsentToShare = helpRequest.ResidentEntity.ConsentToShare,
                 DateTimeRecorded = helpRequest.DateTimeRecorded,
-                RecordStatus = resident.RecordStatus,
-                CallbackRequired = helpRequest.CallbackRequired,
+                RecordStatus = helpRequest.ResidentEntity.RecordStatus,
                 InitialCallbackCompleted = helpRequest.InitialCallbackCompleted,
-                CaseNotes = resident.CaseNotes.ToDomain(),
-                HelpRequestCalls = helpRequest.HelpRequestCalls.ToDomain(),
+                CallbackRequired = helpRequest.CallbackRequired,
+                CaseNotes = helpRequest.ResidentEntity.CaseNotes.ToDomain(),
                 AdviceNotes = helpRequest.AdviceNotes,
                 HelpNeeded = helpRequest.HelpNeeded,
-                NhsNumber = resident.NhsNumber,
-                NhsCtasId = helpRequest.NhsCtasId
+                NhsCtasId = helpRequest.NhsCtasId,
+                NhsNumber = helpRequest.ResidentEntity.NhsNumber,
+                HelpRequestCalls = helpRequest.HelpRequestCalls.ToDomain()
             };
         }
     }

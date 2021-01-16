@@ -19,15 +19,7 @@ namespace cv19ResSupportV3.V3.UseCase
         {
             try
             {
-                var helpRequest = _gateway.GetHelpRequest(id);
-                if (helpRequest == null) return null;
-
-                var resident = _gateway.GetResident(helpRequest.ResidentId);
-                if (resident == null) return null;
-
-                var result = helpRequest.ToResponse(resident);
-
-                return result;
+                return _gateway.GetHelpRequestWithResident(id).ToResponse();
             }
             catch (Exception e)
             {

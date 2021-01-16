@@ -18,5 +18,7 @@ namespace cv19ResSupportV3.V3.Gateways
         int? FindResident(FindResident command);
         Resident CreateResident(CreateResident command);
         Resident UpdateResident(int residentId, UpdateResident command);
+        HelpRequestWithResident GetHelpRequestWithResident(int id);
+
     }
 }

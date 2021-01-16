@@ -200,6 +200,24 @@ namespace cv19ResSupportV3.V3.Gateways
             }
         }
 
+        public HelpRequestWithResident GetHelpRequestWithResident(int id)
+        {
+            try
+            {
+                var helpRequest = _helpRequestsContext.HelpRequestEntities
+                    .Include(x => x.HelpRequestCalls)
+                    .Include(x => x.ResidentEntity)
+                    .FirstOrDefault(x => x.Id == id);
+                return helpRequest?.ToHelpRequestWithResidentDomain();
+            }
+            catch (Exception e)
+            {
+                LambdaLogger.Log("GetResidentAndHelpRequest error: ");
+                LambdaLogger.Log(e.Message);
+                throw;
+            }
+        }
+
         public List<HelpRequest> SearchHelpRequests(SearchRequest command)
         {
             Expression<Func<HelpRequestEntity, bool>> queryPostCode = x =>
