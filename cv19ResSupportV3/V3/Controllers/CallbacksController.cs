@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using cv19ResSupportV3.V3.Boundary.Requests;
 using cv19ResSupportV3.V3.Boundary.Response;
+using cv19ResSupportV3.V3.Factories;
 using cv19ResSupportV3.V3.Factories.Commands;
 using cv19ResSupportV3.V3.UseCase;
 using Microsoft.AspNetCore.Http;
@@ -30,7 +31,7 @@ namespace cv19ResSupportV3.V3.Controllers
         {
             var command = requestParams.ToCommand();
             var result = _getCallbacksUseCase.Execute(command);
-            return Ok(result);
+            return Ok(result.ToResponse());
         }
 
     }

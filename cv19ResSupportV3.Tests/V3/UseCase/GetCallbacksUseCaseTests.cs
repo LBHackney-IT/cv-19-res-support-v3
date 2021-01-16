@@ -1,8 +1,10 @@
 //using cv19ResSupportV3.Tests.V3.Helpers;
 
+using System.Collections.Generic;
 using System.Linq;
 using cv19ResSupportV3.Tests.V3.Helpers;
 using cv19ResSupportV3.V3.Boundary.Requests;
+using cv19ResSupportV3.V3.Domain;
 using cv19ResSupportV3.V3.Domain.Commands;
 using cv19ResSupportV3.V3.Factories;
 using cv19ResSupportV3.V3.Gateways;
@@ -29,22 +31,11 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
         [Test]
         public void ReturnsPopulatedHelpRequestListIfParamsProvided()
         {
-            var residentId = 501;
             var reqParams = new CallbackQuery() { HelpNeeded = "shielding" };
-            var stubbedResident = EntityHelpers.createResident(residentId);
-            var stubbedRequests = EntityHelpers.createHelpRequestEntities(3);
-            foreach (var req in stubbedRequests)
-            {
-                req.ResidentId = residentId;
-                req.HelpNeeded = "Shielding";
-            }
-
-            var expectedResponse = stubbedRequests.Select(request => stubbedResident.ToDomain(request)).ToList();
-            _mockGateway.Setup(x => x.GetCallbacks(reqParams)).Returns(stubbedRequests.ToDomain());
-            _mockGateway.Setup(x => x.GetResident(residentId)).Returns(stubbedResident.ToDomain());
+            var expectedResponse = new List<HelpRequestWithResident>() { new HelpRequestWithResident() { Id = 3 } };
+            _mockGateway.Setup(x => x.GetCallbacksWithResidents(reqParams)).Returns(expectedResponse);
             var response = _classUnderTest.Execute(reqParams);
-            _mockGateway.Verify(x => x.GetCallbacks(reqParams), Times.Once);
-            _mockGateway.Verify(x => x.GetResident(residentId), Times.Exactly(3));
+            _mockGateway.Verify(x => x.GetCallbacksWithResidents(reqParams), Times.Once);
             response.Should().NotBeNull();
             response.Should().BeEquivalentTo(expectedResponse);
         }

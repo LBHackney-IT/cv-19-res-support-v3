@@ -20,5 +20,7 @@ namespace cv19ResSupportV3.V3.Gateways
         Resident UpdateResident(int residentId, UpdateResident command);
         HelpRequestWithResident GetHelpRequestWithResident(int id);
         List<HelpRequestWithResident> SearchHelpRequestsWithResidents(SearchRequest command);
+        List<HelpRequestWithResident> GetCallbacksWithResidents(CallbackQuery command);
+
     }
 }
