@@ -23,7 +23,7 @@ namespace cv19ResRupportV3.Tests.V3.Controllers
         private HelpRequestsController _classUnderTest;
         private Mock<ICreateHelpRequestUseCase> _fakeCreateHelpRequestUseCase;
         private Mock<IUpdateHelpRequestUseCase> _fakeUpdateHelpRequestUseCase;
-        private Mock<IPatchHelpRequestUseCase> _fakePatchHelpRequestUseCase;
+        private Mock<IPatchResidentAndHelpRequestUseCase> _fakePatchResidentAndHelpRequestUseCase;
         private Mock<IGetResidentsAndHelpRequestsUseCase> _fakeGetResidentsAndHelpRequestsUseCase;
         private Mock<IGetResidentAndHelpRequestUseCase> _fakeGetResidentAndHelpRequestUseCase;
         private Mock<ICreateResidentAndHelpRequestUseCase> _fakeCreateResidentAndHelpRequestUseCase;
@@ -33,12 +33,12 @@ namespace cv19ResRupportV3.Tests.V3.Controllers
         {
             _fakeCreateHelpRequestUseCase = new Mock<ICreateHelpRequestUseCase>();
             _fakeUpdateHelpRequestUseCase = new Mock<IUpdateHelpRequestUseCase>();
-            _fakePatchHelpRequestUseCase = new Mock<IPatchHelpRequestUseCase>();
+            _fakePatchResidentAndHelpRequestUseCase = new Mock<IPatchResidentAndHelpRequestUseCase>();
             _fakeGetResidentsAndHelpRequestsUseCase = new Mock<IGetResidentsAndHelpRequestsUseCase>();
             _fakeGetResidentAndHelpRequestUseCase = new Mock<IGetResidentAndHelpRequestUseCase>();
             _fakeCreateResidentAndHelpRequestUseCase = new Mock<ICreateResidentAndHelpRequestUseCase>();
             _classUnderTest = new HelpRequestsController(_fakeCreateHelpRequestUseCase.Object, _fakeGetResidentsAndHelpRequestsUseCase.Object, _fakeUpdateHelpRequestUseCase.Object,
-            _fakeGetResidentAndHelpRequestUseCase.Object, _fakePatchHelpRequestUseCase.Object, _fakeCreateResidentAndHelpRequestUseCase.Object);
+            _fakeGetResidentAndHelpRequestUseCase.Object, _fakePatchResidentAndHelpRequestUseCase.Object, _fakeCreateResidentAndHelpRequestUseCase.Object);
         }
 
         [Test]
@@ -71,6 +71,16 @@ namespace cv19ResRupportV3.Tests.V3.Controllers
                 .Returns(new List<HelpRequestWithResident>());
             var response = _classUnderTest.GetResidentsAndHelpRequests(searchParams) as OkObjectResult;
             _fakeGetResidentsAndHelpRequestsUseCase.Verify(m => m.Execute(It.IsAny<SearchRequest>()), Times.Once());
+            response.StatusCode.Should().Be(200);
+        }
+
+        [Test]
+        public void PatchResidentsAndHelpRequestsReturnsResponseWithStatus()
+        {
+            var searchParams = new HelpRequestPatchRequest() { PostCode = "B1" };
+            _fakePatchResidentAndHelpRequestUseCase.Setup(x => x.Execute(It.IsAny<int>(), It.IsAny<PatchResidentAndHelpRequest>())).Verifiable();
+            var response = _classUnderTest.PatchResidentAndHelpRequest(1, searchParams) as OkObjectResult;
+            _fakePatchResidentAndHelpRequestUseCase.Verify(m => m.Execute(It.Is<int>(x => x == 1), It.IsAny<PatchResidentAndHelpRequest>()), Times.Once());
             response.StatusCode.Should().Be(200);
         }
     }

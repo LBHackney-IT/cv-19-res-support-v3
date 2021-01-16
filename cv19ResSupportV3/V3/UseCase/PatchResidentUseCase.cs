@@ -5,17 +5,17 @@ using cv19ResSupportV3.V3.UseCase.Interfaces;
 
 namespace cv19ResSupportV3.V3.UseCase
 {
-    public class PatchHelpRequestUseCase : IPatchHelpRequestUseCase
+    public class PatchResidentUseCase : IPatchResidentUseCase
     {
         private IHelpRequestGateway _gateway;
-        public PatchHelpRequestUseCase(IHelpRequestGateway gateway)
+        public PatchResidentUseCase(IHelpRequestGateway gateway)
         {
             _gateway = gateway;
         }
 
-        public HelpRequest Execute(int id, PatchHelpRequest command)
+        public Resident Execute(int id, PatchResident command)
         {
-            return _gateway.PatchHelpRequest(id, command);
+            return _gateway.PatchResident(id, command);
         }
     }
 }

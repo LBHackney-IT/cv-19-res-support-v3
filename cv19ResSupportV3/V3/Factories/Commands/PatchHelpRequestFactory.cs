@@ -5,9 +5,9 @@ namespace cv19ResSupportV3.V3.Factories.Commands
 {
     public static class PatchHelpRequestFactory
     {
-        public static PatchHelpRequest ToCommand(this HelpRequestPatchRequest helpRequest)
+        public static PatchResidentAndHelpRequest ToCommand(this HelpRequestPatchRequest helpRequest)
         {
-            return new PatchHelpRequest()
+            return new PatchResidentAndHelpRequest()
             {
                 PostCode = helpRequest.PostCode,
                 Uprn = helpRequest.Uprn,
@@ -47,6 +47,62 @@ namespace cv19ResSupportV3.V3.Factories.Commands
                 CaseNotes = helpRequest.CaseNotes,
                 AdviceNotes = helpRequest.AdviceNotes,
                 HelpNeeded = helpRequest.HelpNeeded,
+            };
+        }
+
+        public static PatchHelpRequest ToPatchHelpRequestCommand(this PatchResidentAndHelpRequest command)
+        {
+            return new PatchHelpRequest()
+            {
+                GettingInTouchReason = command.GettingInTouchReason,
+                HelpWithAccessingFood = command.HelpWithAccessingFood,
+                HelpWithAccessingSupermarketFood = command.HelpWithAccessingSupermarketFood,
+                HelpWithCompletingNssForm = command.HelpWithCompletingNssForm,
+                HelpWithShieldingGuidance = command.HelpWithShieldingGuidance,
+                HelpWithNoNeedsIdentified = command.HelpWithNoNeedsIdentified,
+                HelpWithAccessingMedicine = command.HelpWithAccessingMedicine,
+                HelpWithAccessingOtherEssentials = command.HelpWithAccessingOtherEssentials,
+                HelpWithDebtAndMoney = command.HelpWithDebtAndMoney,
+                HelpWithHealth = command.HelpWithHealth,
+                HelpWithMentalHealth = command.HelpWithMentalHealth,
+                HelpWithAccessingInternet = command.HelpWithAccessingInternet,
+                HelpWithSomethingElse = command.HelpWithSomethingElse,
+                CurrentSupport = command.CurrentSupport,
+                CurrentSupportFeedback = command.CurrentSupportFeedback,
+                GpSurgeryDetails = command.GpSurgeryDetails,
+                NumberOfChildrenUnder18 = command.NumberOfChildrenUnder18,
+                ConsentToShare = command.ConsentToShare,
+                CallbackRequired = command.CallbackRequired,
+                InitialCallbackCompleted = command.InitialCallbackCompleted,
+                CaseNotes = command.CaseNotes,
+                AdviceNotes = command.AdviceNotes,
+                HelpNeeded = command.HelpNeeded,
+            };
+        }
+
+        public static PatchResident ToPatchResidentCommand(this PatchResidentAndHelpRequest command)
+        {
+            return new PatchResident()
+            {
+                PostCode = command.PostCode,
+                Uprn = command.Uprn,
+                Ward = command.Ward,
+                AddressFirstLine = command.AddressFirstLine,
+                AddressSecondLine = command.AddressSecondLine,
+                AddressThirdLine = command.AddressThirdLine,
+                FirstName = command.FirstName,
+                LastName = command.LastName,
+                DobMonth = command.DobMonth,
+                DobYear = command.DobYear,
+                DobDay = command.DobDay,
+                ContactTelephoneNumber = command.ContactTelephoneNumber,
+                ContactMobileNumber = command.ContactMobileNumber,
+                EmailAddress = command.EmailAddress,
+                GpSurgeryDetails = command.GpSurgeryDetails,
+                NumberOfChildrenUnder18 = command.NumberOfChildrenUnder18,
+                ConsentToShare = command.ConsentToShare,
+                RecordStatus = command.RecordStatus,
+                CaseNotes = command.CaseNotes,
             };
         }
     }

@@ -15,7 +15,7 @@ namespace cv19ResSupportV3.Tests.V3.Factories.Commands
         {
             var request = new HelpRequestPatchRequest();
             var command = request.ToCommand();
-            command.Should().BeOfType<PatchHelpRequest>();
+            command.Should().BeOfType<PatchResidentAndHelpRequest>();
         }
     }
 }

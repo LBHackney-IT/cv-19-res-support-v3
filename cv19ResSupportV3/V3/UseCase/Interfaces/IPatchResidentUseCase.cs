@@ -3,8 +3,8 @@ using cv19ResSupportV3.V3.Domain.Commands;
 
 namespace cv19ResSupportV3.V3.UseCase.Interfaces
 {
-    public interface IPatchHelpRequestUseCase
+    public interface IPatchResidentUseCase
     {
-        HelpRequest Execute(int id, PatchHelpRequest command);
+        Resident Execute(int id, PatchResident command);
     }
 }

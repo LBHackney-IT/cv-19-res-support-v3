@@ -243,7 +243,7 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
         //
         //            var dbEntity = DatabaseContext.HelpRequestEntities.Add(helpRequest);
         //            DatabaseContext.SaveChanges();
-        //            var patchRequestObject = new PatchHelpRequest()
+        //            var patchRequestObject = new PatchResidentAndHelpRequest()
         //            {
         //                HelpWithCompletingNssForm = false,
         //                HelpWithShieldingGuidance = false,
@@ -251,7 +251,7 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
         //                HelpWithAccessingSupermarketFood = false
         //            };
         //
-        //            _classUnderTest.PatchHelpRequest(helpRequest.Id, patchRequestObject);
+        //            _classUnderTest.PatchResidentAndHelpRequest(helpRequest.Id, patchRequestObject);
         //
         //            var updatedEntity = DatabaseContext.HelpRequestEntities.Find(helpRequest.Id);
         //

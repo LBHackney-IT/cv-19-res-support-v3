@@ -20,16 +20,16 @@ namespace cv19ResSupportV3.V3.Controllers
     {
         private readonly ICreateHelpRequestUseCase _createHelpRequestUseCase;
         private readonly IUpdateHelpRequestUseCase _updateHelpRequestUseCase;
-        private readonly IPatchHelpRequestUseCase _patchHelpRequestUseCase;
+        private readonly IPatchResidentAndHelpRequestUseCase _patchResidentAndHelpRequestUseCase;
         private readonly IGetResidentsAndHelpRequestsUseCase _getResidentsAndHelpRequestsUseCase;
         private readonly IGetResidentAndHelpRequestUseCase _getResidentAndHelpRequestUseCase;
         private readonly ICreateResidentAndHelpRequestUseCase _createResidentAndHelpRequestUse;
         public HelpRequestsController(ICreateHelpRequestUseCase createHelpRequestUseCase, IGetResidentsAndHelpRequestsUseCase getResidentsAndHelpRequestsUseCase,
-            IUpdateHelpRequestUseCase updateHelpRequestUseCase, IGetResidentAndHelpRequestUseCase getResidentAndHelpRequestUseCase, IPatchHelpRequestUseCase patchHelpRequestUseCase, ICreateResidentAndHelpRequestUseCase createResidentAndHelpRequestUseCase)
+            IUpdateHelpRequestUseCase updateHelpRequestUseCase, IGetResidentAndHelpRequestUseCase getResidentAndHelpRequestUseCase, IPatchResidentAndHelpRequestUseCase patchResidentAndHelpRequestUseCase, ICreateResidentAndHelpRequestUseCase createResidentAndHelpRequestUseCase)
         {
             _createHelpRequestUseCase = createHelpRequestUseCase;
             _updateHelpRequestUseCase = updateHelpRequestUseCase;
-            _patchHelpRequestUseCase = patchHelpRequestUseCase;
+            _patchResidentAndHelpRequestUseCase = patchResidentAndHelpRequestUseCase;
             _getResidentsAndHelpRequestsUseCase = getResidentsAndHelpRequestsUseCase;
             _getResidentAndHelpRequestUseCase = getResidentAndHelpRequestUseCase;
             _createHelpRequestUseCase = createHelpRequestUseCase;
@@ -111,13 +111,15 @@ namespace cv19ResSupportV3.V3.Controllers
         /// <response code="400">There was an issue updating the record.</response>
         [HttpPatch]
         [Route("{id}")]
-        public IActionResult PatchHelpRequest([FromRoute] int id, [FromBody] HelpRequestPatchRequest request)
+        public IActionResult PatchResidentAndHelpRequest([FromRoute] int id, [FromBody] HelpRequestPatchRequest request)
         {
             try
             {
                 var command = request.ToCommand();
-                _patchHelpRequestUseCase.Execute(id, command);
-                return Ok();
+                _patchResidentAndHelpRequestUseCase.Execute(id, command);
+                var response = new Dictionary<string, string>();
+                response.Add("success", "true");
+                return Ok(response);
             }
             catch (Exception e)
             {

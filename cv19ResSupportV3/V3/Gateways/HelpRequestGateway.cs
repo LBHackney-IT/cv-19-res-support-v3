@@ -16,7 +16,6 @@ namespace cv19ResSupportV3.V3.Gateways
 {
     public class HelpRequestGateway : IHelpRequestGateway
     {
-
         private readonly HelpRequestsContext _helpRequestsContext;
 
         public HelpRequestGateway(HelpRequestsContext helpRequestsContext)
@@ -46,6 +45,7 @@ namespace cv19ResSupportV3.V3.Gateways
                 throw;
             }
         }
+
         public Resident CreateResident(CreateResident command)
         {
             var requestEntity = command.ToResidentEntity();
@@ -57,7 +57,6 @@ namespace cv19ResSupportV3.V3.Gateways
                 _helpRequestsContext.SaveChanges();
                 var resident = _helpRequestsContext.ResidentEntities.Find(requestEntity.Id);
                 return resident.ToResidentDomain();
-
             }
             catch (Exception e)
             {
@@ -66,6 +65,7 @@ namespace cv19ResSupportV3.V3.Gateways
                 throw;
             }
         }
+
         public Resident UpdateResident(int residentId, UpdateResident command)
         {
             try
@@ -82,8 +82,9 @@ namespace cv19ResSupportV3.V3.Gateways
                 LambdaLogger.Log(e.Message);
                 throw;
             }
-
         }
+
+
         public int? FindResident(FindResident command)
         {
             try
@@ -163,6 +164,7 @@ namespace cv19ResSupportV3.V3.Gateways
                 LambdaLogger.Log(e.Message);
                 throw;
             }
+
             return new HelpRequest();
         }
 
@@ -206,15 +208,18 @@ namespace cv19ResSupportV3.V3.Gateways
         {
             Expression<Func<HelpRequestEntity, bool>> queryPostCode = x =>
                 string.IsNullOrWhiteSpace(command.Postcode)
-                || x.ResidentEntity.PostCode.Replace(" ", "").ToUpper().Contains(command.Postcode.Replace(" ", "").ToUpper());
+                || x.ResidentEntity.PostCode.Replace(" ", "").ToUpper()
+                    .Contains(command.Postcode.Replace(" ", "").ToUpper());
 
             Expression<Func<HelpRequestEntity, bool>> queryFirstName = x =>
                 string.IsNullOrWhiteSpace(command.FirstName)
-                || x.ResidentEntity.FirstName.Replace(" ", "").ToUpper().Contains(command.FirstName.Replace(" ", "").ToUpper());
+                || x.ResidentEntity.FirstName.Replace(" ", "").ToUpper()
+                    .Contains(command.FirstName.Replace(" ", "").ToUpper());
 
             Expression<Func<HelpRequestEntity, bool>> queryLastName = x =>
                 string.IsNullOrWhiteSpace(command.LastName)
-                || x.ResidentEntity.LastName.Replace(" ", "").ToUpper().Contains(command.LastName.Replace(" ", "").ToUpper());
+                || x.ResidentEntity.LastName.Replace(" ", "").ToUpper()
+                    .Contains(command.LastName.Replace(" ", "").ToUpper());
 
             Expression<Func<HelpRequestEntity, bool>> queryHelpNeeded = x =>
                 string.IsNullOrWhiteSpace(command.HelpNeeded)
@@ -242,181 +247,219 @@ namespace cv19ResSupportV3.V3.Gateways
             }
         }
 
-        public void PatchHelpRequest(int id, PatchHelpRequest command)
+        public HelpRequest PatchHelpRequest(int id, PatchHelpRequest command)
         {
             try
             {
-                //                var requestEntity = command.ToEntity();
-                //                var rec = _helpRequestsContext.HelpRequestEntities.SingleOrDefault(x => x.Id == id);
-                //                if (requestEntity == null)
-                //                {
-                //                    throw new Exception("Record not found.");
-                //                }
-                //                if (requestEntity.GettingInTouchReason != null)
-                //                {
-                //                    rec.GettingInTouchReason = requestEntity.GettingInTouchReason;
-                //                }
-                //                if (requestEntity.HelpWithAccessingFood != null)
-                //                {
-                //                    rec.HelpWithAccessingFood = requestEntity.HelpWithAccessingFood;
-                //                }
-                //                if (requestEntity.HelpWithAccessingSupermarketFood != null)
-                //                {
-                //                    rec.HelpWithAccessingSupermarketFood = requestEntity.HelpWithAccessingSupermarketFood;
-                //                }
-                //                if (requestEntity.HelpWithCompletingNssForm != null)
-                //                {
-                //                    rec.HelpWithCompletingNssForm = requestEntity.HelpWithCompletingNssForm;
-                //                }
-                //                if (requestEntity.HelpWithShieldingGuidance != null)
-                //                {
-                //                    rec.HelpWithShieldingGuidance = requestEntity.HelpWithShieldingGuidance;
-                //                }
-                //                if (requestEntity.HelpWithNoNeedsIdentified != null)
-                //                {
-                //                    rec.HelpWithNoNeedsIdentified = requestEntity.HelpWithNoNeedsIdentified;
-                //                }
-                //                if (requestEntity.HelpWithAccessingMedicine != null)
-                //                {
-                //                    rec.HelpWithAccessingMedicine = requestEntity.HelpWithAccessingMedicine;
-                //                }
-                //                if (requestEntity.HelpWithAccessingOtherEssentials != null)
-                //                {
-                //                    rec.HelpWithAccessingOtherEssentials = requestEntity.HelpWithAccessingOtherEssentials;
-                //                }
-                //                if (requestEntity.HelpWithDebtAndMoney != null)
-                //                {
-                //                    rec.HelpWithDebtAndMoney = requestEntity.HelpWithDebtAndMoney;
-                //                }
-                //                if (requestEntity.HelpWithMentalHealth != null)
-                //                {
-                //                    rec.HelpWithMentalHealth = requestEntity.HelpWithMentalHealth;
-                //                }
-                //                if (requestEntity.HelpWithHealth != null)
-                //                {
-                //                    rec.HelpWithHealth = requestEntity.HelpWithHealth;
-                //                }
-                //                if (requestEntity.HelpWithAccessingInternet != null)
-                //                {
-                //                    rec.HelpWithAccessingInternet = requestEntity.HelpWithAccessingInternet;
-                //                }
-                //                if (requestEntity.HelpWithSomethingElse != null)
-                //                {
-                //                    rec.HelpWithSomethingElse = requestEntity.HelpWithSomethingElse;
-                //                }
-                //                if (requestEntity.CurrentSupport != null)
-                //                {
-                //                    rec.CurrentSupport = requestEntity.CurrentSupport;
-                //                }
-                //
-                //                if (requestEntity.CurrentSupportFeedback != null)
-                //                {
-                //                    rec.CurrentSupportFeedback = requestEntity.CurrentSupportFeedback;
-                //                }
-                //
-                //                if (requestEntity.FirstName != null)
-                //                {
-                //                    rec.FirstName = requestEntity.FirstName;
-                //                }
-                //
-                //                if (requestEntity.LastName != null)
-                //                {
-                //                    rec.LastName = requestEntity.LastName;
-                //                }
-                //
-                //                if (requestEntity.DobMonth != null)
-                //                {
-                //                    rec.DobMonth = requestEntity.DobMonth;
-                //                }
-                //
-                //                if (requestEntity.DobYear != null)
-                //                {
-                //                    rec.DobYear = requestEntity.DobYear;
-                //                }
-                //
-                //                if (requestEntity.DobDay != null)
-                //                {
-                //                    rec.DobDay = requestEntity.DobDay;
-                //                }
-                //
-                //                if (requestEntity.ContactTelephoneNumber != null)
-                //                {
-                //                    rec.ContactTelephoneNumber = requestEntity.ContactTelephoneNumber;
-                //                }
-                //
-                //                if (requestEntity.ContactMobileNumber != null)
-                //                {
-                //                    rec.ContactMobileNumber = requestEntity.ContactMobileNumber;
-                //                }
-                //
-                //                if (requestEntity.EmailAddress != null)
-                //                {
-                //                    rec.EmailAddress = requestEntity.EmailAddress;
-                //                }
-                //
-                //                if (requestEntity.AddressFirstLine != null && requestEntity.PostCode != null)
-                //                {
-                //                    // update new address fields
-                //                    rec.AddressFirstLine = requestEntity.AddressFirstLine;
-                //                    rec.AddressSecondLine = requestEntity.AddressSecondLine;
-                //                    rec.AddressThirdLine = requestEntity.AddressThirdLine;
-                //                    rec.PostCode = requestEntity.PostCode;
-                //                    rec.Uprn = requestEntity.Uprn;
-                //                    rec.Ward = requestEntity.Ward;
-                //                }
-                //
-                //                if (requestEntity.GpSurgeryDetails != null)
-                //                {
-                //                    rec.GpSurgeryDetails = requestEntity.GpSurgeryDetails;
-                //                }
-                //
-                //                if (requestEntity.NumberOfChildrenUnder18 != null)
-                //                {
-                //                    rec.NumberOfChildrenUnder18 = requestEntity.NumberOfChildrenUnder18;
-                //                }
-                //
-                //                if (requestEntity.ConsentToShare != null)
-                //                {
-                //                    rec.ConsentToShare = requestEntity.ConsentToShare;
-                //                }
-                //
-                //                if (requestEntity.CaseNotes != null)
-                //                {
-                //                    rec.CaseNotes = requestEntity.CaseNotes;
-                //                }
-                //
-                //                if (requestEntity.AdviceNotes != null)
-                //                {
-                //                    rec.AdviceNotes = requestEntity.AdviceNotes;
-                //                }
-                //
-                //                if (requestEntity.InitialCallbackCompleted != null)
-                //                {
-                //                    rec.InitialCallbackCompleted = requestEntity.InitialCallbackCompleted;
-                //                }
-                //
-                //                if (requestEntity.CallbackRequired != null)
-                //                {
-                //                    rec.CallbackRequired = requestEntity.CallbackRequired;
-                //                }
-                //
-                //                if (requestEntity.RecordStatus != null)
-                //                {
-                //                    rec.RecordStatus = requestEntity.RecordStatus;
-                //                }
-                //
-                //                if (requestEntity.HelpNeeded != null)
-                //                {
-                //                    rec.HelpNeeded = requestEntity.HelpNeeded;
-                //                }
-                //                _helpRequestsContext.SaveChanges();
+                var rec = _helpRequestsContext.HelpRequestEntities.SingleOrDefault(x => x.Id == id);
+                if (command == null)
+                {
+                    throw new Exception("Record not found.");
+                }
+
+                if (command.GettingInTouchReason != null)
+                {
+                    rec.GettingInTouchReason = command.GettingInTouchReason;
+                }
+
+                if (command.HelpWithAccessingFood != null)
+                {
+                    rec.HelpWithAccessingFood = command.HelpWithAccessingFood;
+                }
+
+                if (command.HelpWithAccessingSupermarketFood != null)
+                {
+                    rec.HelpWithAccessingSupermarketFood = command.HelpWithAccessingSupermarketFood;
+                }
+
+                if (command.HelpWithCompletingNssForm != null)
+                {
+                    rec.HelpWithCompletingNssForm = command.HelpWithCompletingNssForm;
+                }
+
+                if (command.HelpWithShieldingGuidance != null)
+                {
+                    rec.HelpWithShieldingGuidance = command.HelpWithShieldingGuidance;
+                }
+
+                if (command.HelpWithNoNeedsIdentified != null)
+                {
+                    rec.HelpWithNoNeedsIdentified = command.HelpWithNoNeedsIdentified;
+                }
+
+                if (command.HelpWithAccessingMedicine != null)
+                {
+                    rec.HelpWithAccessingMedicine = command.HelpWithAccessingMedicine;
+                }
+
+                if (command.HelpWithAccessingOtherEssentials != null)
+                {
+                    rec.HelpWithAccessingOtherEssentials = command.HelpWithAccessingOtherEssentials;
+                }
+
+                if (command.HelpWithDebtAndMoney != null)
+                {
+                    rec.HelpWithDebtAndMoney = command.HelpWithDebtAndMoney;
+                }
+
+                if (command.HelpWithMentalHealth != null)
+                {
+                    rec.HelpWithMentalHealth = command.HelpWithMentalHealth;
+                }
+
+                if (command.HelpWithHealth != null)
+                {
+                    rec.HelpWithHealth = command.HelpWithHealth;
+                }
+
+                if (command.HelpWithAccessingInternet != null)
+                {
+                    rec.HelpWithAccessingInternet = command.HelpWithAccessingInternet;
+                }
+
+                if (command.HelpWithSomethingElse != null)
+                {
+                    rec.HelpWithSomethingElse = command.HelpWithSomethingElse;
+                }
+
+                if (command.CurrentSupport != null)
+                {
+                    rec.CurrentSupport = command.CurrentSupport;
+                }
+
+                if (command.CurrentSupportFeedback != null)
+                {
+                    rec.CurrentSupportFeedback = command.CurrentSupportFeedback;
+                }
+
+                if (command.CaseNotes != null)
+                {
+                    rec.CaseNotes[0].CaseNote = command.CaseNotes;
+                }
+
+                if (command.AdviceNotes != null)
+                {
+                    rec.AdviceNotes = command.AdviceNotes;
+                }
+
+                if (command.InitialCallbackCompleted != null)
+                {
+                    rec.InitialCallbackCompleted = command.InitialCallbackCompleted;
+                }
+
+                if (command.CallbackRequired != null)
+                {
+                    rec.CallbackRequired = command.CallbackRequired;
+                }
+
+                if (command.HelpNeeded != null)
+                {
+                    rec.HelpNeeded = command.HelpNeeded;
+                }
+
+                _helpRequestsContext.SaveChanges();
             }
             catch (Exception e)
             {
-                LambdaLogger.Log("PatchHelpRequest error: ");
+                LambdaLogger.Log("PatchResidentAndHelpRequest error: ");
                 LambdaLogger.Log(e.Message);
                 throw;
             }
+
+            return _helpRequestsContext.HelpRequestEntities.Find(id).ToDomain();
+        }
+
+        public Resident PatchResident(int id, PatchResident command)
+        {
+            try
+            {
+                var rec = _helpRequestsContext.ResidentEntities.SingleOrDefault(x => x.Id == id);
+                if (command == null)
+                {
+                    throw new Exception("Record not found.");
+                }
+
+                if (command.FirstName != null)
+                {
+                    rec.FirstName = command.FirstName;
+                }
+
+                if (command.LastName != null)
+                {
+                    rec.LastName = command.LastName;
+                }
+
+                if (command.DobMonth != null)
+                {
+                    rec.DobMonth = command.DobMonth;
+                }
+
+                if (command.DobYear != null)
+                {
+                    rec.DobYear = command.DobYear;
+                }
+
+                if (command.DobDay != null)
+                {
+                    rec.DobDay = command.DobDay;
+                }
+
+                if (command.ContactTelephoneNumber != null)
+                {
+                    rec.ContactTelephoneNumber = command.ContactTelephoneNumber;
+                }
+
+                if (command.ContactMobileNumber != null)
+                {
+                    rec.ContactMobileNumber = command.ContactMobileNumber;
+                }
+
+                if (command.EmailAddress != null)
+                {
+                    rec.EmailAddress = command.EmailAddress;
+                }
+
+                if (command.AddressFirstLine != null && command.PostCode != null)
+                {
+                    // update new address fields
+                    rec.AddressFirstLine = command.AddressFirstLine;
+                    rec.AddressSecondLine = command.AddressSecondLine;
+                    rec.AddressThirdLine = command.AddressThirdLine;
+                    rec.PostCode = command.PostCode;
+                    rec.Uprn = command.Uprn;
+                    rec.Ward = command.Ward;
+                }
+
+                if (command.GpSurgeryDetails != null)
+                {
+                    rec.GpSurgeryDetails = command.GpSurgeryDetails;
+                }
+
+                if (command.NumberOfChildrenUnder18 != null)
+                {
+                    rec.NumberOfChildrenUnder18 = command.NumberOfChildrenUnder18;
+                }
+
+                if (command.ConsentToShare != null)
+                {
+                    rec.ConsentToShare = command.ConsentToShare;
+                }
+
+                if (command.RecordStatus != null)
+                {
+                    rec.RecordStatus = command.RecordStatus;
+                }
+
+                _helpRequestsContext.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                LambdaLogger.Log("PatchResidentAndHelpRequest error: ");
+                LambdaLogger.Log(e.Message);
+                throw;
+            }
+
+            return _helpRequestsContext.ResidentEntities.Find(id).ToDomain();
         }
 
         public List<HelpRequestWithResident> GetCallbacks(CallbackQuery command)
