@@ -65,7 +65,7 @@ namespace cv19ResSupportV3.Tests.V3.Helpers
                 RecordStatus = resident.RecordStatus,
                 CallbackRequired = helpRequest.CallbackRequired,
                 InitialCallbackCompleted = helpRequest.InitialCallbackCompleted,
-                CaseNotes = resident.CaseNotes.ToDomain(),
+                CaseNotes = resident.CaseNotes.ToCaseNotesString(),
                 HelpRequestCalls = helpRequest.HelpRequestCalls.ToDomain(),
                 AdviceNotes = helpRequest.AdviceNotes,
                 HelpNeeded = helpRequest.HelpNeeded,

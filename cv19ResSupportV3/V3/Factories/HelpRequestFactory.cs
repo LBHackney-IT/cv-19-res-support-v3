@@ -216,6 +216,15 @@ namespace cv19ResSupportV3.V3.Factories
             return caseNotes?.Select(hrItem => hrItem.ToDomain()).ToList();
         }
 
+        public static string ToCaseNotesString(this ICollection<CaseNoteEntity> caseNotes)
+        {
+            return string.Join(" ", caseNotes.Select(item => item.CaseNote));
+        }
+        public static string ToCaseNotesString(this ICollection<ResidentCaseNote> caseNotes)
+        {
+            return string.Join(" ", caseNotes.Select(item => item.CaseNote));
+        }
+
         public static List<HelpRequest> ToDomain(this ICollection<HelpRequestEntity> helpRequests)
         {
             return helpRequests?.Select(hrItem => hrItem.ToDomain()).ToList();

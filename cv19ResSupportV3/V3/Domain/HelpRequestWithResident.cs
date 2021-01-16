@@ -60,7 +60,7 @@ namespace cv19ResSupportV3.V3.Domain
         public string RecordStatus { get; set; }
         public bool? InitialCallbackCompleted { get; set; }
         public bool? CallbackRequired { get; set; }
-        public List<ResidentCaseNote> CaseNotes { get; set; }
+        public string CaseNotes { get; set; }
         public string AdviceNotes { get; set; }
         public string HelpNeeded { get; set; }
         public string NhsNumber { get; set; }

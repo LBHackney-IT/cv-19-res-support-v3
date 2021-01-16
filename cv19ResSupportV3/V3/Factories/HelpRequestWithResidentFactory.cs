@@ -71,7 +71,7 @@ namespace cv19ResSupportV3.V3.Factories
                 RecordStatus = helpRequest.ResidentEntity.RecordStatus,
                 InitialCallbackCompleted = helpRequest.InitialCallbackCompleted,
                 CallbackRequired = helpRequest.CallbackRequired,
-                CaseNotes = helpRequest.ResidentEntity.CaseNotes.ToDomain(),
+                CaseNotes = helpRequest.CaseNotes.ToCaseNotesString(),
                 AdviceNotes = helpRequest.AdviceNotes,
                 HelpNeeded = helpRequest.HelpNeeded,
                 NhsCtasId = helpRequest.NhsCtasId,

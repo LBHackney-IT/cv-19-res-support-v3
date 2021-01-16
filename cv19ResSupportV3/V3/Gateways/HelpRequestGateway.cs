@@ -190,6 +190,7 @@ namespace cv19ResSupportV3.V3.Gateways
                 var helpRequest = _helpRequestsContext.HelpRequestEntities
                     .Include(x => x.HelpRequestCalls)
                     .Include(x => x.ResidentEntity)
+                    .Include(x => x.CaseNotes)
                     .FirstOrDefault(x => x.Id == id);
                 return helpRequest?.ToHelpRequestWithResidentDomain();
             }
@@ -224,6 +225,7 @@ namespace cv19ResSupportV3.V3.Gateways
             {
                 return _helpRequestsContext.HelpRequestEntities
                     .Include(x => x.HelpRequestCalls)
+                    .Include(x => x.CaseNotes)
                     .Include(x => x.ResidentEntity)
                     .Where(queryPostCode)
                     .Where(queryFirstName)
@@ -426,6 +428,7 @@ namespace cv19ResSupportV3.V3.Gateways
             {
                 var response = _helpRequestsContext.HelpRequestEntities.Include(x => x.HelpRequestCalls)
                     .Include(x => x.ResidentEntity)
+                    .Include(x => x.CaseNotes)
                     .Where(x => (x.CallbackRequired == true || x.CallbackRequired == null ||
                                  (x.InitialCallbackCompleted == false && x.CallbackRequired == false)))
                     .Where(queryHelpNeeded)
