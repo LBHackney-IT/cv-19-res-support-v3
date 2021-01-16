@@ -183,24 +183,7 @@ namespace cv19ResSupportV3.V3.Gateways
             }
         }
 
-        public HelpRequest GetHelpRequest(int id)
-        {
-            try
-            {
-                var helpRequest = _helpRequestsContext.HelpRequestEntities
-                    .Include(x => x.HelpRequestCalls)
-                    .FirstOrDefault(x => x.Id == id);
-                return helpRequest?.ToDomain();
-            }
-            catch (Exception e)
-            {
-                LambdaLogger.Log("GetResidentAndHelpRequest error: ");
-                LambdaLogger.Log(e.Message);
-                throw;
-            }
-        }
-
-        public HelpRequestWithResident GetHelpRequestWithResident(int id)
+        public HelpRequestWithResident GetHelpRequest(int id)
         {
             try
             {
@@ -218,45 +201,7 @@ namespace cv19ResSupportV3.V3.Gateways
             }
         }
 
-        public List<HelpRequest> SearchHelpRequests(SearchRequest command)
-        {
-            Expression<Func<HelpRequestEntity, bool>> queryPostCode = x =>
-                string.IsNullOrWhiteSpace(command.Postcode)
-                || x.ResidentEntity.PostCode.Replace(" ", "").ToUpper().Contains(command.Postcode.Replace(" ", "").ToUpper());
-
-            Expression<Func<HelpRequestEntity, bool>> queryFirstName = x =>
-                string.IsNullOrWhiteSpace(command.FirstName)
-                || x.ResidentEntity.FirstName.Replace(" ", "").ToUpper().Contains(command.FirstName.Replace(" ", "").ToUpper());
-
-            Expression<Func<HelpRequestEntity, bool>> queryLastName = x =>
-                string.IsNullOrWhiteSpace(command.LastName)
-                || x.ResidentEntity.LastName.Replace(" ", "").ToUpper().Contains(command.LastName.Replace(" ", "").ToUpper());
-
-            Expression<Func<HelpRequestEntity, bool>> queryHelpNeeded = x =>
-                string.IsNullOrWhiteSpace(command.HelpNeeded)
-                || x.HelpNeeded.Replace(" ", "").ToUpper().Equals(command.HelpNeeded.Replace(" ", "").ToUpper());
-
-
-            try
-            {
-                return _helpRequestsContext.HelpRequestEntities
-                    .Include(x => x.HelpRequestCalls)
-                    .Where(queryPostCode)
-                    .Where(queryFirstName)
-                    .Where(queryLastName)
-                    .Where(queryHelpNeeded)
-                    .ToList()
-                    .ToDomain();
-            }
-            catch (Exception e)
-            {
-                LambdaLogger.Log("SearchHelpRequest error: ");
-                LambdaLogger.Log(e.Message);
-                throw;
-            }
-        }
-
-        public List<HelpRequestWithResident> SearchHelpRequestsWithResidents(SearchRequest command)
+        public List<HelpRequestWithResident> SearchHelpRequests(SearchRequest command)
         {
             Expression<Func<HelpRequestEntity, bool>> queryPostCode = x =>
                 string.IsNullOrWhiteSpace(command.Postcode)
@@ -472,31 +417,7 @@ namespace cv19ResSupportV3.V3.Gateways
             }
         }
 
-        public List<HelpRequest> GetCallbacks(CallbackQuery command)
-        {
-            Expression<Func<HelpRequestEntity, bool>> queryHelpNeeded = x =>
-                string.IsNullOrWhiteSpace(command.HelpNeeded)
-                || x.HelpNeeded.Replace(" ", "").ToUpper().Equals(command.HelpNeeded.Replace(" ", "").ToUpper());
-            try
-            {
-                var response = _helpRequestsContext.HelpRequestEntities.Include(x => x.HelpRequestCalls)
-                    .Where(x => (x.CallbackRequired == true || x.CallbackRequired == null ||
-                                 (x.InitialCallbackCompleted == false && x.CallbackRequired == false)))
-                    .Where(queryHelpNeeded)
-                    .OrderByDescending(x => x.InitialCallbackCompleted)
-                    .ThenBy(x => x.DateTimeRecorded)
-                    .ToList();
-                return response.ToDomain();
-            }
-            catch (Exception e)
-            {
-                LambdaLogger.Log("GetCallbacks error: ");
-                LambdaLogger.Log(e.Message);
-                throw;
-            }
-        }
-
-        public List<HelpRequestWithResident> GetCallbacksWithResidents(CallbackQuery command)
+        public List<HelpRequestWithResident> GetCallbacks(CallbackQuery command)
         {
             Expression<Func<HelpRequestEntity, bool>> queryHelpNeeded = x =>
                 string.IsNullOrWhiteSpace(command.HelpNeeded)

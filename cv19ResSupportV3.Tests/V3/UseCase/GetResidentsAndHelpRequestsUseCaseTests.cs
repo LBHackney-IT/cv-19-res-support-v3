@@ -34,9 +34,9 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
         {
             var reqParams = new SearchRequest() { Postcode = "test" };
             var stubbedRequests = new List<HelpRequestWithResident>() { new HelpRequestWithResident() { Id = 1, ResidentId = 2 }, new HelpRequestWithResident() { Id = 3, ResidentId = 2 } };
-            _mockGateway.Setup(x => x.SearchHelpRequestsWithResidents(reqParams)).Returns(stubbedRequests);
+            _mockGateway.Setup(x => x.SearchHelpRequests(reqParams)).Returns(stubbedRequests);
             var response = _classUnderTest.Execute(reqParams);
-            _mockGateway.Verify(x => x.SearchHelpRequestsWithResidents(reqParams), Times.Once());
+            _mockGateway.Verify(x => x.SearchHelpRequests(reqParams), Times.Once());
 
             response.Should().NotBeNull();
         }
@@ -47,7 +47,7 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
             var reqParams = new SearchRequest();
             var expectedResponse = new List<HelpRequestResponse>();
             var response = _classUnderTest.Execute(reqParams);
-            _mockGateway.Verify(x => x.SearchHelpRequestsWithResidents(It.IsAny<SearchRequest>()), Times.Never);
+            _mockGateway.Verify(x => x.SearchHelpRequests(It.IsAny<SearchRequest>()), Times.Never);
             response.Should().NotBeNull();
             response.Should().BeEquivalentTo(expectedResponse);
         }

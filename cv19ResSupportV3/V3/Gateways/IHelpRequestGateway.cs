@@ -9,18 +9,15 @@ namespace cv19ResSupportV3.V3.Gateways
     {
         int CreateHelpRequest(int residentId, CreateHelpRequest command);
         List<LookupDomain> GetLookups(LookupQuery command);
-        List<HelpRequest> GetCallbacks(CallbackQuery command);
         HelpRequest UpdateHelpRequest(UpdateHelpRequest command);
-        HelpRequest GetHelpRequest(int id);
         Resident GetResident(int id);
-        List<HelpRequest> SearchHelpRequests(SearchRequest command);
         void PatchHelpRequest(int id, PatchHelpRequest command);
         int? FindResident(FindResident command);
         Resident CreateResident(CreateResident command);
         Resident UpdateResident(int residentId, UpdateResident command);
-        HelpRequestWithResident GetHelpRequestWithResident(int id);
-        List<HelpRequestWithResident> SearchHelpRequestsWithResidents(SearchRequest command);
-        List<HelpRequestWithResident> GetCallbacksWithResidents(CallbackQuery command);
+        HelpRequestWithResident GetHelpRequest(int id);
+        List<HelpRequestWithResident> SearchHelpRequests(SearchRequest command);
+        List<HelpRequestWithResident> GetCallbacks(CallbackQuery command);
 
     }
 }

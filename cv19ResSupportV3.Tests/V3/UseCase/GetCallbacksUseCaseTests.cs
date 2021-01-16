@@ -33,9 +33,9 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
         {
             var reqParams = new CallbackQuery() { HelpNeeded = "shielding" };
             var expectedResponse = new List<HelpRequestWithResident>() { new HelpRequestWithResident() { Id = 3 } };
-            _mockGateway.Setup(x => x.GetCallbacksWithResidents(reqParams)).Returns(expectedResponse);
+            _mockGateway.Setup(x => x.GetCallbacks(reqParams)).Returns(expectedResponse);
             var response = _classUnderTest.Execute(reqParams);
-            _mockGateway.Verify(x => x.GetCallbacksWithResidents(reqParams), Times.Once);
+            _mockGateway.Verify(x => x.GetCallbacks(reqParams), Times.Once);
             response.Should().NotBeNull();
             response.Should().BeEquivalentTo(expectedResponse);
         }

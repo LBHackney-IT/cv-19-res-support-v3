@@ -438,18 +438,5 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
                 return options;
             });
         }
-
-        [Test]
-        public void GetHelpRequestWithResidentReturnsHelpRequestIfItExist()
-        {
-            var residentId = 111;
-            var residentEntity = EntityHelpers.createResident(residentId);
-            var helpRequestEntity = EntityHelpers.createHelpRequestEntity(33, residentId);
-            DatabaseContext.ResidentEntities.Add(residentEntity);
-            DatabaseContext.HelpRequestEntities.Add(helpRequestEntity);
-            DatabaseContext.SaveChanges();
-            var response = _classUnderTest.GetHelpRequestWithResident(33);
-            response.Should().BeEquivalentTo(residentEntity.ToDomain(helpRequestEntity));
-        }
     }
 }

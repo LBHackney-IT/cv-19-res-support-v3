@@ -24,7 +24,7 @@ namespace cv19ResSupportV3.V3.UseCase
                 return new List<HelpRequestWithResident>();
             }
 
-            return _gateway.SearchHelpRequestsWithResidents(command);
+            return _gateway.SearchHelpRequests(command);
         }
     }
 }

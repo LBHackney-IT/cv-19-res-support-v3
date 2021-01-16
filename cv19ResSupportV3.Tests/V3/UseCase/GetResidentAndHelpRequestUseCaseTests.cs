@@ -27,9 +27,9 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
             var stubbedResident = EntityHelpers.createResident(21);
             var stubbedRequest = EntityHelpers.createHelpRequestEntity(123, 21);
             var stubbedRequestWithResident = stubbedResident.ToDomain(stubbedRequest);
-            _mockGateway.Setup(x => x.GetHelpRequestWithResident(It.IsAny<int>())).Returns(stubbedRequestWithResident);
+            _mockGateway.Setup(x => x.GetHelpRequest(It.IsAny<int>())).Returns(stubbedRequestWithResident);
             var response = _classUnderTest.Execute(stubbedRequest.Id);
-            _mockGateway.Verify(x => x.GetHelpRequestWithResident(It.Is<int>(x => x == 123)), Times.Once());
+            _mockGateway.Verify(x => x.GetHelpRequest(It.Is<int>(x => x == 123)), Times.Once());
 
             response.Should().NotBeNull();
             response.ResidentId.Should().Be(stubbedResident.Id);
@@ -45,7 +45,7 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
             calls.ForEach(x => x.HelpRequestId = 5);
             stubbedRequest.HelpRequestCalls = calls;
             var stubbedRequestWithResident = stubbedResident.ToDomain(stubbedRequest);
-            _mockGateway.Setup(x => x.GetHelpRequestWithResident(It.IsAny<int>())).Returns(stubbedRequestWithResident);
+            _mockGateway.Setup(x => x.GetHelpRequest(It.IsAny<int>())).Returns(stubbedRequestWithResident);
             var response = _classUnderTest.Execute(stubbedRequest.Id);
             response.Should().NotBeNull();
             response.HelpRequestCalls.Should().BeEquivalentTo(calls, options =>

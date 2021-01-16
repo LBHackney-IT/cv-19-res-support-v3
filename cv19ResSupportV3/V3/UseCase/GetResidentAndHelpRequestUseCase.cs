@@ -18,7 +18,7 @@ namespace cv19ResSupportV3.V3.UseCase
 
         public HelpRequestWithResident Execute(int id)
         {
-            return _gateway.GetHelpRequestWithResident(id);
+            return _gateway.GetHelpRequest(id);
         }
     }
 }

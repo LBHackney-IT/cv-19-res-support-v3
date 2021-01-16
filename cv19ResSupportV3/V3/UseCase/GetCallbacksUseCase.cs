@@ -19,7 +19,7 @@ namespace cv19ResSupportV3.V3.UseCase
 
         public List<HelpRequestWithResident> Execute(CallbackQuery command)
         {
-            return _gateway.GetCallbacksWithResidents(command);
+            return _gateway.GetCallbacks(command);
         }
     }
 }
