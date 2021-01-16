@@ -137,7 +137,7 @@ namespace cv19ResSupportV3.V3.Controllers
             Console.WriteLine(JsonConvert.SerializeObject(requestParams));
             var command = requestParams.ToCommand();
             var result = _getResidentsAndHelpRequestsUseCase.Execute(command);
-            return Ok(result);
+            return Ok(result.ToResponse());
         }
 
         /// <summary>
@@ -153,7 +153,7 @@ namespace cv19ResSupportV3.V3.Controllers
             var result = _getResidentAndHelpRequestUseCase.Execute(id);
             if (result == null)
                 return NotFound();
-            return Ok(result);
+            return Ok(result.ToResponse());
         }
     }
 }

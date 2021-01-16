@@ -256,6 +256,45 @@ namespace cv19ResSupportV3.V3.Gateways
             }
         }
 
+        public List<HelpRequestWithResident> SearchHelpRequestsWithResidents(SearchRequest command)
+        {
+            Expression<Func<HelpRequestEntity, bool>> queryPostCode = x =>
+                string.IsNullOrWhiteSpace(command.Postcode)
+                || x.ResidentEntity.PostCode.Replace(" ", "").ToUpper().Contains(command.Postcode.Replace(" ", "").ToUpper());
+
+            Expression<Func<HelpRequestEntity, bool>> queryFirstName = x =>
+                string.IsNullOrWhiteSpace(command.FirstName)
+                || x.ResidentEntity.FirstName.Replace(" ", "").ToUpper().Contains(command.FirstName.Replace(" ", "").ToUpper());
+
+            Expression<Func<HelpRequestEntity, bool>> queryLastName = x =>
+                string.IsNullOrWhiteSpace(command.LastName)
+                || x.ResidentEntity.LastName.Replace(" ", "").ToUpper().Contains(command.LastName.Replace(" ", "").ToUpper());
+
+            Expression<Func<HelpRequestEntity, bool>> queryHelpNeeded = x =>
+                string.IsNullOrWhiteSpace(command.HelpNeeded)
+                || x.HelpNeeded.Replace(" ", "").ToUpper().Equals(command.HelpNeeded.Replace(" ", "").ToUpper());
+
+
+            try
+            {
+                return _helpRequestsContext.HelpRequestEntities
+                    .Include(x => x.HelpRequestCalls)
+                    .Include(x => x.ResidentEntity)
+                    .Where(queryPostCode)
+                    .Where(queryFirstName)
+                    .Where(queryLastName)
+                    .Where(queryHelpNeeded)
+                    .ToList()
+                    .ToHelpRequestWithResidentDomain();
+            }
+            catch (Exception e)
+            {
+                LambdaLogger.Log("SearchHelpRequest error: ");
+                LambdaLogger.Log(e.Message);
+                throw;
+            }
+        }
+
         public void PatchHelpRequest(int id, PatchHelpRequest command)
         {
             try

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using cv19ResSupportV3.V3.Domain;
 using cv19ResSupportV3.V3.Infrastructure;
 
@@ -76,6 +78,11 @@ namespace cv19ResSupportV3.V3.Factories
                 NhsNumber = helpRequest.ResidentEntity.NhsNumber,
                 HelpRequestCalls = helpRequest.HelpRequestCalls.ToDomain()
             };
+        }
+
+        public static List<HelpRequestWithResident> ToHelpRequestWithResidentDomain(this IEnumerable<HelpRequestEntity> helpRequest)
+        {
+            return helpRequest?.Select(l => l.ToHelpRequestWithResidentDomain()).ToList();
         }
     }
 }

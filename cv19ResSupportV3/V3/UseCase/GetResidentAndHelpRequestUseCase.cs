@@ -1,6 +1,7 @@
 using System;
 using Amazon.Lambda.Core;
 using cv19ResSupportV3.V3.Boundary.Response;
+using cv19ResSupportV3.V3.Domain;
 using cv19ResSupportV3.V3.Factories;
 using cv19ResSupportV3.V3.Gateways;
 
@@ -15,18 +16,9 @@ namespace cv19ResSupportV3.V3.UseCase
             _gateway = gateway;
         }
 
-        public HelpRequestResponse Execute(int id)
+        public HelpRequestWithResident Execute(int id)
         {
-            try
-            {
-                return _gateway.GetHelpRequestWithResident(id).ToResponse();
-            }
-            catch (Exception e)
-            {
-                LambdaLogger.Log("[UseCase]GetResidentAndHelpRequest error: ");
-                LambdaLogger.Log(e.Message);
-                throw;
-            }
+            return _gateway.GetHelpRequestWithResident(id);
         }
     }
 }

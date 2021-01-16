@@ -15,14 +15,12 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
     [TestFixture]
     public class GetCallbacks : IntegrationTests<Startup>
     {
-        ResidentEntity resident = EntityHelpers.createResident();
 
         [SetUp]
         public void SetUp()
         {
             CustomizeAssertions.ApproximationDateTime();
             DatabaseContext.Database.RollbackTransaction();
-            DatabaseContext.ResidentEntities.Add(resident);
             E2ETestHelpers.ClearTable(DatabaseContext);
         }
 
@@ -30,6 +28,8 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
         [Test]
         public async Task GetCallbacksReturnsCallbacks()
         {
+            var resident = EntityHelpers.createResident(34);
+
             var helpRequests = EntityHelpers.createHelpRequestEntities();
             foreach (var request in helpRequests)
             {
@@ -38,6 +38,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
                 request.DateTimeRecorded = DateTime.Today.AddDays(-2);
                 request.ResidentId = resident.Id;
             }
+            DatabaseContext.ResidentEntities.Add(resident);
             DatabaseContext.HelpRequestEntities.AddRange(helpRequests);
             DatabaseContext.SaveChanges();
             var requestUri = new Uri($"api/v3/help-requests/callbacks", UriKind.Relative);
@@ -54,6 +55,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
         [Test]
         public async Task GetCallbacksWithNoCallbacksRecordedReturnsNothing()
         {
+            var resident = EntityHelpers.createResident(35);
             var helpRequests = EntityHelpers.createHelpRequestEntities();
             foreach (var request in helpRequests)
             {
@@ -62,6 +64,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
                 request.DateTimeRecorded = DateTime.Today.AddDays(-2);
                 request.ResidentId = resident.Id;
             }
+            DatabaseContext.ResidentEntities.Add(resident);
             DatabaseContext.HelpRequestEntities.AddRange(helpRequests);
             DatabaseContext.SaveChanges();
             var requestUri = new Uri($"api/v3/help-requests/callbacks", UriKind.Relative);
@@ -79,6 +82,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
         [Test]
         public async Task GetCallbacksMasterWithWhiteSpaceStillReturnsRecords()
         {
+            var resident = EntityHelpers.createResident(36);
             var helpRequests = EntityHelpers.createHelpRequestEntities();
             foreach (var request in helpRequests)
             {
@@ -87,6 +91,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
                 request.HelpNeeded = "help ";
                 request.ResidentId = resident.Id;
             }
+            DatabaseContext.ResidentEntities.Add(resident);
             DatabaseContext.HelpRequestEntities.AddRange(helpRequests);
             DatabaseContext.SaveChanges();
             var requestUri = new Uri($"api/v3/help-requests/callbacks?helpneeded=help", UriKind.Relative);
@@ -100,6 +105,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
         [Test]
         public async Task GetCallbacksReturnsCallbacksWithHelpRequestCalls()
         {
+            var resident = EntityHelpers.createResident(37);
             var helpRequest = EntityHelpers.createHelpRequestEntity();
             var calls = EntityHelpers.createHelpRequestCallEntities();
             helpRequest.Id = 99;
@@ -109,6 +115,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             helpRequest.ResidentId = resident.Id;
 
             calls.ForEach(x => x.HelpRequestId = helpRequest.Id);
+            DatabaseContext.ResidentEntities.Add(resident);
             DatabaseContext.HelpRequestEntities.Add(helpRequest);
             DatabaseContext.HelpRequestCallEntities.AddRange(calls);
             DatabaseContext.SaveChanges();

@@ -256,5 +256,10 @@ namespace cv19ResSupportV3.V3.Factories
         {
             return lookup?.Select(l => l.ToResponse()).ToList();
         }
+
+        public static List<HelpRequestResponse> ToResponse(this IEnumerable<HelpRequestWithResident> lookup)
+        {
+            return lookup?.Select(l => l.ToResponse()).ToList();
+        }
     }
 }

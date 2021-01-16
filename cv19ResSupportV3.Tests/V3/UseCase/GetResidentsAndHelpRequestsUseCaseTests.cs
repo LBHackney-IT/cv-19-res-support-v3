@@ -33,22 +33,12 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
         public void ReturnsPopulatedHelpRequestListIfParamsProvided()
         {
             var reqParams = new SearchRequest() { Postcode = "test" };
-            var stubbedRequests = new List<HelpRequest>() { new HelpRequest() { Id = 1, ResidentId = 2 }, new HelpRequest() { Id = 3, ResidentId = 2 } };
-            var stubbedResident = new Resident() { Id = 2, FirstName = "Tom" };
-            _mockGateway.Setup(x => x.SearchHelpRequests(reqParams)).Returns(stubbedRequests);
-            _mockGateway.Setup(x => x.GetResident(2)).Returns(stubbedResident);
+            var stubbedRequests = new List<HelpRequestWithResident>() { new HelpRequestWithResident() { Id = 1, ResidentId = 2 }, new HelpRequestWithResident() { Id = 3, ResidentId = 2 } };
+            _mockGateway.Setup(x => x.SearchHelpRequestsWithResidents(reqParams)).Returns(stubbedRequests);
             var response = _classUnderTest.Execute(reqParams);
-            _mockGateway.Verify(x => x.SearchHelpRequests(reqParams), Times.Once());
-            _mockGateway.Verify(x => x.GetResident(2), Times.Exactly(2));
+            _mockGateway.Verify(x => x.SearchHelpRequestsWithResidents(reqParams), Times.Once());
 
             response.Should().NotBeNull();
-            response[0].Id.Should().Be(1);
-            response[0].ResidentId.Should().Be(2);
-            response[0].FirstName.Should().Be("Tom");
-            response[1].Id.Should().Be(3);
-            response[1].ResidentId.Should().Be(2);
-            response[1].FirstName.Should().Be("Tom");
-            response.Count.Should().Be(2);
         }
 
         [Test]
@@ -57,8 +47,7 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
             var reqParams = new SearchRequest();
             var expectedResponse = new List<HelpRequestResponse>();
             var response = _classUnderTest.Execute(reqParams);
-            _mockGateway.Verify(x => x.SearchHelpRequests(It.IsAny<SearchRequest>()), Times.Never);
-            _mockGateway.Verify(x => x.GetResident(It.IsAny<int>()), Times.Never);
+            _mockGateway.Verify(x => x.SearchHelpRequestsWithResidents(It.IsAny<SearchRequest>()), Times.Never);
             response.Should().NotBeNull();
             response.Should().BeEquivalentTo(expectedResponse);
         }
