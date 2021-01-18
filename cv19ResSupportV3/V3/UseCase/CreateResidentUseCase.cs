@@ -20,7 +20,7 @@ namespace cv19ResSupportV3.V3.UseCase
 
             if (existingResidentId != null)
             {
-                var existingResident = _gateway.GetResident((int)existingResidentId);
+                var existingResident = _gateway.GetResident((int) existingResidentId);
                 var updateResident = command.ToPatchResidentCommand();
                 updateResident.ContactTelephoneNumber =
                     existingResident.ContactTelephoneNumber + "/" + updateResident.ContactTelephoneNumber;

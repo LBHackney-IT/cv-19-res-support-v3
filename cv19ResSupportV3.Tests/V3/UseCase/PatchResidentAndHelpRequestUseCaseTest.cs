@@ -29,7 +29,7 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
         {
             var id = 12;
             var residentId = 2;
-            var patchHelpRequestFull = new PatchResidentAndHelpRequest() { FirstName = "Jay", HelpNeeded = "something", CaseNotes = "Case Note"};
+            var patchHelpRequestFull = new PatchResidentAndHelpRequest() { FirstName = "Jay", HelpNeeded = "something", CaseNotes = "Case Note" };
             var response = new HelpRequest { HelpNeeded = "something", ResidentId = residentId };
             _fakePatchHelpRequestUseCase.Setup(x => x.Execute(It.Is<int>(x => x == id), It.IsAny<PatchHelpRequest>()))
                 .Returns(response);
