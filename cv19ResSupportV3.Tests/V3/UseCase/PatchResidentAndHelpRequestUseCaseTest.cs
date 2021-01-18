@@ -11,6 +11,7 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
     {
         private Mock<IPatchResidentUseCase> _fakePatchResidentUseCase;
         private Mock<IPatchHelpRequestUseCase> _fakePatchHelpRequestUseCase;
+        private Mock<IPatchCaseNoteUseCase> _fakePatchCaseNoteUseCase;
         private PatchResidentAndHelpRequestUseCase _classUnderTest;
 
         [SetUp]
@@ -18,16 +19,17 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
         {
             _fakePatchResidentUseCase = new Mock<IPatchResidentUseCase>();
             _fakePatchHelpRequestUseCase = new Mock<IPatchHelpRequestUseCase>();
+            _fakePatchCaseNoteUseCase = new Mock<IPatchCaseNoteUseCase>();
             _classUnderTest = new PatchResidentAndHelpRequestUseCase(_fakePatchResidentUseCase.Object,
-                _fakePatchHelpRequestUseCase.Object);
+                _fakePatchHelpRequestUseCase.Object, _fakePatchCaseNoteUseCase.Object);
         }
 
         [Test]
-        public void ReturnsPopulatedHelpRequestListIfParamsProvided()
+        public void PatchesResidentHelpRequestAndCaseNote()
         {
             var id = 12;
             var residentId = 2;
-            var patchHelpRequestFull = new PatchResidentAndHelpRequest() { FirstName = "Jay", HelpNeeded = "something" };
+            var patchHelpRequestFull = new PatchResidentAndHelpRequest() { FirstName = "Jay", HelpNeeded = "something", CaseNotes = "Case Note"};
             var response = new HelpRequest { HelpNeeded = "something", ResidentId = residentId };
             _fakePatchHelpRequestUseCase.Setup(x => x.Execute(It.Is<int>(x => x == id), It.IsAny<PatchHelpRequest>()))
                 .Returns(response);
@@ -38,6 +40,7 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
                 x => x.Execute(id, It.Is<PatchHelpRequest>(x => x.HelpNeeded == "something")),
                 Times.Once());
             _fakePatchResidentUseCase.Verify(x => x.Execute(residentId, It.Is<PatchResident>(x => x.FirstName == "Jay")), Times.Once());
+            _fakePatchCaseNoteUseCase.Verify(x => x.Execute(id, residentId, It.Is<string>(x => x == "Case Note")), Times.Once());
         }
     }
 }

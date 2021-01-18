@@ -18,6 +18,8 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
 
         public static void ClearTable(HelpRequestsContext context)
         {
+            var addedCases = context.CaseNoteEntities;
+            context.CaseNoteEntities.RemoveRange(addedCases);
             var addedEntities = context.HelpRequestEntities;
             context.HelpRequestEntities.RemoveRange(addedEntities);
             var addedResidents = context.ResidentEntities;
