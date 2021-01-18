@@ -126,7 +126,7 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
         }
 
         [Test]
-        public void UpdateResidentReturnsTheUpdatedResident()
+        public void PatchResidentReturnsTheUpdatedResident()
         {
             var existingResident = new ResidentEntity
             {
@@ -146,6 +146,41 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             DatabaseContext.ResidentEntities.Add(existingResident);
             DatabaseContext.SaveChanges();
             var response = _classUnderTest.PatchResident(existingResident.Id, updateResidentCommand);
+            var createdRecord = DatabaseContext.ResidentEntities.Find(response.Id);
+            var expectedRecord = new ResidentEntity
+            {
+                Id = existingResident.Id,
+                FirstName = existingResident.FirstName,
+                LastName = existingResident.LastName,
+                DobDay = updateResidentCommand.DobDay,
+                DobMonth = updateResidentCommand.DobMonth,
+                DobYear = updateResidentCommand.DobYear,
+                Uprn = existingResident.Uprn
+            };
+
+            createdRecord.Should().BeEquivalentTo(expectedRecord);
+        }
+        [Test]
+        public void updateResidentReturnsTheUpdatedResident()
+        {
+            var existingResident = new ResidentEntity
+            {
+                FirstName = "FirstName",
+                LastName = "LastName",
+                DobDay = "Day",
+                DobMonth = "Month",
+                DobYear = "Year",
+                Uprn = "Uprn"
+            };
+
+            var updateResidentCommand = new UpdateResident
+            {
+                Uprn = "Uprn", DobDay = "NewDay", DobMonth = "NewMonth", DobYear = "NewYear"
+            };
+
+            DatabaseContext.ResidentEntities.Add(existingResident);
+            DatabaseContext.SaveChanges();
+            var response = _classUnderTest.UpdateResident(existingResident.Id, updateResidentCommand);
             var createdRecord = DatabaseContext.ResidentEntities.Find(response.Id);
             var expectedRecord = new ResidentEntity
             {

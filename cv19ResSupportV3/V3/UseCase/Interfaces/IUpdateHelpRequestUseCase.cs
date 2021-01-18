@@ -5,6 +5,6 @@ namespace cv19ResSupportV3.V3.UseCase.Interfaces
 {
     public interface IUpdateHelpRequestUseCase
     {
-        HelpRequest Execute(UpdateHelpRequest command);
+        HelpRequest Execute(int helpRequestId, UpdateHelpRequest command);
     }
 }

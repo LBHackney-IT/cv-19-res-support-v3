@@ -5,6 +5,6 @@ namespace cv19ResSupportV3.V3.UseCase.Interfaces
 {
     public interface IUpdateResidentUseCase
     {
-        Resident Execute(UpdateResident command);
+        Resident Execute(int residentId, UpdateResident command);
     }
 }

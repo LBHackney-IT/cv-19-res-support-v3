@@ -34,19 +34,28 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
         [Test]
         public void ExecuteUpdatesRequestInDatabase()
         {
-            var request = new UpdateResidentAndHelpRequest()
+            var request = new UpdateResidentAndHelpRequest
             {
                 Id = 7
             };
-            var result = new HelpRequest()
-            {
-                Id = 7
-            };
-            _updateResidentUseCase.Setup(s => s.Execute(It.IsAny<UpdateResident>())).Returns(new Resident());
-            _updateHelpRequestUseCase.Setup(s => s.Execute(It.IsAny<UpdateHelpRequest>())).Returns(new HelpRequest());
+            var resident = new Resident(){FirstName = "sample"};
+            var helpRequest = new HelpRequest(){ Id = request.Id, ResidentId = resident.Id};
+
+            _updateResidentUseCase.Setup(s => s.Execute(It.IsAny<int>(), It.IsAny<UpdateResident>())).Returns(resident);
+            _updateHelpRequestUseCase.Setup(s => s.Execute(It.IsAny<int>(),It.IsAny<UpdateHelpRequest>())).Returns(helpRequest);
 
             var response = _classUnderTest.Execute(request);
-            response.Should().BeEquivalentTo(request);
+
+            var expectedResponse = new HelpRequestWithResident()
+            {
+                FirstName = resident.FirstName,
+                Id = helpRequest.Id,
+                ResidentId = helpRequest.ResidentId
+            };
+            response.Should().BeEquivalentTo(expectedResponse);
+
+            _updateResidentUseCase.Verify(m => m.Execute(It.IsAny<int>(),It.IsAny<UpdateResident>()), Times.Once());
+            _updateHelpRequestUseCase.Verify(m => m.Execute(It.IsAny<int>(),It.IsAny<UpdateHelpRequest>()), Times.Once());
         }
     }
 }

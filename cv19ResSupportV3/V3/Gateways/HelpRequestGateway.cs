@@ -70,8 +70,10 @@ namespace cv19ResSupportV3.V3.Gateways
         {
             try
             {
-                var updatedResidentEntity = _helpRequestsContext.ResidentEntities.Find(residentId);
-                return updatedResidentEntity.ToResidentDomain();
+                var entity = _helpRequestsContext.ResidentEntities.Find(residentId);
+                _helpRequestsContext.Entry(entity).CurrentValues.SetValues(command);
+                _helpRequestsContext.SaveChanges();
+                return entity.ToDomain();
             }
             catch (Exception e)
             {
