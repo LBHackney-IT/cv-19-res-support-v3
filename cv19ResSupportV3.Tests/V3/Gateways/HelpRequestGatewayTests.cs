@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using AutoFixture;
 using cv19ResSupportV3.Tests.V3.Helpers;
@@ -191,35 +192,6 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             createdRecord.Should().BeEquivalentTo(expectedRecord);
         }
 
-        //        [Test]
-        //        public void CreateDuplicateHelpRequestTheLatestAsMaster()
-        //        {
-        //            var helpRequest = _fixture.Build<CreateHelpRequest>()
-        ////                .With(x => x.Uprn, "123")
-        ////                .With(x => x.DobMonth, "123")
-        ////                .With(x => x.DobDay, "123")
-        ////                .With(x => x.DobYear, "123")
-        ////                .With(x => x.ContactTelephoneNumber, "123")
-        ////                .With(x => x.ContactMobileNumber, "123")
-        //                .Create();
-        //
-        //            var helpRequest2 = _fixture.Build<CreateHelpRequest>()
-        ////                .With(x => x.Uprn, "123")
-        ////                .With(x => x.DobMonth, "123")
-        ////                .With(x => x.DobDay, "123")
-        ////                .With(x => x.DobYear, "123")
-        ////                .With(x => x.ContactTelephoneNumber, "123")
-        ////                .With(x => x.ContactMobileNumber, "123")
-        //                .Create();
-        //
-        //            var response1 = _classUnderTest.CreateHelpRequest(5, helpRequest);
-        //            var response2 = _classUnderTest.CreateHelpRequest(5, helpRequest2);
-        //            var firstRecordToCheck = DatabaseContext.HelpRequestEntities.Find(response1);
-        //            var secondRecordToCheck = DatabaseContext.HelpRequestEntities.Find(response2);
-        //            firstRecordToCheck.RecordStatus.Should().Be("DUPLICATE");
-        //            secondRecordToCheck.RecordStatus.Should().Be("MASTER");
-        //        }
-        //
         [Test]
         public void PatchHelpRequestForHelpNeeded()
         {
@@ -470,6 +442,33 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
                 options.Excluding(ex => ex.HelpRequestEntity);
                 return options;
             });
+        }
+
+
+        [Test]
+        public void UpdateHelpRequestUpdatesCorrectFields()
+        {
+            var resident = EntityHelpers.createResident(117);
+            var helpRequest = EntityHelpers.createHelpRequestEntity(117, resident.Id);
+            DatabaseContext.ResidentEntities.Add(resident);
+            DatabaseContext.HelpRequestEntities.Add(helpRequest);
+            DatabaseContext.SaveChanges();
+
+            var updateRequestObject = Randomm.Build<UpdateHelpRequest>().Create();
+
+            _classUnderTest.UpdateHelpRequest(helpRequest.Id, updateRequestObject);
+
+            var oldEntity = DatabaseContext.HelpRequestEntities.Find(helpRequest.Id);
+            DatabaseContext.Entry(oldEntity).State = EntityState.Detached;
+            var updatedEntity = DatabaseContext.HelpRequestEntities.Find(helpRequest.Id);
+
+            updatedEntity.Should().BeEquivalentTo(updateRequestObject, options =>
+                {
+                    options.Excluding(x => x.DateTimeRecorded);
+                    return options;
+                });
+            updatedEntity.ResidentId.Should().Be(resident.Id);
+            updatedEntity.Id.Should().Be(helpRequest.Id);
         }
     }
 }

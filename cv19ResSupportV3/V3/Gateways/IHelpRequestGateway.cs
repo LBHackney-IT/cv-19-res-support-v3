@@ -9,7 +9,7 @@ namespace cv19ResSupportV3.V3.Gateways
     {
         int CreateHelpRequest(int residentId, CreateHelpRequest command);
         List<LookupDomain> GetLookups(LookupQuery command);
-        HelpRequest UpdateHelpRequest(UpdateResidentAndHelpRequest command);
+        HelpRequest UpdateHelpRequest(int id, UpdateHelpRequest command);
         Resident GetResident(int id);
         HelpRequest PatchHelpRequest(int id, PatchHelpRequest command);
         Resident PatchResident(int id, PatchResident command);

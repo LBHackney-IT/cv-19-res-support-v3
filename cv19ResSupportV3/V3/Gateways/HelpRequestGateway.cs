@@ -145,15 +145,15 @@ namespace cv19ResSupportV3.V3.Gateways
             }
         }
 
-        public HelpRequest UpdateHelpRequest(UpdateResidentAndHelpRequest command)
+        public HelpRequest UpdateHelpRequest(int id, UpdateHelpRequest command)
         {
             if (command == null) return null;
             try
             {
-                //                var entity = _helpRequestsContext.HelpRequestEntities.Find(command.Id);
-                //                _helpRequestsContext.Entry(entity).CurrentValues.SetValues(command);
-                //                _helpRequestsContext.SaveChanges();
-                //                return entity.ToDomain();
+                var entity = _helpRequestsContext.HelpRequestEntities.Find(id);
+                _helpRequestsContext.Entry(entity).CurrentValues.SetValues(command);
+                _helpRequestsContext.SaveChanges();
+                return entity.ToDomain();
             }
             catch (Exception e)
             {
