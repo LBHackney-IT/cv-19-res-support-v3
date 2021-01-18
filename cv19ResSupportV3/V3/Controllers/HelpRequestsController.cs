@@ -19,16 +19,16 @@ namespace cv19ResSupportV3.V3.Controllers
     public class HelpRequestsController : BaseController
     {
         private readonly ICreateHelpRequestUseCase _createHelpRequestUseCase;
-        private readonly IUpdateHelpRequestUseCase _updateHelpRequestUseCase;
+        private readonly IUpdateResidentAndHelpRequestUseCase _updateResidentAndHelpRequestUseCase;
         private readonly IPatchResidentAndHelpRequestUseCase _patchResidentAndHelpRequestUseCase;
         private readonly IGetResidentsAndHelpRequestsUseCase _getResidentsAndHelpRequestsUseCase;
         private readonly IGetResidentAndHelpRequestUseCase _getResidentAndHelpRequestUseCase;
         private readonly ICreateResidentAndHelpRequestUseCase _createResidentAndHelpRequestUse;
         public HelpRequestsController(ICreateHelpRequestUseCase createHelpRequestUseCase, IGetResidentsAndHelpRequestsUseCase getResidentsAndHelpRequestsUseCase,
-            IUpdateHelpRequestUseCase updateHelpRequestUseCase, IGetResidentAndHelpRequestUseCase getResidentAndHelpRequestUseCase, IPatchResidentAndHelpRequestUseCase patchResidentAndHelpRequestUseCase, ICreateResidentAndHelpRequestUseCase createResidentAndHelpRequestUseCase)
+            IUpdateResidentAndHelpRequestUseCase updateResidentAndHelpRequestUseCase, IGetResidentAndHelpRequestUseCase getResidentAndHelpRequestUseCase, IPatchResidentAndHelpRequestUseCase patchResidentAndHelpRequestUseCase, ICreateResidentAndHelpRequestUseCase createResidentAndHelpRequestUseCase)
         {
             _createHelpRequestUseCase = createHelpRequestUseCase;
-            _updateHelpRequestUseCase = updateHelpRequestUseCase;
+            _updateResidentAndHelpRequestUseCase = updateResidentAndHelpRequestUseCase;
             _patchResidentAndHelpRequestUseCase = patchResidentAndHelpRequestUseCase;
             _getResidentsAndHelpRequestsUseCase = getResidentsAndHelpRequestsUseCase;
             _getResidentAndHelpRequestUseCase = getResidentAndHelpRequestUseCase;
@@ -64,12 +64,12 @@ namespace cv19ResSupportV3.V3.Controllers
         /// <response code="400">There was an issue updating the record.</response>
         [ProducesResponseType(typeof(HelpRequestResponse), StatusCodes.Status200OK)]
         [HttpPut]
-        public IActionResult UpdateHelpRequest(HelpRequestUpdateRequest request)
+        public IActionResult UpdateResidentAndHelpRequest(HelpRequestUpdateRequest request)
         {
             try
             {
                 var command = request.ToCommand();
-                var response = _updateHelpRequestUseCase.Execute(command);
+                var response = _updateResidentAndHelpRequestUseCase.Execute(command);
                 var result = response.ToResponse();
                 return Ok(result);
             }

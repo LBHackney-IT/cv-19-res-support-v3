@@ -82,14 +82,14 @@ namespace cv19ResSupportV3.V3.Factories
             };
         }
 
-        public static HelpRequestResponse ToResponse(this HelpRequest helpRequest, Resident resident)
+        public static HelpRequestWithResident ToDomain(this HelpRequest helpRequest, Resident resident)
         {
             if (helpRequest == null || resident == null)
             {
                 return null;
             }
 
-            return new HelpRequestResponse()
+            return new HelpRequestWithResident
             {
                 Id = helpRequest.Id,
                 ResidentId = resident.Id,

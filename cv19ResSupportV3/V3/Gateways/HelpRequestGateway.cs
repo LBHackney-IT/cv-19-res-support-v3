@@ -145,7 +145,7 @@ namespace cv19ResSupportV3.V3.Gateways
             }
         }
 
-        public HelpRequest UpdateHelpRequest(UpdateHelpRequest command)
+        public HelpRequest UpdateHelpRequest(UpdateResidentAndHelpRequest command)
         {
             if (command == null) return null;
             try

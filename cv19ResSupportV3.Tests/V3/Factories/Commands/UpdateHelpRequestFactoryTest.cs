@@ -14,12 +14,21 @@ namespace cv19ResSupportV3.Tests.V3.Factories.Commands
         Fixture _fixture = new Fixture();
 
         [Test]
-        public void CanMapHelpRequestPatchRequestToPatchHelpRequestCommand()
+        public void CanMapHelpRequestPatchRequestToUpdateHelpRequestCommand()
         {
             var request = _fixture.Build<HelpRequestUpdateRequest>().Create();
             var command = request.ToCommand();
             command.Should().BeEquivalentTo(request);
-            command.Should().BeOfType<UpdateHelpRequest>();
+            command.Should().BeOfType<UpdateResidentAndHelpRequest>();
+        }
+
+        [Test]
+        public void CanMapUpdateResidentAndHelpRequestToUpdateHelpRequestCommand()
+        {
+            var request = _fixture.Build<UpdateResidentAndHelpRequest>().Create();
+            var command = request.ToUpdateHelpRequestCommand();
+            command.Should().BeEquivalentTo(request);
+            command.Should().BeOfType<UpdateResidentAndHelpRequest>();
         }
     }
 }

@@ -26,5 +26,14 @@ namespace cv19ResSupportV3.Tests.V3.Factories.Commands
             request.Should().BeEquivalentTo(command);
             command.Should().BeOfType<UpdateResident>();
         }
+
+        [Test]
+        public void CanMapUpdateResidentAndHelpRequestToUpdateResident()
+        {
+            var request = _fixture.Build<UpdateResidentAndHelpRequest>().Create();
+            var command = request.ToUpdateResidentCommand();
+            request.Should().BeEquivalentTo(command);
+            command.Should().BeOfType<UpdateResident>();
+        }
     }
 }
