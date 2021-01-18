@@ -4,7 +4,7 @@ namespace cv19ResSupportV3.V3.Factories.Commands
 {
     public static class UpdateHelpRequestFactory
     {
-     public static UpdateHelpRequest ToUpdateHelpRequestCommand(this UpdateResidentAndHelpRequest helpRequest)
+        public static UpdateHelpRequest ToUpdateHelpRequestCommand(this UpdateResidentAndHelpRequest helpRequest)
         {
             return new UpdateHelpRequest
             {

@@ -28,7 +28,7 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
         {
             _updateResidentUseCase = new Mock<IUpdateResidentUseCase>();
             _updateHelpRequestUseCase = new Mock<IUpdateHelpRequestUseCase>();
-            _classUnderTest = new UpdateResidentAndHelpRequestUseCase(_updateResidentUseCase.Object,_updateHelpRequestUseCase.Object );
+            _classUnderTest = new UpdateResidentAndHelpRequestUseCase(_updateResidentUseCase.Object, _updateHelpRequestUseCase.Object);
         }
 
         [Test]
@@ -43,7 +43,7 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
                 Id = 7
             };
             _updateResidentUseCase.Setup(s => s.Execute(It.IsAny<UpdateResident>())).Returns(new Resident());
-            _updateHelpRequestUseCase.Setup(s => s.Execute(It.IsAny<UpdateHelpRequest>())).Returns(new HelpRequest());
+            _updateHelpRequestUseCase.Setup(s => s.Execute(It.IsAny<int>(), It.IsAny<UpdateHelpRequest>())).Returns(new HelpRequest());
 
             var response = _classUnderTest.Execute(request);
             response.Should().BeEquivalentTo(request);

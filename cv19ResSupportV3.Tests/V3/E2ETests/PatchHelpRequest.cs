@@ -37,7 +37,9 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             var requestObject =
                 new PatchResidentAndHelpRequest
                 {
-                    FirstName = "to-test-for", HelpNeeded = "changed help needed", CaseNotes = "updated Case Notes"
+                    FirstName = "to-test-for",
+                    HelpNeeded = "changed help needed",
+                    CaseNotes = "updated Case Notes"
                 };
             var data = JsonConvert.SerializeObject(requestObject);
             HttpContent postContent = new StringContent(data, Encoding.UTF8, "application/json");

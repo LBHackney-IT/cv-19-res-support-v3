@@ -55,10 +55,10 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
 
             var resident = EntityHelpers.createResident(1);
             var dbEntity = EntityHelpers.createHelpRequestEntity(1, resident.Id);
-                dbEntity.HelpWithCompletingNssForm = true;
-                dbEntity.HelpWithShieldingGuidance = true;
-                dbEntity.HelpWithNoNeedsIdentified = true;
-                dbEntity.HelpWithAccessingSupermarketFood = false;
+            dbEntity.HelpWithCompletingNssForm = true;
+            dbEntity.HelpWithShieldingGuidance = true;
+            dbEntity.HelpWithNoNeedsIdentified = true;
+            dbEntity.HelpWithAccessingSupermarketFood = false;
 
             DatabaseContext.ResidentEntities.Add(resident);
 
