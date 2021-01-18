@@ -7,6 +7,7 @@ using AutoFixture;
 using cv19ResSupportV3.Tests.V3.Helpers;
 using cv19ResSupportV3.V3.Boundary.Response;
 using cv19ResSupportV3.V3.Domain;
+using cv19ResSupportV3.V3.Domain.Commands;
 using cv19ResSupportV3.V3.Factories;
 using cv19ResSupportV3.V3.Infrastructure;
 using FluentAssertions;
@@ -33,12 +34,14 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             DatabaseContext.ResidentEntities.Add(EntityHelpers.createResident(residentId));
             var helpRequestEntity = DatabaseContext.HelpRequestEntities.Add(EntityHelpers.createHelpRequestEntity(12, residentId));
             DatabaseContext.SaveChanges();
-            var requestObject = helpRequestEntity.Entity.ToDomain();
-            requestObject.FirstName = "to-test-for";
-            requestObject.HelpNeeded = "changed help needed";
+            var requestObject =
+                new PatchResidentAndHelpRequest
+                {
+                    FirstName = "to-test-for", HelpNeeded = "changed help needed", CaseNotes = "updated Case Notes"
+                };
             var data = JsonConvert.SerializeObject(requestObject);
             HttpContent postContent = new StringContent(data, Encoding.UTF8, "application/json");
-            var uri = new Uri($"api/v3/help-requests/{requestObject.Id}", UriKind.Relative);
+            var uri = new Uri($"api/v3/help-requests/{helpRequestEntity.Entity.Id}", UriKind.Relative);
             var response = Client.PatchAsync(uri, postContent);
             postContent.Dispose();
             var statusCode = response.Result.StatusCode;
@@ -52,11 +55,12 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             DatabaseContext.Entry(oldResidentEntity).State = EntityState.Detached;
             var updatedHelpRequestEntity = DatabaseContext.HelpRequestEntities.Find(helpRequestEntity.Entity.Id);
             var updatedResidentEntity = DatabaseContext.ResidentEntities.Find(residentId);
+            var updatedCaseNoteEntity = DatabaseContext.CaseNoteEntities.FirstOrDefault(x => x.ResidentId == residentId);
 
+            updatedCaseNoteEntity.CaseNote.Should().Be("updated Case Notes");
             updatedResidentEntity.FirstName.Should().BeEquivalentTo(requestObject.FirstName);
             updatedHelpRequestEntity.HelpNeeded.Should().BeEquivalentTo(requestObject.HelpNeeded);
         }
-
 
         [Test]
         public async Task PatchResidentInformationWithPatchableAddressFieldUpdatesTheRecord()

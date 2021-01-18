@@ -74,7 +74,6 @@ namespace cv19ResSupportV3.V3.Factories.Commands
                 ConsentToShare = command.ConsentToShare,
                 CallbackRequired = command.CallbackRequired,
                 InitialCallbackCompleted = command.InitialCallbackCompleted,
-                CaseNotes = command.CaseNotes,
                 AdviceNotes = command.AdviceNotes,
                 HelpNeeded = command.HelpNeeded,
             };
@@ -102,7 +101,6 @@ namespace cv19ResSupportV3.V3.Factories.Commands
                 NumberOfChildrenUnder18 = command.NumberOfChildrenUnder18,
                 ConsentToShare = command.ConsentToShare,
                 RecordStatus = command.RecordStatus,
-                CaseNotes = command.CaseNotes,
             };
         }
     }

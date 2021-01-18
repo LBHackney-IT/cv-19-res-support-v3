@@ -13,6 +13,8 @@ namespace cv19ResSupportV3.V3.Infrastructure
         public DbSet<HelpRequestCallEntity> HelpRequestCallEntities { get; set; }
         public DbSet<HelpRequestEntity> HelpRequestEntities { get; set; }
         public DbSet<ResidentEntity> ResidentEntities { get; set; }
+        public DbSet<CaseNoteEntity> CaseNoteEntities { get; set; }
+
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
