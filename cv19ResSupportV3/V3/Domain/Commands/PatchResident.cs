@@ -18,6 +18,9 @@ namespace cv19ResSupportV3.V3.Domain.Commands
         public string EmailAddress { get; set; }
         public string GpSurgeryDetails { get; set; }
         public string NumberOfChildrenUnder18 { get; set; }
+        public bool? IsPharmacistAbleToDeliver { get; set; }
+        public string NhsNumber { get; set; }
+        public string NameAddressPharmacist { get; set; }
         public bool? ConsentToShare { get; set; }
         public string RecordStatus { get; set; }
     }

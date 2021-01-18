@@ -6,7 +6,7 @@ namespace cv19ResSupportV3.V3.Factories.Commands
     {
         public static CreateResident ToCreateResidentCommand(this CreateResidentAndHelpRequest helpRequest)
         {
-            return new CreateResident()
+            return new CreateResident
             {
                 PostCode = helpRequest.PostCode,
                 Uprn = helpRequest.Uprn,

@@ -7,7 +7,7 @@ namespace cv19ResSupportV3.V3.Factories.Commands
     {
         public static PatchResidentAndHelpRequest ToCommand(this HelpRequestPatchRequest helpRequest)
         {
-            return new PatchResidentAndHelpRequest()
+            return new PatchResidentAndHelpRequest
             {
                 PostCode = helpRequest.PostCode,
                 Uprn = helpRequest.Uprn,
@@ -81,7 +81,7 @@ namespace cv19ResSupportV3.V3.Factories.Commands
 
         public static PatchResident ToPatchResidentCommand(this PatchResidentAndHelpRequest command)
         {
-            return new PatchResident()
+            return new PatchResident
             {
                 PostCode = command.PostCode,
                 Uprn = command.Uprn,
