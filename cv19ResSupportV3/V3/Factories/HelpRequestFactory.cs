@@ -218,11 +218,11 @@ namespace cv19ResSupportV3.V3.Factories
 
         public static string ToCaseNotesString(this ICollection<CaseNoteEntity> caseNotes)
         {
-            return string.Join(" ", caseNotes.Select(item => item.CaseNote));
+            return caseNotes == null ? null : string.Join(" ", caseNotes?.Select(item => item.CaseNote));
         }
         public static string ToCaseNotesString(this ICollection<ResidentCaseNote> caseNotes)
         {
-            return string.Join(" ", caseNotes.Select(item => item.CaseNote));
+            return caseNotes == null ? null : string.Join(" ", caseNotes?.Select(item => item.CaseNote));
         }
 
         public static List<HelpRequest> ToDomain(this ICollection<HelpRequestEntity> helpRequests)

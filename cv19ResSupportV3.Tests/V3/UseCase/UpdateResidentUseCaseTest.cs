@@ -26,11 +26,11 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
         public void CanUpdateAResident()
         {
             var resident = new Resident();
-            _mockGateway.Setup(s => s.UpdateResident(It.IsAny<int>(),It.IsAny<UpdateResident>())).Returns(resident);
+            _mockGateway.Setup(s => s.UpdateResident(It.IsAny<int>(), It.IsAny<UpdateResident>())).Returns(resident);
 
             var response = _classUnderTest.Execute(resident.Id, new UpdateResident());
 
-            _mockGateway.Verify(m => m.UpdateResident(It.IsAny<int>(),It.IsAny<UpdateResident>()), Times.Once());
+            _mockGateway.Verify(m => m.UpdateResident(It.IsAny<int>(), It.IsAny<UpdateResident>()), Times.Once());
             response.Should().Be(resident);
         }
 

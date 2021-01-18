@@ -182,7 +182,10 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
 
             var updateResidentCommand = new UpdateResident
             {
-                Uprn = "Uprn", DobDay = "NewDay", DobMonth = "NewMonth", DobYear = "NewYear"
+                Uprn = "Uprn",
+                DobDay = "NewDay",
+                DobMonth = "NewMonth",
+                DobYear = "NewYear"
             };
 
             DatabaseContext.ResidentEntities.Add(existingResident);

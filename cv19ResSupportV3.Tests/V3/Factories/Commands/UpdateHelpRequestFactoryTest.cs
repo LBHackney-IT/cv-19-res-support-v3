@@ -27,8 +27,8 @@ namespace cv19ResSupportV3.Tests.V3.Factories.Commands
         {
             var request = _fixture.Build<UpdateResidentAndHelpRequest>().Create();
             var command = request.ToUpdateHelpRequestCommand();
-            command.Should().BeEquivalentTo(request);
-            command.Should().BeOfType<UpdateResidentAndHelpRequest>();
+            request.Should().BeEquivalentTo(command);
+            command.Should().BeOfType<UpdateHelpRequest>();
         }
     }
 }

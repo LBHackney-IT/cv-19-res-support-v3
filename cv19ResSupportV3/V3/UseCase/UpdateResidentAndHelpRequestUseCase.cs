@@ -19,8 +19,8 @@ namespace cv19ResSupportV3.V3.UseCase
 
         public HelpRequestWithResident Execute(UpdateResidentAndHelpRequest command)
         {
-            var helpRequest =_updateHelpRequestUseCase.Execute(command.Id, command.ToUpdateHelpRequestCommand());
-            var resident =_updateResidentUseCase.Execute(helpRequest.ResidentId, command.ToUpdateResidentCommand());
+            var helpRequest = _updateHelpRequestUseCase.Execute(command.Id, command.ToUpdateHelpRequestCommand());
+            var resident = _updateResidentUseCase.Execute(helpRequest.ResidentId, command.ToUpdateResidentCommand());
 
             return helpRequest.ToDomain(resident);
         }

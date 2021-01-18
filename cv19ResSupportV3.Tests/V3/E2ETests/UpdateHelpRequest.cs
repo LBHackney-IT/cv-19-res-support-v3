@@ -45,6 +45,8 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             var stringContent = await content.ReadAsStringAsync().ConfigureAwait(true);
             var convertedResponse = JsonConvert.DeserializeObject<HelpRequestCreateResponse>(stringContent);
             var updatedEntity = DatabaseContext.HelpRequestEntities.Find(requestObject.Id);
+            var oldEntity = DatabaseContext.ResidentEntities.Find(updatedEntity.ResidentId);
+            DatabaseContext.Entry(oldEntity).State = EntityState.Detached;
             var updatedResidentEntity = DatabaseContext.ResidentEntities.Find(updatedEntity.ResidentId);
             updatedResidentEntity.FirstName.Should().BeEquivalentTo(requestObject.FirstName);
         }
