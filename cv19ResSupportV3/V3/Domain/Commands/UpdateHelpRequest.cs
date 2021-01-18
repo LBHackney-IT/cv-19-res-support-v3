@@ -5,7 +5,7 @@ namespace cv19ResSupportV3.V3.Domain.Commands
 {
     public class UpdateHelpRequest
     {
-     public bool? IsOnBehalf { get; set; }
+        public bool? IsOnBehalf { get; set; }
         public bool? ConsentToCompleteOnBehalf { get; set; }
         public string OnBehalfFirstName { get; set; }
         public string OnBehalfLastName { get; set; }
