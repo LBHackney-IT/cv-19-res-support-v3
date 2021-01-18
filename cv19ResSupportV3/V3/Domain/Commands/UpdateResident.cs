@@ -2,6 +2,9 @@ namespace cv19ResSupportV3.V3.Domain.Commands
 {
     public class UpdateResident
     {
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
         public string PostCode { get; set; }
         public string Uprn { get; set; }
         public string Ward { get; set; }

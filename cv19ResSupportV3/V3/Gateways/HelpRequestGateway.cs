@@ -70,9 +70,6 @@ namespace cv19ResSupportV3.V3.Gateways
         {
             try
             {
-                var requestEntity = _helpRequestsContext.ResidentEntities.Find(residentId);
-                _helpRequestsContext.Entry(requestEntity).CurrentValues.SetValues(command);
-                _helpRequestsContext.SaveChanges();
                 var updatedResidentEntity = _helpRequestsContext.ResidentEntities.Find(residentId);
                 return updatedResidentEntity.ToResidentDomain();
             }
@@ -434,10 +431,23 @@ namespace cv19ResSupportV3.V3.Gateways
                 {
                     rec.GpSurgeryDetails = command.GpSurgeryDetails;
                 }
+                if (command.IsPharmacistAbleToDeliver != null)
+                {
+                    rec.IsPharmacistAbleToDeliver = command.IsPharmacistAbleToDeliver;
+                }
+
+                if (command.NameAddressPharmacist != null)
+                {
+                    rec.NameAddressPharmacist = command.NameAddressPharmacist;
+                }
 
                 if (command.NumberOfChildrenUnder18 != null)
                 {
                     rec.NumberOfChildrenUnder18 = command.NumberOfChildrenUnder18;
+                }
+                if (command.NhsNumber != null)
+                {
+                    rec.NhsNumber = command.NhsNumber;
                 }
 
                 if (command.ConsentToShare != null)

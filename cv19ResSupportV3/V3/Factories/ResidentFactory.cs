@@ -57,7 +57,8 @@ namespace cv19ResSupportV3.V3.Factories
                 GpSurgeryDetails = command.GpSurgeryDetails,
                 NumberOfChildrenUnder18 = command.NumberOfChildrenUnder18,
                 ConsentToShare = command.ConsentToShare,
-                NhsNumber = command.NhsNumber
+                NhsNumber = command.NhsNumber,
+
             };
         }
     }

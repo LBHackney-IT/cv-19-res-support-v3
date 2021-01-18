@@ -145,7 +145,7 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
                 Uprn = "Uprn"
             };
 
-            var updateResidentCommand = new UpdateResident
+            var updateResidentCommand = new PatchResident
             {
                 Uprn = "Uprn",
                 DobDay = "NewDay",
@@ -155,7 +155,7 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
 
             DatabaseContext.ResidentEntities.Add(existingResident);
             DatabaseContext.SaveChanges();
-            var response = _classUnderTest.UpdateResident(existingResident.Id, updateResidentCommand);
+            var response = _classUnderTest.PatchResident(existingResident.Id, updateResidentCommand);
             var createdRecord = DatabaseContext.ResidentEntities.Find(response.Id);
             var expectedRecord = new ResidentEntity
             {

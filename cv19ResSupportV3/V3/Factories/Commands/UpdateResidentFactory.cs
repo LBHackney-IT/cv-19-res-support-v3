@@ -6,8 +6,10 @@ namespace cv19ResSupportV3.V3.Factories.Commands
     {
         public static UpdateResident ToUpdateResidentCommand(this CreateResidentAndHelpRequest helpRequest)
         {
-            return new UpdateResident()
+            return new UpdateResident
             {
+                FirstName = helpRequest.FirstName,
+                LastName = helpRequest.LastName,
                 PostCode = helpRequest.PostCode,
                 Uprn = helpRequest.Uprn,
                 Ward = helpRequest.Ward,
@@ -33,6 +35,8 @@ namespace cv19ResSupportV3.V3.Factories.Commands
         {
             return new UpdateResident
             {
+                FirstName = helpRequest.FirstName,
+                LastName = helpRequest.LastName,
                 PostCode = helpRequest.PostCode,
                 Uprn = helpRequest.Uprn,
                 Ward = helpRequest.Ward,

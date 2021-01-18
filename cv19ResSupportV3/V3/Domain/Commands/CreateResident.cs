@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace cv19ResSupportV3.V3.Domain.Commands
 {
     public class CreateResident
