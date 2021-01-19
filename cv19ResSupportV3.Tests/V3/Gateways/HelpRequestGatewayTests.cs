@@ -59,8 +59,6 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             resident.Id.Should().Be(createdRecord.ResidentId);
         }
 
-
-
         [Test]
         public void PatchHelpRequestForHelpNeeded()
         {
@@ -91,8 +89,6 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             updatedEntity.HelpWithNoNeedsIdentified.Should().Be(true);
             updatedEntity.HelpWithAccessingSupermarketFood.Should().Be(false);
         }
-
-
 
         [Test]
         public void GetHelpRequestReturnsEmptyCallsListIfNoCallsExist()
@@ -125,8 +121,6 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
                 return options;
             });
         }
-
-
 
         [Test]
         public void GetHelpRequestReturnsHelpRequestIfItExist()
@@ -263,7 +257,6 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             });
         }
 
-
         [Test]
         public void UpdateHelpRequestUpdatesCorrectFields()
         {
@@ -288,6 +281,28 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
                 });
             updatedEntity.ResidentId.Should().Be(resident.Id);
             updatedEntity.Id.Should().Be(helpRequest.Id);
+        }
+
+        [Test]
+        public void CanFindHelpRequestByCtasId()
+        {
+            var resident = EntityHelpers.createResident(118);
+            var helpRequest = EntityHelpers.createHelpRequestEntity(117, resident.Id);
+            DatabaseContext.ResidentEntities.Add(resident);
+            DatabaseContext.HelpRequestEntities.Add(helpRequest);
+            DatabaseContext.SaveChanges();
+
+            var response =_classUnderTest.FindHelpRequestByCtasId(helpRequest.NhsCtasId);
+
+            response.Should().Be(117);
+        }
+
+        [Test]
+        public void FindHelpRequestByCtasIdReturnsNullIfItDoesntExist()
+        {
+            var response =_classUnderTest.FindHelpRequestByCtasId("anything");
+
+            response.Should().BeNull();
         }
     }
 }

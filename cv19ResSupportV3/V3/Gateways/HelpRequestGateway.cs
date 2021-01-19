@@ -46,6 +46,21 @@ namespace cv19ResSupportV3.V3.Gateways
             }
         }
 
+        public int? FindHelpRequestByCtasId(string ctasId)
+        {
+            try
+            {
+                var helpRequestEntity =_helpRequestsContext.HelpRequestEntities.FirstOrDefault(x => x.NhsCtasId == ctasId);
+                return helpRequestEntity?.Id;
+            }
+            catch (Exception e)
+            {
+                LambdaLogger.Log("FindHelpRequestByCtasId error: ");
+                LambdaLogger.Log(e.Message);
+                throw;
+            }
+        }
+
         public List<LookupDomain> GetLookups(LookupQuery command)
         {
             Expression<Func<LookupEntity, bool>> queryLookups = x =>
@@ -85,7 +100,6 @@ namespace cv19ResSupportV3.V3.Gateways
                 throw;
             }
 
-            return new HelpRequest();
         }
 
         public HelpRequestWithResident GetHelpRequest(int id)

@@ -13,8 +13,10 @@ namespace cv19ResSupportV3.V3.UseCase
         }
         public int Execute(int residentId, CreateHelpRequest command)
         {
-            var response = _gateway.CreateHelpRequest(residentId, command);
-            return response;
+            var helpRequestId = _gateway.FindHelpRequestByCtasId(command.NhsCtasId);
+            if (helpRequestId != null) { return (int) helpRequestId;}
+
+            return _gateway.CreateHelpRequest(residentId, command);
         }
     }
 }
