@@ -71,13 +71,14 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             DatabaseContext.ResidentEntities.Add(EntityHelpers.createResident(residentId));
             DatabaseContext.HelpRequestEntities.Add(EntityHelpers.createHelpRequestEntity(13, residentId));
             DatabaseContext.SaveChanges();
-            var requestObject = DatabaseContext.HelpRequestEntities.Find(13).ToDomain();
-            requestObject.AddressFirstLine = "7 test road";
-            requestObject.AddressSecondLine = null;
-            requestObject.AddressThirdLine = null;
-            requestObject.PostCode = "ABC 123";
-            requestObject.Uprn = "1231456456789";
-
+            var helpRequestObject = DatabaseContext.HelpRequestEntities.Find(13).ToDomain();
+            var residentRequestObject = DatabaseContext.ResidentEntities.Find(residentId).ToDomain();
+            residentRequestObject.AddressFirstLine = "7 test road";
+            residentRequestObject.AddressSecondLine = null;
+            residentRequestObject.AddressThirdLine = null;
+            residentRequestObject.PostCode = "ABC 123";
+            residentRequestObject.Uprn = "1231456456789";
+            var requestObject = helpRequestObject.ToDomain(residentRequestObject);
             var data = JsonConvert.SerializeObject(requestObject);
             HttpContent postContent = new StringContent(data, Encoding.UTF8, "application/json");
             var uri = new Uri($"api/v3/help-requests/{requestObject.Id}", UriKind.Relative);
