@@ -12,14 +12,6 @@ namespace cv19ResSupportV3.Tests.V3.Factories.Commands
     {
         Fixture _fixture = new Fixture();
         [Test]
-        public void CanMapCreateResidentAndHelpRequestToFindResidentCommand()
-        {
-            var request = _fixture.Build<CreateResidentAndHelpRequest>().Create();
-            var command = request.ToFindResidentCommand();
-            request.Should().BeEquivalentTo(command);
-            command.Should().BeOfType<FindResident>();
-        }
-        [Test]
         public void CanMapCreateResidenToFindResidentCommand()
         {
             var request = _fixture.Build<CreateResident>().Create();
