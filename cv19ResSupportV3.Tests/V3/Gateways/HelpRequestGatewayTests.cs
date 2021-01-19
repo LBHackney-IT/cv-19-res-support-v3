@@ -292,7 +292,7 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             DatabaseContext.HelpRequestEntities.Add(helpRequest);
             DatabaseContext.SaveChanges();
 
-            var response =_classUnderTest.FindHelpRequestByCtasId(helpRequest.NhsCtasId);
+            var response = _classUnderTest.FindHelpRequestByCtasId(helpRequest.NhsCtasId);
 
             response.Should().Be(117);
         }
@@ -300,7 +300,7 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
         [Test]
         public void FindHelpRequestByCtasIdReturnsNullIfItDoesntExist()
         {
-            var response =_classUnderTest.FindHelpRequestByCtasId("anything");
+            var response = _classUnderTest.FindHelpRequestByCtasId("anything");
 
             response.Should().BeNull();
         }
