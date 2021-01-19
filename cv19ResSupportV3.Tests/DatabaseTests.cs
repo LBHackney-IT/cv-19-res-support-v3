@@ -35,8 +35,6 @@ namespace cv19ResSupportV3.Tests
         {
             var addedCases = DatabaseContext.CaseNoteEntities;
             DatabaseContext.CaseNoteEntities.RemoveRange(addedCases);
-            //            var addedCalls = DatabaseContext.HelpRequestCallEntities;
-            //            DatabaseContext.HelpRequestCallEntities.RemoveRange(addedCalls);
             var addedEntities = DatabaseContext.HelpRequestEntities;
             DatabaseContext.HelpRequestEntities.RemoveRange(addedEntities);
             var addedLookups = DatabaseContext.Lookups;

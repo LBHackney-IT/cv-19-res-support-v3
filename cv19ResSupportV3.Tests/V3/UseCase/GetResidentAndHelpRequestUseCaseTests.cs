@@ -1,5 +1,4 @@
 using cv19ResSupportV3.Tests.V3.Helpers;
-using cv19ResSupportV3.V3.Factories;
 using cv19ResSupportV3.V3.Gateways;
 using cv19ResSupportV3.V3.UseCase;
 using FluentAssertions;

@@ -1,12 +1,9 @@
-using System;
 using System.Collections.Generic;
 using AutoFixture;
-using cv19ResSupportV3.V3.Boundary.Response;
 using cv19ResSupportV3.V3.Boundary.Requests;
 using cv19ResSupportV3.V3.Controllers;
 using cv19ResSupportV3.V3.Domain;
 using cv19ResSupportV3.V3.Domain.Commands;
-using cv19ResSupportV3.V3.Factories;
 using cv19ResSupportV3.V3.UseCase;
 using cv19ResSupportV3.V3.UseCase.Interfaces;
 using FluentAssertions;

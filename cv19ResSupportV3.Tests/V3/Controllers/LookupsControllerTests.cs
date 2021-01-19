@@ -1,17 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using AutoFixture;
 using cv19ResSupportV3.V3.Boundary.Requests;
-using cv19ResSupportV3.V3.Boundary.Response;
 using cv19ResSupportV3.V3.Controllers;
 using cv19ResSupportV3.V3.Domain;
 using cv19ResSupportV3.V3.Domain.Queries;
-using cv19ResSupportV3.V3.Factories;
-using cv19ResSupportV3.V3.Infrastructure;
 using cv19ResSupportV3.V3.UseCase;
-using cv19ResSupportV3.V3.UseCase.Interfaces;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;

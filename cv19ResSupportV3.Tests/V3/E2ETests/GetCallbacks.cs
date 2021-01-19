@@ -15,7 +15,6 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
     [TestFixture]
     public class GetCallbacks : IntegrationTests<Startup>
     {
-
         [SetUp]
         public void SetUp()
         {
@@ -29,7 +28,6 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
         public async Task GetCallbacksReturnsCallbacks()
         {
             var resident = EntityHelpers.createResident(34);
-
             var helpRequests = EntityHelpers.createHelpRequestEntities();
             foreach (var request in helpRequests)
             {

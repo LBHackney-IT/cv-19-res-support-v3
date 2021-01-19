@@ -1,8 +1,6 @@
 using AutoFixture;
 using cv19ResSupportV3.V3.Domain;
 using cv19ResSupportV3.V3.Domain.Commands;
-using cv19ResSupportV3.V3.Factories.Commands;
-using cv19ResSupportV3.V3.Gateways;
 using cv19ResSupportV3.V3.UseCase;
 using cv19ResSupportV3.V3.UseCase.Interfaces;
 using FluentAssertions;
@@ -45,18 +43,6 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
             _fakeCreateCaseNoteUseCase.Verify(m => m.Execute(2, 1, "saved"), Times.Once());
             response.Should().Be(2);
         }
-        //        [Test]
-        //        public void MergesAResidentIfItDoesExistAndSavesANewHelpRequest()
-        //        {
-        //            _fakeCreateHelpRequestUseCase.Setup(s => s.Execute(It.IsAny<int>(), It.IsAny<CreateHelpRequest>())).Returns(2);
-        //
-        //            var dataToSave = new Fixture().Build<CreateResidentAndHelpRequest>().Create();
-        //            var response = _classUnderTest.Execute(dataToSave);
-        //            _fakeCreateResidentUseCase.Verify(m => m.Execute(It.IsAny<CreateResident>()), Times.Never());
-        //            _fakeCreateHelpRequestUseCase.Verify(m => m.Execute(It.Is<int>(x => x==1), It.IsAny<CreateHelpRequest>()), Times.Once());
-        //
-        //            response.Should().Be(2);
-        //        }
     }
 }
 
