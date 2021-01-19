@@ -39,5 +39,24 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             updatedEntity.CaseNote.Should().Be("after update");
         }
 
+        [Test]
+        public void CreateCaseNoteAddsANewCaseNote()
+        {
+            var resident = EntityHelpers.createResident(114);
+            var helpRequest = EntityHelpers.createHelpRequestEntity(43, resident.Id);
+
+            DatabaseContext.ResidentEntities.Add(resident);
+            DatabaseContext.HelpRequestEntities.Add(helpRequest);
+            DatabaseContext.SaveChanges();
+
+            var result = _classUnderTest.CreateCaseNote(helpRequest.Id, resident.Id, "New Case Note");
+
+            var createdEntity = DatabaseContext.CaseNoteEntities.Find(result.Id);
+
+            createdEntity.CaseNote.Should().Be("New Case Note");
+            createdEntity.ResidentId.Should().Be(resident.Id);
+            createdEntity.HelpRequestId.Should().Be(helpRequest.Id);
+        }
+
     }
 }

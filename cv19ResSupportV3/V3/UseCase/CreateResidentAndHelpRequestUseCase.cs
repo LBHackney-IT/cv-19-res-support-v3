@@ -8,18 +8,26 @@ namespace cv19ResSupportV3.V3.UseCase
     {
         private readonly ICreateResidentUseCase _createResidentUseCase;
         private readonly ICreateHelpRequestUseCase _createHelpRequestUseCase;
+        private readonly ICreateCaseNoteUseCase _createCaseNote;
 
-        public CreateResidentAndHelpRequestUseCase(ICreateResidentUseCase createResidentUseCase, ICreateHelpRequestUseCase createHelpRequestUseCase)
+
+        public CreateResidentAndHelpRequestUseCase(ICreateResidentUseCase createResidentUseCase, ICreateHelpRequestUseCase createHelpRequestUseCase, ICreateCaseNoteUseCase createCaseNote)
         {
             _createResidentUseCase = createResidentUseCase;
             _createHelpRequestUseCase = createHelpRequestUseCase;
+            _createCaseNote = createCaseNote;
         }
         public int Execute(CreateResidentAndHelpRequest command)
         {
             var resident = _createResidentUseCase.Execute(command.ToCreateResidentCommand());
 
-            return _createHelpRequestUseCase.Execute(resident.Id, command.ToCreateHelpRequestCommand());
+            var helpRequestId = _createHelpRequestUseCase.Execute(resident.Id, command.ToCreateHelpRequestCommand());
+            if (command.CaseNotes != null)
+            {
+                _createCaseNote.Execute(helpRequestId, resident.Id, command.CaseNotes);
+            }
 
+            return helpRequestId;
         }
     }
 }

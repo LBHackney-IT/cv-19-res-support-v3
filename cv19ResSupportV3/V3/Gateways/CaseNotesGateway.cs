@@ -28,10 +28,36 @@ namespace cv19ResSupportV3.V3.Gateways
                     rec.HelpRequestId = helpRequestId;
                     _helpRequestsContext.CaseNoteEntities.Add(rec);
                 }
+
                 if (caseNote != null)
                 {
                     rec.CaseNote = caseNote;
                 }
+
+                _helpRequestsContext.SaveChanges();
+
+                return rec.ToDomain();
+            }
+            catch (Exception e)
+            {
+                LambdaLogger.Log("PatchCaseNote error: ");
+                LambdaLogger.Log(e.Message);
+                throw;
+            }
+        }
+
+        public ResidentCaseNote CreateCaseNote(int helpRequestId, int residentId, string caseNote)
+        {
+            try
+            {
+                var rec = new CaseNoteEntity()
+                {
+                    ResidentId = residentId,
+                    HelpRequestId = helpRequestId,
+                    CaseNote = caseNote
+                };
+
+                _helpRequestsContext.CaseNoteEntities.Add(rec);
                 _helpRequestsContext.SaveChanges();
 
                 return rec.ToDomain();
