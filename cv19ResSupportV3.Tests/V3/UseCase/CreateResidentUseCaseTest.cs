@@ -12,7 +12,7 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
     [TestFixture]
     public class CreateResidentUseCaseTest
     {
-        private Mock<IHelpRequestGateway> _mockGateway;
+        private Mock<IResidentGateway> _mockGateway;
         private CreateResidentUseCase _classUnderTest;
         private CreateResident _createResidentCommand;
         private Resident _residentDomain;
@@ -20,7 +20,7 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
         [SetUp]
         public void SetUp()
         {
-            _mockGateway = new Mock<IHelpRequestGateway>();
+            _mockGateway = new Mock<IResidentGateway>();
             _classUnderTest = new CreateResidentUseCase(_mockGateway.Object);
 
             _createResidentCommand = new Fixture().Build<CreateResident>().Create();

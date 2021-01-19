@@ -7,8 +7,8 @@ namespace cv19ResSupportV3.V3.UseCase
 {
     public class UpdateResidentUseCase : IUpdateResidentUseCase
     {
-        private IHelpRequestGateway _gateway;
-        public UpdateResidentUseCase(IHelpRequestGateway gateway)
+        private IResidentGateway _gateway;
+        public UpdateResidentUseCase(IResidentGateway gateway)
         {
             _gateway = gateway;
         }

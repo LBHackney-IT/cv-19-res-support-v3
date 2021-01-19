@@ -9,8 +9,8 @@ namespace cv19ResSupportV3.V3.UseCase
 {
     public class CreateResidentUseCase : ICreateResidentUseCase
     {
-        private IHelpRequestGateway _gateway;
-        public CreateResidentUseCase(IHelpRequestGateway gateway)
+        private IResidentGateway _gateway;
+        public CreateResidentUseCase(IResidentGateway gateway)
         {
             _gateway = gateway;
         }

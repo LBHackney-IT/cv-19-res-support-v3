@@ -12,13 +12,13 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
 {
     public class UpdateResidentUseCaseTest
     {
-        private Mock<IHelpRequestGateway> _mockGateway;
+        private Mock<IResidentGateway> _mockGateway;
         private UpdateResidentUseCase _classUnderTest;
 
         [SetUp]
         public void SetUp()
         {
-            _mockGateway = new Mock<IHelpRequestGateway>();
+            _mockGateway = new Mock<IResidentGateway>();
             _classUnderTest = new UpdateResidentUseCase(_mockGateway.Object);
 
         }

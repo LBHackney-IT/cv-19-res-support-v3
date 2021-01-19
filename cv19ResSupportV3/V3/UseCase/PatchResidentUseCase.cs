@@ -7,8 +7,8 @@ namespace cv19ResSupportV3.V3.UseCase
 {
     public class PatchResidentUseCase : IPatchResidentUseCase
     {
-        private IHelpRequestGateway _gateway;
-        public PatchResidentUseCase(IHelpRequestGateway gateway)
+        private IResidentGateway _gateway;
+        public PatchResidentUseCase(IResidentGateway gateway)
         {
             _gateway = gateway;
         }
