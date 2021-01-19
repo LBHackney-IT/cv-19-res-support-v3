@@ -23,6 +23,7 @@ namespace cv19ResSupportV3.V3.Domain.Commands
         public bool? InitialCallbackCompleted { get; set; }
         public bool? CallbackRequired { get; set; }
         public string AdviceNotes { get; set; }
+        public string NhsCtasId { get; set; }
         public string HelpNeeded { get; set; }
     }
 }

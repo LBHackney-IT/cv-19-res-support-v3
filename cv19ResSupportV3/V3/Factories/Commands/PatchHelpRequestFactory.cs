@@ -46,6 +46,8 @@ namespace cv19ResSupportV3.V3.Factories.Commands
                 InitialCallbackCompleted = helpRequest.InitialCallbackCompleted,
                 CaseNotes = helpRequest.CaseNotes,
                 AdviceNotes = helpRequest.AdviceNotes,
+                NhsNumber = helpRequest.NhsNumber,
+                NhsCtasId = helpRequest.NhsCtasId,
                 HelpNeeded = helpRequest.HelpNeeded,
             };
         }
@@ -75,6 +77,7 @@ namespace cv19ResSupportV3.V3.Factories.Commands
                 CallbackRequired = command.CallbackRequired,
                 InitialCallbackCompleted = command.InitialCallbackCompleted,
                 AdviceNotes = command.AdviceNotes,
+                NhsCtasId = command.NhsCtasId,
                 HelpNeeded = command.HelpNeeded,
             };
         }
@@ -101,6 +104,7 @@ namespace cv19ResSupportV3.V3.Factories.Commands
                 NumberOfChildrenUnder18 = command.NumberOfChildrenUnder18,
                 ConsentToShare = command.ConsentToShare,
                 RecordStatus = command.RecordStatus,
+                NhsNumber = command.NhsNumber
             };
         }
     }

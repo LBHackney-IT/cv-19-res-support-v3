@@ -345,6 +345,10 @@ namespace cv19ResSupportV3.V3.Gateways
                 {
                     rec.CallbackRequired = command.CallbackRequired;
                 }
+                if (command.NhsCtasId != null)
+                {
+                    rec.NhsCtasId = command.NhsCtasId;
+                }
 
                 if (command.HelpNeeded != null)
                 {

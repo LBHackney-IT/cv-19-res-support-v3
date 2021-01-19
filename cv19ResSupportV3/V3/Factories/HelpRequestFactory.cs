@@ -149,52 +149,6 @@ namespace cv19ResSupportV3.V3.Factories
             };
         }
 
-        //        public static HelpRequest ToDomain(this HelpRequestPatchRequest helpRequestEntity)
-        //        {
-        //            return new HelpRequest()
-        //            {
-        //                PostCode = helpRequestEntity.PostCode,
-        //                Uprn = helpRequestEntity.Uprn,
-        //                Ward = helpRequestEntity.Ward,
-        //                AddressFirstLine = helpRequestEntity.AddressFirstLine,
-        //                AddressSecondLine = helpRequestEntity.AddressSecondLine,
-        //                AddressThirdLine = helpRequestEntity.AddressThirdLine,
-        //                GettingInTouchReason = helpRequestEntity.GettingInTouchReason,
-        //                HelpWithAccessingFood = helpRequestEntity.HelpWithAccessingFood,
-        //                HelpWithAccessingSupermarketFood = helpRequestEntity.HelpWithAccessingSupermarketFood,
-        //                HelpWithCompletingNssForm = helpRequestEntity.HelpWithCompletingNssForm,
-        //                HelpWithShieldingGuidance = helpRequestEntity.HelpWithShieldingGuidance,
-        //                HelpWithNoNeedsIdentified = helpRequestEntity.HelpWithNoNeedsIdentified,
-        //                HelpWithAccessingMedicine = helpRequestEntity.HelpWithAccessingMedicine,
-        //                HelpWithAccessingOtherEssentials = helpRequestEntity.HelpWithAccessingOtherEssentials,
-        //                HelpWithDebtAndMoney = helpRequestEntity.HelpWithDebtAndMoney,
-        //                HelpWithHealth = helpRequestEntity.HelpWithHealth,
-        //                HelpWithMentalHealth = helpRequestEntity.HelpWithMentalHealth,
-        //                HelpWithAccessingInternet = helpRequestEntity.HelpWithAccessingInternet,
-        //                CurrentSupport = helpRequestEntity.CurrentSupport,
-        //                CurrentSupportFeedback = helpRequestEntity.CurrentSupportFeedback,
-        //                FirstName = helpRequestEntity.FirstName,
-        //                LastName = helpRequestEntity.LastName,
-        //                DobMonth = helpRequestEntity.DobMonth,
-        //                DobYear = helpRequestEntity.DobYear,
-        //                DobDay = helpRequestEntity.DobDay,
-        //                ContactTelephoneNumber = helpRequestEntity.ContactTelephoneNumber,
-        //                ContactMobileNumber = helpRequestEntity.ContactMobileNumber,
-        //                EmailAddress = helpRequestEntity.EmailAddress,
-        //                GpSurgeryDetails = helpRequestEntity.GpSurgeryDetails,
-        //                NumberOfChildrenUnder18 = helpRequestEntity.NumberOfChildrenUnder18,
-        //                ConsentToShare = helpRequestEntity.ConsentToShare,
-        //                DateTimeRecorded = helpRequestEntity.DateTimeRecorded,
-        //                RecordStatus = helpRequestEntity.RecordStatus,
-        //                CallbackRequired = helpRequestEntity.CallbackRequired,
-        //                InitialCallbackCompleted = helpRequestEntity.InitialCallbackCompleted,
-        //                CaseNotes = helpRequestEntity.CaseNotes,
-        //                AdviceNotes = helpRequestEntity.AdviceNotes,
-        //                HelpNeeded = helpRequestEntity.HelpNeeded
-        //            };
-        //        }
-
-
         public static List<HelpRequestCallEntity> ToEntity(this ICollection<HelpRequestCall> helpRequestCallList)
         {
             return helpRequestCallList?.Select(hrItem => hrItem.ToEntity()).ToList();
