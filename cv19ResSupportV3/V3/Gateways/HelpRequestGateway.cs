@@ -50,6 +50,7 @@ namespace cv19ResSupportV3.V3.Gateways
         {
             try
             {
+                if (ctasId == null) return null;
                 var helpRequestEntity = _helpRequestsContext.HelpRequestEntities.FirstOrDefault(x => x.NhsCtasId == ctasId);
                 return helpRequestEntity?.Id;
             }
