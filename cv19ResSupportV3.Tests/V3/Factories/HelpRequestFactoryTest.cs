@@ -13,7 +13,11 @@ namespace cv19ResSupportV3.Tests.V3.Factories
         {
             var entityObject = EntityHelpers.createHelpRequestEntity();
             var domainObject = entityObject.ToDomain();
-            entityObject.Should().BeEquivalentTo(domainObject);
+            entityObject.Should().BeEquivalentTo(domainObject, options =>
+            {
+                options.Excluding(x => x.CaseNotes);
+                return options;
+            });
         }
     }
 }

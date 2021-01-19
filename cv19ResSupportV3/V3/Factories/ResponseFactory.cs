@@ -18,6 +18,7 @@ namespace cv19ResSupportV3.V3.Factories
             return new HelpRequestResponse()
             {
                 Id = hr.Id,
+                ResidentId = hr.ResidentId,
                 IsOnBehalf = hr.IsOnBehalf,
                 ConsentToCompleteOnBehalf = hr.ConsentToCompleteOnBehalf,
                 OnBehalfFirstName = hr.OnBehalfFirstName,

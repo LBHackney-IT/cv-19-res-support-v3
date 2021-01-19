@@ -51,7 +51,7 @@ namespace cv19ResSupportV3.V3.Factories
                 HelpRequestCalls = helpRequest.HelpRequestCalls.ToDomain(),
                 AdviceNotes = helpRequest.AdviceNotes,
                 HelpNeeded = helpRequest.HelpNeeded,
-                NhsCtasId = helpRequest.NhsCtasId
+                NhsCtasId = helpRequest.NhsCtasId,
             };
         }
         public static Resident ToDomain(this ResidentEntity resident)
