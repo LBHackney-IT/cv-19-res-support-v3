@@ -8,8 +8,6 @@ namespace cv19ResSupportV3.V3.Factories
 {
     public static class ResponseFactory
     {
-
-
         public static HelpRequestResponse ToResponse(this HelpRequest hr)
         {
             if (hr == null)
@@ -226,11 +224,6 @@ namespace cv19ResSupportV3.V3.Factories
                 NhsNumber = helpRequest.NhsNumber,
                 HelpRequestCalls = helpRequest.HelpRequestCalls
             };
-        }
-
-        public static List<HelpRequestResponse> ToResponse(this IEnumerable<HelpRequest> responseList)
-        {
-            return responseList?.Select(responseItem => responseItem.ToResponse()).ToList();
         }
 
         public static LookupResponse ToResponse(this LookupEntity lookup)
