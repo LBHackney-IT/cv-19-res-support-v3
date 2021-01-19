@@ -69,5 +69,32 @@ namespace cv19ResSupportV3.V3.Gateways
                 throw;
             }
         }
+
+
+        public ResidentCaseNote UpdateCaseNote(int helpRequestId, int residentId, string caseNote)
+        {
+            try
+            {
+                var rec = _helpRequestsContext.CaseNoteEntities.FirstOrDefault(x => x.HelpRequestId == helpRequestId);
+                if (rec == null)
+                {
+                    rec = new CaseNoteEntity();
+                    _helpRequestsContext.CaseNoteEntities.Add(rec);
+                }
+
+                rec.ResidentId = residentId;
+                rec.HelpRequestId = helpRequestId;
+                rec.CaseNote = caseNote;
+                _helpRequestsContext.SaveChanges();
+
+                return rec.ToDomain();
+            }
+            catch (Exception e)
+            {
+                LambdaLogger.Log("PatchCaseNote error: ");
+                LambdaLogger.Log(e.Message);
+                throw;
+            }
+        }
     }
 }

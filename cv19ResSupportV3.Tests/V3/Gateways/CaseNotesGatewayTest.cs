@@ -58,5 +58,28 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             createdEntity.HelpRequestId.Should().Be(helpRequest.Id);
         }
 
+        [Test]
+        public void UpdateCaseNoteUpdatesTheFirstCaseNote()
+        {
+            var resident = EntityHelpers.createResident(115);
+            var helpRequest = EntityHelpers.createHelpRequestEntity(45, resident.Id);
+
+            var caseNote = new CaseNoteEntity() { CaseNote = "before update", ResidentId = resident.Id, HelpRequestId = helpRequest.Id };
+
+            DatabaseContext.ResidentEntities.Add(resident);
+            DatabaseContext.HelpRequestEntities.Add(helpRequest);
+            var entity = DatabaseContext.CaseNoteEntities.Add(caseNote);
+            DatabaseContext.SaveChanges();
+
+            _classUnderTest.UpdateCaseNote(helpRequest.Id, resident.Id, "after update");
+
+            var oldEntity = DatabaseContext.CaseNoteEntities.Find(caseNote.Id);
+            DatabaseContext.Entry(oldEntity).State = EntityState.Detached;
+            var updatedEntity = DatabaseContext.CaseNoteEntities.Find(caseNote.Id);
+
+            updatedEntity.CaseNote.Should().Be("after update");
+        }
+
+
     }
 }
