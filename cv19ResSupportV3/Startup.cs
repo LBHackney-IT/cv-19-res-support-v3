@@ -137,6 +137,7 @@ namespace cv19ResSupportV3
         {
             services.AddScoped<IHelpRequestGateway, HelpRequestGateway>();
             services.AddScoped<IHelpRequestCallGateway, HelpRequestCallGateway>();
+            services.AddScoped<ICaseNotesGateway, CaseNotesGateway>();
         }
 
         private static void RegisterUseCases(IServiceCollection services)

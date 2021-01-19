@@ -6,9 +6,9 @@ namespace cv19ResSupportV3.V3.UseCase
 {
     public class PatchCaseNoteUseCase : IPatchCaseNoteUseCase
     {
-        private IHelpRequestGateway _gateway;
+        private ICaseNotesGateway _gateway;
 
-        public PatchCaseNoteUseCase(IHelpRequestGateway gateway)
+        public PatchCaseNoteUseCase(ICaseNotesGateway gateway)
         {
             _gateway = gateway;
         }

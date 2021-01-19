@@ -19,6 +19,5 @@ namespace cv19ResSupportV3.V3.Gateways
         HelpRequestWithResident GetHelpRequest(int id);
         List<HelpRequestWithResident> SearchHelpRequests(SearchRequest command);
         List<HelpRequestWithResident> GetCallbacks(CallbackQuery command);
-        ResidentCaseNote PatchCaseNote(int helpRequestId, int residentId, string caseNote);
     }
 }

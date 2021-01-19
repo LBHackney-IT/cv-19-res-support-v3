@@ -9,13 +9,13 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
 
     public class PatchCaseNoteUseCaseTests
     {
-        private Mock<IHelpRequestGateway> _fakeGateway;
+        private Mock<ICaseNotesGateway> _fakeGateway;
         private PatchCaseNoteUseCase _classUnderTest;
 
         [SetUp]
         public void SetUp()
         {
-            _fakeGateway = new Mock<IHelpRequestGateway>();
+            _fakeGateway = new Mock<ICaseNotesGateway>();
             _classUnderTest = new PatchCaseNoteUseCase(_fakeGateway.Object);
         }
 

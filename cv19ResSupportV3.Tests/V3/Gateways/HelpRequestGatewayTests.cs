@@ -286,28 +286,6 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             updatedEntity.EmailAddress.Should().Be(patchRequestObject.EmailAddress);
         }
 
-        [Test]
-        public void PatchCaseNotePatchesTheFirstCaseNote()
-        {
-            var resident = EntityHelpers.createResident(114);
-            var helpRequest = EntityHelpers.createHelpRequestEntity(43, resident.Id);
-
-            var caseNote = new CaseNoteEntity() { CaseNote = "before update", ResidentId = resident.Id, HelpRequestId = helpRequest.Id };
-
-            DatabaseContext.ResidentEntities.Add(resident);
-            DatabaseContext.HelpRequestEntities.Add(helpRequest);
-            var entity = DatabaseContext.CaseNoteEntities.Add(caseNote);
-            DatabaseContext.SaveChanges();
-
-
-            _classUnderTest.PatchCaseNote(helpRequest.Id, resident.Id, "after update");
-
-            var oldEntity = DatabaseContext.CaseNoteEntities.Find(caseNote.Id);
-            DatabaseContext.Entry(oldEntity).State = EntityState.Detached;
-            var updatedEntity = DatabaseContext.CaseNoteEntities.Find(caseNote.Id);
-
-            updatedEntity.CaseNote.Should().Be("after update");
-        }
 
 
         [Test]
