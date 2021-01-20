@@ -36,12 +36,13 @@ namespace cv19ResSupportV3.V3.Boundary.Requests
         public string GpSurgeryDetails { get; set; }
         public string NumberOfChildrenUnder18 { get; set; }
         public bool? ConsentToShare { get; set; }
-        public DateTime? DateTimeRecorded { get; set; }
         public string RecordStatus { get; set; }
         public bool? InitialCallbackCompleted { get; set; }
         public bool? CallbackRequired { get; set; }
         public string CaseNotes { get; set; }
         public string AdviceNotes { get; set; }
+        public string NhsNumber { get; set; }
+        public string NhsCtasId { get; set; }
         public string HelpNeeded { get; set; }
     }
 }

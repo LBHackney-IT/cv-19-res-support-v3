@@ -1,6 +1,7 @@
 using AutoFixture;
 using cv19ResSupportV3.V3.Boundary.Response;
 using cv19ResSupportV3.V3.Domain;
+using cv19ResSupportV3.V3.Domain.Commands;
 using cv19ResSupportV3.V3.Factories;
 using cv19ResSupportV3.V3.Gateways;
 using cv19ResSupportV3.V3.Infrastructure;
@@ -24,11 +25,26 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
         }
 
         [Test]
-        public void ExecuteSavesRequestToDatabase()
+        public void SavesHelpRequestIfItDoesNotExist()
         {
-            _mockGateway.Setup(s => s.CreateHelpRequest(It.IsAny<HelpRequestEntity>())).Returns(1);
-            var dataToSave = new Fixture().Create<HelpRequest>();
-            var response = _classUnderTest.Execute(dataToSave);
+            _mockGateway.Setup(s => s.FindHelpRequestByCtasId(It.IsAny<string>())).Returns<int?>(null);
+            _mockGateway.Setup(s => s.CreateHelpRequest(It.IsAny<int>(), It.IsAny<CreateHelpRequest>())).Returns(1);
+
+            var dataToSave = new Fixture().Build<CreateHelpRequest>().Create();
+            var response = _classUnderTest.Execute(1, dataToSave);
+            _mockGateway.Verify(m => m.FindHelpRequestByCtasId(It.IsAny<string>()), Times.Once());
+            _mockGateway.Verify(m => m.CreateHelpRequest(It.IsAny<int>(), It.IsAny<CreateHelpRequest>()), Times.Once());
+            response.Should().Be(1);
+        }
+        [Test]
+        public void DoesNotCreateNewHelpRequestIfItDoesExist()
+        {
+            _mockGateway.Setup(s => s.FindHelpRequestByCtasId(It.IsAny<string>())).Returns(1);
+
+            var dataToSave = new Fixture().Build<CreateHelpRequest>().Create();
+            var response = _classUnderTest.Execute(1, dataToSave);
+            _mockGateway.Verify(m => m.FindHelpRequestByCtasId(It.IsAny<string>()), Times.Once());
+            _mockGateway.Verify(m => m.CreateHelpRequest(It.IsAny<int>(), It.IsAny<CreateHelpRequest>()), Times.Never);
             response.Should().Be(1);
         }
     }

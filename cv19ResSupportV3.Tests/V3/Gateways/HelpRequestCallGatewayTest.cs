@@ -31,6 +31,7 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             var persistedCall = DatabaseContext.HelpRequestCallEntities.OrderByDescending(x => x.Id).First();
             response.Should().Be(persistedCall.Id);
         }
-
     }
 }
+
+

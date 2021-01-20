@@ -1,4 +1,4 @@
-using System;
+using System.Collections.Generic;
 
 namespace cv19ResSupportV3.V3.Domain
 {
@@ -24,7 +24,8 @@ namespace cv19ResSupportV3.V3.Domain
         public string GpSurgeryDetails { get; set; }
         public string NumberOfChildrenUnder18 { get; set; }
         public bool? ConsentToShare { get; set; }
-        public string CaseNotes { get; set; }
+        public string RecordStatus { get; set; }
+        public List<ResidentCaseNote> CaseNotes { get; set; }
         public string NhsNumber { get; set; }
     }
 }

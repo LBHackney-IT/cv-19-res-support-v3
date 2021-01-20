@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using cv19ResSupportV3.V3.Boundary.Requests;
 using cv19ResSupportV3.V3.Boundary.Response;
 using cv19ResSupportV3.V3.Factories;
+using cv19ResSupportV3.V3.Factories.Commands;
 using cv19ResSupportV3.V3.UseCase;
 using cv19ResSupportV3.V3.UseCase.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -18,19 +18,19 @@ namespace cv19ResSupportV3.V3.Controllers
     [ApiVersion("3.0")]
     public class HelpRequestsController : BaseController
     {
-        private readonly ICreateHelpRequestUseCase _createHelpRequestUseCase;
-        private readonly IUpdateHelpRequestUseCase _updateHelpRequestUseCase;
-        private readonly IPatchHelpRequestUseCase _patchHelpRequestUseCase;
-        private readonly IGetHelpRequestsUseCase _getHelpRequestsUseCase;
-        private readonly IGetHelpRequestUseCase _getHelpRequestUseCase;
-        public HelpRequestsController(ICreateHelpRequestUseCase createHelpRequestUseCase, IGetHelpRequestsUseCase getHelpRequestsUseCase,
-            IUpdateHelpRequestUseCase updateHelpRequestUseCase, IGetHelpRequestUseCase getHelpRequestUseCase, IPatchHelpRequestUseCase patchHelpRequestUseCase)
+        private readonly IUpdateResidentAndHelpRequestUseCase _updateResidentAndHelpRequestUseCase;
+        private readonly IPatchResidentAndHelpRequestUseCase _patchResidentAndHelpRequestUseCase;
+        private readonly IGetResidentsAndHelpRequestsUseCase _getResidentsAndHelpRequestsUseCase;
+        private readonly IGetResidentAndHelpRequestUseCase _getResidentAndHelpRequestUseCase;
+        private readonly ICreateResidentAndHelpRequestUseCase _createResidentAndHelpRequestUse;
+        public HelpRequestsController(IGetResidentsAndHelpRequestsUseCase getResidentsAndHelpRequestsUseCase,
+            IUpdateResidentAndHelpRequestUseCase updateResidentAndHelpRequestUseCase, IGetResidentAndHelpRequestUseCase getResidentAndHelpRequestUseCase, IPatchResidentAndHelpRequestUseCase patchResidentAndHelpRequestUseCase, ICreateResidentAndHelpRequestUseCase createResidentAndHelpRequestUseCase)
         {
-            _createHelpRequestUseCase = createHelpRequestUseCase;
-            _updateHelpRequestUseCase = updateHelpRequestUseCase;
-            _patchHelpRequestUseCase = patchHelpRequestUseCase;
-            _getHelpRequestsUseCase = getHelpRequestsUseCase;
-            _getHelpRequestUseCase = getHelpRequestUseCase;
+            _updateResidentAndHelpRequestUseCase = updateResidentAndHelpRequestUseCase;
+            _patchResidentAndHelpRequestUseCase = patchResidentAndHelpRequestUseCase;
+            _getResidentsAndHelpRequestsUseCase = getResidentsAndHelpRequestsUseCase;
+            _getResidentAndHelpRequestUseCase = getResidentAndHelpRequestUseCase;
+            _createResidentAndHelpRequestUse = createResidentAndHelpRequestUseCase;
         }
 
         /// <summary>
@@ -39,12 +39,12 @@ namespace cv19ResSupportV3.V3.Controllers
         /// <response code="201">...</response>
         [ProducesResponseType(typeof(HelpRequestCreateResponse), StatusCodes.Status201Created)]
         [HttpPost]
-        public IActionResult CreateHelpRequest(HelpRequestCreateRequestBoundary request)
+        public IActionResult CreateResidentAndHelpRequest(HelpRequestCreateRequestBoundary request)
         {
             try
             {
-                var domain = request.ToDomain();
-                var id = _createHelpRequestUseCase.Execute(domain);
+                var command = request.ToCommand();
+                var id = _createResidentAndHelpRequestUse.Execute(command);
                 var result = new HelpRequestCreateResponse() { Id = id };
                 return Created(new Uri($"api/v3/help-requests/{id}", UriKind.Relative), result);
             }
@@ -59,14 +59,14 @@ namespace cv19ResSupportV3.V3.Controllers
         /// </summary>
         /// <response code="200">The record has been updated</response>
         /// <response code="400">There was an issue updating the record.</response>
-        [ProducesResponseType(typeof(HelpRequestUpdateResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(HelpRequestResponse), StatusCodes.Status200OK)]
         [HttpPut]
-        public IActionResult UpdateHelpRequest(HelpRequestUpdateRequest request)
+        public IActionResult UpdateResidentAndHelpRequest(HelpRequestUpdateRequest request)
         {
             try
             {
-                var domain = request.ToDomain();
-                var response = _updateHelpRequestUseCase.Execute(domain);
+                var command = request.ToCommand();
+                var response = _updateResidentAndHelpRequestUseCase.Execute(command);
                 var result = response.ToResponse();
                 return Ok(result);
             }
@@ -108,13 +108,15 @@ namespace cv19ResSupportV3.V3.Controllers
         /// <response code="400">There was an issue updating the record.</response>
         [HttpPatch]
         [Route("{id}")]
-        public IActionResult PatchHelpRequest([FromRoute] int id, [FromBody] HelpRequestPatchRequest request)
+        public IActionResult PatchResidentAndHelpRequest([FromRoute] int id, [FromBody] HelpRequestPatchRequest request)
         {
             try
             {
-                var domain = request.ToDomain();
-                _patchHelpRequestUseCase.Execute(id, domain);
-                return Ok();
+                var command = request.ToCommand();
+                _patchResidentAndHelpRequestUseCase.Execute(id, command);
+                var response = new Dictionary<string, string>();
+                response.Add("success", "true");
+                return Ok(response);
             }
             catch (Exception e)
             {
@@ -127,13 +129,14 @@ namespace cv19ResSupportV3.V3.Controllers
         /// Returns a list of help requests matching the provided search parameters
         /// </summary>
         /// <response code="200">A list of 0 or more help requests was returned.</response>
-        [ProducesResponseType(typeof(List<HelpRequestGetResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(List<HelpRequestResponse>), StatusCodes.Status200OK)]
         [HttpGet]
-        public IActionResult GetHelpRequests([FromQuery] RequestQueryParams requestParams)
+        public IActionResult GetResidentsAndHelpRequests([FromQuery] RequestQueryParams requestParams)
         {
             Console.WriteLine(JsonConvert.SerializeObject(requestParams));
-            var result = _getHelpRequestsUseCase.Execute(requestParams);
-            return Ok(result);
+            var command = requestParams.ToCommand();
+            var result = _getResidentsAndHelpRequestsUseCase.Execute(command);
+            return Ok(result.ToResponse());
         }
 
         /// <summary>
@@ -141,15 +144,15 @@ namespace cv19ResSupportV3.V3.Controllers
         /// </summary>
         /// <response code="200">Record retrieved successfully</response>
         /// <response code="404">A record with the specified id was not found</response>
-        [ProducesResponseType(typeof(HelpRequestGetResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(HelpRequestResponse), StatusCodes.Status200OK)]
         [HttpGet]
         [Route("{id}")]
-        public IActionResult GetHelpRequest(int id)
+        public IActionResult GetResidentAndHelpRequest(int id)
         {
-            var result = _getHelpRequestUseCase.Execute(id);
+            var result = _getResidentAndHelpRequestUseCase.Execute(id);
             if (result == null)
                 return NotFound();
-            return Ok(result);
+            return Ok(result.ToResponse());
         }
     }
 }

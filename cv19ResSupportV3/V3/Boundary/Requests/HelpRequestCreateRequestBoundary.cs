@@ -4,7 +4,6 @@ namespace cv19ResSupportV3.V3.Boundary.Requests
 {
     public class HelpRequestCreateRequestBoundary
     {
-        public int Id { get; set; }
         public bool? IsOnBehalf { get; set; }
         public bool? ConsentToCompleteOnBehalf { get; set; }
         public string OnBehalfFirstName { get; set; }

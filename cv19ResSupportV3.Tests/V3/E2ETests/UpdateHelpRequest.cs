@@ -5,8 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoFixture;
 using cv19ResSupportV3.Tests.V3.Helpers;
+using cv19ResSupportV3.V3.Boundary.Requests;
 using cv19ResSupportV3.V3.Boundary.Response;
 using cv19ResSupportV3.V3.Domain;
+using cv19ResSupportV3.V3.Factories;
 using cv19ResSupportV3.V3.Infrastructure;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
@@ -27,9 +29,10 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
         [Test]
         public async Task UpdateResidentInformationUpdatesTheRecord()
         {
-            var dbEntity = DatabaseContext.HelpRequestEntities.Add(EntityHelpers.createHelpRequestEntity());
+            var residentEntity = DatabaseContext.ResidentEntities.Add(EntityHelpers.createResident());
+            var helpReqestEntity = DatabaseContext.HelpRequestEntities.Add(EntityHelpers.createHelpRequestEntity(123, residentEntity.Entity.Id));
             DatabaseContext.SaveChanges();
-            var requestObject = DatabaseContext.HelpRequestEntities.First();
+            var requestObject = residentEntity.Entity.ToDomain(helpReqestEntity.Entity);
             requestObject.FirstName = "to-test-for";
             var data = JsonConvert.SerializeObject(requestObject);
             HttpContent postContent = new StringContent(data, Encoding.UTF8, "application/json");
@@ -41,27 +44,33 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             var content = response.Result.Content;
             var stringContent = await content.ReadAsStringAsync().ConfigureAwait(true);
             var convertedResponse = JsonConvert.DeserializeObject<HelpRequestCreateResponse>(stringContent);
-            var updatedEntity = DatabaseContext.HelpRequestEntities.First();
-            updatedEntity.FirstName.Should().BeEquivalentTo(requestObject.FirstName);
+            var updatedEntity = DatabaseContext.HelpRequestEntities.Find(requestObject.Id);
+            var oldEntity = DatabaseContext.ResidentEntities.Find(updatedEntity.ResidentId);
+            DatabaseContext.Entry(oldEntity).State = EntityState.Detached;
+            var updatedResidentEntity = DatabaseContext.ResidentEntities.Find(updatedEntity.ResidentId);
+            updatedResidentEntity.FirstName.Should().BeEquivalentTo(requestObject.FirstName);
         }
 
         [Test]
         public async Task UpdateHelpNeededFieldsUpdatesTheRecord()
         {
 
-            var dbEntity = DatabaseContext.HelpRequestEntities.Add(new Fixture().Build<HelpRequestEntity>().
-                Without(x => x.HelpRequestCalls).
-                With(x => x.Id, 1).
-                With(x => x.HelpWithCompletingNssForm, true).
-                With(x => x.HelpWithShieldingGuidance, true).
-                With(x => x.HelpWithNoNeedsIdentified, true).
-                With(x => x.HelpWithAccessingSupermarketFood, false).Create());
+            var resident = EntityHelpers.createResident(1);
+            var dbEntity = EntityHelpers.createHelpRequestEntity(1, resident.Id);
+            dbEntity.HelpWithCompletingNssForm = true;
+            dbEntity.HelpWithShieldingGuidance = true;
+            dbEntity.HelpWithNoNeedsIdentified = true;
+            dbEntity.HelpWithAccessingSupermarketFood = false;
+
+            DatabaseContext.ResidentEntities.Add(resident);
+
+            DatabaseContext.HelpRequestEntities.Add(dbEntity);
 
             var requestObject = DatabaseContext.HelpRequestEntities.Find(1);
 
             DatabaseContext.SaveChanges();
 
-            var updateRequestObject = new HelpRequestEntity()
+            var updateRequestObject = new HelpRequestUpdateRequest
             {
                 HelpWithCompletingNssForm = false,
                 HelpWithShieldingGuidance = false,

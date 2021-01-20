@@ -2,14 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Amazon.Lambda.APIGatewayEvents;
 using AutoFixture;
-using cv19ResSupportV3.Tests.V3.Helper;
 using cv19ResSupportV3.V3.Boundary.Response;
-using cv19ResSupportV3.V3.Factories;
 using cv19ResSupportV3.V3.Infrastructure;
 using FluentAssertions;
-using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using NUnit.Framework;
 

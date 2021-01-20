@@ -24,9 +24,9 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
         [Test]
         public void CreateHelpRequestCallReturnsTheCorrectInformation()
         {
-            var helpRequestEntity = new Fixture().Build<HelpRequestEntity>()
-                .Without(h => h.HelpRequestCalls)
-                .With(x => x.Id, 1).Create();
+            var resident = EntityHelpers.createResident(2);
+            var helpRequestEntity = EntityHelpers.createHelpRequestEntity(1, resident.Id);
+            DatabaseContext.ResidentEntities.Add(resident);
             DatabaseContext.HelpRequestEntities.Add(helpRequestEntity);
             DatabaseContext.SaveChanges();
             var requestObject = new Fixture().Create<CreateHelpRequestCallRequest>();
@@ -60,3 +60,5 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
 
     }
 }
+
+

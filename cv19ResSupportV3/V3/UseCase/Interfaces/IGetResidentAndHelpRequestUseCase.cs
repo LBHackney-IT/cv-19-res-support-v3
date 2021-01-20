@@ -3,8 +3,8 @@ using cv19ResSupportV3.V3.Domain;
 
 namespace cv19ResSupportV3.V3.UseCase
 {
-    public interface IGetHelpRequestUseCase
+    public interface IGetResidentAndHelpRequestUseCase
     {
-        HelpRequestGetResponse Execute(int id);
+        HelpRequestWithResident Execute(int id);
     }
 }

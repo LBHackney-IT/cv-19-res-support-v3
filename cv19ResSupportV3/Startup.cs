@@ -129,7 +129,7 @@ namespace cv19ResSupportV3
         {
             var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");
 
-            if (!connectionString.Contains("CommandTimeout")) { connectionString += $";CommandTimeout=900"; }
+            if (connectionString != null && !connectionString.Contains("CommandTimeout")) { connectionString += $";CommandTimeout=900"; }
 
             services.AddDbContext<HelpRequestsContext>(
                 opt => opt.UseNpgsql(connectionString, options => { options.CommandTimeout(900); }));
@@ -139,19 +139,30 @@ namespace cv19ResSupportV3
         {
             services.AddScoped<IHelpRequestGateway, HelpRequestGateway>();
             services.AddScoped<IHelpRequestCallGateway, HelpRequestCallGateway>();
+            services.AddScoped<IResidentGateway, ResidentGateway>();
+            services.AddScoped<ICaseNotesGateway, CaseNotesGateway>();
         }
 
         private static void RegisterUseCases(IServiceCollection services)
         {
+            services.AddScoped<ICreateResidentAndHelpRequestUseCase, CreateResidentAndHelpRequestUseCase>();
             services.AddScoped<ICreateHelpRequestUseCase, CreateHelpRequestUseCase>();
-            services.AddScoped<IUpdateHelpRequestUseCase, UpdateHelpRequestUseCase>();
+            services.AddScoped<IUpdateResidentAndHelpRequestUseCase, UpdateResidentAndHelpRequestUseCase>();
+            services.AddScoped<IPatchResidentAndHelpRequestUseCase, PatchResidentAndHelpRequestUseCase>();
+            services.AddScoped<IPatchResidentUseCase, PatchResidentUseCase>();
             services.AddScoped<IPatchHelpRequestUseCase, PatchHelpRequestUseCase>();
-            services.AddScoped<IGetHelpRequestsUseCase, GetHelpRequestsUseCase>();
-            services.AddScoped<IGetHelpRequestUseCase, GetHelpRequestUseCase>();
+            services.AddScoped<IGetResidentsAndHelpRequestsUseCase, GetResidentsAndHelpRequestsUseCase>();
+            services.AddScoped<IGetResidentAndHelpRequestUseCase, GetResidentAndHelpRequestUseCase>();
             services.AddScoped<IGetCallbacksUseCase, GetCallbacksUseCase>();
             services.AddScoped<IGetLookupsUseCase, GetLookupsUseCase>();
             services.AddScoped<ICreateHelpRequestUseCase, CreateHelpRequestUseCase>();
             services.AddScoped<ICreateHelpRequestCallUseCase, CreateHelpRequestCallUseCase>();
+            services.AddScoped<ICreateResidentUseCase, CreateResidentUseCase>();
+            services.AddScoped<IPatchCaseNoteUseCase, PatchCaseNoteUseCase>();
+            services.AddScoped<IUpdateResidentUseCase, UpdateResidentUseCase>();
+            services.AddScoped<IUpdateHelpRequestUseCase, UpdateHelpRequestUseCase>();
+            services.AddScoped<ICreateCaseNoteUseCase, CreateCaseNoteUseCase>();
+            services.AddScoped<IUpdateCaseNoteUseCase, UpdateCaseNoteUseCase>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

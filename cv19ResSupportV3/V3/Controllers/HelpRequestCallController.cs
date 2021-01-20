@@ -1,15 +1,10 @@
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using cv19ResSupportV3.V3.Boundary.Requests;
 using cv19ResSupportV3.V3.Boundary.Response;
-using cv19ResSupportV3.V3.Domain;
 using cv19ResSupportV3.V3.Factories.Commands;
-using cv19ResSupportV3.V3.UseCase;
 using cv19ResSupportV3.V3.UseCase.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 
 namespace cv19ResSupportV3.V3.Controllers
 {
