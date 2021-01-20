@@ -129,7 +129,7 @@ namespace cv19ResSupportV3
         {
             var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");
 
-            if (!connectionString.Contains("CommandTimeout")) { connectionString += $";CommandTimeout=900"; }
+            if (connectionString != null && !connectionString.Contains("CommandTimeout")) { connectionString += $";CommandTimeout=900"; }
 
             services.AddDbContext<HelpRequestsContext>(
                 opt => opt.UseNpgsql(connectionString, options => { options.CommandTimeout(900); }));
