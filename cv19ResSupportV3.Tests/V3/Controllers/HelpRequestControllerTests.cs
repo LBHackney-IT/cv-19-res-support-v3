@@ -18,8 +18,7 @@ namespace cv19ResRupportV3.Tests.V3.Controllers
     public class HelpRequestsControllerTests
     {
         private HelpRequestsController _classUnderTest;
-        private Mock<ICreateHelpRequestUseCase> _fakeCreateHelpRequestUseCase;
-        private Mock<IUpdateResidentAndHelpRequestUseCase> _fakeUpdateHelpRequestUseCase;
+        private Mock<IUpdateResidentAndHelpRequestUseCase> _fakeUpdateResidentAndHelpRequestUseCase;
         private Mock<IPatchResidentAndHelpRequestUseCase> _fakePatchResidentAndHelpRequestUseCase;
         private Mock<IGetResidentsAndHelpRequestsUseCase> _fakeGetResidentsAndHelpRequestsUseCase;
         private Mock<IGetResidentAndHelpRequestUseCase> _fakeGetResidentAndHelpRequestUseCase;
@@ -28,13 +27,12 @@ namespace cv19ResRupportV3.Tests.V3.Controllers
         [SetUp]
         public void SetUp()
         {
-            _fakeCreateHelpRequestUseCase = new Mock<ICreateHelpRequestUseCase>();
-            _fakeUpdateHelpRequestUseCase = new Mock<IUpdateResidentAndHelpRequestUseCase>();
+            _fakeUpdateResidentAndHelpRequestUseCase = new Mock<IUpdateResidentAndHelpRequestUseCase>();
             _fakePatchResidentAndHelpRequestUseCase = new Mock<IPatchResidentAndHelpRequestUseCase>();
             _fakeGetResidentsAndHelpRequestsUseCase = new Mock<IGetResidentsAndHelpRequestsUseCase>();
             _fakeGetResidentAndHelpRequestUseCase = new Mock<IGetResidentAndHelpRequestUseCase>();
             _fakeCreateResidentAndHelpRequestUseCase = new Mock<ICreateResidentAndHelpRequestUseCase>();
-            _classUnderTest = new HelpRequestsController(_fakeCreateHelpRequestUseCase.Object, _fakeGetResidentsAndHelpRequestsUseCase.Object, _fakeUpdateHelpRequestUseCase.Object,
+            _classUnderTest = new HelpRequestsController(_fakeGetResidentsAndHelpRequestsUseCase.Object, _fakeUpdateResidentAndHelpRequestUseCase.Object,
             _fakeGetResidentAndHelpRequestUseCase.Object, _fakePatchResidentAndHelpRequestUseCase.Object, _fakeCreateResidentAndHelpRequestUseCase.Object);
         }
 

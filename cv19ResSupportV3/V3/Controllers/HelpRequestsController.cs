@@ -18,21 +18,18 @@ namespace cv19ResSupportV3.V3.Controllers
     [ApiVersion("3.0")]
     public class HelpRequestsController : BaseController
     {
-        private readonly ICreateHelpRequestUseCase _createHelpRequestUseCase;
         private readonly IUpdateResidentAndHelpRequestUseCase _updateResidentAndHelpRequestUseCase;
         private readonly IPatchResidentAndHelpRequestUseCase _patchResidentAndHelpRequestUseCase;
         private readonly IGetResidentsAndHelpRequestsUseCase _getResidentsAndHelpRequestsUseCase;
         private readonly IGetResidentAndHelpRequestUseCase _getResidentAndHelpRequestUseCase;
         private readonly ICreateResidentAndHelpRequestUseCase _createResidentAndHelpRequestUse;
-        public HelpRequestsController(ICreateHelpRequestUseCase createHelpRequestUseCase, IGetResidentsAndHelpRequestsUseCase getResidentsAndHelpRequestsUseCase,
+        public HelpRequestsController(IGetResidentsAndHelpRequestsUseCase getResidentsAndHelpRequestsUseCase,
             IUpdateResidentAndHelpRequestUseCase updateResidentAndHelpRequestUseCase, IGetResidentAndHelpRequestUseCase getResidentAndHelpRequestUseCase, IPatchResidentAndHelpRequestUseCase patchResidentAndHelpRequestUseCase, ICreateResidentAndHelpRequestUseCase createResidentAndHelpRequestUseCase)
         {
-            _createHelpRequestUseCase = createHelpRequestUseCase;
             _updateResidentAndHelpRequestUseCase = updateResidentAndHelpRequestUseCase;
             _patchResidentAndHelpRequestUseCase = patchResidentAndHelpRequestUseCase;
             _getResidentsAndHelpRequestsUseCase = getResidentsAndHelpRequestsUseCase;
             _getResidentAndHelpRequestUseCase = getResidentAndHelpRequestUseCase;
-            _createHelpRequestUseCase = createHelpRequestUseCase;
             _createResidentAndHelpRequestUse = createResidentAndHelpRequestUseCase;
         }
 
