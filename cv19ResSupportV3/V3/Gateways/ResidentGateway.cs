@@ -170,11 +170,13 @@ namespace cv19ResSupportV3.V3.Gateways
             {
                 if (command.Uprn != null)
                 {
-                    var response = _helpRequestsContext.ResidentEntities.FirstOrDefault(x => x.Uprn == command.Uprn &&
-                                                                                             x.FirstName ==
-                                                                                             command.FirstName &&
-                                                                                             x.LastName ==
-                                                                                             command.LastName);
+                    var response = _helpRequestsContext.ResidentEntities.FirstOrDefault(x =>
+                        x.Uprn.ToUpper().Trim() == command.Uprn.ToUpper().Trim() &&
+                        x.FirstName.ToUpper().Trim() ==
+                        command.FirstName.ToUpper().Trim() &&
+                        x.LastName.ToUpper()
+                            .Trim() ==
+                        command.LastName.ToUpper().Trim());
                     if (response != null)
                     {
                         return response.Id;
@@ -184,11 +186,11 @@ namespace cv19ResSupportV3.V3.Gateways
                 if (command.DobDay != null || command.DobMonth != null || command.DobYear != null)
                 {
                     var response = _helpRequestsContext.ResidentEntities.FirstOrDefault(x =>
-                        x.DobDay == command.DobDay &&
-                        x.DobMonth == command.DobMonth &&
-                        x.DobYear == command.DobYear &&
-                        x.FirstName == command.FirstName &&
-                        x.LastName == command.LastName);
+                        x.DobDay.Trim() == command.DobDay.Trim() &&
+                        x.DobMonth.Trim() == command.DobMonth.Trim() &&
+                        x.DobYear.Trim() == command.DobYear.Trim() &&
+                        x.FirstName.ToUpper().Trim() == command.FirstName.ToUpper().Trim() &&
+                        x.LastName.ToUpper().Trim() == command.LastName.ToUpper().Trim());
                     if (response != null)
                     {
                         return response.Id;
