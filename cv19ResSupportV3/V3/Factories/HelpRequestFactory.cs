@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using cv19ResSupportV3.V3.Domain;
 using cv19ResSupportV3.V3.Infrastructure;
 using HelpRequest = cv19ResSupportV3.V3.Domain.HelpRequest;
 using HelpRequestCall = cv19ResSupportV3.V3.Domain.HelpRequestCall;
@@ -8,76 +9,12 @@ namespace cv19ResSupportV3.V3.Factories
 {
     public static class EntityFactory
     {
-        public static HelpRequest ToDomain(this HelpRequestEntity helpRequestEntity)
+        public static HelpRequest ToDomain(this HelpRequestEntity helpRequest)
         {
             return new HelpRequest()
             {
-                Id = helpRequestEntity.Id,
-                IsOnBehalf = helpRequestEntity.IsOnBehalf,
-                ConsentToCompleteOnBehalf = helpRequestEntity.ConsentToCompleteOnBehalf,
-                OnBehalfFirstName = helpRequestEntity.OnBehalfFirstName,
-                OnBehalfLastName = helpRequestEntity.OnBehalfLastName,
-                OnBehalfEmailAddress = helpRequestEntity.OnBehalfEmailAddress,
-                OnBehalfContactNumber = helpRequestEntity.OnBehalfContactNumber,
-                RelationshipWithResident = helpRequestEntity.RelationshipWithResident,
-                PostCode = helpRequestEntity.PostCode,
-                Uprn = helpRequestEntity.Uprn,
-                Ward = helpRequestEntity.Ward,
-                AddressFirstLine = helpRequestEntity.AddressFirstLine,
-                AddressSecondLine = helpRequestEntity.AddressSecondLine,
-                AddressThirdLine = helpRequestEntity.AddressThirdLine,
-                GettingInTouchReason = helpRequestEntity.GettingInTouchReason,
-                HelpWithAccessingFood = helpRequestEntity.HelpWithAccessingFood,
-                HelpWithAccessingSupermarketFood = helpRequestEntity.HelpWithAccessingSupermarketFood,
-                HelpWithCompletingNssForm = helpRequestEntity.HelpWithCompletingNssForm,
-                HelpWithShieldingGuidance = helpRequestEntity.HelpWithShieldingGuidance,
-                HelpWithNoNeedsIdentified = helpRequestEntity.HelpWithNoNeedsIdentified,
-                HelpWithAccessingMedicine = helpRequestEntity.HelpWithAccessingMedicine,
-                HelpWithAccessingOtherEssentials = helpRequestEntity.HelpWithAccessingOtherEssentials,
-                HelpWithDebtAndMoney = helpRequestEntity.HelpWithDebtAndMoney,
-                HelpWithHealth = helpRequestEntity.HelpWithHealth,
-                HelpWithMentalHealth = helpRequestEntity.HelpWithMentalHealth,
-                HelpWithAccessingInternet = helpRequestEntity.HelpWithAccessingInternet,
-                HelpWithHousing = helpRequestEntity.HelpWithHousing,
-                HelpWithJobsOrTraining = helpRequestEntity.HelpWithJobsOrTraining,
-                HelpWithChildrenAndSchools = helpRequestEntity.HelpWithChildrenAndSchools,
-                HelpWithDisabilities = helpRequestEntity.HelpWithDisabilities,
-                HelpWithSomethingElse = helpRequestEntity.HelpWithSomethingElse,
-                MedicineDeliveryHelpNeeded = helpRequestEntity.MedicineDeliveryHelpNeeded,
-                IsPharmacistAbleToDeliver = helpRequestEntity.IsPharmacistAbleToDeliver,
-                WhenIsMedicinesDelivered = helpRequestEntity.WhenIsMedicinesDelivered,
-                NameAddressPharmacist = helpRequestEntity.NameAddressPharmacist,
-                UrgentEssentials = helpRequestEntity.UrgentEssentials,
-                UrgentEssentialsAnythingElse = helpRequestEntity.UrgentEssentialsAnythingElse,
-                CurrentSupport = helpRequestEntity.CurrentSupport,
-                CurrentSupportFeedback = helpRequestEntity.CurrentSupportFeedback,
-                FirstName = helpRequestEntity.FirstName,
-                LastName = helpRequestEntity.LastName,
-                DobMonth = helpRequestEntity.DobMonth,
-                DobYear = helpRequestEntity.DobYear,
-                DobDay = helpRequestEntity.DobDay,
-                ContactTelephoneNumber = helpRequestEntity.ContactTelephoneNumber,
-                ContactMobileNumber = helpRequestEntity.ContactMobileNumber,
-                EmailAddress = helpRequestEntity.EmailAddress,
-                GpSurgeryDetails = helpRequestEntity.GpSurgeryDetails,
-                NumberOfChildrenUnder18 = helpRequestEntity.NumberOfChildrenUnder18,
-                ConsentToShare = helpRequestEntity.ConsentToShare,
-                DateTimeRecorded = helpRequestEntity.DateTimeRecorded,
-                RecordStatus = helpRequestEntity.RecordStatus,
-                CallbackRequired = helpRequestEntity.CallbackRequired,
-                InitialCallbackCompleted = helpRequestEntity.InitialCallbackCompleted,
-                CaseNotes = helpRequestEntity.CaseNotes,
-                AdviceNotes = helpRequestEntity.AdviceNotes,
-                HelpNeeded = helpRequestEntity.HelpNeeded,
-                NhsCtasId = helpRequestEntity.NhsCtasId
-            };
-        }
-
-        public static HelpRequestEntity ToEntity(this HelpRequest helpRequest)
-        {
-            return new HelpRequestEntity()
-            {
                 Id = helpRequest.Id,
+                ResidentId = helpRequest.ResidentId,
                 IsOnBehalf = helpRequest.IsOnBehalf,
                 ConsentToCompleteOnBehalf = helpRequest.ConsentToCompleteOnBehalf,
                 OnBehalfFirstName = helpRequest.OnBehalfFirstName,
@@ -85,12 +22,6 @@ namespace cv19ResSupportV3.V3.Factories
                 OnBehalfEmailAddress = helpRequest.OnBehalfEmailAddress,
                 OnBehalfContactNumber = helpRequest.OnBehalfContactNumber,
                 RelationshipWithResident = helpRequest.RelationshipWithResident,
-                PostCode = helpRequest.PostCode,
-                Uprn = helpRequest.Uprn,
-                Ward = helpRequest.Ward,
-                AddressFirstLine = helpRequest.AddressFirstLine,
-                AddressSecondLine = helpRequest.AddressSecondLine,
-                AddressThirdLine = helpRequest.AddressThirdLine,
                 GettingInTouchReason = helpRequest.GettingInTouchReason,
                 HelpWithAccessingFood = helpRequest.HelpWithAccessingFood,
                 HelpWithAccessingSupermarketFood = helpRequest.HelpWithAccessingSupermarketFood,
@@ -109,66 +40,79 @@ namespace cv19ResSupportV3.V3.Factories
                 HelpWithDisabilities = helpRequest.HelpWithDisabilities,
                 HelpWithSomethingElse = helpRequest.HelpWithSomethingElse,
                 MedicineDeliveryHelpNeeded = helpRequest.MedicineDeliveryHelpNeeded,
-                IsPharmacistAbleToDeliver = helpRequest.IsPharmacistAbleToDeliver,
                 WhenIsMedicinesDelivered = helpRequest.WhenIsMedicinesDelivered,
-                NameAddressPharmacist = helpRequest.NameAddressPharmacist,
                 UrgentEssentials = helpRequest.UrgentEssentials,
                 UrgentEssentialsAnythingElse = helpRequest.UrgentEssentialsAnythingElse,
                 CurrentSupport = helpRequest.CurrentSupport,
                 CurrentSupportFeedback = helpRequest.CurrentSupportFeedback,
-                FirstName = helpRequest.FirstName,
-                LastName = helpRequest.LastName,
-                DobMonth = helpRequest.DobMonth,
-                DobYear = helpRequest.DobYear,
-                DobDay = helpRequest.DobDay,
-                ContactTelephoneNumber = helpRequest.ContactTelephoneNumber,
-                ContactMobileNumber = helpRequest.ContactMobileNumber,
-                EmailAddress = helpRequest.EmailAddress,
-                GpSurgeryDetails = helpRequest.GpSurgeryDetails,
-                NumberOfChildrenUnder18 = helpRequest.NumberOfChildrenUnder18,
-                ConsentToShare = helpRequest.ConsentToShare,
                 DateTimeRecorded = helpRequest.DateTimeRecorded,
-                RecordStatus = helpRequest.RecordStatus,
                 CallbackRequired = helpRequest.CallbackRequired,
                 InitialCallbackCompleted = helpRequest.InitialCallbackCompleted,
-                CaseNotes = helpRequest.CaseNotes,
+                HelpRequestCalls = helpRequest.HelpRequestCalls.ToDomain(),
                 AdviceNotes = helpRequest.AdviceNotes,
                 HelpNeeded = helpRequest.HelpNeeded,
-                NhsCtasId = helpRequest.NhsCtasId
+                NhsCtasId = helpRequest.NhsCtasId,
+                AssignedStaff = helpRequest.AssignedStaff,
             };
         }
-
-        public static HelpRequestCallEntity ToEntity(this HelpRequestCall helpRequestCall)
+        public static Resident ToDomain(this ResidentEntity resident)
         {
-            return new HelpRequestCallEntity()
+            return new Resident()
             {
-                Id = helpRequestCall.Id,
-                HelpRequestId = helpRequestCall.HelpRequestId,
-                CallType = helpRequestCall.CallType,
-                CallDirection = helpRequestCall.CallDirection,
-                CallOutcome = helpRequestCall.CallOutcome,
-                CallDateTime = helpRequestCall.CallDateTime,
-                CallHandler = helpRequestCall.CallHandler
+                Id = resident.Id,
+                PostCode = resident.PostCode,
+                Uprn = resident.Uprn,
+                Ward = resident.Ward,
+                AddressFirstLine = resident.AddressFirstLine,
+                AddressSecondLine = resident.AddressSecondLine,
+                AddressThirdLine = resident.AddressThirdLine,
+                IsPharmacistAbleToDeliver = resident.IsPharmacistAbleToDeliver,
+                NameAddressPharmacist = resident.NameAddressPharmacist,
+                FirstName = resident.FirstName,
+                LastName = resident.LastName,
+                DobMonth = resident.DobMonth,
+                DobYear = resident.DobYear,
+                DobDay = resident.DobDay,
+                ContactTelephoneNumber = resident.ContactTelephoneNumber,
+                ContactMobileNumber = resident.ContactMobileNumber,
+                EmailAddress = resident.EmailAddress,
+                GpSurgeryDetails = resident.GpSurgeryDetails,
+                RecordStatus = resident.RecordStatus,
+                NumberOfChildrenUnder18 = resident.NumberOfChildrenUnder18,
+                ConsentToShare = resident.ConsentToShare,
+                CaseNotes = resident.CaseNotes.ToDomain(),
+                NhsNumber = resident.NhsNumber,
             };
         }
 
-        public static HelpRequestCall ToDomain(this HelpRequestCallEntity helpRequestCallEntity)
+        public static List<HelpRequestCallEntity> ToEntity(this ICollection<HelpRequestCall> helpRequestCallList)
         {
-            return new HelpRequestCall()
+            return helpRequestCallList?.Select(hrItem => hrItem.ToEntity()).ToList();
+        }
+
+        public static ResidentCaseNote ToDomain(this CaseNoteEntity caseNote)
+        {
+            return new ResidentCaseNote()
             {
-                Id = helpRequestCallEntity.Id,
-                HelpRequestId = helpRequestCallEntity.HelpRequestId,
-                CallType = helpRequestCallEntity.CallType,
-                CallDirection = helpRequestCallEntity.CallDirection,
-                CallOutcome = helpRequestCallEntity.CallOutcome,
-                CallDateTime = helpRequestCallEntity.CallDateTime,
-                CallHandler = helpRequestCallEntity.CallHandler
+                Id = caseNote.Id,
+                CaseNote = caseNote.CaseNote,
+                HelpRequestId = caseNote.HelpRequestId,
+                ResidentId = caseNote.ResidentId
             };
         }
 
-        public static List<HelpRequestCall> ToDomain(this ICollection<HelpRequestCallEntity> helpRequestCallEntityList)
+        public static List<ResidentCaseNote> ToDomain(this ICollection<CaseNoteEntity> caseNotes)
         {
-            return helpRequestCallEntityList?.Select(hrItem => hrItem.ToDomain()).ToList();
+            return caseNotes?.Select(hrItem => hrItem.ToDomain()).ToList();
+        }
+
+        public static string ToCaseNotesString(this ICollection<CaseNoteEntity> caseNotes)
+        {
+            return caseNotes == null ? null : string.Join(" ", caseNotes?.Select(item => item.CaseNote));
+        }
+        public static string ToCaseNotesString(this ICollection<ResidentCaseNote> caseNotes)
+        {
+            return caseNotes == null ? null : string.Join(" ", caseNotes?.Select(item => item.CaseNote));
         }
     }
 }

@@ -1,11 +1,9 @@
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using cv19ResSupportV3.V3.Boundary.Requests;
 using cv19ResSupportV3.V3.Boundary.Response;
-using cv19ResSupportV3.V3.Domain;
+using cv19ResSupportV3.V3.Factories;
+using cv19ResSupportV3.V3.Factories.Commands;
 using cv19ResSupportV3.V3.UseCase;
-using cv19ResSupportV3.V3.UseCase.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,12 +25,13 @@ namespace cv19ResSupportV3.V3.Controllers
         /// Returns a list of help requests requiring a callback.
         /// </summary>
         /// <response code="200">A list of 0 or more callbacks returned.</response>
-        [ProducesResponseType(typeof(List<HelpRequestGetResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(List<HelpRequestResponse>), StatusCodes.Status200OK)]
         [HttpGet]
         public IActionResult GetCallbacks([FromQuery] CallbackRequestParams requestParams)
         {
-            var result = _getCallbacksUseCase.Execute(requestParams);
-            return Ok(result);
+            var command = requestParams.ToCommand();
+            var result = _getCallbacksUseCase.Execute(command);
+            return Ok(result.ToResponse());
         }
 
     }

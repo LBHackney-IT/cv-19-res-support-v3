@@ -19,6 +19,35 @@ namespace cv19ResSupportV3.V3.Infrastructure.Migrations
                 .HasAnnotation("ProductVersion", "3.1.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
+            modelBuilder.Entity("cv19ResSupportV3.V3.Infrastructure.CaseNoteEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("id")
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("CaseNote")
+                        .HasColumnName("case_notes")
+                        .HasColumnType("character varying");
+
+                    b.Property<int>("HelpRequestId")
+                        .HasColumnName("help_request_id")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ResidentId")
+                        .HasColumnName("resident_id")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HelpRequestId");
+
+                    b.HasIndex("ResidentId");
+
+                    b.ToTable("resident_case_notes");
+                });
+
             modelBuilder.Entity("cv19ResSupportV3.V3.Infrastructure.HelpRequestCallEntity", b =>
                 {
                     b.Property<int>("Id")
@@ -66,45 +95,21 @@ namespace cv19ResSupportV3.V3.Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<string>("AddressFirstLine")
-                        .HasColumnName("address_first_line")
-                        .HasColumnType("character varying");
-
-                    b.Property<string>("AddressSecondLine")
-                        .HasColumnName("address_second_line")
-                        .HasColumnType("character varying");
-
-                    b.Property<string>("AddressThirdLine")
-                        .HasColumnName("address_third_line")
-                        .HasColumnType("character varying");
-
                     b.Property<string>("AdviceNotes")
                         .HasColumnName("advice_notes")
+                        .HasColumnType("character varying");
+
+                    b.Property<string>("AssignedStaff")
+                        .HasColumnName("assigned_staff")
                         .HasColumnType("character varying");
 
                     b.Property<bool?>("CallbackRequired")
                         .HasColumnName("callback_required")
                         .HasColumnType("bool");
 
-                    b.Property<string>("CaseNotes")
-                        .HasColumnName("case_notes")
-                        .HasColumnType("character varying");
-
                     b.Property<bool?>("ConsentToCompleteOnBehalf")
                         .HasColumnName("consent_to_complete_on_behalf")
                         .HasColumnType("bool");
-
-                    b.Property<bool?>("ConsentToShare")
-                        .HasColumnName("consent_to_share")
-                        .HasColumnType("bool");
-
-                    b.Property<string>("ContactMobileNumber")
-                        .HasColumnName("contact_mobile_number")
-                        .HasColumnType("character varying");
-
-                    b.Property<string>("ContactTelephoneNumber")
-                        .HasColumnName("contact_telephone_number")
-                        .HasColumnType("character varying");
 
                     b.Property<string>("CurrentSupport")
                         .HasColumnName("current_support")
@@ -118,32 +123,8 @@ namespace cv19ResSupportV3.V3.Infrastructure.Migrations
                         .HasColumnName("date_time_recorded")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<string>("DobDay")
-                        .HasColumnName("dob_day")
-                        .HasColumnType("character varying");
-
-                    b.Property<string>("DobMonth")
-                        .HasColumnName("dob_month")
-                        .HasColumnType("character varying");
-
-                    b.Property<string>("DobYear")
-                        .HasColumnName("dob_year")
-                        .HasColumnType("character varying");
-
-                    b.Property<string>("EmailAddress")
-                        .HasColumnName("email_address")
-                        .HasColumnType("character varying");
-
-                    b.Property<string>("FirstName")
-                        .HasColumnName("first_name")
-                        .HasColumnType("character varying");
-
                     b.Property<string>("GettingInTouchReason")
                         .HasColumnName("getting_in_touch_reason")
-                        .HasColumnType("character varying");
-
-                    b.Property<string>("GpSurgeryDetails")
-                        .HasColumnName("gp_surgery_details")
                         .HasColumnType("character varying");
 
                     b.Property<string>("HelpNeeded")
@@ -222,28 +203,12 @@ namespace cv19ResSupportV3.V3.Infrastructure.Migrations
                         .HasColumnName("is_on_behalf")
                         .HasColumnType("bool");
 
-                    b.Property<bool?>("IsPharmacistAbleToDeliver")
-                        .HasColumnName("is_pharmacist_able_to_deliver")
-                        .HasColumnType("bool");
-
-                    b.Property<string>("LastName")
-                        .HasColumnName("last_name")
-                        .HasColumnType("character varying");
-
                     b.Property<bool?>("MedicineDeliveryHelpNeeded")
                         .HasColumnName("medicine_delivery_help_needed")
                         .HasColumnType("bool");
 
-                    b.Property<string>("NameAddressPharmacist")
-                        .HasColumnName("name_address_pharmacist")
-                        .HasColumnType("character varying");
-
                     b.Property<string>("NhsCtasId")
                         .HasColumnName("nhs_ctas_id")
-                        .HasColumnType("character varying");
-
-                    b.Property<string>("NumberOfChildrenUnder18")
-                        .HasColumnName("number_of_children_under_18")
                         .HasColumnType("character varying");
 
                     b.Property<string>("OnBehalfContactNumber")
@@ -262,21 +227,13 @@ namespace cv19ResSupportV3.V3.Infrastructure.Migrations
                         .HasColumnName("on_behalf_last_name")
                         .HasColumnType("character varying");
 
-                    b.Property<string>("PostCode")
-                        .HasColumnName("postcode")
-                        .HasColumnType("character varying");
-
-                    b.Property<string>("RecordStatus")
-                        .HasColumnName("record_status")
-                        .HasColumnType("character varying");
-
                     b.Property<string>("RelationshipWithResident")
                         .HasColumnName("relationship_with_resident")
                         .HasColumnType("character varying");
 
-                    b.Property<string>("Uprn")
-                        .HasColumnName("uprn")
-                        .HasColumnType("character varying");
+                    b.Property<int>("ResidentId")
+                        .HasColumnName("resident_id")
+                        .HasColumnType("integer");
 
                     b.Property<string>("UrgentEssentials")
                         .HasColumnName("urgent_essentials")
@@ -286,17 +243,15 @@ namespace cv19ResSupportV3.V3.Infrastructure.Migrations
                         .HasColumnName("urgent_essentials_anything_else")
                         .HasColumnType("character varying");
 
-                    b.Property<string>("Ward")
-                        .HasColumnName("ward")
-                        .HasColumnType("character varying");
-
                     b.Property<string>("WhenIsMedicinesDelivered")
                         .HasColumnName("when_is_medicines_delivered")
                         .HasColumnType("character varying");
 
                     b.HasKey("Id");
 
-                    b.ToTable("i_need_help_resident_support_v3");
+                    b.HasIndex("ResidentId");
+
+                    b.ToTable("help_requests");
                 });
 
             modelBuilder.Entity("cv19ResSupportV3.V3.Infrastructure.LookupEntity", b =>
@@ -320,11 +275,132 @@ namespace cv19ResSupportV3.V3.Infrastructure.Migrations
                     b.ToTable("inh_lookups");
                 });
 
+            modelBuilder.Entity("cv19ResSupportV3.V3.Infrastructure.ResidentEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("id")
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("AddressFirstLine")
+                        .HasColumnName("address_first_line")
+                        .HasColumnType("character varying");
+
+                    b.Property<string>("AddressSecondLine")
+                        .HasColumnName("address_second_line")
+                        .HasColumnType("character varying");
+
+                    b.Property<string>("AddressThirdLine")
+                        .HasColumnName("address_third_line")
+                        .HasColumnType("character varying");
+
+                    b.Property<bool?>("ConsentToShare")
+                        .HasColumnName("consent_to_share")
+                        .HasColumnType("bool");
+
+                    b.Property<string>("ContactMobileNumber")
+                        .HasColumnName("contact_mobile_number")
+                        .HasColumnType("character varying");
+
+                    b.Property<string>("ContactTelephoneNumber")
+                        .HasColumnName("contact_telephone_number")
+                        .HasColumnType("character varying");
+
+                    b.Property<string>("DobDay")
+                        .HasColumnName("dob_day")
+                        .HasColumnType("character varying");
+
+                    b.Property<string>("DobMonth")
+                        .HasColumnName("dob_month")
+                        .HasColumnType("character varying");
+
+                    b.Property<string>("DobYear")
+                        .HasColumnName("dob_year")
+                        .HasColumnType("character varying");
+
+                    b.Property<string>("EmailAddress")
+                        .HasColumnName("email_address")
+                        .HasColumnType("character varying");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnName("first_name")
+                        .HasColumnType("character varying");
+
+                    b.Property<string>("GpSurgeryDetails")
+                        .HasColumnName("gp_surgery_details")
+                        .HasColumnType("character varying");
+
+                    b.Property<bool?>("IsPharmacistAbleToDeliver")
+                        .HasColumnName("is_pharmacist_able_to_deliver")
+                        .HasColumnType("bool");
+
+                    b.Property<string>("LastName")
+                        .HasColumnName("last_name")
+                        .HasColumnType("character varying");
+
+                    b.Property<string>("NameAddressPharmacist")
+                        .HasColumnName("name_address_pharmacist")
+                        .HasColumnType("character varying");
+
+                    b.Property<string>("NhsNumber")
+                        .HasColumnName("nhs_number")
+                        .HasColumnType("character varying");
+
+                    b.Property<string>("NumberOfChildrenUnder18")
+                        .HasColumnName("number_of_children_under_18")
+                        .HasColumnType("character varying");
+
+                    b.Property<string>("PostCode")
+                        .HasColumnName("postcode")
+                        .HasColumnType("character varying");
+
+                    b.Property<string>("RecordStatus")
+                        .HasColumnName("record_status")
+                        .HasColumnType("character varying");
+
+                    b.Property<string>("Uprn")
+                        .HasColumnName("uprn")
+                        .HasColumnType("character varying");
+
+                    b.Property<string>("Ward")
+                        .HasColumnName("ward")
+                        .HasColumnType("character varying");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("residents");
+                });
+
+            modelBuilder.Entity("cv19ResSupportV3.V3.Infrastructure.CaseNoteEntity", b =>
+                {
+                    b.HasOne("cv19ResSupportV3.V3.Infrastructure.HelpRequestEntity", "HelpRequestEntity")
+                        .WithMany("CaseNotes")
+                        .HasForeignKey("HelpRequestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("cv19ResSupportV3.V3.Infrastructure.ResidentEntity", "ResidentEntity")
+                        .WithMany("CaseNotes")
+                        .HasForeignKey("ResidentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("cv19ResSupportV3.V3.Infrastructure.HelpRequestCallEntity", b =>
                 {
                     b.HasOne("cv19ResSupportV3.V3.Infrastructure.HelpRequestEntity", "HelpRequestEntity")
                         .WithMany("HelpRequestCalls")
                         .HasForeignKey("HelpRequestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("cv19ResSupportV3.V3.Infrastructure.HelpRequestEntity", b =>
+                {
+                    b.HasOne("cv19ResSupportV3.V3.Infrastructure.ResidentEntity", "ResidentEntity")
+                        .WithMany("HelpRequests")
+                        .HasForeignKey("ResidentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

@@ -1,6 +1,6 @@
-using cv19ResSupportV3.Tests.V3.Helpers;
-using cv19ResSupportV3.V3.Boundary.Requests;
-using cv19ResSupportV3.V3.Factories;
+using System.Collections.Generic;
+using cv19ResSupportV3.V3.Domain;
+using cv19ResSupportV3.V3.Domain.Commands;
 using cv19ResSupportV3.V3.Gateways;
 using cv19ResSupportV3.V3.UseCase;
 using FluentAssertions;
@@ -25,26 +25,11 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
         [Test]
         public void ReturnsPopulatedHelpRequestListIfParamsProvided()
         {
-            var reqParams = new CallbackRequestParams() { Master = "true" };
-            var stubbedRequests = EntityHelpers.createHelpRequestEntities();
-            foreach (var req in stubbedRequests)
-            {
-                req.RecordStatus = "MASTER";
-            }
-            _mockGateway.Setup(x => x.GetCallbacks(reqParams)).Returns(stubbedRequests);
+            var reqParams = new CallbackQuery() { HelpNeeded = "shielding" };
+            var expectedResponse = new List<HelpRequestWithResident>() { new HelpRequestWithResident() { Id = 3 } };
+            _mockGateway.Setup(x => x.GetCallbacks(reqParams)).Returns(expectedResponse);
             var response = _classUnderTest.Execute(reqParams);
-            response.Should().NotBeNull();
-            response.Should().BeEquivalentTo(stubbedRequests.ToResponse());
-        }
-
-        [Test]
-        public void ReturnsAllCallbacksIfNoParamsProvided()
-        {
-            var reqParams = new CallbackRequestParams();
-            var stubbedRequests = EntityHelpers.createHelpRequestEntities();
-            var expectedResponse = stubbedRequests.ToResponse();
-            _mockGateway.Setup(x => x.GetCallbacks(reqParams)).Returns(stubbedRequests);
-            var response = _classUnderTest.Execute(reqParams);
+            _mockGateway.Verify(x => x.GetCallbacks(reqParams), Times.Once);
             response.Should().NotBeNull();
             response.Should().BeEquivalentTo(expectedResponse);
         }
