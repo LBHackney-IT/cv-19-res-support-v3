@@ -44,6 +44,7 @@ namespace cv19ResSupportV3.V3.Domain
         public string AdviceNotes { get; set; }
         public string HelpNeeded { get; set; }
         public string NhsCtasId { get; set; }
+        public string AssignedStaff { get; set; }
         public List<HelpRequestCall> HelpRequestCalls { get; set; }
     }
 }
