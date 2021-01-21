@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Amazon.Lambda.Core;
-using cv19ResSupportV3.V3.Boundary.Requests;
+using cv19ResSupportV3.V3.Domain;
+using cv19ResSupportV3.V3.Domain.Commands;
+using cv19ResSupportV3.V3.Domain.Queries;
 using cv19ResSupportV3.V3.Factories;
-using cv19ResSupportV3.V3.Gateways;
+using cv19ResSupportV3.V3.Factories.Commands;
 using cv19ResSupportV3.V3.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using HelpRequest = cv19ResSupportV3.V3.Domain.HelpRequest;
@@ -14,7 +16,6 @@ namespace cv19ResSupportV3.V3.Gateways
 {
     public class HelpRequestGateway : IHelpRequestGateway
     {
-
         private readonly HelpRequestsContext _helpRequestsContext;
 
         public HelpRequestGateway(HelpRequestsContext helpRequestsContext)
@@ -22,16 +23,20 @@ namespace cv19ResSupportV3.V3.Gateways
             _helpRequestsContext = helpRequestsContext;
         }
 
-        public int CreateHelpRequest(HelpRequestEntity request)
+        public int CreateHelpRequest(int residentId, CreateHelpRequest command)
         {
-            if (request == null) return 0;
-            SetRecordStatus(request);
-            request.CallbackRequired ??= true;
+            var requestEntity = command.ToEntity();
+            if (requestEntity == null) return 0;
+
+            requestEntity.ResidentId = residentId;
+
+            // SetRecordStatus(requestEntity);
+            requestEntity.CallbackRequired ??= true;
             try
             {
-                _helpRequestsContext.HelpRequestEntities.Add(request);
+                _helpRequestsContext.HelpRequestEntities.Add(requestEntity);
                 _helpRequestsContext.SaveChanges();
-                return request.Id;
+                return requestEntity.Id;
             }
             catch (Exception e)
             {
@@ -41,11 +46,27 @@ namespace cv19ResSupportV3.V3.Gateways
             }
         }
 
-        public List<LookupEntity> GetLookups(LookupQueryParams requestParams)
+        public int? FindHelpRequestByCtasId(string ctasId)
+        {
+            try
+            {
+                if (ctasId == null) return null;
+                var helpRequestEntity = _helpRequestsContext.HelpRequestEntities.FirstOrDefault(x => x.NhsCtasId == ctasId);
+                return helpRequestEntity?.Id;
+            }
+            catch (Exception e)
+            {
+                LambdaLogger.Log("FindHelpRequestByCtasId error: ");
+                LambdaLogger.Log(e.Message);
+                throw;
+            }
+        }
+
+        public List<LookupDomain> GetLookups(LookupQuery command)
         {
             Expression<Func<LookupEntity, bool>> queryLookups = x =>
-                string.IsNullOrWhiteSpace(requestParams.LookupGroup)
-                || x.LookupGroup.Replace(" ", "").ToUpper().Equals(requestParams.LookupGroup.Replace(" ", "").ToUpper());
+                string.IsNullOrWhiteSpace(command.LookupGroup)
+                || x.LookupGroup.Replace(" ", "").ToUpper().Equals(command.LookupGroup.Replace(" ", "").ToUpper());
             try
             {
                 var response = _helpRequestsContext.Lookups
@@ -53,25 +74,25 @@ namespace cv19ResSupportV3.V3.Gateways
                     .OrderBy(x => x.LookupGroup)
                     .ThenBy(x => x.Lookup)
                     .ToList();
-                return response;
+                return response.ToDomain();
             }
             catch (Exception e)
             {
-                LambdaLogger.Log("GetCallbacks error: ");
+                LambdaLogger.Log("GetLookups error: ");
                 LambdaLogger.Log(e.Message);
                 throw;
             }
         }
 
-        public HelpRequestEntity UpdateHelpRequest(HelpRequestEntity request)
+        public HelpRequest UpdateHelpRequest(int id, UpdateHelpRequest command)
         {
-            if (request == null) return null;
+            if (command == null) return null;
             try
             {
-                var entity = _helpRequestsContext.HelpRequestEntities.Find(request.Id);
-                _helpRequestsContext.Entry(entity).CurrentValues.SetValues(request);
+                var entity = _helpRequestsContext.HelpRequestEntities.Find(id);
+                _helpRequestsContext.Entry(entity).CurrentValues.SetValues(command);
                 _helpRequestsContext.SaveChanges();
-                return entity;
+                return entity.ToDomain();
             }
             catch (Exception e)
             {
@@ -79,52 +100,62 @@ namespace cv19ResSupportV3.V3.Gateways
                 LambdaLogger.Log(e.Message);
                 throw;
             }
+
         }
 
-        public HelpRequestEntity GetHelpRequest(int id)
+        public HelpRequestWithResident GetHelpRequest(int id)
         {
             try
             {
-                var result = _helpRequestsContext.HelpRequestEntities
+                var helpRequest = _helpRequestsContext.HelpRequestEntities
                     .Include(x => x.HelpRequestCalls)
+                    .Include(x => x.ResidentEntity)
+                    .Include(x => x.CaseNotes)
                     .FirstOrDefault(x => x.Id == id);
-                return result;
+                return helpRequest?.ToHelpRequestWithResidentDomain();
             }
             catch (Exception e)
             {
-                LambdaLogger.Log("GetHelpRequest error: ");
+                LambdaLogger.Log("GetResidentAndHelpRequest error: ");
                 LambdaLogger.Log(e.Message);
                 throw;
             }
         }
 
-        public List<HelpRequestEntity> SearchHelpRequests(RequestQueryParams queryParams)
+        public List<HelpRequestWithResident> SearchHelpRequests(SearchRequest command)
         {
             Expression<Func<HelpRequestEntity, bool>> queryPostCode = x =>
-                string.IsNullOrWhiteSpace(queryParams.Postcode)
-                || x.PostCode.Replace(" ", "").ToUpper().Contains(queryParams.Postcode.Replace(" ", "").ToUpper());
+                string.IsNullOrWhiteSpace(command.Postcode)
+                || x.ResidentEntity.PostCode.Replace(" ", "").ToUpper()
+                    .Contains(command.Postcode.Replace(" ", "").ToUpper());
 
             Expression<Func<HelpRequestEntity, bool>> queryFirstName = x =>
-                string.IsNullOrWhiteSpace(queryParams.FirstName)
-                || x.FirstName.Replace(" ", "").ToUpper().Contains(queryParams.FirstName.Replace(" ", "").ToUpper());
+                string.IsNullOrWhiteSpace(command.FirstName)
+                || x.ResidentEntity.FirstName.Replace(" ", "").ToUpper()
+                    .Contains(command.FirstName.Replace(" ", "").ToUpper());
 
             Expression<Func<HelpRequestEntity, bool>> queryLastName = x =>
-                string.IsNullOrWhiteSpace(queryParams.LastName)
-                || x.LastName.Replace(" ", "").ToUpper().Contains(queryParams.LastName.Replace(" ", "").ToUpper());
+                string.IsNullOrWhiteSpace(command.LastName)
+                || x.ResidentEntity.LastName.Replace(" ", "").ToUpper()
+                    .Contains(command.LastName.Replace(" ", "").ToUpper());
 
             Expression<Func<HelpRequestEntity, bool>> queryHelpNeeded = x =>
-                string.IsNullOrWhiteSpace(queryParams.HelpNeeded)
-                || x.HelpNeeded.Replace(" ", "").ToUpper().Equals(queryParams.HelpNeeded.Replace(" ", "").ToUpper());
+                string.IsNullOrWhiteSpace(command.HelpNeeded)
+                || x.HelpNeeded.Replace(" ", "").ToUpper().Equals(command.HelpNeeded.Replace(" ", "").ToUpper());
+
 
             try
             {
                 return _helpRequestsContext.HelpRequestEntities
                     .Include(x => x.HelpRequestCalls)
+                    .Include(x => x.CaseNotes)
+                    .Include(x => x.ResidentEntity)
                     .Where(queryPostCode)
                     .Where(queryFirstName)
                     .Where(queryLastName)
                     .Where(queryHelpNeeded)
-                    .ToList();
+                    .ToList()
+                    .ToHelpRequestWithResidentDomain();
             }
             catch (Exception e)
             {
@@ -134,201 +165,146 @@ namespace cv19ResSupportV3.V3.Gateways
             }
         }
 
-        public void PatchHelpRequest(int id, HelpRequestEntity request)
+        public HelpRequest PatchHelpRequest(int id, PatchHelpRequest command)
         {
             try
             {
                 var rec = _helpRequestsContext.HelpRequestEntities.SingleOrDefault(x => x.Id == id);
-                if (request == null)
+                if (command == null)
                 {
                     throw new Exception("Record not found.");
                 }
-                if (request.GettingInTouchReason != null)
+
+                if (command.GettingInTouchReason != null)
                 {
-                    rec.GettingInTouchReason = request.GettingInTouchReason;
-                }
-                if (request.HelpWithAccessingFood != null)
-                {
-                    rec.HelpWithAccessingFood = request.HelpWithAccessingFood;
-                }
-                if (request.HelpWithAccessingSupermarketFood != null)
-                {
-                    rec.HelpWithAccessingSupermarketFood = request.HelpWithAccessingSupermarketFood;
-                }
-                if (request.HelpWithCompletingNssForm != null)
-                {
-                    rec.HelpWithCompletingNssForm = request.HelpWithCompletingNssForm;
-                }
-                if (request.HelpWithShieldingGuidance != null)
-                {
-                    rec.HelpWithShieldingGuidance = request.HelpWithShieldingGuidance;
-                }
-                if (request.HelpWithNoNeedsIdentified != null)
-                {
-                    rec.HelpWithNoNeedsIdentified = request.HelpWithNoNeedsIdentified;
-                }
-                if (request.HelpWithAccessingMedicine != null)
-                {
-                    rec.HelpWithAccessingMedicine = request.HelpWithAccessingMedicine;
-                }
-                if (request.HelpWithAccessingOtherEssentials != null)
-                {
-                    rec.HelpWithAccessingOtherEssentials = request.HelpWithAccessingOtherEssentials;
-                }
-                if (request.HelpWithDebtAndMoney != null)
-                {
-                    rec.HelpWithDebtAndMoney = request.HelpWithDebtAndMoney;
-                }
-                if (request.HelpWithMentalHealth != null)
-                {
-                    rec.HelpWithMentalHealth = request.HelpWithMentalHealth;
-                }
-                if (request.HelpWithHealth != null)
-                {
-                    rec.HelpWithHealth = request.HelpWithHealth;
-                }
-                if (request.HelpWithAccessingInternet != null)
-                {
-                    rec.HelpWithAccessingInternet = request.HelpWithAccessingInternet;
-                }
-                if (request.HelpWithSomethingElse != null)
-                {
-                    rec.HelpWithSomethingElse = request.HelpWithSomethingElse;
-                }
-                if (request.CurrentSupport != null)
-                {
-                    rec.CurrentSupport = request.CurrentSupport;
+                    rec.GettingInTouchReason = command.GettingInTouchReason;
                 }
 
-                if (request.CurrentSupportFeedback != null)
+                if (command.HelpWithAccessingFood != null)
                 {
-                    rec.CurrentSupportFeedback = request.CurrentSupportFeedback;
+                    rec.HelpWithAccessingFood = command.HelpWithAccessingFood;
                 }
 
-                if (request.FirstName != null)
+                if (command.HelpWithAccessingSupermarketFood != null)
                 {
-                    rec.FirstName = request.FirstName;
+                    rec.HelpWithAccessingSupermarketFood = command.HelpWithAccessingSupermarketFood;
                 }
 
-                if (request.LastName != null)
+                if (command.HelpWithCompletingNssForm != null)
                 {
-                    rec.LastName = request.LastName;
+                    rec.HelpWithCompletingNssForm = command.HelpWithCompletingNssForm;
                 }
 
-                if (request.DobMonth != null)
+                if (command.HelpWithShieldingGuidance != null)
                 {
-                    rec.DobMonth = request.DobMonth;
+                    rec.HelpWithShieldingGuidance = command.HelpWithShieldingGuidance;
                 }
 
-                if (request.DobYear != null)
+                if (command.HelpWithNoNeedsIdentified != null)
                 {
-                    rec.DobYear = request.DobYear;
+                    rec.HelpWithNoNeedsIdentified = command.HelpWithNoNeedsIdentified;
                 }
 
-                if (request.DobDay != null)
+                if (command.HelpWithAccessingMedicine != null)
                 {
-                    rec.DobDay = request.DobDay;
+                    rec.HelpWithAccessingMedicine = command.HelpWithAccessingMedicine;
                 }
 
-                if (request.ContactTelephoneNumber != null)
+                if (command.HelpWithAccessingOtherEssentials != null)
                 {
-                    rec.ContactTelephoneNumber = request.ContactTelephoneNumber;
+                    rec.HelpWithAccessingOtherEssentials = command.HelpWithAccessingOtherEssentials;
                 }
 
-                if (request.ContactMobileNumber != null)
+                if (command.HelpWithDebtAndMoney != null)
                 {
-                    rec.ContactMobileNumber = request.ContactMobileNumber;
+                    rec.HelpWithDebtAndMoney = command.HelpWithDebtAndMoney;
                 }
 
-                if (request.EmailAddress != null)
+                if (command.HelpWithMentalHealth != null)
                 {
-                    rec.EmailAddress = request.EmailAddress;
+                    rec.HelpWithMentalHealth = command.HelpWithMentalHealth;
                 }
 
-                if (request.AddressFirstLine != null && request.PostCode != null)
+                if (command.HelpWithHealth != null)
                 {
-                    // update new address fields
-                    rec.AddressFirstLine = request.AddressFirstLine;
-                    rec.AddressSecondLine = request.AddressSecondLine;
-                    rec.AddressThirdLine = request.AddressThirdLine;
-                    rec.PostCode = request.PostCode;
-                    rec.Uprn = request.Uprn;
-                    rec.Ward = request.Ward;
+                    rec.HelpWithHealth = command.HelpWithHealth;
                 }
 
-                if (request.GpSurgeryDetails != null)
+                if (command.HelpWithAccessingInternet != null)
                 {
-                    rec.GpSurgeryDetails = request.GpSurgeryDetails;
+                    rec.HelpWithAccessingInternet = command.HelpWithAccessingInternet;
                 }
 
-                if (request.NumberOfChildrenUnder18 != null)
+                if (command.HelpWithSomethingElse != null)
                 {
-                    rec.NumberOfChildrenUnder18 = request.NumberOfChildrenUnder18;
+                    rec.HelpWithSomethingElse = command.HelpWithSomethingElse;
                 }
 
-                if (request.ConsentToShare != null)
+                if (command.CurrentSupport != null)
                 {
-                    rec.ConsentToShare = request.ConsentToShare;
+                    rec.CurrentSupport = command.CurrentSupport;
                 }
 
-                if (request.CaseNotes != null)
+                if (command.CurrentSupportFeedback != null)
                 {
-                    rec.CaseNotes = request.CaseNotes;
+                    rec.CurrentSupportFeedback = command.CurrentSupportFeedback;
                 }
 
-                if (request.AdviceNotes != null)
+                if (command.AdviceNotes != null)
                 {
-                    rec.AdviceNotes = request.AdviceNotes;
+                    rec.AdviceNotes = command.AdviceNotes;
                 }
 
-                if (request.InitialCallbackCompleted != null)
+                if (command.InitialCallbackCompleted != null)
                 {
-                    rec.InitialCallbackCompleted = request.InitialCallbackCompleted;
+                    rec.InitialCallbackCompleted = command.InitialCallbackCompleted;
                 }
 
-                if (request.CallbackRequired != null)
+                if (command.CallbackRequired != null)
                 {
-                    rec.CallbackRequired = request.CallbackRequired;
+                    rec.CallbackRequired = command.CallbackRequired;
                 }
 
-                if (request.RecordStatus != null)
+                if (command.NhsCtasId != null)
                 {
-                    rec.RecordStatus = request.RecordStatus;
+                    rec.NhsCtasId = command.NhsCtasId;
                 }
 
-                if (request.HelpNeeded != null)
+                if (command.HelpNeeded != null)
                 {
-                    rec.HelpNeeded = request.HelpNeeded;
+                    rec.HelpNeeded = command.HelpNeeded;
                 }
+
                 _helpRequestsContext.SaveChanges();
             }
             catch (Exception e)
             {
-                LambdaLogger.Log("PatchHelpRequest error: ");
+                LambdaLogger.Log("PatchResidentAndHelpRequest error: ");
                 LambdaLogger.Log(e.Message);
                 throw;
             }
+
+            return _helpRequestsContext.HelpRequestEntities.Find(id).ToDomain();
         }
 
-        public List<HelpRequestEntity> GetCallbacks(CallbackRequestParams requestParams)
+
+        public List<HelpRequestWithResident> GetCallbacks(CallbackQuery command)
         {
             Expression<Func<HelpRequestEntity, bool>> queryHelpNeeded = x =>
-                string.IsNullOrWhiteSpace(requestParams.HelpNeeded)
-                || x.HelpNeeded.Replace(" ", "").ToUpper().Equals(requestParams.HelpNeeded.Replace(" ", "").ToUpper());
+                string.IsNullOrWhiteSpace(command.HelpNeeded)
+                || x.HelpNeeded.Replace(" ", "").ToUpper().Equals(command.HelpNeeded.Replace(" ", "").ToUpper());
             try
             {
                 var response = _helpRequestsContext.HelpRequestEntities.Include(x => x.HelpRequestCalls)
+                    .Include(x => x.ResidentEntity)
+                    .Include(x => x.CaseNotes)
                     .Where(x => (x.CallbackRequired == true || x.CallbackRequired == null ||
                                  (x.InitialCallbackCompleted == false && x.CallbackRequired == false)))
                     .Where(queryHelpNeeded)
                     .OrderByDescending(x => x.InitialCallbackCompleted)
                     .ThenBy(x => x.DateTimeRecorded)
                     .ToList();
-                if (!string.IsNullOrWhiteSpace(requestParams.Master))
-                {
-                    return response.Where(x => x.RecordStatus != null && x.RecordStatus.Replace(" ", "").ToUpper() == "MASTER").ToList();
-                }
-                return response;
+                return response.ToHelpRequestWithResidentDomain();
             }
             catch (Exception e)
             {
@@ -338,32 +314,31 @@ namespace cv19ResSupportV3.V3.Gateways
             }
         }
 
-        private void SetRecordStatus(HelpRequestEntity request)
-        {
-            request.RecordStatus = "MASTER";
-            var duplicates = _helpRequestsContext.HelpRequestEntities
-                .Where(x => x.Uprn == request.Uprn && x.DobMonth == request.DobMonth
-                                                   && x.DobDay == request.DobDay && x.DobYear == request.DobYear &&
-                                                   x.ContactTelephoneNumber == request.ContactTelephoneNumber &&
-                                                   x.ContactMobileNumber == request.ContactMobileNumber).ToList();
-            if (duplicates.Count > 0)
-            {
-                foreach (var record in duplicates)
-                {
-                    var rec = _helpRequestsContext.HelpRequestEntities.Find(record.Id);
-                    rec.RecordStatus = "DUPLICATE";
-                }
-            }
-            else
-            {
-                var exceptions = _helpRequestsContext.HelpRequestEntities
-                    .Where(x => x.Uprn == request.Uprn).ToList();
-                if (exceptions.Count > 0)
-                {
-                    request.RecordStatus = "EXCEPTION";
-                }
-            }
-
-        }
+        //        private void SetRecordStatus(HelpRequestEntityOld request)
+        //        {
+        //            request.RecordStatus = "MASTER";
+        //            var duplicates = _helpRequestsContext.HelpRequestEntities
+        //                .Where(x => x.Uprn == request.Uprn && x.DobMonth == request.DobMonth
+        //                                                   && x.DobDay == request.DobDay && x.DobYear == request.DobYear &&
+        //                                                   x.ContactTelephoneNumber == request.ContactTelephoneNumber &&
+        //                                                   x.ContactMobileNumber == request.ContactMobileNumber).ToList();
+        //            if (duplicates.Count > 0)
+        //            {
+        //                foreach (var record in duplicates)
+        //                {
+        //                    var rec = _helpRequestsContext.HelpRequestEntities.Find(record.Id);
+        //                    rec.RecordStatus = "DUPLICATE";
+        //                }
+        //            }
+        //            else
+        //            {
+        //                var exceptions = _helpRequestsContext.HelpRequestEntities
+        //                    .Where(x => x.Uprn == request.Uprn).ToList();
+        //                if (exceptions.Count > 0)
+        //                {
+        //                    request.RecordStatus = "EXCEPTION";
+        //                }
+        //            }
+        //        }
     }
 }

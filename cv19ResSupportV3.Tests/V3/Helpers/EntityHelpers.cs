@@ -8,19 +8,34 @@ namespace cv19ResSupportV3.Tests.V3.Helpers
 {
     public static class EntityHelpers
     {
-        public static HelpRequestEntity createHelpRequestEntity(int id = 1)
+        public static ResidentEntity createResident(int id = 1)
+        {
+            var helpRequestEntity = Randomm.Build<ResidentEntity>()
+                .With(x => x.Id, id)
+                .Without(h => h.CaseNotes)
+                .Without(h => h.HelpRequests)
+                .Create();
+            return helpRequestEntity;
+        }
+        public static HelpRequestEntity createHelpRequestEntity(int id = 1, int residentId = 1)
         {
             var helpRequestEntity = Randomm.Build<HelpRequestEntity>()
                 .With(x => x.Id, id)
+                .With(x => x.ResidentId, residentId)
                 .Without(h => h.HelpRequestCalls)
+                .Without(h => h.CaseNotes)
+                .Without(h => h.ResidentEntity)
                 .Create();
             return helpRequestEntity;
         }
 
-        public static List<HelpRequestEntity> createHelpRequestEntities(int count = 3)
+        public static List<HelpRequestEntity> createHelpRequestEntities(int count = 3, int residentId = 1)
         {
             var helpRequestEntities = Randomm.Build<HelpRequestEntity>()
                 .Without(h => h.HelpRequestCalls)
+                .Without(h => h.CaseNotes)
+                .Without(h => h.ResidentEntity)
+                .With(x => x.ResidentId, residentId)
                 .CreateMany(count)
                 .ToList();
             return helpRequestEntities;

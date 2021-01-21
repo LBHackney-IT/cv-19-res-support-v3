@@ -1,6 +1,4 @@
-using cv19ResSupportV3.V3.Boundary.Response;
-using cv19ResSupportV3.V3.Domain;
-using cv19ResSupportV3.V3.Factories;
+using cv19ResSupportV3.V3.Domain.Commands;
 using cv19ResSupportV3.V3.Gateways;
 using cv19ResSupportV3.V3.UseCase.Interfaces;
 
@@ -13,13 +11,9 @@ namespace cv19ResSupportV3.V3.UseCase
         {
             _helpRequestCallGateway = helpRequestCallGateway;
         }
-        public HelpRequestCallCreateResponse Execute(int id, HelpRequestCall request)
+        public int Execute(int id, CreateHelpRequestCall command)
         {
-            var response = _helpRequestCallGateway.CreateHelpRequestCall(id, request.ToEntity());
-            return new HelpRequestCallCreateResponse
-            {
-                Id = response
-            };
+            return _helpRequestCallGateway.CreateHelpRequestCall(id, command);
         }
     }
 }

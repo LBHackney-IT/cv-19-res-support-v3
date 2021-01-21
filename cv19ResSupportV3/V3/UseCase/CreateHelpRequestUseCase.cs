@@ -1,6 +1,4 @@
-using cv19ResSupportV3.V3.Boundary.Response;
-using cv19ResSupportV3.V3.Domain;
-using cv19ResSupportV3.V3.Factories;
+using cv19ResSupportV3.V3.Domain.Commands;
 using cv19ResSupportV3.V3.Gateways;
 using cv19ResSupportV3.V3.UseCase.Interfaces;
 
@@ -8,18 +6,17 @@ namespace cv19ResSupportV3.V3.UseCase
 {
     public class CreateHelpRequestUseCase : ICreateHelpRequestUseCase
     {
-        private IHelpRequestGateway _gateway;
+        private readonly IHelpRequestGateway _gateway;
         public CreateHelpRequestUseCase(IHelpRequestGateway gateway)
         {
             _gateway = gateway;
         }
-        public HelpRequestCreateResponse Execute(HelpRequest request)
+        public int Execute(int residentId, CreateHelpRequest command)
         {
-            var response = _gateway.CreateHelpRequest(request.ToEntity());
-            return new HelpRequestCreateResponse
-            {
-                Id = response
-            };
+            var helpRequestId = _gateway.FindHelpRequestByCtasId(command.NhsCtasId);
+            if (helpRequestId != null) { return (int) helpRequestId; }
+
+            return _gateway.CreateHelpRequest(residentId, command);
         }
     }
 }

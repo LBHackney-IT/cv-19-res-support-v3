@@ -242,6 +242,10 @@ namespace cv19ResSupportV3.V3.Infrastructure.Migrations
                         .HasColumnName("nhs_ctas_id")
                         .HasColumnType("character varying");
 
+                    b.Property<string>("NhsNumber")
+                        .HasColumnName("nhs_number")
+                        .HasColumnType("character varying");
+
                     b.Property<string>("NumberOfChildrenUnder18")
                         .HasColumnName("number_of_children_under_18")
                         .HasColumnType("character varying");

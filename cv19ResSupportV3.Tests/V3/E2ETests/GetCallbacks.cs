@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using cv19ResSupportV3.Tests.V3.Helper;
 using cv19ResSupportV3.Tests.V3.Helpers;
 using cv19ResSupportV3.V3.Boundary.Response;
+using cv19ResSupportV3.V3.Infrastructure;
 using FluentAssertions;
 using Newtonsoft.Json;
 using NUnit.Framework;
@@ -26,13 +27,16 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
         [Test]
         public async Task GetCallbacksReturnsCallbacks()
         {
+            var resident = EntityHelpers.createResident(34);
             var helpRequests = EntityHelpers.createHelpRequestEntities();
             foreach (var request in helpRequests)
             {
                 request.CallbackRequired = true;
                 request.InitialCallbackCompleted = true;
                 request.DateTimeRecorded = DateTime.Today.AddDays(-2);
+                request.ResidentId = resident.Id;
             }
+            DatabaseContext.ResidentEntities.Add(resident);
             DatabaseContext.HelpRequestEntities.AddRange(helpRequests);
             DatabaseContext.SaveChanges();
             var requestUri = new Uri($"api/v3/help-requests/callbacks", UriKind.Relative);
@@ -41,7 +45,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             statusCode.Should().Be(200);
             var responseBody = response.Result.Content;
             var stringResponse = await responseBody.ReadAsStringAsync().ConfigureAwait(true);
-            var deserializedBody = JsonConvert.DeserializeObject<List<HelpRequestGetResponse>>(stringResponse);
+            var deserializedBody = JsonConvert.DeserializeObject<List<HelpRequestResponse>>(stringResponse);
             DatabaseContext.HelpRequestEntities.Count().Should().Be(helpRequests.Count);
             deserializedBody.Count.Should().Be(helpRequests.Count);
         }
@@ -49,13 +53,16 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
         [Test]
         public async Task GetCallbacksWithNoCallbacksRecordedReturnsNothing()
         {
+            var resident = EntityHelpers.createResident(35);
             var helpRequests = EntityHelpers.createHelpRequestEntities();
             foreach (var request in helpRequests)
             {
                 request.InitialCallbackCompleted = true;
                 request.CallbackRequired = false;
                 request.DateTimeRecorded = DateTime.Today.AddDays(-2);
+                request.ResidentId = resident.Id;
             }
+            DatabaseContext.ResidentEntities.Add(resident);
             DatabaseContext.HelpRequestEntities.AddRange(helpRequests);
             DatabaseContext.SaveChanges();
             var requestUri = new Uri($"api/v3/help-requests/callbacks", UriKind.Relative);
@@ -64,75 +71,49 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             statusCode.Should().Be(200);
             var responseBody = response.Result.Content;
             var stringResponse = await responseBody.ReadAsStringAsync().ConfigureAwait(true);
-            var deserializedBody = JsonConvert.DeserializeObject<List<HelpRequestGetResponse>>(stringResponse);
+            var deserializedBody = JsonConvert.DeserializeObject<List<HelpRequestResponse>>(stringResponse);
             DatabaseContext.HelpRequestEntities.Count().Should().Be(helpRequests.Count);
             deserializedBody.Count.Should().Be(0);
         }
 
-        [Test]
-        public async Task GetCallbacksMasterRecordsReturnsOnlyMasterRecords()
-        {
-            var helpRequests = EntityHelpers.createHelpRequestEntities();
-            int count = 0;
-            foreach (var request in helpRequests)
-            {
-                request.InitialCallbackCompleted = true;
-                request.CallbackRequired = true;
-                request.DateTimeRecorded = DateTime.Today.AddDays(-2);
-                if (count % 2 == 0)
-                {
-                    request.RecordStatus = "MASTER";
-                }
-                else
-                {
-                    request.RecordStatus = "DUPLICATE";
-                }
-                count++;
-            }
-            DatabaseContext.HelpRequestEntities.AddRange(helpRequests);
-            DatabaseContext.SaveChanges();
-            DatabaseContext.HelpRequestEntities.Count().Should().Be(helpRequests.Count);
-            var requestUri = new Uri($"api/v3/help-requests/callbacks?master=true", UriKind.Relative);
-            var response = Client.GetAsync(requestUri);
-            var statusCode = response.Result.StatusCode;
-            statusCode.Should().Be(200);
-            var responseBody = response.Result.Content;
-            int expectedResponse = helpRequests.Count(a => a.RecordStatus == "MASTER");
-            var stringResponse = await responseBody.ReadAsStringAsync().ConfigureAwait(true);
-            var deserializedBody = JsonConvert.DeserializeObject<List<HelpRequestGetResponse>>(stringResponse);
-            deserializedBody.Count.Should().Be(expectedResponse);
-        }
 
         [Test]
-        public async Task GetCallbacksMasterWithWhiteSpaceStillReturnsMasterRecords()
+        public async Task GetCallbacksMasterWithWhiteSpaceStillReturnsRecords()
         {
+            var resident = EntityHelpers.createResident(36);
             var helpRequests = EntityHelpers.createHelpRequestEntities();
             foreach (var request in helpRequests)
             {
                 request.InitialCallbackCompleted = true;
                 request.CallbackRequired = true;
-                request.RecordStatus = "MASTER ";
+                request.HelpNeeded = "help ";
+                request.ResidentId = resident.Id;
             }
+            DatabaseContext.ResidentEntities.Add(resident);
             DatabaseContext.HelpRequestEntities.AddRange(helpRequests);
             DatabaseContext.SaveChanges();
-            var requestUri = new Uri($"api/v3/help-requests/callbacks?master=true", UriKind.Relative);
+            var requestUri = new Uri($"api/v3/help-requests/callbacks?helpneeded=help", UriKind.Relative);
             var response = Client.GetAsync(requestUri);
             var responseBody = response.Result.Content;
             var stringResponse = await responseBody.ReadAsStringAsync().ConfigureAwait(true);
-            var deserializedBody = JsonConvert.DeserializeObject<List<HelpRequestGetResponse>>(stringResponse);
+            var deserializedBody = JsonConvert.DeserializeObject<List<HelpRequestResponse>>(stringResponse);
             deserializedBody.Count.Should().Be(helpRequests.Count);
         }
 
         [Test]
         public async Task GetCallbacksReturnsCallbacksWithHelpRequestCalls()
         {
+            var resident = EntityHelpers.createResident(37);
             var helpRequest = EntityHelpers.createHelpRequestEntity();
             var calls = EntityHelpers.createHelpRequestCallEntities();
+            helpRequest.Id = 99;
             helpRequest.CallbackRequired = true;
             helpRequest.InitialCallbackCompleted = true;
             helpRequest.DateTimeRecorded = DateTime.Today.AddDays(-2);
+            helpRequest.ResidentId = resident.Id;
 
             calls.ForEach(x => x.HelpRequestId = helpRequest.Id);
+            DatabaseContext.ResidentEntities.Add(resident);
             DatabaseContext.HelpRequestEntities.Add(helpRequest);
             DatabaseContext.HelpRequestCallEntities.AddRange(calls);
             DatabaseContext.SaveChanges();
@@ -143,7 +124,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             statusCode.Should().Be(200);
             var responseBody = response.Result.Content;
             var stringResponse = await responseBody.ReadAsStringAsync().ConfigureAwait(true);
-            var deserializedBody = JsonConvert.DeserializeObject<List<HelpRequestGetResponse>>(stringResponse);
+            var deserializedBody = JsonConvert.DeserializeObject<List<HelpRequestResponse>>(stringResponse);
             DatabaseContext.HelpRequestEntities.Count().Should().Be(1);
             deserializedBody.Count.Should().Be(1);
             deserializedBody.First().HelpRequestCalls.Count.Should().Be(3);
@@ -153,8 +134,5 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
                 return options;
             });
         }
-
-
-
     }
 }

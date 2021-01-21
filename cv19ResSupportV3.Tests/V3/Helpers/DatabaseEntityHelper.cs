@@ -26,12 +26,6 @@ namespace cv19ResSupportV3.Tests.V3.Helper
                 OnBehalfEmailAddress = helpRequest.OnBehalfEmailAddress,
                 OnBehalfContactNumber = helpRequest.OnBehalfContactNumber,
                 RelationshipWithResident = helpRequest.RelationshipWithResident,
-                PostCode = helpRequest.PostCode,
-                Uprn = helpRequest.Uprn,
-                Ward = helpRequest.Ward,
-                AddressFirstLine = helpRequest.AddressFirstLine,
-                AddressSecondLine = helpRequest.AddressSecondLine,
-                AddressThirdLine = helpRequest.AddressThirdLine,
                 GettingInTouchReason = helpRequest.GettingInTouchReason,
                 HelpWithAccessingFood = helpRequest.HelpWithAccessingFood,
                 HelpWithAccessingSupermarketFood = helpRequest.HelpWithAccessingSupermarketFood,
@@ -46,25 +40,14 @@ namespace cv19ResSupportV3.Tests.V3.Helper
                 HelpWithAccessingInternet = helpRequest.HelpWithAccessingInternet,
                 HelpWithSomethingElse = helpRequest.HelpWithSomethingElse,
                 MedicineDeliveryHelpNeeded = helpRequest.MedicineDeliveryHelpNeeded,
-                IsPharmacistAbleToDeliver = helpRequest.IsPharmacistAbleToDeliver,
                 WhenIsMedicinesDelivered = helpRequest.WhenIsMedicinesDelivered,
-                NameAddressPharmacist = helpRequest.NameAddressPharmacist,
                 UrgentEssentials = helpRequest.UrgentEssentials,
                 CurrentSupport = helpRequest.CurrentSupport,
                 CurrentSupportFeedback = helpRequest.CurrentSupportFeedback,
-                FirstName = helpRequest.FirstName,
-                LastName = helpRequest.LastName,
-                DobMonth = helpRequest.DobMonth,
-                DobYear = helpRequest.DobYear,
-                DobDay = helpRequest.DobDay,
-                ContactTelephoneNumber = helpRequest.ContactTelephoneNumber,
-                ContactMobileNumber = helpRequest.ContactMobileNumber,
-                EmailAddress = helpRequest.EmailAddress,
-                GpSurgeryDetails = helpRequest.GpSurgeryDetails,
-                NumberOfChildrenUnder18 = helpRequest.NumberOfChildrenUnder18,
-                ConsentToShare = helpRequest.ConsentToShare,
                 DateTimeRecorded = helpRequest.DateTimeRecorded
             };
         }
     }
 }
+
+
