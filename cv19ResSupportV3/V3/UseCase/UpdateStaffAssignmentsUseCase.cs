@@ -26,16 +26,10 @@ namespace cv19ResSupportV3.V3.UseCase
             var numberOfStaff = command.StaffMembers.Count;
             var numberOfRequests = helpRequests.Count;
 
-            var requestsPerStaff = numberOfRequests / numberOfStaff;
-
-            for (var i=0; i < command.StaffMembers.Count; i++)
+            for (var i=0; i < numberOfRequests; i++)
             {
-                for (var ii = i * requestsPerStaff; ii < requestsPerStaff * (i + 1); ii++)
-                {
-                    var patchRequestObject = new PatchHelpRequest{ AssignedStaff = command.StaffMembers[i] };
-
-                    _gateway.PatchHelpRequest(helpRequests[ii].Id, patchRequestObject);
-                }
+                var patchRequestObject = new PatchHelpRequest{ AssignedStaff = command.StaffMembers[i % numberOfStaff] };
+                _gateway.PatchHelpRequest(helpRequests[i].Id, patchRequestObject);
             }
         }
     }
