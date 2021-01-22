@@ -6,6 +6,7 @@ using cv19ResSupportV3.V3.Factories;
 using cv19ResSupportV3.V3.Factories.Commands;
 using cv19ResSupportV3.V3.UseCase;
 using cv19ResSupportV3.V3.UseCase.Interfaces;
+using cv19ResSupportV3.V3.Validations;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -157,12 +158,22 @@ namespace cv19ResSupportV3.V3.Controllers
             return Ok(result.ToResponse());
         }
 
+        /// <summary>
+        /// Assigns the list of workers provided to open and unassigned callbacks
+        /// </summary>
+        /// <response code="200">Assignments completed successfully</response>
+        /// /// <response code="400">The required parameters aren't supplied</response>
         [HttpPost]
-        [Route("staff_assignments")]
+        [Route("staff-assignments")]
         public IActionResult UpdateStaffAssignments(UpdateStaffAssignmentsRequestBoundary request)
         {
-            _updateStaffAssignmentsUseCase.Execute(request);
-            return Ok();
+            var validationResult = request.Validate();
+            if (validationResult.IsValid == ValidationResult.Valid)
+            {
+                _updateStaffAssignmentsUseCase.Execute(request);
+                return Ok();
+            }
+            return BadRequest(validationResult.Errors);
         }
     }
 }
