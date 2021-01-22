@@ -70,7 +70,8 @@ namespace cv19ResSupportV3.Tests.V3.Helpers
                 AdviceNotes = helpRequest.AdviceNotes,
                 HelpNeeded = helpRequest.HelpNeeded,
                 NhsNumber = resident.NhsNumber,
-                NhsCtasId = helpRequest.NhsCtasId
+                NhsCtasId = helpRequest.NhsCtasId,
+                AssignedTo = helpRequest.AssignedTo
             };
         }
     }
