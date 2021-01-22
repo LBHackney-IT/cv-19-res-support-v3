@@ -7,6 +7,7 @@ using cv19ResSupportV3.V3.Domain.Commands;
 using cv19ResSupportV3.V3.UseCase;
 using cv19ResSupportV3.V3.UseCase.Interfaces;
 using FluentAssertions;
+using LBHFSSPublicAPI.Tests.TestHelpers;
 using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
 using Moq;
@@ -80,6 +81,25 @@ namespace cv19ResRupportV3.Tests.V3.Controllers
             var response = _classUnderTest.PatchResidentAndHelpRequest(1, searchParams) as OkObjectResult;
             _fakePatchResidentAndHelpRequestUseCase.Verify(m => m.Execute(It.Is<int>(x => x == 1), It.IsAny<PatchResidentAndHelpRequest>()), Times.Once());
             response.StatusCode.Should().Be(200);
+        }
+
+        [Test]
+        public void AssignStaffToHelpRequestWithValidParametersReturnsResponseWithOkStatus()
+        {
+            var request = Randomm.Create<UpdateStaffAssignmentsRequestBoundary>();
+            var response = _classUnderTest.UpdateStaffAssignments(request) as OkResult;
+            _fakeUpdateStaffAssignmentUseCase.Verify(m => m.Execute(It.Is<UpdateStaffAssignmentsRequestBoundary>(x => x.HelpNeeded == request.HelpNeeded)), Times.Once());
+            response.StatusCode.Should().Be(200);
+        }
+
+        [Test]
+        public void AssignStaffToHelpRequestWithoutHelpNeededParametersReturnsResponseWithBadRequestStatus()
+        {
+            var request = Randomm.Create<UpdateStaffAssignmentsRequestBoundary>();
+            request.HelpNeeded = "";
+            var response = _classUnderTest.UpdateStaffAssignments(request) as BadRequestObjectResult;
+            _fakeUpdateStaffAssignmentUseCase.Verify(m => m.Execute(It.IsAny<UpdateStaffAssignmentsRequestBoundary>()), Times.Never);
+            response.StatusCode.Should().Be(400);
         }
     }
 }
