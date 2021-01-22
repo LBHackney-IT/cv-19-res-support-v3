@@ -28,8 +28,12 @@ namespace cv19ResSupportV3.V3.UseCase
 
             for (var i = 0; i < numberOfRequests; i++)
             {
-                var patchRequestObject = new PatchHelpRequest { AssignedTo = command.StaffMembers[i % numberOfStaff] };
-                _gateway.PatchHelpRequest(helpRequests[i].Id, patchRequestObject);
+                if (string.IsNullOrWhiteSpace(helpRequests[i].AssignedTo))
+                {
+                    var patchRequestObject =
+                        new PatchHelpRequest {AssignedTo = command.StaffMembers[i % numberOfStaff]};
+                    _gateway.PatchHelpRequest(helpRequests[i].Id, patchRequestObject);
+                }
             }
         }
     }
