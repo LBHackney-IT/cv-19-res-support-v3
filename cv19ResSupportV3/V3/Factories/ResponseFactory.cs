@@ -56,7 +56,7 @@ namespace cv19ResSupportV3.V3.Factories
                 AdviceNotes = hr.AdviceNotes,
                 HelpNeeded = hr.HelpNeeded,
                 NhsCtasId = hr.NhsCtasId,
-                AssignedStaff = hr.AssignedStaff,
+                AssignedTo = hr.AssignedTo,
                 HelpRequestCalls = hr.HelpRequestCalls
             };
         }
@@ -130,7 +130,7 @@ namespace cv19ResSupportV3.V3.Factories
                 HelpNeeded = helpRequest.HelpNeeded,
                 NhsCtasId = helpRequest.NhsCtasId,
                 NhsNumber = resident.NhsNumber,
-                AssignedStaff = helpRequest.AssignedStaff,
+                AssignedTo = helpRequest.AssignedTo,
                 HelpRequestCalls = helpRequest.HelpRequestCalls
             };
         }
@@ -204,7 +204,7 @@ namespace cv19ResSupportV3.V3.Factories
                 HelpNeeded = helpRequest.HelpNeeded,
                 NhsCtasId = helpRequest.NhsCtasId,
                 NhsNumber = helpRequest.NhsNumber,
-                AssignedStaff = helpRequest.AssignedStaff,
+                AssignedTo = helpRequest.AssignedTo,
                 HelpRequestCalls = helpRequest.HelpRequestCalls
             };
         }

@@ -191,8 +191,8 @@ namespace cv19ResSupportV3.V3.Infrastructure
                        entity.Property(e => e.NhsCtasId)
                            .HasColumnName("nhs_ctas_id")
                            .HasColumnType("character varying");
-                       entity.Property(e => e.AssignedStaff)
-                           .HasColumnName("assigned_staff")
+                       entity.Property(e => e.AssignedTo)
+                           .HasColumnName("assigned_to")
                            .HasColumnType("character varying");
                        entity.Property(e => e.UrgentEssentials)
                            .HasColumnName("urgent_essentials")

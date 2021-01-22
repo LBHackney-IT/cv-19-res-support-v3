@@ -76,7 +76,7 @@ namespace cv19ResSupportV3.V3.Factories
                 HelpNeeded = helpRequest.HelpNeeded,
                 NhsCtasId = helpRequest.NhsCtasId,
                 NhsNumber = helpRequest.ResidentEntity.NhsNumber,
-                AssignedStaff = helpRequest.AssignedStaff,
+                AssignedTo = helpRequest.AssignedTo,
                 HelpRequestCalls = helpRequest.HelpRequestCalls.ToDomain()
             };
         }

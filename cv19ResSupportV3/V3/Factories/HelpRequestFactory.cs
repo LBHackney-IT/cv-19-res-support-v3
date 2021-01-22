@@ -52,7 +52,7 @@ namespace cv19ResSupportV3.V3.Factories
                 AdviceNotes = helpRequest.AdviceNotes,
                 HelpNeeded = helpRequest.HelpNeeded,
                 NhsCtasId = helpRequest.NhsCtasId,
-                AssignedStaff = helpRequest.AssignedStaff,
+                AssignedTo = helpRequest.AssignedTo,
             };
         }
         public static Resident ToDomain(this ResidentEntity resident)
