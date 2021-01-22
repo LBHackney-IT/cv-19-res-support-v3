@@ -23,6 +23,7 @@ namespace cv19ResRupportV3.Tests.V3.Controllers
         private Mock<IGetResidentsAndHelpRequestsUseCase> _fakeGetResidentsAndHelpRequestsUseCase;
         private Mock<IGetResidentAndHelpRequestUseCase> _fakeGetResidentAndHelpRequestUseCase;
         private Mock<ICreateResidentAndHelpRequestUseCase> _fakeCreateResidentAndHelpRequestUseCase;
+        private Mock<IUpdateStaffAssignmentsUseCase> _fakeUpdateStaffAssignmentUseCase;
 
         [SetUp]
         public void SetUp()
@@ -32,8 +33,10 @@ namespace cv19ResRupportV3.Tests.V3.Controllers
             _fakeGetResidentsAndHelpRequestsUseCase = new Mock<IGetResidentsAndHelpRequestsUseCase>();
             _fakeGetResidentAndHelpRequestUseCase = new Mock<IGetResidentAndHelpRequestUseCase>();
             _fakeCreateResidentAndHelpRequestUseCase = new Mock<ICreateResidentAndHelpRequestUseCase>();
+            _fakeUpdateStaffAssignmentUseCase = new Mock<IUpdateStaffAssignmentsUseCase>();
             _classUnderTest = new HelpRequestsController(_fakeGetResidentsAndHelpRequestsUseCase.Object, _fakeUpdateResidentAndHelpRequestUseCase.Object,
-            _fakeGetResidentAndHelpRequestUseCase.Object, _fakePatchResidentAndHelpRequestUseCase.Object, _fakeCreateResidentAndHelpRequestUseCase.Object);
+            _fakeGetResidentAndHelpRequestUseCase.Object, _fakePatchResidentAndHelpRequestUseCase.Object, _fakeCreateResidentAndHelpRequestUseCase.Object,
+            _fakeUpdateStaffAssignmentUseCase.Object);
         }
 
         [Test]
