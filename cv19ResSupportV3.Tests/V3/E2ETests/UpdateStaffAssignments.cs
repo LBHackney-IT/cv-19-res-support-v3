@@ -40,7 +40,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             var request = new UpdateStaffAssignmentsRequestBoundary
             {
                 HelpNeeded = "Help Request",
-                StaffMembers = new List<string> {"J J", "M M"}
+                StaffMembers = new List<string> { "J J", "M M" }
             };
             var data = JsonConvert.SerializeObject(request);
             HttpContent postContent = new StringContent(data, Encoding.UTF8, "application/json");

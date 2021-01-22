@@ -31,7 +31,7 @@ namespace cv19ResSupportV3.V3.UseCase
                 if (string.IsNullOrWhiteSpace(helpRequests[i].AssignedTo))
                 {
                     var patchRequestObject =
-                        new PatchHelpRequest {AssignedTo = command.StaffMembers[i % numberOfStaff]};
+                        new PatchHelpRequest { AssignedTo = command.StaffMembers[i % numberOfStaff] };
                     _gateway.PatchHelpRequest(helpRequests[i].Id, patchRequestObject);
                 }
             }
