@@ -28,7 +28,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             E2ETestHelpers.ClearTable(DatabaseContext);
         }
         [Test]
-        public void UpdateStaffAssignmentAddsAssignedToRecord()
+        public async Task UpdateStaffAssignmentAddsAssignedToRecord()
         {
             var residentEntity = DatabaseContext.ResidentEntities.Add(EntityHelpers.createResident());
             var helpRequestEntity = DatabaseContext.HelpRequestEntities.Add(EntityHelpers.createHelpRequestEntity(123, residentEntity.Entity.Id));
@@ -49,6 +49,8 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             postContent.Dispose();
             var statusCode = response.Result.StatusCode;
             statusCode.Should().Be(200);
+            var expectedChange = await DatabaseContext.HelpRequestEntities.FindAsync(helpRequestEntity.Entity.Id).ConfigureAwait(false);
+            expectedChange.Should().BeEquivalentTo(helpRequestEntity.Entity);
         }
     }
 }
