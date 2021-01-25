@@ -13,7 +13,7 @@ namespace cv19ResSupportV3.V4.Controllers
     // Check service api version information
     [ApiVersion("3.0")]
 
-    public class ResidentsController: BaseController
+    public class ResidentsController : BaseController
     {
         private readonly ICreateResidentsUseCase _createResidentsUseCase;
         private readonly IGetResidentsUseCase _getResidentsUseCase;
@@ -39,7 +39,7 @@ namespace cv19ResSupportV3.V4.Controllers
         public IActionResult CreateResident(ResidentRequestBoundary request)
         {
             var response = _createResidentsUseCase.Execute(request);
-            if(response != null)
+            if (response != null)
                 return Created(new Uri($"api/v4/residents/{response.Id}", UriKind.Relative), response);
             return (BadRequest("Resident not created"));
         }
@@ -55,7 +55,7 @@ namespace cv19ResSupportV3.V4.Controllers
         public IActionResult GetResident(int id)
         {
             var response = _getResidentsUseCase.Execute(id);
-            if(response != null)
+            if (response != null)
                 return Ok(response);
             return (NotFound("Resident not found"));
         }
@@ -68,10 +68,10 @@ namespace cv19ResSupportV3.V4.Controllers
         [ProducesResponseType(typeof(ResidentResponseBoundary), StatusCodes.Status200OK)]
         [HttpPatch]
         [Route("{id}")]
-        public IActionResult PatchResident([FromRoute] int id, [FromBody] ResidentRequestBoundary request )
+        public IActionResult PatchResident([FromRoute] int id, [FromBody] ResidentRequestBoundary request)
         {
             var response = _patchResidentsUseCase.Execute(id, request);
-            if(response != null)
+            if (response != null)
                 return Ok(response);
             return (NotFound("Resident not found"));
         }

@@ -27,7 +27,7 @@ namespace cv19ResSupportV3.Tests.V4.UseCase
         [Test]
         public void PatchesResident()
         {
-            var patchResident = new ResidentRequestBoundary { FirstName = "Jay", LastName = "something"};
+            var patchResident = new ResidentRequestBoundary { FirstName = "Jay", LastName = "something" };
             _mockResidentGateway.Setup(gw => gw.PatchResident(It.IsAny<int>(), It.IsAny<PatchResident>()))
                 .Returns(patchResident.ToResident());
             var id = Randomm.Id();
