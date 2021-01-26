@@ -4,7 +4,7 @@ namespace cv19ResSupportV3.V3.Domain.Commands
 {
     public class CreateResident
     {
-        public string PostCode { get; set; }
+        public string Postcode { get; set; }
         public string Uprn { get; set; }
         public string Ward { get; set; }
         public string AddressFirstLine { get; set; }

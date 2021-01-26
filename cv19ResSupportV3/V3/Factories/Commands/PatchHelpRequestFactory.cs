@@ -9,7 +9,7 @@ namespace cv19ResSupportV3.V3.Factories.Commands
         {
             return new PatchResidentAndHelpRequest
             {
-                PostCode = helpRequest.PostCode,
+                Postcode = helpRequest.Postcode,
                 Uprn = helpRequest.Uprn,
                 Ward = helpRequest.Ward,
                 AddressFirstLine = helpRequest.AddressFirstLine,
@@ -88,7 +88,7 @@ namespace cv19ResSupportV3.V3.Factories.Commands
         {
             return new PatchResident
             {
-                PostCode = command.PostCode,
+                Postcode = command.Postcode,
                 Uprn = command.Uprn,
                 Ward = command.Ward,
                 AddressFirstLine = command.AddressFirstLine,

@@ -12,7 +12,7 @@ namespace cv19ResSupportV3.V3.Domain.Commands
         public string OnBehalfEmailAddress { get; set; }
         public string OnBehalfContactNumber { get; set; }
         public string RelationshipWithResident { get; set; }
-        public string PostCode { get; set; }
+        public string Postcode { get; set; }
         public string Uprn { get; set; }
         public string Ward { get; set; }
         public string AddressFirstLine { get; set; }

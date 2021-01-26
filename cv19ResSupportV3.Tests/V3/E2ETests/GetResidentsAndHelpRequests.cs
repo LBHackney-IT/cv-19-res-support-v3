@@ -32,7 +32,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             var postcode = "ABC";
             var residentEntity = Randomm.Build<ResidentEntity>()
                                         .With(x => x.Id, residentId)
-                                        .With(x => x.PostCode, postcode)
+                                        .With(x => x.Postcode, postcode)
                                         .Without(h => h.CaseNotes)
                                         .Without(h => h.HelpRequests)
                                         .Create();
@@ -46,7 +46,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
 
             var expectedResponse1 = residentEntity.ToDomain(helpRequestEntity);
             var expectedResponse2 = residentEntity.ToDomain(helpRequestEntity2);
-            var requestUri = new Uri($"api/v3/help-requests?PostCode=ABC", UriKind.Relative);
+            var requestUri = new Uri($"api/v3/help-requests?postcode=ABC", UriKind.Relative);
             var response = Client.GetAsync(requestUri);
             var statusCode = response.Result.StatusCode;
             statusCode.Should().Be(200);

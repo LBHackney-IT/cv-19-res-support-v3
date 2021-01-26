@@ -52,7 +52,7 @@ namespace cv19ResSupportV3.V3.Infrastructure
         public string AddressThirdLine { get; set; }
 
         [Column("postcode")]
-        public string PostCode { get; set; }
+        public string Postcode { get; set; }
 
         [Column("uprn")]
         public string Uprn { get; set; }

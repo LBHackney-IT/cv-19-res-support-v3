@@ -8,7 +8,7 @@ namespace cv19ResSupportV3.V3.Factories.Commands
         {
             return new CreateResident
             {
-                PostCode = helpRequest.PostCode,
+                Postcode = helpRequest.Postcode,
                 Uprn = helpRequest.Uprn,
                 Ward = helpRequest.Ward,
                 AddressFirstLine = helpRequest.AddressFirstLine,

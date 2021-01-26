@@ -76,7 +76,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             residentRequestObject.AddressFirstLine = "7 test road";
             residentRequestObject.AddressSecondLine = null;
             residentRequestObject.AddressThirdLine = null;
-            residentRequestObject.PostCode = "ABC 123";
+            residentRequestObject.Postcode = "ABC 123";
             residentRequestObject.Uprn = "1231456456789";
             var requestObject = helpRequestObject.ToDomain(residentRequestObject);
             var data = JsonConvert.SerializeObject(requestObject);
@@ -95,7 +95,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             updatedEntity.AddressFirstLine.Should().BeEquivalentTo(requestObject.AddressFirstLine);
             updatedEntity.AddressSecondLine.Should().BeNullOrEmpty();
             updatedEntity.AddressThirdLine.Should().BeNullOrEmpty();
-            updatedEntity.PostCode.Should().BeEquivalentTo(requestObject.PostCode);
+            updatedEntity.Postcode.Should().BeEquivalentTo(requestObject.Postcode);
             updatedEntity.Uprn.Should().BeEquivalentTo(requestObject.Uprn);
         }
 

@@ -76,7 +76,7 @@ namespace cv19ResRupportV3.Tests.V3.Controllers
         [Test]
         public void PatchResidentsAndHelpRequestsReturnsResponseWithStatus()
         {
-            var searchParams = new HelpRequestPatchRequest() { PostCode = "B1" };
+            var searchParams = new HelpRequestPatchRequest() { Postcode = "B1" };
             _fakePatchResidentAndHelpRequestUseCase.Setup(x => x.Execute(It.IsAny<int>(), It.IsAny<PatchResidentAndHelpRequest>())).Verifiable();
             var response = _classUnderTest.PatchResidentAndHelpRequest(1, searchParams) as OkObjectResult;
             _fakePatchResidentAndHelpRequestUseCase.Verify(m => m.Execute(It.Is<int>(x => x == 1), It.IsAny<PatchResidentAndHelpRequest>()), Times.Once());
