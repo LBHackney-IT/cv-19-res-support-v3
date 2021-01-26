@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using cv19ResSupportV3.V3.Infrastructure;
@@ -9,9 +10,10 @@ using cv19ResSupportV3.V3.Infrastructure;
 namespace cv19ResSupportV3.V3.Infrastructure.Migrations
 {
     [DbContext(typeof(HelpRequestsContext))]
-    partial class HelpRequestsContextModelSnapshot : ModelSnapshot
+    [Migration("20210121154102_AddStaffAssignedColumn")]
+    partial class AddAssignedToColumn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -100,7 +102,7 @@ namespace cv19ResSupportV3.V3.Infrastructure.Migrations
                         .HasColumnType("character varying");
 
                     b.Property<string>("AssignedTo")
-                        .HasColumnName("assigned_to")
+                        .HasColumnName("assigned_staff")
                         .HasColumnType("character varying");
 
                     b.Property<bool?>("CallbackRequired")
@@ -209,6 +211,10 @@ namespace cv19ResSupportV3.V3.Infrastructure.Migrations
 
                     b.Property<string>("NhsCtasId")
                         .HasColumnName("nhs_ctas_id")
+                        .HasColumnType("character varying");
+
+                    b.Property<string>("AssignedTo")
+                        .HasColumnName("assigned_to")
                         .HasColumnType("character varying");
 
                     b.Property<string>("OnBehalfContactNumber")

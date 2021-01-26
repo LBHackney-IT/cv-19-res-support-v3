@@ -6,6 +6,7 @@ using cv19ResSupportV3.V3.Factories;
 using cv19ResSupportV3.V3.Factories.Commands;
 using cv19ResSupportV3.V3.UseCase;
 using cv19ResSupportV3.V3.UseCase.Interfaces;
+using cv19ResSupportV3.V3.Validations;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -23,14 +24,16 @@ namespace cv19ResSupportV3.V3.Controllers
         private readonly IGetResidentsAndHelpRequestsUseCase _getResidentsAndHelpRequestsUseCase;
         private readonly IGetResidentAndHelpRequestUseCase _getResidentAndHelpRequestUseCase;
         private readonly ICreateResidentAndHelpRequestUseCase _createResidentAndHelpRequestUse;
+        private readonly IUpdateStaffAssignmentsUseCase _updateStaffAssignmentsUseCase;
         public HelpRequestsController(IGetResidentsAndHelpRequestsUseCase getResidentsAndHelpRequestsUseCase,
-            IUpdateResidentAndHelpRequestUseCase updateResidentAndHelpRequestUseCase, IGetResidentAndHelpRequestUseCase getResidentAndHelpRequestUseCase, IPatchResidentAndHelpRequestUseCase patchResidentAndHelpRequestUseCase, ICreateResidentAndHelpRequestUseCase createResidentAndHelpRequestUseCase)
+            IUpdateResidentAndHelpRequestUseCase updateResidentAndHelpRequestUseCase, IGetResidentAndHelpRequestUseCase getResidentAndHelpRequestUseCase, IPatchResidentAndHelpRequestUseCase patchResidentAndHelpRequestUseCase, ICreateResidentAndHelpRequestUseCase createResidentAndHelpRequestUseCase, IUpdateStaffAssignmentsUseCase updateStaffAssignmentsUseCase)
         {
             _updateResidentAndHelpRequestUseCase = updateResidentAndHelpRequestUseCase;
             _patchResidentAndHelpRequestUseCase = patchResidentAndHelpRequestUseCase;
             _getResidentsAndHelpRequestsUseCase = getResidentsAndHelpRequestsUseCase;
             _getResidentAndHelpRequestUseCase = getResidentAndHelpRequestUseCase;
             _createResidentAndHelpRequestUse = createResidentAndHelpRequestUseCase;
+            _updateStaffAssignmentsUseCase = updateStaffAssignmentsUseCase;
         }
 
         /// <summary>
@@ -153,6 +156,24 @@ namespace cv19ResSupportV3.V3.Controllers
             if (result == null)
                 return NotFound();
             return Ok(result.ToResponse());
+        }
+
+        /// <summary>
+        /// Assigns the list of workers provided to open and unassigned callbacks
+        /// </summary>
+        /// <response code="200">Assignments completed successfully</response>
+        /// /// <response code="400">The required parameters aren't supplied</response>
+        [HttpPost]
+        [Route("staff-assignments")]
+        public IActionResult UpdateStaffAssignments(UpdateStaffAssignmentsRequestBoundary request)
+        {
+            var validationResult = request.Validate();
+            if (validationResult.IsValid == ValidationResult.Valid)
+            {
+                _updateStaffAssignmentsUseCase.Execute(request);
+                return Ok();
+            }
+            return BadRequest(validationResult.Errors);
         }
     }
 }

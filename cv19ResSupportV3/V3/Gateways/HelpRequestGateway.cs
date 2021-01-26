@@ -270,6 +270,11 @@ namespace cv19ResSupportV3.V3.Gateways
                     rec.NhsCtasId = command.NhsCtasId;
                 }
 
+                if (command.AssignedTo != null)
+                {
+                    rec.AssignedTo = command.AssignedTo;
+                }
+
                 if (command.HelpNeeded != null)
                 {
                     rec.HelpNeeded = command.HelpNeeded;
