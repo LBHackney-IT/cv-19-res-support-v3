@@ -21,11 +21,20 @@ then
     npm i -g --silent swaggerhub-cli
 fi
 
+
 owner="Hackney"
 api_name="here-to-help"
-api_version="v3.0"
+api_version=$1
+stage=$2
 
-if [ "$1" = "production"  ]
+if [ -z "$api_version" ]
+then
+    echo "Usage: publish-to-swagger-hub VERSION [STAGE]"
+    echo "Example: publish-to-swagger-hub v3.0"
+    exit 1
+fi
+
+if [ "$stage" = "production"  ]
 then
     swagger_version="$api_version"
     echo "Stage is production, therefore will name this version '${swagger_version}'"
@@ -51,9 +60,9 @@ swagger_path="${owner}/${api_name}/${swagger_version}"
 
 if [ -z "$(swaggerhub api:get "${swagger_path}")" ]
 then
-    swaggerhub api:create "$swagger_path" --file "${json_file}"
+    swaggerhub api:create "$swagger_path" --visibility=public --file "${json_file}"
 else
-    swaggerhub api:update "$swagger_path" --file "${json_file}"
+    swaggerhub api:update "$swagger_path" --visibility=public --file "${json_file}"
 fi
 
 echo "Cleaning up ${tmp_dir}"

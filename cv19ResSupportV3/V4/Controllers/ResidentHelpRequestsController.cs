@@ -14,7 +14,7 @@ namespace cv19ResSupportV3.V4.Controllers
     [Route("api/v4/residents/{id}/help-requests")]
     [Produces("application/json")]
     // Check service api version information
-    [ApiVersion("3.0")]
+    [ApiVersion("4.0")]
 
     public class ResidentHelpRequestsController : BaseController
     {
