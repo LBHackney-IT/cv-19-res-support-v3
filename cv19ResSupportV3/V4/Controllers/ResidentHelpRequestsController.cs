@@ -55,7 +55,7 @@ namespace cv19ResSupportV3.V4.Controllers
         [ProducesResponseType(typeof(ResidentHelpRequestResponse), StatusCodes.Status200OK)]
         [HttpGet]
         [Route("{help-request-id}")]
-        public IActionResult GetResidentHelpRequest(int id, int helpRequestId)
+        public IActionResult GetResidentHelpRequest([FromRoute(Name = "id")] int id, [FromRoute(Name = "help-request-id")] int helpRequestId)
         {
             var response = _getResidentHelpRequestUseCase.Execute(id, helpRequestId);
             if (response != null)
