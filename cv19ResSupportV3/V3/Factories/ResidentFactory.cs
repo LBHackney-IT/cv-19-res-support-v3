@@ -11,7 +11,7 @@ namespace cv19ResSupportV3.V3.Factories
             return new Resident
             {
                 Id = residentEntity.Id,
-                PostCode = residentEntity.PostCode,
+                Postcode = residentEntity.Postcode,
                 Uprn = residentEntity.Uprn,
                 Ward = residentEntity.Ward,
                 AddressFirstLine = residentEntity.AddressFirstLine,
@@ -38,7 +38,7 @@ namespace cv19ResSupportV3.V3.Factories
         {
             return new ResidentEntity
             {
-                PostCode = command.PostCode,
+                Postcode = command.Postcode,
                 Uprn = command.Uprn,
                 Ward = command.Ward,
                 AddressFirstLine = command.AddressFirstLine,

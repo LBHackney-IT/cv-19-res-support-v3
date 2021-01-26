@@ -1,10 +1,10 @@
 using System;
-using System.Collections.Generic;
 
-namespace cv19ResSupportV3.V3.Domain.Commands
+namespace cv19ResSupportV3.V4.Boundary.Requests
 {
-    public class CreateHelpRequest
+    public class ResidentHelpRequestRequest
     {
+        public int Id { get; set; }
         public bool? IsOnBehalf { get; set; }
         public bool? ConsentToCompleteOnBehalf { get; set; }
         public string OnBehalfFirstName { get; set; }
@@ -38,10 +38,10 @@ namespace cv19ResSupportV3.V3.Domain.Commands
         public DateTime? DateTimeRecorded { get; set; }
         public bool? InitialCallbackCompleted { get; set; }
         public bool? CallbackRequired { get; set; }
+        public string CaseNotes { get; set; }
         public string AdviceNotes { get; set; }
         public string HelpNeeded { get; set; }
-        public string AssignedTo { get; set; }
         public string NhsCtasId { get; set; }
-        public List<HelpRequestCall> HelpRequestCalls { get; set; }
+        public string AssignedTo { get; set; }
     }
 }

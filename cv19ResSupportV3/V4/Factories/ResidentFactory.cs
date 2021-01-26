@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using cv19ResSupportV3.V3.Domain;
 using cv19ResSupportV3.V3.Domain.Commands;
 
@@ -20,7 +22,7 @@ namespace cv19ResSupportV3.V4.Factories
                 AddressFirstLine = request.AddressFirstLine,
                 AddressSecondLine = request.AddressSecondLine,
                 AddressThirdLine = request.AddressThirdLine,
-                PostCode = request.Postcode,
+                Postcode = request.Postcode,
                 Uprn = request.Uprn,
                 Ward = request.Ward,
                 IsPharmacistAbleToDeliver = request.IsPharmacistAbleToDeliver,
@@ -37,6 +39,7 @@ namespace cv19ResSupportV3.V4.Factories
         {
             return domain == null ? null : new ResidentResponseBoundary
             {
+                Id = domain.Id,
                 FirstName = domain.FirstName,
                 LastName = domain.LastName,
                 DobDay = domain.DobDay,
@@ -48,7 +51,7 @@ namespace cv19ResSupportV3.V4.Factories
                 AddressFirstLine = domain.AddressFirstLine,
                 AddressSecondLine = domain.AddressSecondLine,
                 AddressThirdLine = domain.AddressThirdLine,
-                Postcode = domain.PostCode,
+                Postcode = domain.Postcode,
                 Uprn = domain.Uprn,
                 Ward = domain.Ward,
                 IsPharmacistAbleToDeliver = domain.IsPharmacistAbleToDeliver,
@@ -59,6 +62,11 @@ namespace cv19ResSupportV3.V4.Factories
                 RecordStatus = domain.RecordStatus,
                 NhsNumber = domain.NhsNumber
             };
+        }
+
+        public static List<ResidentResponseBoundary> ToResponse(this ICollection<Resident> domain)
+        {
+            return domain?.Select(d => d.ToResponse()).ToList();
         }
 
         public static Resident ToResident(this ResidentRequestBoundary request)
@@ -76,7 +84,7 @@ namespace cv19ResSupportV3.V4.Factories
                 AddressFirstLine = request.AddressFirstLine,
                 AddressSecondLine = request.AddressSecondLine,
                 AddressThirdLine = request.AddressThirdLine,
-                PostCode = request.Postcode,
+                Postcode = request.Postcode,
                 Uprn = request.Uprn,
                 Ward = request.Ward,
                 IsPharmacistAbleToDeliver = request.IsPharmacistAbleToDeliver,
@@ -104,7 +112,7 @@ namespace cv19ResSupportV3.V4.Factories
                 AddressFirstLine = request.AddressFirstLine,
                 AddressSecondLine = request.AddressSecondLine,
                 AddressThirdLine = request.AddressThirdLine,
-                PostCode = request.Postcode,
+                Postcode = request.Postcode,
                 Uprn = request.Uprn,
                 Ward = request.Ward,
                 IsPharmacistAbleToDeliver = request.IsPharmacistAbleToDeliver,

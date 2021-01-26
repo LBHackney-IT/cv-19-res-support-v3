@@ -17,7 +17,7 @@ namespace cv19ResSupportV3.V3.Factories.Commands
                 OnBehalfEmailAddress = helpRequest.OnBehalfEmailAddress,
                 OnBehalfContactNumber = helpRequest.OnBehalfContactNumber,
                 RelationshipWithResident = helpRequest.RelationshipWithResident,
-                PostCode = helpRequest.PostCode,
+                Postcode = helpRequest.Postcode,
                 Uprn = helpRequest.Uprn,
                 Ward = helpRequest.Ward,
                 AddressFirstLine = helpRequest.AddressFirstLine,

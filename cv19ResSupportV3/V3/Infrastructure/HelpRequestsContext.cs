@@ -24,7 +24,7 @@ namespace cv19ResSupportV3.V3.Infrastructure
                        entity.ToTable("residents");
                        entity.HasKey(resident => new { resident.Id });
                        entity.Property(e => e.Id).HasColumnName("id");
-                       entity.Property(e => e.PostCode)
+                       entity.Property(e => e.Postcode)
                            .HasColumnName("postcode")
                            .HasColumnType("character varying");
                        entity.Property(e => e.Uprn)

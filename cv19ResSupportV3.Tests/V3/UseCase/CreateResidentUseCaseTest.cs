@@ -26,7 +26,7 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
             _createResidentCommand = new Fixture().Build<CreateResident>().Create();
             _residentDomain = new Fixture().Build<Resident>()
                 .With(x => x.Id, 1)
-                .With(x => x.PostCode, _createResidentCommand.PostCode)
+                .With(x => x.Postcode, _createResidentCommand.Postcode)
                 .With(x => x.Uprn, _createResidentCommand.Uprn)
                 .With(x => x.Ward, _createResidentCommand.Ward)
                 .With(x => x.AddressFirstLine, _createResidentCommand.AddressFirstLine)
@@ -65,9 +65,9 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
         [Test]
         public void UpdatesResidentIfItDoesExist()
         {
-            _createResidentCommand.PostCode = "something else";
+            _createResidentCommand.Postcode = "something else";
             var updatedResident = _residentDomain;
-            updatedResident.PostCode = "something else";
+            updatedResident.Postcode = "something else";
 
             _mockGateway.Setup(s => s.FindResident(It.IsAny<FindResident>())).Returns(1);
             _mockGateway.Setup(s => s.GetResident(It.IsAny<int>())).Returns(_residentDomain);

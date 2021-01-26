@@ -19,7 +19,7 @@ namespace cv19ResSupportV3.Tests.V3.Helpers
                 OnBehalfEmailAddress = helpRequest.OnBehalfEmailAddress,
                 OnBehalfContactNumber = helpRequest.OnBehalfContactNumber,
                 RelationshipWithResident = helpRequest.RelationshipWithResident,
-                PostCode = resident.PostCode,
+                Postcode = resident.Postcode,
                 Uprn = resident.Uprn,
                 Ward = resident.Ward,
                 AddressFirstLine = resident.AddressFirstLine,

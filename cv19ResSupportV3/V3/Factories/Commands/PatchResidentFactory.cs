@@ -8,7 +8,7 @@ namespace cv19ResSupportV3.V3.Factories.Commands
         {
             return new PatchResident
             {
-                PostCode = resident.PostCode,
+                Postcode = resident.Postcode,
                 Uprn = resident.Uprn,
                 Ward = resident.Ward,
                 AddressFirstLine = resident.AddressFirstLine,

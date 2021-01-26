@@ -60,7 +60,7 @@ namespace cv19ResSupportV3.V3.Factories
             return new Resident()
             {
                 Id = resident.Id,
-                PostCode = resident.PostCode,
+                Postcode = resident.Postcode,
                 Uprn = resident.Uprn,
                 Ward = resident.Ward,
                 AddressFirstLine = resident.AddressFirstLine,
