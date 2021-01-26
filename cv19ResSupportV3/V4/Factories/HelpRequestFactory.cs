@@ -139,6 +139,7 @@ namespace cv19ResSupportV3.V4.Factories
                 : new ResidentHelpRequestResponse
                 {
                     Id = domain.Id,
+                    ResidentId = domain.ResidentId,
                     IsOnBehalf = domain.IsOnBehalf,
                     ConsentToCompleteOnBehalf = domain.ConsentToCompleteOnBehalf,
                     OnBehalfFirstName = domain.OnBehalfFirstName,
