@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using Amazon.Lambda.Core;
 using cv19ResSupportV3.V3.Domain;
 using cv19ResSupportV3.V3.Domain.Commands;
@@ -105,13 +107,13 @@ namespace cv19ResSupportV3.V3.Gateways
                     rec.EmailAddress = command.EmailAddress;
                 }
 
-                if (command.AddressFirstLine != null && command.PostCode != null)
+                if (command.AddressFirstLine != null && command.Postcode != null)
                 {
                     // update new address fields
                     rec.AddressFirstLine = command.AddressFirstLine;
                     rec.AddressSecondLine = command.AddressSecondLine;
                     rec.AddressThirdLine = command.AddressThirdLine;
-                    rec.PostCode = command.PostCode;
+                    rec.Postcode = command.Postcode;
                     rec.Uprn = command.Uprn;
                     rec.Ward = command.Ward;
                 }
@@ -202,6 +204,56 @@ namespace cv19ResSupportV3.V3.Gateways
             catch (Exception e)
             {
                 LambdaLogger.Log("FindResident error: ");
+                LambdaLogger.Log(e.Message);
+                throw;
+            }
+        }
+
+        public List<Resident> SearchResidents(FindResident command)
+        {
+            Expression<Func<ResidentEntity, bool>> queryFirstName = x =>
+                string.IsNullOrWhiteSpace(command.FirstName)
+                || x.FirstName.Replace(" ", "").ToUpper().Equals(command.FirstName.Replace(" ", "").ToUpper());
+
+            Expression<Func<ResidentEntity, bool>> queryLastName = x =>
+                string.IsNullOrWhiteSpace(command.LastName)
+                || x.LastName.Replace(" ", "").ToUpper().Equals(command.LastName.Replace(" ", "").ToUpper());
+
+            Expression<Func<ResidentEntity, bool>> queryDobMonth = x =>
+                string.IsNullOrWhiteSpace(command.DobMonth)
+                || x.DobMonth.Replace(" ", "").ToUpper().Equals(command.DobMonth.Replace(" ", "").ToUpper());
+
+            Expression<Func<ResidentEntity, bool>> queryDobDay = x =>
+                string.IsNullOrWhiteSpace(command.DobDay)
+                || x.DobDay.Replace(" ", "").ToUpper().Equals(command.DobDay.Replace(" ", "").ToUpper());
+
+            Expression<Func<ResidentEntity, bool>> queryDobYear = x =>
+                 string.IsNullOrWhiteSpace(command.DobYear)
+                 || x.DobYear.Replace(" ", "").ToUpper().Equals(command.DobYear.Replace(" ", "").ToUpper());
+
+            Expression<Func<ResidentEntity, bool>> queryPostcode = x =>
+                string.IsNullOrWhiteSpace(command.Postcode)
+                || x.Postcode.Replace(" ", "").ToUpper().Equals(command.Postcode.Replace(" ", "").ToUpper());
+
+            Expression<Func<ResidentEntity, bool>> queryUprn = x =>
+                string.IsNullOrWhiteSpace(command.Uprn)
+                || x.Uprn.Replace(" ", "").ToUpper().Equals(command.Uprn.Replace(" ", "").ToUpper());
+            try
+            {
+                var response = _helpRequestsContext.ResidentEntities
+                    .Where(queryFirstName)
+                    .Where(queryLastName)
+                    .Where(queryDobDay)
+                    .Where(queryDobMonth)
+                    .Where(queryDobYear)
+                    .Where(queryUprn)
+                    .Where(queryPostcode)
+                    .Select(re => re.ToDomain()).ToList();
+                return response;
+            }
+            catch (Exception e)
+            {
+                LambdaLogger.Log("SearchResident error: ");
                 LambdaLogger.Log(e.Message);
                 throw;
             }
