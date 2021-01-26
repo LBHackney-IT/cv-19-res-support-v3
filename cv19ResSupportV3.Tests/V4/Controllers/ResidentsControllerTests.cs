@@ -20,6 +20,7 @@ namespace cv19ResSupportV3.Tests.V4.Controllers
         private Mock<IGetResidentsUseCase> _getResidentsUseCase;
         private Mock<ICreateResidentsUseCase> _createResidentsUseCase;
         private Mock<IPatchResidentUseCase> _patchResidentUseCase;
+        private Mock<ISearchResidentsUseCase> _searchResidentUseCase;
 
         [SetUp]
         public void SetUp()
@@ -27,10 +28,12 @@ namespace cv19ResSupportV3.Tests.V4.Controllers
             _getResidentsUseCase = new Mock<IGetResidentsUseCase>();
             _createResidentsUseCase = new Mock<ICreateResidentsUseCase>();
             _patchResidentUseCase = new Mock<IPatchResidentUseCase>();
+            _searchResidentUseCase = new Mock<ISearchResidentsUseCase>();
             _classUnderTest = new ResidentsController(
                 _createResidentsUseCase.Object,
                 _getResidentsUseCase.Object,
-                _patchResidentUseCase.Object);
+                _patchResidentUseCase.Object,
+                _searchResidentUseCase.Object);
         }
 
         [Test]
