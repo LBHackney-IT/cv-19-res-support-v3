@@ -36,7 +36,7 @@ namespace cv19ResSupportV3.V4.Controllers
 
 
         /// <summary>
-        /// Creates a resident with the values provided.
+        /// Creates a resident help request with the values provided.
         /// </summary>
         /// <response code="201">...</response>
         [ProducesResponseType(typeof(ResidentHelpRequestResponse), StatusCodes.Status201Created)]
@@ -48,7 +48,7 @@ namespace cv19ResSupportV3.V4.Controllers
         }
 
         /// <summary>
-        /// Gets a resident with the id specified.
+        /// Gets a resident help request with the id specified.
         /// </summary>
         /// <response code="200">...</response>
         /// <response code="404">...</response>
@@ -60,11 +60,11 @@ namespace cv19ResSupportV3.V4.Controllers
             var response = _getResidentHelpRequestUseCase.Execute(id, helpRequestId);
             if (response != null)
                 return Ok(response);
-            return (NotFound("Resident not found"));
+            return (NotFound("Resident or help request not found"));
         }
 
         /// <summary>
-        /// Gets a resident with the id specified.
+        /// Gets a collection of help requests for a resident with the id specified.
         /// </summary>
         /// <response code="200">...</response>
         /// <response code="404">...</response>
@@ -79,7 +79,7 @@ namespace cv19ResSupportV3.V4.Controllers
         }
 
         /// <summary>
-        /// Updates a resident with the id specified.
+        /// Updates a help request with the id specified.
         /// </summary>
         /// <response code="200">...</response>
         /// <response code="404">...</response>
