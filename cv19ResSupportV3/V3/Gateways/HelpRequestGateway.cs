@@ -328,7 +328,7 @@ namespace cv19ResSupportV3.V3.Gateways
                     .Include(x => x.ResidentEntity)
                     .Include(x => x.CaseNotes)
                     .Where(x => x.ResidentId == id);
-                return helpRequests.Select( hr => hr.ToHelpRequestWithResidentDomain()).ToList();
+                return helpRequests.Select(hr => hr.ToHelpRequestWithResidentDomain()).ToList();
             }
             catch (Exception e)
             {
