@@ -124,9 +124,9 @@ namespace cv19ResSupportV3.V3.Gateways
 
         public List<HelpRequestWithResident> SearchHelpRequests(SearchRequest command)
         {
-            Expression<Func<HelpRequestEntity, bool>> queryPostCode = x =>
+            Expression<Func<HelpRequestEntity, bool>> queryPostcode = x =>
                 string.IsNullOrWhiteSpace(command.Postcode)
-                || x.ResidentEntity.PostCode.Replace(" ", "").ToUpper()
+                || x.ResidentEntity.Postcode.Replace(" ", "").ToUpper()
                     .Contains(command.Postcode.Replace(" ", "").ToUpper());
 
             Expression<Func<HelpRequestEntity, bool>> queryFirstName = x =>
@@ -150,7 +150,7 @@ namespace cv19ResSupportV3.V3.Gateways
                     .Include(x => x.HelpRequestCalls)
                     .Include(x => x.CaseNotes)
                     .Include(x => x.ResidentEntity)
-                    .Where(queryPostCode)
+                    .Where(queryPostcode)
                     .Where(queryFirstName)
                     .Where(queryLastName)
                     .Where(queryHelpNeeded)
