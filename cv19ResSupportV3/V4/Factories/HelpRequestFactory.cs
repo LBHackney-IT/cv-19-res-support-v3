@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using cv19ResSupportV3.V3.Domain;
@@ -45,7 +46,7 @@ namespace cv19ResSupportV3.V4.Factories
                     UrgentEssentialsAnythingElse = request.UrgentEssentials,
                     CurrentSupport = request.CurrentSupport,
                     CurrentSupportFeedback = request.CurrentSupportFeedback,
-                    DateTimeRecorded = request.DateTimeRecorded,
+                    DateTimeRecorded = request.DateTimeRecorded?? DateTime.Now,
                     InitialCallbackCompleted = request.InitialCallbackCompleted,
                     CallbackRequired = request.CallbackRequired,
                     AdviceNotes = request.AdviceNotes,
