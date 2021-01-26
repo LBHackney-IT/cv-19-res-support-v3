@@ -14,6 +14,7 @@ namespace cv19ResSupportV3.V3.Factories.Commands
                 DobMonth = command.DobMonth,
                 DobYear = command.DobYear,
                 DobDay = command.DobDay,
+                Postcode = command.Postcode
             };
         }
     }

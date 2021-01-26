@@ -8,5 +8,6 @@ namespace cv19ResSupportV3.V3.Domain.Commands
         public string DobMonth { get; set; }
         public string DobYear { get; set; }
         public string DobDay { get; set; }
+        public string Postcode { get; set; }
     }
 }

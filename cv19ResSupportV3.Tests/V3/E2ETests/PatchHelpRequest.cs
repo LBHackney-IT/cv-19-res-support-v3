@@ -76,7 +76,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             residentRequestObject.AddressFirstLine = "7 test road";
             residentRequestObject.AddressSecondLine = null;
             residentRequestObject.AddressThirdLine = null;
-            residentRequestObject.PostCode = "ABC 123";
+            residentRequestObject.Postcode = "ABC 123";
             residentRequestObject.Uprn = "1231456456789";
             var requestObject = helpRequestObject.ToDomain(residentRequestObject);
             var data = JsonConvert.SerializeObject(requestObject);
@@ -95,7 +95,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             updatedEntity.AddressFirstLine.Should().BeEquivalentTo(requestObject.AddressFirstLine);
             updatedEntity.AddressSecondLine.Should().BeNullOrEmpty();
             updatedEntity.AddressThirdLine.Should().BeNullOrEmpty();
-            updatedEntity.PostCode.Should().BeEquivalentTo(requestObject.PostCode);
+            updatedEntity.Postcode.Should().BeEquivalentTo(requestObject.Postcode);
             updatedEntity.Uprn.Should().BeEquivalentTo(requestObject.Uprn);
         }
 
@@ -167,6 +167,29 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             var convertedResponse = JsonConvert.DeserializeObject<HelpRequestCreateResponse>(stringContent);
             var updatedEntity = DatabaseContext.HelpRequestEntities.First();
             updatedEntity.OnBehalfFirstName.Should().NotBeEquivalentTo(changeValue);
+        }
+
+        public async Task PatchResidentInformationWithStaffAssignmentUpdatesTheRecord()
+        {
+            var residentId = 24;
+            DatabaseContext.ResidentEntities.Add(EntityHelpers.createResident(residentId));
+            var dbEntity = DatabaseContext.HelpRequestEntities.Add(EntityHelpers.createHelpRequestEntity(37, residentId));
+            DatabaseContext.SaveChanges();
+            string changeValue = "to-test-for";
+            var requestObject = DatabaseContext.HelpRequestEntities.Find(dbEntity.Entity.Id).ToDomain();
+            var data = JsonConvert.SerializeObject(requestObject);
+            data = data.Replace(requestObject.AssignedTo, changeValue, StringComparison.InvariantCulture);
+            HttpContent postContent = new StringContent(data, Encoding.UTF8, "application/json");
+            var uri = new Uri($"api/v3/help-requests/{requestObject.Id}", UriKind.Relative);
+            var response = Client.PatchAsync(uri, postContent);
+            postContent.Dispose();
+            var statusCode = response.Result.StatusCode;
+            statusCode.Should().Be(200);
+            var content = response.Result.Content;
+            var stringContent = await content.ReadAsStringAsync().ConfigureAwait(true);
+            var convertedResponse = JsonConvert.DeserializeObject<HelpRequestCreateResponse>(stringContent);
+            var updatedEntity = DatabaseContext.HelpRequestEntities.First();
+            updatedEntity.AssignedTo.Should().BeEquivalentTo(changeValue);
         }
     }
 }

@@ -52,6 +52,7 @@ namespace cv19ResSupportV3.V3.Factories
                 AdviceNotes = helpRequest.AdviceNotes,
                 HelpNeeded = helpRequest.HelpNeeded,
                 NhsCtasId = helpRequest.NhsCtasId,
+                AssignedTo = helpRequest.AssignedTo,
             };
         }
         public static Resident ToDomain(this ResidentEntity resident)
@@ -59,7 +60,7 @@ namespace cv19ResSupportV3.V3.Factories
             return new Resident()
             {
                 Id = resident.Id,
-                PostCode = resident.PostCode,
+                Postcode = resident.Postcode,
                 Uprn = resident.Uprn,
                 Ward = resident.Ward,
                 AddressFirstLine = resident.AddressFirstLine,

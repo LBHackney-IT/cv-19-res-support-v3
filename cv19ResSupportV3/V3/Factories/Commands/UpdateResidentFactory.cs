@@ -10,7 +10,7 @@ namespace cv19ResSupportV3.V3.Factories.Commands
             {
                 FirstName = helpRequest.FirstName,
                 LastName = helpRequest.LastName,
-                PostCode = helpRequest.PostCode,
+                Postcode = helpRequest.Postcode,
                 Uprn = helpRequest.Uprn,
                 Ward = helpRequest.Ward,
                 AddressFirstLine = helpRequest.AddressFirstLine,

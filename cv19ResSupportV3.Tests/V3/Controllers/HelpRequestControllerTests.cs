@@ -7,6 +7,7 @@ using cv19ResSupportV3.V3.Domain.Commands;
 using cv19ResSupportV3.V3.UseCase;
 using cv19ResSupportV3.V3.UseCase.Interfaces;
 using FluentAssertions;
+using LBHFSSPublicAPI.Tests.TestHelpers;
 using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
 using Moq;
@@ -23,6 +24,7 @@ namespace cv19ResRupportV3.Tests.V3.Controllers
         private Mock<IGetResidentsAndHelpRequestsUseCase> _fakeGetResidentsAndHelpRequestsUseCase;
         private Mock<IGetResidentAndHelpRequestUseCase> _fakeGetResidentAndHelpRequestUseCase;
         private Mock<ICreateResidentAndHelpRequestUseCase> _fakeCreateResidentAndHelpRequestUseCase;
+        private Mock<IUpdateStaffAssignmentsUseCase> _fakeUpdateStaffAssignmentUseCase;
 
         [SetUp]
         public void SetUp()
@@ -32,8 +34,10 @@ namespace cv19ResRupportV3.Tests.V3.Controllers
             _fakeGetResidentsAndHelpRequestsUseCase = new Mock<IGetResidentsAndHelpRequestsUseCase>();
             _fakeGetResidentAndHelpRequestUseCase = new Mock<IGetResidentAndHelpRequestUseCase>();
             _fakeCreateResidentAndHelpRequestUseCase = new Mock<ICreateResidentAndHelpRequestUseCase>();
+            _fakeUpdateStaffAssignmentUseCase = new Mock<IUpdateStaffAssignmentsUseCase>();
             _classUnderTest = new HelpRequestsController(_fakeGetResidentsAndHelpRequestsUseCase.Object, _fakeUpdateResidentAndHelpRequestUseCase.Object,
-            _fakeGetResidentAndHelpRequestUseCase.Object, _fakePatchResidentAndHelpRequestUseCase.Object, _fakeCreateResidentAndHelpRequestUseCase.Object);
+            _fakeGetResidentAndHelpRequestUseCase.Object, _fakePatchResidentAndHelpRequestUseCase.Object, _fakeCreateResidentAndHelpRequestUseCase.Object,
+            _fakeUpdateStaffAssignmentUseCase.Object);
         }
 
         [Test]
@@ -72,11 +76,30 @@ namespace cv19ResRupportV3.Tests.V3.Controllers
         [Test]
         public void PatchResidentsAndHelpRequestsReturnsResponseWithStatus()
         {
-            var searchParams = new HelpRequestPatchRequest() { PostCode = "B1" };
+            var searchParams = new HelpRequestPatchRequest() { Postcode = "B1" };
             _fakePatchResidentAndHelpRequestUseCase.Setup(x => x.Execute(It.IsAny<int>(), It.IsAny<PatchResidentAndHelpRequest>())).Verifiable();
             var response = _classUnderTest.PatchResidentAndHelpRequest(1, searchParams) as OkObjectResult;
             _fakePatchResidentAndHelpRequestUseCase.Verify(m => m.Execute(It.Is<int>(x => x == 1), It.IsAny<PatchResidentAndHelpRequest>()), Times.Once());
             response.StatusCode.Should().Be(200);
+        }
+
+        [Test]
+        public void AssignStaffToHelpRequestWithValidParametersReturnsResponseWithOkStatus()
+        {
+            var request = Randomm.Create<UpdateStaffAssignmentsRequestBoundary>();
+            var response = _classUnderTest.UpdateStaffAssignments(request) as OkResult;
+            _fakeUpdateStaffAssignmentUseCase.Verify(m => m.Execute(It.Is<UpdateStaffAssignmentsRequestBoundary>(x => x.HelpNeeded == request.HelpNeeded)), Times.Once());
+            response.StatusCode.Should().Be(200);
+        }
+
+        [Test]
+        public void AssignStaffToHelpRequestWithoutHelpNeededParametersReturnsResponseWithBadRequestStatus()
+        {
+            var request = Randomm.Create<UpdateStaffAssignmentsRequestBoundary>();
+            request.HelpNeeded = "";
+            var response = _classUnderTest.UpdateStaffAssignments(request) as BadRequestObjectResult;
+            _fakeUpdateStaffAssignmentUseCase.Verify(m => m.Execute(It.IsAny<UpdateStaffAssignmentsRequestBoundary>()), Times.Never);
+            response.StatusCode.Should().Be(400);
         }
     }
 }

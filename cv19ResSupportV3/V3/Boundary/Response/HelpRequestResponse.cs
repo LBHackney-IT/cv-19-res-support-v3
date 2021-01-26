@@ -15,7 +15,7 @@ namespace cv19ResSupportV3.V3.Boundary.Response
         public string OnBehalfEmailAddress { get; set; }
         public string OnBehalfContactNumber { get; set; }
         public string RelationshipWithResident { get; set; }
-        public string PostCode { get; set; }
+        public string Postcode { get; set; }
         public string Uprn { get; set; }
         public string Ward { get; set; }
         public string AddressFirstLine { get; set; }
@@ -66,6 +66,7 @@ namespace cv19ResSupportV3.V3.Boundary.Response
         public string HelpNeeded { get; set; }
         public string NhsNumber { get; set; }
         public string NhsCtasId { get; set; }
+        public string AssignedTo { get; set; }
         public List<HelpRequestCall> HelpRequestCalls { get; set; }
     }
 }

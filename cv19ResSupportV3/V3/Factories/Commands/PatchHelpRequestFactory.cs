@@ -9,7 +9,7 @@ namespace cv19ResSupportV3.V3.Factories.Commands
         {
             return new PatchResidentAndHelpRequest
             {
-                PostCode = helpRequest.PostCode,
+                Postcode = helpRequest.Postcode,
                 Uprn = helpRequest.Uprn,
                 Ward = helpRequest.Ward,
                 AddressFirstLine = helpRequest.AddressFirstLine,
@@ -48,6 +48,7 @@ namespace cv19ResSupportV3.V3.Factories.Commands
                 AdviceNotes = helpRequest.AdviceNotes,
                 NhsNumber = helpRequest.NhsNumber,
                 NhsCtasId = helpRequest.NhsCtasId,
+                AssignedTo = helpRequest.AssignedTo,
                 HelpNeeded = helpRequest.HelpNeeded,
             };
         }
@@ -78,6 +79,7 @@ namespace cv19ResSupportV3.V3.Factories.Commands
                 InitialCallbackCompleted = command.InitialCallbackCompleted,
                 AdviceNotes = command.AdviceNotes,
                 NhsCtasId = command.NhsCtasId,
+                AssignedTo = command.AssignedTo,
                 HelpNeeded = command.HelpNeeded,
             };
         }
@@ -86,7 +88,7 @@ namespace cv19ResSupportV3.V3.Factories.Commands
         {
             return new PatchResident
             {
-                PostCode = command.PostCode,
+                Postcode = command.Postcode,
                 Uprn = command.Uprn,
                 Ward = command.Ward,
                 AddressFirstLine = command.AddressFirstLine,

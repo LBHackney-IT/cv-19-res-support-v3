@@ -7,6 +7,8 @@ using cv19ResSupportV3.V3.Gateways;
 using cv19ResSupportV3.V3.Infrastructure;
 using cv19ResSupportV3.V3.UseCase;
 using cv19ResSupportV3.V3.UseCase.Interfaces;
+using cv19ResSupportV3.V4.UseCase;
+using cv19ResSupportV3.V4.UseCase.Interface;
 using cv19ResSupportV3.Versioning;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -47,6 +49,7 @@ namespace cv19ResSupportV3
 
             var versions = new List<ApiVersion>();
             versions.Add(new ApiVersion(3, 0));
+            // versions.Add(new ApiVersion(4, 0));
 
             foreach (var apiVersion in versions)
             {
@@ -149,7 +152,7 @@ namespace cv19ResSupportV3
             services.AddScoped<ICreateHelpRequestUseCase, CreateHelpRequestUseCase>();
             services.AddScoped<IUpdateResidentAndHelpRequestUseCase, UpdateResidentAndHelpRequestUseCase>();
             services.AddScoped<IPatchResidentAndHelpRequestUseCase, PatchResidentAndHelpRequestUseCase>();
-            services.AddScoped<IPatchResidentUseCase, PatchResidentUseCase>();
+            services.AddScoped<IPatchResidentUseCase, V3.UseCase.PatchResidentUseCase>();
             services.AddScoped<IPatchHelpRequestUseCase, PatchHelpRequestUseCase>();
             services.AddScoped<IGetResidentsAndHelpRequestsUseCase, GetResidentsAndHelpRequestsUseCase>();
             services.AddScoped<IGetResidentAndHelpRequestUseCase, GetResidentAndHelpRequestUseCase>();
@@ -163,6 +166,15 @@ namespace cv19ResSupportV3
             services.AddScoped<IUpdateHelpRequestUseCase, UpdateHelpRequestUseCase>();
             services.AddScoped<ICreateCaseNoteUseCase, CreateCaseNoteUseCase>();
             services.AddScoped<IUpdateCaseNoteUseCase, UpdateCaseNoteUseCase>();
+            services.AddScoped<IUpdateStaffAssignmentsUseCase, UpdateStaffAssignmentsUseCase>();
+            services.AddScoped<ICreateResidentsUseCase, CreateResidentsUseCase>();
+            services.AddScoped<IGetResidentsUseCase, GetResidentsUseCase>();
+            services.AddScoped<ISearchResidentsUseCase, SearchResidentsUseCase>();
+            services.AddScoped<V4.UseCase.Interfaces.IPatchResidentUseCase, V4.UseCase.PatchResidentUseCase>();
+            services.AddScoped<IGetResidentHelpRequestsUseCase, GetResidentHelpRequestsUseCase>();
+            services.AddScoped<IGetResidentHelpRequestUseCase, GetResidentHelpRequestUseCase>();
+            services.AddScoped<ICreateResidentHelpRequestUseCase, CreateResidentHelpRequestUseCase>();
+            services.AddScoped<IPatchResidentHelpRequestUseCase, PatchResidentHelpRequestUseCase>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

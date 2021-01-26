@@ -1,3 +1,4 @@
+using System;
 using cv19ResSupportV3.V3.Domain.Commands;
 using cv19ResSupportV3.V3.Infrastructure;
 
@@ -46,6 +47,7 @@ namespace cv19ResSupportV3.V3.Factories.Commands
                 AdviceNotes = helpRequest.AdviceNotes,
                 HelpNeeded = helpRequest.HelpNeeded,
                 NhsCtasId = helpRequest.NhsCtasId,
+                AssignedTo = helpRequest.AssignedTo,
                 HelpRequestCalls = helpRequest.HelpRequestCalls.ToEntity()
             };
         }
@@ -85,7 +87,7 @@ namespace cv19ResSupportV3.V3.Factories.Commands
                 UrgentEssentialsAnythingElse = helpRequest.UrgentEssentialsAnythingElse,
                 CurrentSupport = helpRequest.CurrentSupport,
                 CurrentSupportFeedback = helpRequest.CurrentSupportFeedback,
-                DateTimeRecorded = helpRequest.DateTimeRecorded,
+                DateTimeRecorded = helpRequest.DateTimeRecorded ?? DateTime.Now,
                 CallbackRequired = helpRequest.CallbackRequired,
                 InitialCallbackCompleted = helpRequest.InitialCallbackCompleted,
                 AdviceNotes = helpRequest.AdviceNotes,

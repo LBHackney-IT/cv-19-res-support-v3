@@ -56,6 +56,7 @@ namespace cv19ResSupportV3.V3.Factories
                 AdviceNotes = hr.AdviceNotes,
                 HelpNeeded = hr.HelpNeeded,
                 NhsCtasId = hr.NhsCtasId,
+                AssignedTo = hr.AssignedTo,
                 HelpRequestCalls = hr.HelpRequestCalls
             };
         }
@@ -78,7 +79,7 @@ namespace cv19ResSupportV3.V3.Factories
                 OnBehalfEmailAddress = helpRequest.OnBehalfEmailAddress,
                 OnBehalfContactNumber = helpRequest.OnBehalfContactNumber,
                 RelationshipWithResident = helpRequest.RelationshipWithResident,
-                PostCode = resident.PostCode,
+                Postcode = resident.Postcode,
                 Uprn = resident.Uprn,
                 Ward = resident.Ward,
                 AddressFirstLine = resident.AddressFirstLine,
@@ -129,6 +130,7 @@ namespace cv19ResSupportV3.V3.Factories
                 HelpNeeded = helpRequest.HelpNeeded,
                 NhsCtasId = helpRequest.NhsCtasId,
                 NhsNumber = resident.NhsNumber,
+                AssignedTo = helpRequest.AssignedTo,
                 HelpRequestCalls = helpRequest.HelpRequestCalls
             };
         }
@@ -151,7 +153,7 @@ namespace cv19ResSupportV3.V3.Factories
                 OnBehalfEmailAddress = helpRequest.OnBehalfEmailAddress,
                 OnBehalfContactNumber = helpRequest.OnBehalfContactNumber,
                 RelationshipWithResident = helpRequest.RelationshipWithResident,
-                PostCode = helpRequest.PostCode,
+                Postcode = helpRequest.Postcode,
                 Uprn = helpRequest.Uprn,
                 Ward = helpRequest.Ward,
                 AddressFirstLine = helpRequest.AddressFirstLine,
@@ -202,6 +204,7 @@ namespace cv19ResSupportV3.V3.Factories
                 HelpNeeded = helpRequest.HelpNeeded,
                 NhsCtasId = helpRequest.NhsCtasId,
                 NhsNumber = helpRequest.NhsNumber,
+                AssignedTo = helpRequest.AssignedTo,
                 HelpRequestCalls = helpRequest.HelpRequestCalls
             };
         }

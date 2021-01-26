@@ -25,7 +25,7 @@ namespace cv19ResSupportV3.V3.Factories
                 OnBehalfEmailAddress = helpRequest.OnBehalfEmailAddress,
                 OnBehalfContactNumber = helpRequest.OnBehalfContactNumber,
                 RelationshipWithResident = helpRequest.RelationshipWithResident,
-                PostCode = helpRequest.ResidentEntity.PostCode,
+                Postcode = helpRequest.ResidentEntity.Postcode,
                 Uprn = helpRequest.ResidentEntity.Uprn,
                 Ward = helpRequest.ResidentEntity.Ward,
                 AddressFirstLine = helpRequest.ResidentEntity.AddressFirstLine,
@@ -76,6 +76,7 @@ namespace cv19ResSupportV3.V3.Factories
                 HelpNeeded = helpRequest.HelpNeeded,
                 NhsCtasId = helpRequest.NhsCtasId,
                 NhsNumber = helpRequest.ResidentEntity.NhsNumber,
+                AssignedTo = helpRequest.AssignedTo,
                 HelpRequestCalls = helpRequest.HelpRequestCalls.ToDomain()
             };
         }

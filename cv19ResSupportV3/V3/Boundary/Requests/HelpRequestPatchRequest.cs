@@ -4,7 +4,7 @@ namespace cv19ResSupportV3.V3.Boundary.Requests
 {
     public class HelpRequestPatchRequest
     {
-        public string PostCode { get; set; }
+        public string Postcode { get; set; }
         public string Uprn { get; set; }
         public string Ward { get; set; }
         public string AddressFirstLine { get; set; }
@@ -43,6 +43,8 @@ namespace cv19ResSupportV3.V3.Boundary.Requests
         public string AdviceNotes { get; set; }
         public string NhsNumber { get; set; }
         public string NhsCtasId { get; set; }
+
+        public string AssignedTo { get; set; }
         public string HelpNeeded { get; set; }
     }
 }
