@@ -46,7 +46,7 @@ namespace cv19ResSupportV3.V4.Factories
                     UrgentEssentialsAnythingElse = request.UrgentEssentials,
                     CurrentSupport = request.CurrentSupport,
                     CurrentSupportFeedback = request.CurrentSupportFeedback,
-                    DateTimeRecorded = request.DateTimeRecorded?? DateTime.Now,
+                    DateTimeRecorded = request.DateTimeRecorded ?? DateTime.Now,
                     InitialCallbackCompleted = request.InitialCallbackCompleted,
                     CallbackRequired = request.CallbackRequired,
                     AdviceNotes = request.AdviceNotes,

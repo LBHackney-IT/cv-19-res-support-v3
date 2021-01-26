@@ -87,7 +87,7 @@ namespace cv19ResSupportV3.V3.Factories.Commands
                 UrgentEssentialsAnythingElse = helpRequest.UrgentEssentialsAnythingElse,
                 CurrentSupport = helpRequest.CurrentSupport,
                 CurrentSupportFeedback = helpRequest.CurrentSupportFeedback,
-                DateTimeRecorded = helpRequest.DateTimeRecorded?? DateTime.Now,
+                DateTimeRecorded = helpRequest.DateTimeRecorded ?? DateTime.Now,
                 CallbackRequired = helpRequest.CallbackRequired,
                 InitialCallbackCompleted = helpRequest.InitialCallbackCompleted,
                 AdviceNotes = helpRequest.AdviceNotes,
