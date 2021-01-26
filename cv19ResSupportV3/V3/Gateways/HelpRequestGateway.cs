@@ -319,6 +319,25 @@ namespace cv19ResSupportV3.V3.Gateways
             }
         }
 
+        public List<HelpRequestWithResident> GetResidentHelpRequests(int id)
+        {
+            try
+            {
+                var helpRequests = _helpRequestsContext.HelpRequestEntities
+                    .Include(x => x.HelpRequestCalls)
+                    .Include(x => x.ResidentEntity)
+                    .Include(x => x.CaseNotes)
+                    .Where(x => x.ResidentId == id);
+                return helpRequests.Select( hr => hr.ToHelpRequestWithResidentDomain()).ToList();
+            }
+            catch (Exception e)
+            {
+                LambdaLogger.Log("GetResidentHelpRequests error: ");
+                LambdaLogger.Log(e.Message);
+                throw;
+            }
+        }
+
         //        private void SetRecordStatus(HelpRequestEntityOld request)
         //        {
         //            request.RecordStatus = "MASTER";
