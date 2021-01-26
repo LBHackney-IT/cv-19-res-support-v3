@@ -55,7 +55,7 @@ namespace cv19ResSupportV3.V4.Controllers
         [ProducesResponseType(typeof(ResidentHelpRequestResponse), StatusCodes.Status200OK)]
         [HttpGet]
         [Route("{help-request-id}")]
-        public IActionResult GetResidentHelpRequest(int id, int helpRequestId)
+        public IActionResult GetResidentHelpRequest([FromRoute(Name = "id")] int id, [FromRoute(Name = "help-request-id")] int helpRequestId)
         {
             var response = _getResidentHelpRequestUseCase.Execute(id, helpRequestId);
             if (response != null)
@@ -86,7 +86,7 @@ namespace cv19ResSupportV3.V4.Controllers
         [ProducesResponseType(typeof(ResidentResponseBoundary), StatusCodes.Status200OK)]
         [HttpPatch]
         [Route("{help-request-id}")]
-        public IActionResult PatchResidentHelpRequest([FromRoute] int id, [FromRoute] int helpRequestId, [FromBody] ResidentHelpRequestRequest request)
+        public IActionResult PatchResidentHelpRequest([FromRoute(Name = "id")] int id, [FromRoute(Name = "help-request-id")] int helpRequestId, [FromBody] ResidentHelpRequestRequest request)
         {
             var response = _patchResidentHelpRequestUseCase.Execute(id, helpRequestId, request);
             if (response != null)
