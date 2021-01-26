@@ -48,6 +48,7 @@ namespace cv19ResSupportV3.V3.Factories.Commands
                 AdviceNotes = helpRequest.AdviceNotes,
                 NhsNumber = helpRequest.NhsNumber,
                 NhsCtasId = helpRequest.NhsCtasId,
+                AssignedTo = helpRequest.AssignedTo,
                 HelpNeeded = helpRequest.HelpNeeded,
             };
         }
@@ -78,6 +79,7 @@ namespace cv19ResSupportV3.V3.Factories.Commands
                 InitialCallbackCompleted = command.InitialCallbackCompleted,
                 AdviceNotes = command.AdviceNotes,
                 NhsCtasId = command.NhsCtasId,
+                AssignedTo = command.AssignedTo,
                 HelpNeeded = command.HelpNeeded,
             };
         }

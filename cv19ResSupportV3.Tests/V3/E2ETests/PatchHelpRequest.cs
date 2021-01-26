@@ -168,5 +168,28 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             var updatedEntity = DatabaseContext.HelpRequestEntities.First();
             updatedEntity.OnBehalfFirstName.Should().NotBeEquivalentTo(changeValue);
         }
+
+        public async Task PatchResidentInformationWithStaffAssignmentUpdatesTheRecord()
+        {
+            var residentId = 24;
+            DatabaseContext.ResidentEntities.Add(EntityHelpers.createResident(residentId));
+            var dbEntity = DatabaseContext.HelpRequestEntities.Add(EntityHelpers.createHelpRequestEntity(37, residentId));
+            DatabaseContext.SaveChanges();
+            string changeValue = "to-test-for";
+            var requestObject = DatabaseContext.HelpRequestEntities.Find(dbEntity.Entity.Id).ToDomain();
+            var data = JsonConvert.SerializeObject(requestObject);
+            data = data.Replace(requestObject.AssignedTo, changeValue, StringComparison.InvariantCulture);
+            HttpContent postContent = new StringContent(data, Encoding.UTF8, "application/json");
+            var uri = new Uri($"api/v3/help-requests/{requestObject.Id}", UriKind.Relative);
+            var response = Client.PatchAsync(uri, postContent);
+            postContent.Dispose();
+            var statusCode = response.Result.StatusCode;
+            statusCode.Should().Be(200);
+            var content = response.Result.Content;
+            var stringContent = await content.ReadAsStringAsync().ConfigureAwait(true);
+            var convertedResponse = JsonConvert.DeserializeObject<HelpRequestCreateResponse>(stringContent);
+            var updatedEntity = DatabaseContext.HelpRequestEntities.First();
+            updatedEntity.AssignedTo.Should().BeEquivalentTo(changeValue);
+        }
     }
 }

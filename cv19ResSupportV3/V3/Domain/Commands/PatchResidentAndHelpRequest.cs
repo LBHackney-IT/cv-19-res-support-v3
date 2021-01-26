@@ -41,6 +41,7 @@ namespace cv19ResSupportV3.V3.Domain.Commands
         public string AdviceNotes { get; set; }
         public string NhsNumber { get; set; }
         public string NhsCtasId { get; set; }
+        public string AssignedTo { get; set; }
         public string HelpNeeded { get; set; }
     }
 }
