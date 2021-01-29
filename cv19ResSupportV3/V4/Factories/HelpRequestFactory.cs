@@ -177,7 +177,8 @@ namespace cv19ResSupportV3.V4.Factories
                     AdviceNotes = domain.AdviceNotes,
                     HelpNeeded = domain.HelpNeeded,
                     AssignedTo = domain.AssignedTo,
-                    NhsCtasId = domain.NhsCtasId
+                    NhsCtasId = domain.NhsCtasId,
+                    HelpRequestCalls = domain.HelpRequestCalls
                 };
         }
 
