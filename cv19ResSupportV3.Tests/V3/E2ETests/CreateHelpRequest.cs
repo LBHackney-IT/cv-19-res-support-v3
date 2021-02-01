@@ -80,9 +80,9 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             residentEntity.Uprn.Should().BeEquivalentTo(requestObject.Uprn);
             residentEntity.AddressFirstLine.Should().BeEquivalentTo(requestObject.AddressFirstLine);
             residentEntity.ContactMobileNumber.Should()
-                .BeEquivalentTo(existingResident.ContactMobileNumber + "/" + requestObject.ContactMobileNumber);
+                .BeEquivalentTo(existingResident.ContactMobileNumber + " / " + requestObject.ContactMobileNumber);
             residentEntity.ContactTelephoneNumber.Should()
-                .BeEquivalentTo(existingResident.ContactTelephoneNumber + "/" + requestObject.ContactTelephoneNumber);
+                .BeEquivalentTo(existingResident.ContactTelephoneNumber + " / " + requestObject.ContactTelephoneNumber);
             helpRequestEntity.HelpWithAccessingSupermarketFood.Should().Be(requestObject.HelpWithAccessingSupermarketFood);
             helpRequestEntity.HelpWithCompletingNssForm.Should().Be(requestObject.HelpWithCompletingNssForm);
             helpRequestEntity.HelpWithShieldingGuidance.Should().Be(requestObject.HelpWithShieldingGuidance);
