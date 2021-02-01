@@ -27,14 +27,26 @@ namespace cv19ResSupportV3.V3.UseCase
                 string[] telephoneNumbers = { existingResident.ContactTelephoneNumber, updateResident.ContactTelephoneNumber };
                 string[] mobileNumbers = { existingResident.ContactMobileNumber, updateResident.ContactMobileNumber };
 
-                updateResident.ContactTelephoneNumber = String.Join("/", telephoneNumbers.Where(x => !string.IsNullOrEmpty(x)));
-                updateResident.ContactMobileNumber = String.Join("/", mobileNumbers.Where(x => !string.IsNullOrEmpty(x)));
+                updateResident.ContactTelephoneNumber = ConcatPhoneNumber(existingResident.ContactTelephoneNumber, updateResident.ContactTelephoneNumber);
+                updateResident.ContactMobileNumber = ConcatPhoneNumber(existingResident.ContactMobileNumber,
+                    updateResident.ContactMobileNumber);
                 return _gateway.PatchResident((int) existingResidentId, updateResident);
             }
             var resident = _gateway.CreateResident(command);
             return resident;
         }
 
-
+        private string ConcatPhoneNumber(string existingNumber, string newNumber)
+        {
+            if (string.IsNullOrEmpty(existingNumber))
+            {
+                return newNumber;
+            }
+            else if (string.IsNullOrEmpty(newNumber) || existingNumber.Contains(newNumber))
+            {
+                return existingNumber;
+            }
+            return String.Join(" / ", existingNumber, newNumber);
+        }
     }
 }

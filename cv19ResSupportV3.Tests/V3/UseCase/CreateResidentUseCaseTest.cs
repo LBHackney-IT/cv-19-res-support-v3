@@ -81,5 +81,109 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
             _mockGateway.Verify(m => m.PatchResident(It.IsAny<int>(), It.IsAny<PatchResident>()), Times.Once());
             response.Should().Be(updatedResident);
         }
+        [Test]
+        public void DoesntConcatSameNumbers()
+        {
+            _residentDomain.ContactTelephoneNumber = "123";
+            _residentDomain.ContactMobileNumber = "456";
+            _createResidentCommand.ContactTelephoneNumber = "123";
+            _createResidentCommand.ContactMobileNumber = "456";
+
+            var updatedResident = _residentDomain;
+
+            _mockGateway.Setup(s => s.FindResident(It.IsAny<FindResident>())).Returns(1);
+            _mockGateway.Setup(s => s.GetResident(It.IsAny<int>())).Returns(_residentDomain);
+            _mockGateway.Setup(s => s.PatchResident(It.IsAny<int>(), It.IsAny<PatchResident>())).Returns(updatedResident);
+
+            var response = _classUnderTest.Execute(_createResidentCommand);
+
+            _mockGateway.Verify(m => m.FindResident(It.IsAny<FindResident>()), Times.Once());
+            _mockGateway.Verify(m => m.GetResident(It.IsAny<int>()), Times.Once());
+            _mockGateway.Verify(m => m.CreateResident(It.IsAny<CreateResident>()), Times.Never());
+            _mockGateway.Verify(m => m.PatchResident(
+                It.IsAny<int>(),
+                It.Is<PatchResident>(
+                    x => x.ContactTelephoneNumber == "123" && x.ContactMobileNumber == "456"
+                )
+            ), Times.Once());
+        }
+        [Test]
+        public void DoesntConcatNullNumbers()
+        {
+            _residentDomain.ContactTelephoneNumber = "123";
+            _residentDomain.ContactMobileNumber = "456";
+            _createResidentCommand.ContactTelephoneNumber = "";
+            _createResidentCommand.ContactMobileNumber = null;
+
+            var updatedResident = _residentDomain;
+
+            _mockGateway.Setup(s => s.FindResident(It.IsAny<FindResident>())).Returns(1);
+            _mockGateway.Setup(s => s.GetResident(It.IsAny<int>())).Returns(_residentDomain);
+            _mockGateway.Setup(s => s.PatchResident(It.IsAny<int>(), It.IsAny<PatchResident>())).Returns(updatedResident);
+
+            var response = _classUnderTest.Execute(_createResidentCommand);
+
+            _mockGateway.Verify(m => m.FindResident(It.IsAny<FindResident>()), Times.Once());
+            _mockGateway.Verify(m => m.GetResident(It.IsAny<int>()), Times.Once());
+            _mockGateway.Verify(m => m.CreateResident(It.IsAny<CreateResident>()), Times.Never());
+            _mockGateway.Verify(m => m.PatchResident(
+                It.IsAny<int>(),
+                It.Is<PatchResident>(
+                    x => x.ContactTelephoneNumber == "123" && x.ContactMobileNumber == "456"
+                )
+            ), Times.Once());
+        }
+        [Test]
+        public void SavesNewNumbers()
+        {
+            _residentDomain.ContactTelephoneNumber = null;
+            _residentDomain.ContactMobileNumber = "";
+            _createResidentCommand.ContactTelephoneNumber = "123";
+            _createResidentCommand.ContactMobileNumber = "456";
+
+            var updatedResident = _residentDomain;
+
+            _mockGateway.Setup(s => s.FindResident(It.IsAny<FindResident>())).Returns(1);
+            _mockGateway.Setup(s => s.GetResident(It.IsAny<int>())).Returns(_residentDomain);
+            _mockGateway.Setup(s => s.PatchResident(It.IsAny<int>(), It.IsAny<PatchResident>())).Returns(updatedResident);
+
+            var response = _classUnderTest.Execute(_createResidentCommand);
+
+            _mockGateway.Verify(m => m.FindResident(It.IsAny<FindResident>()), Times.Once());
+            _mockGateway.Verify(m => m.GetResident(It.IsAny<int>()), Times.Once());
+            _mockGateway.Verify(m => m.CreateResident(It.IsAny<CreateResident>()), Times.Never());
+            _mockGateway.Verify(m => m.PatchResident(
+                It.IsAny<int>(),
+                It.Is<PatchResident>(
+                    x => x.ContactTelephoneNumber == "123" && x.ContactMobileNumber == "456"
+                )
+            ), Times.Once());
+        }
+        [Test]
+        public void ConcatDifferentNumbers()
+        {
+            _residentDomain.ContactTelephoneNumber = "123";
+            _residentDomain.ContactMobileNumber = "456";
+            _createResidentCommand.ContactTelephoneNumber = "789";
+            _createResidentCommand.ContactMobileNumber = "012";
+
+            var updatedResident = _residentDomain;
+
+            _mockGateway.Setup(s => s.FindResident(It.IsAny<FindResident>())).Returns(1);
+            _mockGateway.Setup(s => s.GetResident(It.IsAny<int>())).Returns(_residentDomain);
+            _mockGateway.Setup(s => s.PatchResident(It.IsAny<int>(), It.IsAny<PatchResident>())).Returns(updatedResident);
+
+            var response = _classUnderTest.Execute(_createResidentCommand);
+
+            _mockGateway.Verify(m => m.FindResident(It.IsAny<FindResident>()), Times.Once());
+            _mockGateway.Verify(m => m.GetResident(It.IsAny<int>()), Times.Once());
+            _mockGateway.Verify(m => m.CreateResident(It.IsAny<CreateResident>()), Times.Never());
+            _mockGateway.Verify(m => m.PatchResident(
+                It.IsAny<int>(),
+                It.Is<PatchResident>(
+                    x => x.ContactTelephoneNumber == "123 / 789" && x.ContactMobileNumber == "456 / 012"
+                )
+            ), Times.Once());
+        }
     }
 }
