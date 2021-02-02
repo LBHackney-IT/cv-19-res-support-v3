@@ -1,18 +1,11 @@
 using System;
 using System.Linq;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using AutoFixture;
 using cv19ResSupportV3.Tests.V3.E2ETests;
-using cv19ResSupportV3.Tests.V3.Helpers;
-using cv19ResSupportV3.V3.Boundary.Response;
-using cv19ResSupportV3.V3.Boundary.Requests;
-using cv19ResSupportV3.V3.Domain;
 using cv19ResSupportV3.V3.Infrastructure;
 using cv19ResSupportV3.V4;
 using FluentAssertions;
-using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using NUnit.Framework;
 
