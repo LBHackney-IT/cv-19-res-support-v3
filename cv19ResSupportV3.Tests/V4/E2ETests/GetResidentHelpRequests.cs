@@ -17,7 +17,7 @@ using NUnit.Framework;
 namespace cv19ResSupportV3.Tests.V4.E2ETests
 {
     [TestFixture]
-    public class GetResidentHelpRequests: IntegrationTests<Startup>
+    public class GetResidentHelpRequests : IntegrationTests<Startup>
     {
         [SetUp]
         public void SetUp()
