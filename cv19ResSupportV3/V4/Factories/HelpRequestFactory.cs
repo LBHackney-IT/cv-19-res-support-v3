@@ -120,7 +120,7 @@ namespace cv19ResSupportV3.V4.Factories
                     MedicineDeliveryHelpNeeded = domain.MedicineDeliveryHelpNeeded,
                     WhenIsMedicinesDelivered = domain.WhenIsMedicinesDelivered,
                     UrgentEssentials = domain.UrgentEssentials,
-                    UrgentEssentialsAnythingElse = domain.UrgentEssentials,
+                    UrgentEssentialsAnythingElse = domain.UrgentEssentialsAnythingElse,
                     CurrentSupport = domain.CurrentSupport,
                     CurrentSupportFeedback = domain.CurrentSupportFeedback,
                     DateTimeRecorded = domain.DateTimeRecorded,
@@ -168,7 +168,7 @@ namespace cv19ResSupportV3.V4.Factories
                     MedicineDeliveryHelpNeeded = domain.MedicineDeliveryHelpNeeded,
                     WhenIsMedicinesDelivered = domain.WhenIsMedicinesDelivered,
                     UrgentEssentials = domain.UrgentEssentials,
-                    UrgentEssentialsAnythingElse = domain.UrgentEssentials,
+                    UrgentEssentialsAnythingElse = domain.UrgentEssentialsAnythingElse,
                     CurrentSupport = domain.CurrentSupport,
                     CurrentSupportFeedback = domain.CurrentSupportFeedback,
                     DateTimeRecorded = domain.DateTimeRecorded,
@@ -178,7 +178,8 @@ namespace cv19ResSupportV3.V4.Factories
                     HelpNeeded = domain.HelpNeeded,
                     AssignedTo = domain.AssignedTo,
                     NhsCtasId = domain.NhsCtasId,
-                    HelpRequestCalls = domain.HelpRequestCalls
+                    HelpRequestCalls = domain.HelpRequestCalls,
+                    CaseNotes = domain.CaseNotes
                 };
         }
 
