@@ -10,7 +10,6 @@ using cv19ResSupportV3.V3.Factories;
 using cv19ResSupportV3.V3.Factories.Commands;
 using cv19ResSupportV3.V3.Infrastructure;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 using HelpRequest = cv19ResSupportV3.V3.Domain.HelpRequest;
 
 namespace cv19ResSupportV3.V3.Gateways
