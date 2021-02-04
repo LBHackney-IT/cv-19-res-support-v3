@@ -175,6 +175,7 @@ namespace cv19ResSupportV3.V4.Factories
                     InitialCallbackCompleted = domain.InitialCallbackCompleted,
                     CallbackRequired = domain.CallbackRequired,
                     AdviceNotes = domain.AdviceNotes,
+                    Metadata = domain.Metadata,
                     HelpNeeded = domain.HelpNeeded,
                     AssignedTo = domain.AssignedTo,
                     NhsCtasId = domain.NhsCtasId,
