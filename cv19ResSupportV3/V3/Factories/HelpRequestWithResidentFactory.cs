@@ -77,6 +77,7 @@ namespace cv19ResSupportV3.V3.Factories
                 NhsCtasId = helpRequest.NhsCtasId,
                 NhsNumber = helpRequest.ResidentEntity.NhsNumber,
                 AssignedTo = helpRequest.AssignedTo,
+                Metadata = helpRequest.Metadata,
                 HelpRequestCalls = helpRequest.HelpRequestCalls.ToDomain()
             };
         }

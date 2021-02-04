@@ -107,6 +107,8 @@ namespace cv19ResSupportV3.V3.Infrastructure
 
         [Column("assigned_staff")] public string AssignedTo { get; set; }
 
+        [Column("metadata", TypeName = "jsonb")] public dynamic Metadata { get; set; }
+
         public ResidentEntity ResidentEntity { get; set; }
         public List<CaseNoteEntity> CaseNotes { get; set; }
         public List<HelpRequestCallEntity> HelpRequestCalls { get; set; }

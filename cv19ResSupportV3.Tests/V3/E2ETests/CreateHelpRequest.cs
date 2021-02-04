@@ -88,5 +88,42 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             helpRequestEntity.HelpWithShieldingGuidance.Should().Be(requestObject.HelpWithShieldingGuidance);
             helpRequestEntity.HelpWithNoNeedsIdentified.Should().Be(requestObject.HelpWithNoNeedsIdentified);
         }
+
+        [Test]
+        public async Task CreateResidentAndHelpRequestWithMetadata()
+        {
+            // var requestObject = new Fixture().Create<HelpRequestCreateRequestBoundary>();
+            var requestObject = "{";
+            requestObject += "\"Postcode\": \"E8 1DY\",";
+            requestObject += "\"AddressFirstLine\": \"1 Hillman street\",";
+            requestObject += "\"FirstName\": \"Testy\",";
+            requestObject += "\"LastName\": \"Testington\",";
+            requestObject += "\"DobDay\": \"20\",";
+            requestObject += "\"DobMonth\": \"04\",";
+            requestObject += "\"DobYear\": \"1996\",";
+            requestObject += "\"ContactTelephoneNumber\": \"1234567890\",";
+            requestObject += "\"ContactMobileNumber\":  \"0987654321\",";
+            requestObject += "\"EmailAddress\":  \"testy@test.com\",";
+            requestObject += "\"CaseNotes\": \"Got covid\",";
+            requestObject += "\"HelpNeeded\": \"Contact Tracing\",";
+            requestObject += "\"NhsNumber\": \"11112222333\",";
+            requestObject += "\"NhsCtasId\": \"abc123ef\",";
+            requestObject += "\"Metadata\": { \"tested_date\": \"02-02-2020\" }";
+            requestObject += "}";
+            HttpContent postContent = new StringContent(requestObject, Encoding.UTF8, "application/json");
+            var uri = new Uri($"api/v3/help-requests", UriKind.Relative);
+            var response = Client.PostAsync(uri, postContent);
+            postContent.Dispose();
+            var statusCode = response.Result.StatusCode;
+            statusCode.Should().Be(201);
+            var content = response.Result.Content;
+            var stringContent = await content.ReadAsStringAsync().ConfigureAwait(true);
+            var convertedResponse = JsonConvert.DeserializeObject<HelpRequestCreateResponse>(stringContent);
+            var helpRequestEntity = DatabaseContext.HelpRequestEntities.Find(convertedResponse.Id);
+            var residentEntity = DatabaseContext.ResidentEntities.Find(helpRequestEntity.ResidentId);
+            residentEntity.FirstName.Should().BeEquivalentTo("Testy");
+            var helpRequestMetadata = (string) helpRequestEntity.Metadata;
+            helpRequestMetadata.Should().BeEquivalentTo("{\"tested_date\": \"02-02-2020\"}");
+        }
     }
 }

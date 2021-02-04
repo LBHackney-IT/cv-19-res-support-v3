@@ -1,5 +1,7 @@
 using cv19ResSupportV3.V3.Boundary.Requests;
 using cv19ResSupportV3.V3.Domain.Commands;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace cv19ResSupportV3.V3.Factories.Commands
 {
@@ -66,6 +68,7 @@ namespace cv19ResSupportV3.V3.Factories.Commands
                 CaseNotes = helpRequest.CaseNotes,
                 AdviceNotes = helpRequest.AdviceNotes,
                 HelpNeeded = helpRequest.HelpNeeded,
+                Metadata = helpRequest.Metadata,
                 NhsNumber = helpRequest.NhsNumber,
                 NhsCtasId = helpRequest.NhsCtasId
             };
