@@ -42,6 +42,7 @@ namespace cv19ResSupportV3.V3.Domain.Commands
         public string HelpNeeded { get; set; }
         public string AssignedTo { get; set; }
         public string NhsCtasId { get; set; }
+        public dynamic Metadata { get; set; }
         public List<HelpRequestCall> HelpRequestCalls { get; set; }
     }
 }

@@ -29,7 +29,6 @@ namespace cv19ResSupportV3.V3.Gateways
             if (requestEntity == null) return 0;
 
             requestEntity.ResidentId = residentId;
-
             // SetRecordStatus(requestEntity);
             requestEntity.CallbackRequired ??= true;
             try
