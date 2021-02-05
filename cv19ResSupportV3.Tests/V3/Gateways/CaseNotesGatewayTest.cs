@@ -101,13 +101,13 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
                                                        .With(x => x.HelpRequestId, helpRequest.Id)
                                                        .CreateMany().ToList();
             var caseNotesTwo = _fixture.Build<CaseNoteEntity>()
-                                                        .With(x => x.ResidentId, residentTwo.Id)                                                        .With(x => x.ResidentId, residentTwo.Id)
+                                                        .With(x => x.ResidentId, residentTwo.Id).With(x => x.ResidentId, residentTwo.Id)
                                                         .Without(x => x.ResidentEntity)
                                                         .Without(x => x.HelpRequestEntity)
                                                         .With(x => x.HelpRequestId, helpRequestTwo.Id)
                                                         .CreateMany().ToList();
 
-            DatabaseContext.ResidentEntities.AddRange(resident,residentTwo);
+            DatabaseContext.ResidentEntities.AddRange(resident, residentTwo);
             DatabaseContext.HelpRequestEntities.AddRange(helpRequest, helpRequestTwo);
             DatabaseContext.CaseNoteEntities.AddRange(caseNotes);
             DatabaseContext.CaseNoteEntities.AddRange(caseNotesTwo);

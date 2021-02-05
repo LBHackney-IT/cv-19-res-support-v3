@@ -5,7 +5,7 @@ using cv19ResSupportV3.V4.UseCase.Interface;
 
 namespace cv19ResSupportV3.V4.UseCase
 {
-    public class GetCaseNotesByResidentIdUseCase :IGetCaseNotesByResidentId
+    public class GetCaseNotesByResidentIdUseCase : IGetCaseNotesByResidentId
     {
         private readonly ICaseNotesGateway _gateway;
 
