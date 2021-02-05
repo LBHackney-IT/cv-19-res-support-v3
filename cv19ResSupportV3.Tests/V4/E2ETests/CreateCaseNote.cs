@@ -32,22 +32,22 @@ namespace cv19ResSupportV3.Tests.V4.E2ETests
             var resident = new Fixture().Build<ResidentEntity>()
                 .Without(re => re.HelpRequests)
                 .Without(re => re.CaseNotes)
-                .With(x => x.Id,residentId)
+                .With(x => x.Id, residentId)
                 .Create();
 
             var helpRequest = new Fixture().Build<HelpRequestEntity>()
                 .Without(hr => hr.ResidentEntity)
                 .Without(hr => hr.HelpRequestCalls)
                 .Without(hr => hr.CaseNotes)
-                .With(x => x.Id,helpRequestId)
-                .With(x => x.ResidentId,residentId)
+                .With(x => x.Id, helpRequestId)
+                .With(x => x.ResidentId, residentId)
                 .Create();
 
             DatabaseContext.ResidentEntities.Add(resident);
             DatabaseContext.HelpRequestEntities.Add(helpRequest);
             DatabaseContext.SaveChanges();
 
-            var caseNote = new CreateCaseNoteRequest() {CaseNote = "Content"};
+            var caseNote = new CreateCaseNoteRequest() { CaseNote = "Content" };
             var data = JsonConvert.SerializeObject(caseNote);
             HttpContent postContent = new StringContent(data, Encoding.UTF8, "application/json");
             var uri = new Uri($"api/v4/residents/1/help-requests/1/case-notes", UriKind.Relative);
