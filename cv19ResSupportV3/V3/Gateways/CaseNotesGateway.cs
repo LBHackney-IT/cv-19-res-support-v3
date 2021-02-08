@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Amazon.Lambda.Core;
 using cv19ResSupportV3.V3.Domain;
@@ -92,6 +93,20 @@ namespace cv19ResSupportV3.V3.Gateways
             catch (Exception e)
             {
                 LambdaLogger.Log("PatchCaseNote error: ");
+                LambdaLogger.Log(e.Message);
+                throw;
+            }
+        }
+
+        public List<ResidentCaseNote> GetByResidentId(int residentId)
+        {
+            try
+            {
+                return _helpRequestsContext.CaseNoteEntities.Where(x => x.ResidentId == residentId).ToList().ToDomain();
+            }
+            catch (Exception e)
+            {
+                LambdaLogger.Log("GetByResidentId error: ");
                 LambdaLogger.Log(e.Message);
                 throw;
             }
