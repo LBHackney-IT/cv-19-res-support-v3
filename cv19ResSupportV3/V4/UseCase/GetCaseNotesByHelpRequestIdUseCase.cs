@@ -5,17 +5,17 @@ using cv19ResSupportV3.V4.UseCase.Interface;
 
 namespace cv19ResSupportV3.V4.UseCase
 {
-    public class GetCaseNotesByResidentIdUseCase : IGetCaseNotesByResidentIdUseCase
+    public class GetCaseNotesByHelpRequestIdUseCase : IGetCaseNotesByHelpRequestIdUseCase
     {
         private readonly ICaseNotesGateway _gateway;
 
-        public GetCaseNotesByResidentIdUseCase(ICaseNotesGateway gateway)
+        public GetCaseNotesByHelpRequestIdUseCase(ICaseNotesGateway gateway)
         {
             _gateway = gateway;
         }
         public List<ResidentCaseNote> Execute(int id)
         {
-            return _gateway.GetByResidentId(id);
+            return _gateway.GetByHelpRequestId(id);
         }
     }
 }

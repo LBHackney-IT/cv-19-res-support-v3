@@ -16,14 +16,16 @@ namespace cv19ResSupportV3.Tests.V4.Controllers
     {
         private CaseNotesController _classUnderTest;
         private Mock<ICreateCaseNoteUseCase> _createCaseNoteUseCase;
-        private Mock<IGetCaseNotesByResidentId> _getCaseNotesByResidentIdUseCase;
+        private Mock<IGetCaseNotesByResidentIdUseCase> _getCaseNotesByResidentIdUseCase;
+        private Mock<IGetCaseNotesByHelpRequestIdUseCase> _getCaseNotesByHelpRequestIdUseCase;
 
         [SetUp]
         public void SetUp()
         {
             _createCaseNoteUseCase = new Mock<ICreateCaseNoteUseCase>();
-            _getCaseNotesByResidentIdUseCase = new Mock<IGetCaseNotesByResidentId>();
-            _classUnderTest = new CaseNotesController(_createCaseNoteUseCase.Object, _getCaseNotesByResidentIdUseCase.Object);
+            _getCaseNotesByResidentIdUseCase = new Mock<IGetCaseNotesByResidentIdUseCase>();
+            _getCaseNotesByHelpRequestIdUseCase = new Mock<IGetCaseNotesByHelpRequestIdUseCase>();
+            _classUnderTest = new CaseNotesController(_createCaseNoteUseCase.Object, _getCaseNotesByResidentIdUseCase.Object, _getCaseNotesByHelpRequestIdUseCase.Object);
         }
 
         [Test]
@@ -42,6 +44,15 @@ namespace cv19ResSupportV3.Tests.V4.Controllers
             _getCaseNotesByResidentIdUseCase.Setup(uc => uc.Execute(It.IsAny<int>()))
                 .Returns(new List<ResidentCaseNote>() { new ResidentCaseNote() { Id = 1 } });
             var response = _classUnderTest.GetCaseNotesByResidentId(1) as OkObjectResult;
+            response.StatusCode.Should().Be(200);
+        }
+
+        [Test]
+        public void GetByHelpRequestIdReturnsResponseWithStatus()
+        {
+            _getCaseNotesByHelpRequestIdUseCase.Setup(uc => uc.Execute(It.IsAny<int>()))
+                .Returns(new List<ResidentCaseNote>() { new ResidentCaseNote() { Id = 1 } });
+            var response = _classUnderTest.GetCaseNotesByHelpRequestId(1, 1) as OkObjectResult;
             response.StatusCode.Should().Be(200);
         }
     }

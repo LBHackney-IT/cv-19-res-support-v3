@@ -21,11 +21,13 @@ namespace cv19ResSupportV3.V4.Controllers
     public class CaseNotesController : BaseController
     {
         private readonly ICreateCaseNoteUseCase _addCaseNoteUseCase;
-        private readonly IGetCaseNotesByResidentId _getCaseNotesByResidentId;
+        private readonly IGetCaseNotesByResidentIdUseCase _getCaseNotesByResidentId;
+        private readonly IGetCaseNotesByHelpRequestIdUseCase _getCaseNotesByHelpRequestId;
 
-        public CaseNotesController(ICreateCaseNoteUseCase addCaseNoteUseCase, IGetCaseNotesByResidentId getCaseNotesByResidentId)
+        public CaseNotesController(ICreateCaseNoteUseCase addCaseNoteUseCase, IGetCaseNotesByResidentIdUseCase getCaseNotesByResidentId, IGetCaseNotesByHelpRequestIdUseCase getCaseNotesByHelpRequestId)
         {
             _addCaseNoteUseCase = addCaseNoteUseCase;
+            _getCaseNotesByHelpRequestId = getCaseNotesByHelpRequestId;
             _getCaseNotesByResidentId = getCaseNotesByResidentId;
         }
 
@@ -54,6 +56,19 @@ namespace cv19ResSupportV3.V4.Controllers
         public IActionResult GetCaseNotesByResidentId([FromRoute(Name = "id")] int residentId)
         {
             var response = _getCaseNotesByResidentId.Execute(residentId);
+            return Ok(response.ToResponse());
+        }
+
+        /// <summary>
+        /// Creates a resident help request with the values provided.
+        /// </summary>
+        /// <response code="201">...</response>
+        [ProducesResponseType(typeof(List<CaseNoteResponse>), StatusCodes.Status201Created)]
+        [HttpGet]
+        [Route("help-requests/{help-request-id}/case-notes")]
+        public IActionResult GetCaseNotesByHelpRequestId([FromRoute(Name = "id")] int residentId, [FromRoute(Name = "help-request-id")] int helpRequestId)
+        {
+            var response = _getCaseNotesByHelpRequestId.Execute(helpRequestId);
             return Ok(response.ToResponse());
         }
     }

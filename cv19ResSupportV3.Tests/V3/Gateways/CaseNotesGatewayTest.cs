@@ -121,5 +121,39 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             caseNotesResult.Count.Should().Be(caseNotes.Count);
             caseNotesResultTwo.Count.Should().Be(caseNotesTwo.Count);
         }
+
+
+        [Test]
+        public void GetByHelpRequestIdReturnsCorrectCaseNotes()
+        {
+            var resident = EntityHelpers.createResident(116);
+            var helpRequest = EntityHelpers.createHelpRequestEntity(46, resident.Id);
+            var helpRequestTwo = EntityHelpers.createHelpRequestEntity(47, resident.Id);
+
+            var caseNotes = _fixture.Build<CaseNoteEntity>()
+                                                       .With(x => x.ResidentId, resident.Id)
+                                                       .Without(x => x.ResidentEntity)
+                                                       .Without(x => x.HelpRequestEntity)
+                                                       .With(x => x.HelpRequestId, helpRequest.Id)
+                                                       .CreateMany().ToList();
+            var caseNotesTwo = _fixture.Build<CaseNoteEntity>()
+                                                        .With(x => x.ResidentId, resident.Id).With(x => x.ResidentId, resident.Id)
+                                                        .Without(x => x.ResidentEntity)
+                                                        .Without(x => x.HelpRequestEntity)
+                                                        .With(x => x.HelpRequestId, helpRequestTwo.Id)
+                                                        .CreateMany().ToList();
+
+            DatabaseContext.ResidentEntities.Add(resident);
+            DatabaseContext.HelpRequestEntities.AddRange(helpRequest, helpRequestTwo);
+            DatabaseContext.CaseNoteEntities.AddRange(caseNotes);
+            DatabaseContext.CaseNoteEntities.AddRange(caseNotesTwo);
+            DatabaseContext.SaveChanges();
+
+            var caseNotesResult = _classUnderTest.GetByHelpRequestId(helpRequest.Id);
+            var caseNotesResultTwo = _classUnderTest.GetByHelpRequestId(helpRequestTwo.Id);
+
+            caseNotesResult.Count.Should().Be(caseNotes.Count);
+            caseNotesResultTwo.Count.Should().Be(caseNotesTwo.Count);
+        }
     }
 }

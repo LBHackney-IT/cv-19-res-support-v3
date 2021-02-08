@@ -111,5 +111,19 @@ namespace cv19ResSupportV3.V3.Gateways
                 throw;
             }
         }
+
+        public List<ResidentCaseNote> GetByHelpRequestId(int helpRequestId)
+        {
+            try
+            {
+                return _helpRequestsContext.CaseNoteEntities.Where(x => x.HelpRequestId == helpRequestId).ToList().ToDomain();
+            }
+            catch (Exception e)
+            {
+                LambdaLogger.Log("GetByHelpRequestId error: ");
+                LambdaLogger.Log(e.Message);
+                throw;
+            }
+        }
     }
 }
