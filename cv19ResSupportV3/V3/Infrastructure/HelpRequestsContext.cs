@@ -194,6 +194,9 @@ namespace cv19ResSupportV3.V3.Infrastructure
                        entity.Property(e => e.AssignedTo)
                            .HasColumnName("assigned_to")
                            .HasColumnType("character varying");
+                       entity.Property(e => e.Metadata)
+                           .HasColumnName("metadata")
+                           .HasColumnType("jsonb");
                        entity.Property(e => e.UrgentEssentials)
                            .HasColumnName("urgent_essentials")
                            .HasColumnType("character varying");
