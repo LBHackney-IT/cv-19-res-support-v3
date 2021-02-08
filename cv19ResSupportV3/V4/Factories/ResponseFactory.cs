@@ -59,6 +59,7 @@ namespace cv19ResSupportV3.V4.Factories
                 CaseNotes = hr.CaseNotes.ToCaseNotesString(),
                 AdviceNotes = hr.AdviceNotes,
                 HelpNeeded = hr.HelpNeeded,
+                Metadata = hr.Metadata,
                 NhsCtasId = hr.NhsCtasId,
                 AssignedTo = hr.AssignedTo,
                 HelpRequestCalls = hr.HelpRequestCalls.ToDomain()

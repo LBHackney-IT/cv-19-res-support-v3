@@ -55,6 +55,7 @@ namespace cv19ResSupportV3.V3.Factories
                 CaseNotes = hr.CaseNotes.ToCaseNotesString(),
                 AdviceNotes = hr.AdviceNotes,
                 HelpNeeded = hr.HelpNeeded,
+                Metadata = hr.Metadata,
                 NhsCtasId = hr.NhsCtasId,
                 AssignedTo = hr.AssignedTo,
                 HelpRequestCalls = hr.HelpRequestCalls
@@ -131,6 +132,7 @@ namespace cv19ResSupportV3.V3.Factories
                 NhsCtasId = helpRequest.NhsCtasId,
                 NhsNumber = resident.NhsNumber,
                 AssignedTo = helpRequest.AssignedTo,
+                Metadata = helpRequest.Metadata,
                 HelpRequestCalls = helpRequest.HelpRequestCalls
             };
         }
@@ -203,6 +205,7 @@ namespace cv19ResSupportV3.V3.Factories
                 AdviceNotes = helpRequest.AdviceNotes,
                 HelpNeeded = helpRequest.HelpNeeded,
                 NhsCtasId = helpRequest.NhsCtasId,
+                Metadata = helpRequest.Metadata,
                 NhsNumber = helpRequest.NhsNumber,
                 AssignedTo = helpRequest.AssignedTo,
                 HelpRequestCalls = helpRequest.HelpRequestCalls

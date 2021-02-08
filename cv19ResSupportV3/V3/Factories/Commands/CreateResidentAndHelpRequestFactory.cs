@@ -66,6 +66,7 @@ namespace cv19ResSupportV3.V3.Factories.Commands
                 CaseNotes = helpRequest.CaseNotes,
                 AdviceNotes = helpRequest.AdviceNotes,
                 HelpNeeded = helpRequest.HelpNeeded,
+                Metadata = helpRequest.Metadata,
                 NhsNumber = helpRequest.NhsNumber,
                 NhsCtasId = helpRequest.NhsCtasId
             };

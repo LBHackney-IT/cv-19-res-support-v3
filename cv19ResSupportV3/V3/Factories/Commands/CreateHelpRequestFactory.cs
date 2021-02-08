@@ -1,6 +1,7 @@
 using System;
 using cv19ResSupportV3.V3.Domain.Commands;
 using cv19ResSupportV3.V3.Infrastructure;
+using Newtonsoft.Json;
 
 
 namespace cv19ResSupportV3.V3.Factories.Commands
@@ -45,6 +46,7 @@ namespace cv19ResSupportV3.V3.Factories.Commands
                 CallbackRequired = helpRequest.CallbackRequired,
                 InitialCallbackCompleted = helpRequest.InitialCallbackCompleted,
                 AdviceNotes = helpRequest.AdviceNotes,
+                Metadata = helpRequest.Metadata,
                 HelpNeeded = helpRequest.HelpNeeded,
                 NhsCtasId = helpRequest.NhsCtasId,
                 AssignedTo = helpRequest.AssignedTo,
@@ -91,6 +93,7 @@ namespace cv19ResSupportV3.V3.Factories.Commands
                 CallbackRequired = helpRequest.CallbackRequired,
                 InitialCallbackCompleted = helpRequest.InitialCallbackCompleted,
                 AdviceNotes = helpRequest.AdviceNotes,
+                Metadata = helpRequest.Metadata,
                 HelpNeeded = helpRequest.HelpNeeded,
                 NhsCtasId = helpRequest.NhsCtasId
             };
