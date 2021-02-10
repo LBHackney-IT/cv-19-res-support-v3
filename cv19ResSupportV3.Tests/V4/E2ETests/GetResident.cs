@@ -22,7 +22,7 @@ namespace cv19ResSupportV3.Tests.V4.E2ETests
         }
 
         [Test]
-        public async Task CreateResidentRequestCreatesRecord()
+        public async Task GetResidentRequestGetsRecord()
         {
             var resident = new Fixture().Build<ResidentEntity>()
                 .Without(re => re.HelpRequests)
@@ -41,6 +41,36 @@ namespace cv19ResSupportV3.Tests.V4.E2ETests
             //replace with a full object comparison once we have a resident toresponse factory method
             convertedResponse.FirstName.Should().Be(residentEntity.FirstName);
             convertedResponse.LastName.Should().Be(residentEntity.LastName);
+        }
+
+        [Test]
+        public void GetResidentRequestReturnsNotFoundIfRecordDoesntExist()
+        {
+            var resident = new Fixture().Build<ResidentEntity>()
+                .Without(re => re.HelpRequests)
+                .Without(re => re.CaseNotes)
+                .Create();
+            DatabaseContext.ResidentEntities.Add(resident);
+            DatabaseContext.SaveChanges();
+            var uri = new Uri($"api/v4/residents/{resident.Id + 1}", UriKind.Relative);
+            var response = Client.GetAsync(uri);
+            var statusCode = response.Result.StatusCode;
+            statusCode.Should().Be(404);
+        }
+
+        [Test]
+        public void GetResidentRequestWithInvalidParameterReturnsBadRequest()
+        {
+            var resident = new Fixture().Build<ResidentEntity>()
+                .Without(re => re.HelpRequests)
+                .Without(re => re.CaseNotes)
+                .Create();
+            DatabaseContext.ResidentEntities.Add(resident);
+            DatabaseContext.SaveChanges();
+            var uri = new Uri($"api/v4/residents/abc", UriKind.Relative);
+            var response = Client.GetAsync(uri);
+            var statusCode = response.Result.StatusCode;
+            statusCode.Should().Be(400);
         }
     }
 }
