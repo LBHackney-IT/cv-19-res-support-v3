@@ -24,7 +24,6 @@ namespace cv19ResSupportV3.V3.Gateways
         {
             var requestEntity = command.ToResidentEntity();
             if (requestEntity == null) return null;
-
             try
             {
                 _helpRequestsContext.ResidentEntities.Add(requestEntity);
