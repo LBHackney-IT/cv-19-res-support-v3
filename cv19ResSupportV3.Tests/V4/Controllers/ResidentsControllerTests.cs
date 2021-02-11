@@ -1,13 +1,15 @@
 using AutoFixture;
+using cv19ResSupportV3.V3.Domain;
+using cv19ResSupportV3.V3.Domain.Commands;
+using cv19ResSupportV3.V4.UseCase.Interfaces;
 using cv19ResSupportV3.V4;
 using cv19ResSupportV3.V4.Controllers;
-using cv19ResSupportV3.V4.Factories;
 using cv19ResSupportV3.V4.UseCase.Interface;
-using cv19ResSupportV3.V4.UseCase.Interfaces;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
+using ICreateResidentUseCase = cv19ResSupportV3.V3.UseCase.Interfaces.ICreateResidentUseCase;
 
 namespace cv19ResSupportV3.Tests.V4.Controllers
 {
@@ -16,7 +18,7 @@ namespace cv19ResSupportV3.Tests.V4.Controllers
     {
         private ResidentsController _classUnderTest;
         private Mock<IGetResidentsUseCase> _getResidentsUseCase;
-        private Mock<ICreateResidentsUseCase> _createResidentsUseCase;
+        private Mock<ICreateResidentUseCase> _createResidentUseCase;
         private Mock<IPatchResidentUseCase> _patchResidentUseCase;
         private Mock<ISearchResidentsUseCase> _searchResidentUseCase;
 
@@ -24,11 +26,11 @@ namespace cv19ResSupportV3.Tests.V4.Controllers
         public void SetUp()
         {
             _getResidentsUseCase = new Mock<IGetResidentsUseCase>();
-            _createResidentsUseCase = new Mock<ICreateResidentsUseCase>();
+            _createResidentUseCase = new Mock<ICreateResidentUseCase>();
             _patchResidentUseCase = new Mock<IPatchResidentUseCase>();
             _searchResidentUseCase = new Mock<ISearchResidentsUseCase>();
             _classUnderTest = new ResidentsController(
-                _createResidentsUseCase.Object,
+                _createResidentUseCase.Object,
                 _getResidentsUseCase.Object,
                 _patchResidentUseCase.Object,
                 _searchResidentUseCase.Object);
@@ -37,9 +39,9 @@ namespace cv19ResSupportV3.Tests.V4.Controllers
         [Test]
         public void CreateReturnsResponseWithStatus()
         {
-            var request = new Fixture().Build<ResidentRequestBoundary>().Create();
-            _createResidentsUseCase.Setup(uc => uc.Execute(It.IsAny<ResidentRequestBoundary>()))
-                .Returns(request.ToResident().ToResponse);
+            var request = new Fixture().Build<CreateResident>().Create();
+            _createResidentUseCase.Setup(uc => uc.Execute(It.IsAny<CreateResident>()))
+                .Returns(new Resident());
             var response = _classUnderTest.CreateResident(request) as CreatedResult;
             response.StatusCode.Should().Be(201);
         }
@@ -47,11 +49,11 @@ namespace cv19ResSupportV3.Tests.V4.Controllers
         [Test]
         public void CreateResidentCallsCreateResidentUseCaseExecuteMethod()
         {
-            var request = new Fixture().Build<ResidentRequestBoundary>().Create();
-            _createResidentsUseCase.Setup(uc => uc.Execute(It.IsAny<ResidentRequestBoundary>()))
-                .Returns(request.ToResident().ToResponse);
+            var request = new Fixture().Build<CreateResident>().Create();
+            _createResidentUseCase.Setup(uc => uc.Execute(It.IsAny<CreateResident>()))
+                .Returns(new Resident());
             _classUnderTest.CreateResident(request);
-            _createResidentsUseCase.Verify(uc => uc.Execute(It.IsAny<ResidentRequestBoundary>()), Times.Once);
+            _createResidentUseCase.Verify(uc => uc.Execute(It.IsAny<CreateResident>()), Times.Once);
         }
 
         [Test]

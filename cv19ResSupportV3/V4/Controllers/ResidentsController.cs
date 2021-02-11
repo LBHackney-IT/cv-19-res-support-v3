@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using cv19ResSupportV3.V3.Controllers;
 using cv19ResSupportV3.V3.Domain.Commands;
-using cv19ResSupportV3.V4.Boundary.Requests;
 using cv19ResSupportV3.V4.UseCase.Interface;
-using cv19ResSupportV3.V4.UseCase.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using cv19ResSupportV3.V4.UseCase.Interfaces;
+using ICreateResidentUseCase = cv19ResSupportV3.V3.UseCase.Interfaces.ICreateResidentUseCase;
 
 namespace cv19ResSupportV3.V4.Controllers
 {
@@ -18,18 +18,18 @@ namespace cv19ResSupportV3.V4.Controllers
 
     public class ResidentsController : BaseController
     {
-        private readonly ICreateResidentsUseCase _createResidentsUseCase;
+        private readonly ICreateResidentUseCase _createResidentUseCase;
         private readonly IGetResidentsUseCase _getResidentsUseCase;
         private readonly IPatchResidentUseCase _patchResidentsUseCase;
         private readonly ISearchResidentsUseCase _searchResidentsUseCase;
 
         public ResidentsController(
-            ICreateResidentsUseCase createResidentsUseCase,
+            ICreateResidentUseCase createResidentUseCase,
             IGetResidentsUseCase getResidentsUseCase,
             IPatchResidentUseCase patchResidentsUseCase,
             ISearchResidentsUseCase searchResidentsUseCase)
         {
-            _createResidentsUseCase = createResidentsUseCase;
+            _createResidentUseCase = createResidentUseCase;
             _getResidentsUseCase = getResidentsUseCase;
             _patchResidentsUseCase = patchResidentsUseCase;
             _searchResidentsUseCase = searchResidentsUseCase;
@@ -43,9 +43,9 @@ namespace cv19ResSupportV3.V4.Controllers
         /// <response code="400">...</response>
         [ProducesResponseType(typeof(ResidentResponseBoundary), StatusCodes.Status201Created)]
         [HttpPost]
-        public IActionResult CreateResident(ResidentRequestBoundary request)
+        public IActionResult CreateResident(CreateResident request)
         {
-            var response = _createResidentsUseCase.Execute(request);
+            var response = _createResidentUseCase.Execute(request);
             if (response != null)
                 return Created(new Uri($"api/v4/residents/{response.Id}", UriKind.Relative), response);
             return (BadRequest("Resident not created"));

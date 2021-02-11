@@ -167,7 +167,6 @@ namespace cv19ResSupportV3
             services.AddScoped<ICreateCaseNoteUseCase, CreateCaseNoteUseCase>();
             services.AddScoped<IUpdateCaseNoteUseCase, UpdateCaseNoteUseCase>();
             services.AddScoped<IUpdateStaffAssignmentsUseCase, UpdateStaffAssignmentsUseCase>();
-            services.AddScoped<ICreateResidentsUseCase, CreateResidentsUseCase>();
             services.AddScoped<IGetResidentsUseCase, GetResidentsUseCase>();
             services.AddScoped<ISearchResidentsUseCase, SearchResidentsUseCase>();
             services.AddScoped<V4.UseCase.Interfaces.IPatchResidentUseCase, V4.UseCase.PatchResidentUseCase>();
