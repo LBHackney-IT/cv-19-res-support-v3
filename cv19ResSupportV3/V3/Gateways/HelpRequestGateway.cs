@@ -73,12 +73,10 @@ namespace cv19ResSupportV3.V3.Gateways
                 return null;
             };
 
-            var sqlString = $"select * from help_requests WHERE metadata->>'{propertyName}' LIKE '{propertyInfo}'";
-
             try
             {
                 var helpRequestEntity = _helpRequestsContext.HelpRequestEntities
-                    .FromSqlRaw(sqlString)
+                    .FromSqlRaw("select * from help_requests WHERE metadata->>{0} LIKE {1}", propertyName, propertyInfo)
                     .FirstOrDefault();
 
                 return helpRequestEntity?.Id;
