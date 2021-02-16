@@ -60,6 +60,36 @@ namespace cv19ResSupportV3.V3.Gateways
                 throw;
             }
         }
+        public int? FindHelpRequestByMetadata(string propertyName, dynamic metadata)
+        {
+            string propertyInfo;
+
+            try
+            {
+                propertyInfo = metadata.GetProperty(propertyName).ToString();
+            }
+            catch (Exception e)
+            {
+                return null;
+            };
+
+            var sqlString = $"select * from help_requests WHERE metadata->>'{propertyName}' LIKE '{propertyInfo}'";
+
+            try
+            {
+                var helpRequestEntity = _helpRequestsContext.HelpRequestEntities
+                    .FromSqlRaw(sqlString)
+                    .FirstOrDefault();
+
+                return helpRequestEntity?.Id;
+            }
+            catch (Exception e)
+            {
+                LambdaLogger.Log("FindHelpRequestByMetadata error: ");
+                LambdaLogger.Log(e.Message);
+                throw;
+            }
+        }
 
         public List<LookupDomain> GetLookups(LookupQuery command)
         {

@@ -9,6 +9,7 @@ namespace cv19ResSupportV3.V3.Gateways
     {
         int CreateHelpRequest(int residentId, CreateHelpRequest command);
         int? FindHelpRequestByCtasId(string ctasId);
+        int? FindHelpRequestByMetadata(string propertyName, dynamic metadata);
         List<LookupDomain> GetLookups(LookupQuery command);
         HelpRequest UpdateHelpRequest(int id, UpdateHelpRequest command);
         HelpRequest PatchHelpRequest(int id, PatchHelpRequest command);
