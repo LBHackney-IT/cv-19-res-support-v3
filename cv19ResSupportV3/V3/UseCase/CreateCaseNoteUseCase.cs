@@ -13,7 +13,7 @@ namespace cv19ResSupportV3.V3.UseCase
         }
         public ResidentCaseNote Execute(int residentId, int helpRequestId, string caseNoteContent)
         {
-            var response = _gateway.CreateCaseNote( residentId, helpRequestId, caseNoteContent);
+            var response = _gateway.CreateCaseNote(residentId, helpRequestId, caseNoteContent);
             return response;
         }
     }

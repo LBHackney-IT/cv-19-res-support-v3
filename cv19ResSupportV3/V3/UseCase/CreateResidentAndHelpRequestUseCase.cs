@@ -24,7 +24,7 @@ namespace cv19ResSupportV3.V3.UseCase
             var helpRequestId = _createHelpRequestUseCase.Execute(resident.Id, command.ToCreateHelpRequestCommand());
             if (command.CaseNotes != null)
             {
-                _createCaseNote.Execute(resident.Id,helpRequestId, command.CaseNotes);
+                _createCaseNote.Execute(resident.Id, helpRequestId, command.CaseNotes);
             }
 
             return helpRequestId;

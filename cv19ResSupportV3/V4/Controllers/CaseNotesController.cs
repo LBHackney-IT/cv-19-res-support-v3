@@ -41,7 +41,7 @@ namespace cv19ResSupportV3.V4.Controllers
         [Route("help-requests/{help-request-id}/case-notes")]
         public IActionResult CreateCaseNote([FromRoute(Name = "id")] int residentId, [FromRoute(Name = "help-request-id")] int helpRequestId, [FromBody] CreateCaseNoteRequest caseNote)
         {
-            var response = _addCaseNoteUseCase.Execute(residentId,helpRequestId, caseNote.CaseNote);
+            var response = _addCaseNoteUseCase.Execute(residentId, helpRequestId, caseNote.CaseNote);
             return Created(new Uri($"api/v4/residents/{residentId}/help-requests/{helpRequestId}/case-notes/{response}", UriKind.Relative), response);
         }
 

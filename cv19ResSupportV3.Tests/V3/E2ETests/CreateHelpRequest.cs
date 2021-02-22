@@ -6,9 +6,6 @@ using AutoFixture;
 using cv19ResSupportV3.Tests.V3.Helpers;
 using cv19ResSupportV3.V3.Boundary.Response;
 using cv19ResSupportV3.V3.Boundary.Requests;
-using cv19ResSupportV3.V3.Domain;
-using cv19ResSupportV3.V3.Infrastructure;
-using cv19ResSupportV3.V4.Factories;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -31,8 +28,6 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
         {
             var requestObject = new Fixture().Create<HelpRequestCreateRequestBoundary>();
             requestObject.CaseNotes = "";
-            Console.WriteLine("requestObject");
-            Console.WriteLine(requestObject);
             var data = JsonConvert.SerializeObject(requestObject);
             HttpContent postContent = new StringContent(data, Encoding.UTF8, "application/json");
             var uri = new Uri($"api/v3/help-requests", UriKind.Relative);
