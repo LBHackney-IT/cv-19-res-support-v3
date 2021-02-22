@@ -16,6 +16,9 @@ namespace cv19ResSupportV3.V3.UseCase
             var helpRequestId = _gateway.FindHelpRequestByCtasId(command.NhsCtasId);
             if (helpRequestId != null) { return (int) helpRequestId; }
 
+            helpRequestId = _gateway.FindHelpRequestByMetadata("nsss_id", command.Metadata);
+            if (helpRequestId != null) { return (int) helpRequestId; }
+
             return _gateway.CreateHelpRequest(residentId, command);
         }
     }

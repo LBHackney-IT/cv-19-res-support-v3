@@ -9,6 +9,7 @@ using cv19ResSupportV3.V3.Infrastructure;
 using FluentAssertions;
 using LBHFSSPublicAPI.Tests.TestHelpers;
 using Microsoft.EntityFrameworkCore;
+using Moq;
 using NUnit.Framework;
 
 namespace cv19ResSupportV3.Tests.V3.Gateways
@@ -301,6 +302,13 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
         public void FindHelpRequestByCtasIdReturnsNullIfItDoesntExist()
         {
             var response = _classUnderTest.FindHelpRequestByCtasId("anything");
+
+            response.Should().BeNull();
+        }
+        [Test]
+        public void FindHelpRequestByMetadaReturnsNullIfItDoesntExist()
+        {
+            var response = _classUnderTest.FindHelpRequestByMetadata("someName", It.IsAny<object>());
 
             response.Should().BeNull();
         }
