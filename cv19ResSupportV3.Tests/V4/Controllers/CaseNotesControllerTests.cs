@@ -31,10 +31,13 @@ namespace cv19ResSupportV3.Tests.V4.Controllers
         [Test]
         public void CreateReturnsResponseWithStatus()
         {
+            var residentId = 100;
+            var helpRequestId = 2;
             var request = new CreateCaseNoteRequest() { CaseNote = "{\"author\": \"Name\", caseNote: \"note\" }" };
             _createCaseNoteUseCase.Setup(uc => uc.Execute(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>()))
                 .Returns(new ResidentCaseNote() { Id = 1 });
-            var response = _classUnderTest.CreateCaseNote(1, 1, request) as CreatedResult;
+            var response = _classUnderTest.CreateCaseNote(residentId, helpRequestId, request) as CreatedResult;
+            _createCaseNoteUseCase.Verify(m => m.Execute(residentId, helpRequestId, It.IsAny<string>()), Times.Once);
             response.StatusCode.Should().Be(201);
         }
 

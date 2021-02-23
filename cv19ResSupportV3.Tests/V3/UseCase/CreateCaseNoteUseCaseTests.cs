@@ -29,8 +29,8 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
         {
             var expectedResponse = new ResidentCaseNote() { Id = 1, ResidentId = 1, HelpRequestId = 2, CaseNote = "data-to-save" };
             _mockGateway.Setup(s => s.CreateCaseNote(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>())).Returns(expectedResponse);
-            var response = _classUnderTest.Execute(expectedResponse.HelpRequestId, expectedResponse.ResidentId, expectedResponse.CaseNote);
-            _mockGateway.Verify(m => m.CreateCaseNote(expectedResponse.HelpRequestId, expectedResponse.ResidentId, expectedResponse.CaseNote), Times.Once());
+            var response = _classUnderTest.Execute(expectedResponse.ResidentId, expectedResponse.HelpRequestId, expectedResponse.CaseNote);
+            _mockGateway.Verify(m => m.CreateCaseNote(expectedResponse.ResidentId, expectedResponse.HelpRequestId, expectedResponse.CaseNote), Times.Once());
             response.Should().BeEquivalentTo(expectedResponse);
         }
     }
