@@ -52,7 +52,7 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             DatabaseContext.HelpRequestEntities.Add(helpRequest);
             DatabaseContext.SaveChanges();
 
-            var result = _classUnderTest.CreateCaseNote(helpRequest.Id, resident.Id, "New Case Note");
+            var result = _classUnderTest.CreateCaseNote(resident.Id, helpRequest.Id, "New Case Note");
 
             var createdEntity = DatabaseContext.CaseNoteEntities.Find(result.Id);
 

@@ -30,7 +30,7 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
         [Test]
         public void CreatesANewResidentIfItDoesntExistAndSavesANewHelpRequest()
         {
-            _fakeCreateResidentUseCase.Setup(s => s.Execute(It.IsAny<CreateResident>())).Returns(new Resident() { Id = 1 });
+            _fakeCreateResidentUseCase.Setup(s => s.Execute(It.IsAny<CreateResident>())).Returns(new Resident { Id = 1 });
             _fakeCreateHelpRequestUseCase.Setup(s => s.Execute(It.IsAny<int>(), It.IsAny<CreateHelpRequest>())).Returns(2);
             _fakeCreateCaseNoteUseCase.Setup(s => s.Execute(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>())).Verifiable();
 
@@ -40,7 +40,7 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
             _fakeCreateResidentUseCase.Verify(m => m.Execute(It.IsAny<CreateResident>()), Times.Once());
             _fakeCreateHelpRequestUseCase.Verify(m => m.Execute(It.Is<int>(x => x == 1), It.IsAny<CreateHelpRequest>()), Times.Once());
 
-            _fakeCreateCaseNoteUseCase.Verify(m => m.Execute(2, 1, "saved"), Times.Once());
+            _fakeCreateCaseNoteUseCase.Verify(m => m.Execute(1, 2, "saved"), Times.Once());
             response.Should().Be(2);
         }
     }

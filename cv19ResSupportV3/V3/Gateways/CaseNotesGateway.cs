@@ -47,7 +47,7 @@ namespace cv19ResSupportV3.V3.Gateways
             }
         }
 
-        public ResidentCaseNote CreateCaseNote(int helpRequestId, int residentId, string caseNote)
+        public ResidentCaseNote CreateCaseNote(int residentId, int helpRequestId, string caseNote)
         {
             try
             {
