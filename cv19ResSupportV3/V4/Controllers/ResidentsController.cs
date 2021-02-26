@@ -14,7 +14,7 @@ namespace cv19ResSupportV3.V4.Controllers
     [Route("api/v4/residents")]
     [Produces("application/json")]
     // Check service api version information
-    [ApiVersion("3.0")]
+    [ApiVersion("4.0")]
 
     public class ResidentsController : BaseController
     {
@@ -39,7 +39,7 @@ namespace cv19ResSupportV3.V4.Controllers
         /// <summary>
         /// Creates a resident with the values provided.
         /// </summary>
-        /// <response code="201">...</response>
+        /// <response code="201">Resident is created</response>
         /// <response code="400">...</response>
         [ProducesResponseType(typeof(ResidentResponseBoundary), StatusCodes.Status201Created)]
         [HttpPost]
@@ -54,7 +54,8 @@ namespace cv19ResSupportV3.V4.Controllers
         /// <summary>
         /// Gets a resident with the id specified.
         /// </summary>
-        /// <response code="200">...</response>
+        /// <param name="id" example="123">Resident id</param>
+        /// <response code="200">Resident is returned</response>
         /// <response code="404">...</response>
         /// <response code="400">...</response>
         [ProducesResponseType(typeof(ResidentResponseBoundary), StatusCodes.Status200OK)]
@@ -71,7 +72,7 @@ namespace cv19ResSupportV3.V4.Controllers
         /// <summary>
         /// Gets residents matching the specified parameters.
         /// </summary>
-        /// <response code="200">...</response>
+        /// <response code="200">List of residents is returned</response>
         [ProducesResponseType(typeof(List<ResidentResponseBoundary>), StatusCodes.Status200OK)]
         [HttpGet]
         public IActionResult SearchResidents([FromQuery] FindResident requestParams)
@@ -83,7 +84,8 @@ namespace cv19ResSupportV3.V4.Controllers
         /// <summary>
         /// Updates a resident with the id specified.
         /// </summary>
-        /// <response code="200">...</response>
+        /// <param name="id" example="123">Resident id</param>
+        /// <response code="200">Resident has been updated</response>
         /// <response code="404">...</response>
         [ProducesResponseType(typeof(ResidentResponseBoundary), StatusCodes.Status200OK)]
         [HttpPatch]
