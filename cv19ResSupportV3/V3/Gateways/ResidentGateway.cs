@@ -169,7 +169,7 @@ namespace cv19ResSupportV3.V3.Gateways
         {
             try
             {
-                if (command.Uprn != null)
+                if (Predicates.IsNotNullAndNotEmpty(command.Uprn))
                 {
                     var matchingResident = _helpRequestsContext.ResidentEntities
                         .FirstOrDefault(r =>
