@@ -169,6 +169,15 @@ namespace cv19ResSupportV3.V3.Gateways
         {
             try
             {
+                if (Predicates.IsNotNullAndNotEmpty(command.NhsNumber))
+                {
+                    var matchingResident = _helpRequestsContext.ResidentEntities
+                        .FirstOrDefault(r => r.NhsNumber.ToUpper() == command.NhsNumber.ToUpper());
+
+                    if (matchingResident != null)
+                        return matchingResident.Id;
+                }
+
                 // If Fname or Lname are missing, no point checking Uprn or Dob. When these two fields
                 // are missing, there's no way to confirm whether it's the same person or not (unless nhs numbers match).
                 if (Predicates.IsNotNullAndNotEmpty(command.FirstName) &&
