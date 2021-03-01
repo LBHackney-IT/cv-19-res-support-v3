@@ -169,37 +169,43 @@ namespace cv19ResSupportV3.V3.Gateways
         {
             try
             {
-                if (Predicates.IsNotNullAndNotEmpty(command.Uprn))
+                // If Fname or Lname are missing, no point checking Uprn or Dob. When these two fields
+                // are missing, there's no way to confirm whether it's the same person or not (unless nhs numbers match).
+                if (Predicates.IsNotNullAndNotEmpty(command.FirstName) &&
+                    Predicates.IsNotNullAndNotEmpty(command.LastName))
                 {
-                    var matchingResident = _helpRequestsContext.ResidentEntities
-                        .FirstOrDefault(r =>
-                            //uprn is all numbers, no need to change case
-                            r.Uprn.Trim() == command.Uprn.Trim() &&
-                            r.FirstName.Trim().ToUpper() == command.FirstName.Trim().ToUpper() &&
-                            r.LastName.Trim().ToUpper() == command.LastName.Trim().ToUpper());
+                    if (Predicates.IsNotNullAndNotEmpty(command.Uprn))
+                    {
+                        var matchingResident = _helpRequestsContext.ResidentEntities
+                            .FirstOrDefault(r =>
+                                //uprn is all numbers, no need to change case
+                                r.Uprn.Trim() == command.Uprn.Trim() &&
+                                r.FirstName.Trim().ToUpper() == command.FirstName.Trim().ToUpper() &&
+                                r.LastName.Trim().ToUpper() == command.LastName.Trim().ToUpper());
 
-                    if (matchingResident != null)
-                        return matchingResident.Id;
-                }
+                        if (matchingResident != null)
+                            return matchingResident.Id;
+                    }
 
-                // Will ignore cases, where for instance DobYear and DobMonth are not empty, but DobDay is empty
-                // which I believe is a sensible result, as we can't guarantee that's the same person: there are
-                // 28 to 31 combinations of the Dob, when only those 2 fields are given.
-                if (Predicates.IsNotNullAndNotEmpty(command.DobYear) &&
-                    Predicates.IsNotNullAndNotEmpty(command.DobMonth) &&
-                    Predicates.IsNotNullAndNotEmpty(command.DobDay))
-                {
-                    var matchingResident = _helpRequestsContext.ResidentEntities
-                        .FirstOrDefault(r =>
-                            r.DobYear.Trim() == command.DobYear.Trim() &&
-                            // adding .ToUpper here in case month is specified with alphabetic characters for some cases (Jan, Dec)
-                            r.DobMonth.Trim().ToUpper() == command.DobMonth.Trim().ToUpper() &&
-                            r.DobDay.Trim() == command.DobDay.Trim() &&
-                            r.FirstName.Trim().ToUpper() == command.FirstName.Trim().ToUpper() &&
-                            r.LastName.Trim().ToUpper() == command.LastName.Trim().ToUpper());
+                    // Will ignore cases, where for instance DobYear and DobMonth are not empty, but DobDay is empty
+                    // which I believe is a sensible result, as we can't guarantee that's the same person: there are
+                    // 28 to 31 combinations of the Dob, when only those 2 fields are given.
+                    if (Predicates.IsNotNullAndNotEmpty(command.DobYear) &&
+                        Predicates.IsNotNullAndNotEmpty(command.DobMonth) &&
+                        Predicates.IsNotNullAndNotEmpty(command.DobDay))
+                    {
+                        var matchingResident = _helpRequestsContext.ResidentEntities
+                            .FirstOrDefault(r =>
+                                r.DobYear.Trim() == command.DobYear.Trim() &&
+                                // adding .ToUpper here in case month is specified with alphabetic characters for some cases (Jan, Dec)
+                                r.DobMonth.Trim().ToUpper() == command.DobMonth.Trim().ToUpper() &&
+                                r.DobDay.Trim() == command.DobDay.Trim() &&
+                                r.FirstName.Trim().ToUpper() == command.FirstName.Trim().ToUpper() &&
+                                r.LastName.Trim().ToUpper() == command.LastName.Trim().ToUpper());
 
-                    if (matchingResident != null)
-                        return matchingResident.Id;
+                        if (matchingResident != null)
+                            return matchingResident.Id;
+                    }
                 }
 
                 return null;
