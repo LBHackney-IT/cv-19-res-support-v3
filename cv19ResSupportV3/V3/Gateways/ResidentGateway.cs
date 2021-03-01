@@ -182,7 +182,12 @@ namespace cv19ResSupportV3.V3.Gateways
                         return matchingResident.Id;
                 }
 
-                if (command.DobDay != null || command.DobMonth != null || command.DobYear != null)
+                // Will ignore cases, where for instance DobYear and DobMonth are not empty, but DobDay is empty
+                // which I believe is a sensible result, as we can't guarantee that's the same person: there are
+                // 28 to 31 combinations of the Dob, when only those 2 fields are given.
+                if (Predicates.IsNotNullAndNotEmpty(command.DobYear) &&
+                    Predicates.IsNotNullAndNotEmpty(command.DobMonth) &&
+                    Predicates.IsNotNullAndNotEmpty(command.DobDay))
                 {
                     var matchingResident = _helpRequestsContext.ResidentEntities
                         .FirstOrDefault(r =>
