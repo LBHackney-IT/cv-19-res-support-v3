@@ -21,9 +21,10 @@ namespace cv19ResSupportV3.V3.Controllers
         }
 
         /// <summary>
-        /// Creates a help request with the values provided.
+        /// Creates a call with the values provided.
         /// </summary>
-        /// <response code="201">...</response>
+        /// <param name="id" example="123">Help request id</param>
+        /// <response code="201">Call is created</response>
         [ProducesResponseType(typeof(HelpRequestCreateResponse), StatusCodes.Status201Created)]
         [HttpPost]
         [Route("{id}/calls")]
