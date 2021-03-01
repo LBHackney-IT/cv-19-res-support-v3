@@ -7,6 +7,7 @@ using cv19ResSupportV3.V3.Domain;
 using cv19ResSupportV3.V3.Domain.Commands;
 using cv19ResSupportV3.V3.Factories;
 using cv19ResSupportV3.V3.Infrastructure;
+using cv19ResSupportV3.V4.Helpers;
 using Microsoft.EntityFrameworkCore;
 
 namespace cv19ResSupportV3.V3.Gateways
@@ -164,38 +165,36 @@ namespace cv19ResSupportV3.V3.Gateways
             return _helpRequestsContext.ResidentEntities.Find(id).ToDomain();
         }
 
-
         public int? FindResident(FindResident command)
         {
             try
             {
                 if (command.Uprn != null)
                 {
-                    var response = _helpRequestsContext.ResidentEntities.FirstOrDefault(x =>
-                        x.Uprn.ToUpper().Trim() == command.Uprn.ToUpper().Trim() &&
-                        x.FirstName.ToUpper().Trim() ==
-                        command.FirstName.ToUpper().Trim() &&
-                        x.LastName.ToUpper()
-                            .Trim() ==
-                        command.LastName.ToUpper().Trim());
-                    if (response != null)
-                    {
-                        return response.Id;
-                    }
+                    var matchingResident = _helpRequestsContext.ResidentEntities
+                        .FirstOrDefault(r =>
+                            //uprn is all numbers, no need to change case
+                            r.Uprn.Trim() == command.Uprn.Trim() &&
+                            r.FirstName.Trim().ToUpper() == command.FirstName.Trim().ToUpper() &&
+                            r.LastName.Trim().ToUpper() == command.LastName.Trim().ToUpper());
+
+                    if (matchingResident != null)
+                        return matchingResident.Id;
                 }
 
                 if (command.DobDay != null || command.DobMonth != null || command.DobYear != null)
                 {
-                    var response = _helpRequestsContext.ResidentEntities.FirstOrDefault(x =>
-                        x.DobDay.Trim() == command.DobDay.Trim() &&
-                        x.DobMonth.Trim() == command.DobMonth.Trim() &&
-                        x.DobYear.Trim() == command.DobYear.Trim() &&
-                        x.FirstName.ToUpper().Trim() == command.FirstName.ToUpper().Trim() &&
-                        x.LastName.ToUpper().Trim() == command.LastName.ToUpper().Trim());
-                    if (response != null)
-                    {
-                        return response.Id;
-                    }
+                    var matchingResident = _helpRequestsContext.ResidentEntities
+                        .FirstOrDefault(r =>
+                            r.DobYear.Trim() == command.DobYear.Trim() &&
+                            // adding .ToUpper here in case month is specified with alphabetic characters for some cases (Jan, Dec)
+                            r.DobMonth.Trim().ToUpper() == command.DobMonth.Trim().ToUpper() &&
+                            r.DobDay.Trim() == command.DobDay.Trim() &&
+                            r.FirstName.Trim().ToUpper() == command.FirstName.Trim().ToUpper() &&
+                            r.LastName.Trim().ToUpper() == command.LastName.Trim().ToUpper());
+
+                    if (matchingResident != null)
+                        return matchingResident.Id;
                 }
 
                 return null;
