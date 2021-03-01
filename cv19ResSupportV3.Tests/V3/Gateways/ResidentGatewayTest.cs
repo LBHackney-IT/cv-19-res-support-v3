@@ -29,6 +29,7 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
 
         // If NHS numbers match, then:
         // Resident id is returned as duplicate.
+
         [Test]
         public void FindResidentReturnsAMatchIdWhenThereIsAResidentWithMatchingNHSNumber()
         {
@@ -69,11 +70,12 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
         // If NHS number is empty or null or does not match &
         // If Uprn is present, then:
         // Resident is considered a duplicate, when First Name, Last Name & Uprn match.
+
         [TestCase(null)]
         [TestCase("")]
         [TestCase(" ")]
         [TestCase("nhs number")]
-        public void FindResidentReturnsAMatchWhenNoNhsNumberIsPresentAndWhenThereIsAResidentWithMatchingNonEmptyUprnAndFirstAndLastNames(string testCaseNhsNumber)
+        public void FindResidentReturnsAMatchWhenNoNhsNumberIsPresentAndWhenThereIsAResidentWithMatchingNonEmptyUprnAndFirstAndLastNamesForAllEmptyCasesOfNhsNumber(string testCaseNhsNumber)
         {
             // arrange
             var matchingEmptyNhsNumber = testCaseNhsNumber;
@@ -128,17 +130,19 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
         // If Uprn is empty or null or does not match &
         // If any of the Dob fields are missing (The focus here is on the Uprn paths, not the dob), then:
         // Resident is considered unique even when the First Name, Last Name & Nonempty Uprn match.
+
         [TestCase(null)]
         [TestCase("")]
         [TestCase(" ")]
         [TestCase("uprn")]
-        public void FindResidentReturnsNoMatchWhenNoNhsNumberAndUprnNumberAndAnyOfTheDobFieldsArePresent(string testCaseUprn)
+        public void FindResidentReturnsNoMatchWhenNoNhsNumberAndUprnNumberAndAnyOfTheDobFieldsArePresentForAllEmptyCasesOfUprn(string testCaseUprn)
         {
             // arrange
             var notMatchingNhsNumber = _faker.Random.Hash();
             var matchingFirstName = _faker.Random.Hash();
             var matchingLastName = _faker.Random.Hash();
             var matchingEmptyUprn = testCaseUprn;
+            // not even setting Dob fields (null by default)
 
             var searchParameters = new FindResident
             {
@@ -165,7 +169,7 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             };
 
             // testing a case path, where uprn is not empty, but still does not match
-            if (matchingEmptyUprn == "uprn") existingResidentEmptyUprnMatch.NhsNumber = _faker.Random.Hash();
+            if (matchingEmptyUprn == "uprn") existingResidentEmptyUprnMatch.Uprn = _faker.Random.Hash();
 
             DatabaseContext.ResidentEntities.Add(existingResidentNoUprnMatch);
             DatabaseContext.ResidentEntities.Add(existingResidentEmptyUprnMatch);
@@ -185,11 +189,12 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
         // If Dob is non-empty and not null, then
         // Resident is considered a duplicate when its Dob, Fname & Lname match.
         // (Difference between this test and the above one is that for the same given UPRNs, DOBs are no longer empty)
+
         [TestCase(null)]
         [TestCase("")]
         [TestCase(" ")]
         [TestCase("uprn")]
-        public void FindResidentReturnsAMatchWhenNoNhsAndUprnNumberMatchIsFoundButThereExistsAResidentWithMatchingFirstAndLastNameAndDOB(string testCaseUprn)
+        public void FindResidentReturnsAMatchWhenNoNhsAndUprnNumberMatchIsFoundButThereExistsAResidentWithMatchingFirstAndLastNameAndDOBForAllEmptyCasesOfUprn(string testCaseUprn)
         {
             // arrange
             var notMatchingNhsNumber = _faker.Random.Hash();
@@ -265,11 +270,12 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
         // that if the following 3 combinations pass, then the code works for all 27 (unless we're dealing with many lines of code of IF statments).
         // (Difference from one of the tests above is that this test assumes the UPRN rule is tested for all UPRN inputs, and it's only looking at
         // the possible DOB inputs under the case of assumed bad UPRN input)
+
         [TestCase(null, null, null)]
         [TestCase("", "", "")]
         [TestCase(" ", " ", " ")]
         [TestCase("23", "1", "1994")]
-        public void FindResidentReturnsNoMatchWhenNoNhsAndUprnNumberMatchIsFoundAndThereIsNoResidentWithMatchingFirstAndLastNameAndDOB(string tcDay, string tcMonth, string tcYear)
+        public void FindResidentReturnsNoMatchWhenNoNhsAndUprnNumberMatchIsFoundAndThereIsNoResidentWithMatchingDOBForParticularCasesOfDobFieldsBeingEmpty(string tcDay, string tcMonth, string tcYear)
         {
             // arrange
             var notMatchingNhsNumber = _faker.Random.Hash();
@@ -306,7 +312,7 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             var existingResidentEmptyDOBMatch = new ResidentEntity
             {
                 NhsNumber = _faker.Random.Hash(),
-                Uprn = notMatchingUprn,
+                Uprn = _faker.Random.Hash(),
                 FirstName = matchingFirstName,
                 LastName = matchingLastName,
                 DobDay = emptyMatchingDOBDay,
@@ -333,16 +339,19 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             // assert
             isResidentDuplicate.Should().BeFalse();
             duplicateResidentId.Should().Be(null);
-
         }
 
         // Should there be checks for the inserted records values?
         // Also should this case be treated as Unique Resident or the 400 Bad Request? (There doesn't seem to be validation preventing this)
         // For now will treat this as a new unique record.
-        [TestCase(null)]
-        [TestCase("")]
-        [TestCase(" ")]
-        public void FindResidentReturnsNoMatchWhenEitherFirstNameAndLastNameIsMissing(bool isDobTest, string testCaseName)
+
+        [TestCase(false, null)] //should throw
+        [TestCase(false, "")]
+        [TestCase(false, " ")]
+        [TestCase(true, null)]
+        [TestCase(true, "")]
+        [TestCase(true, " ")]
+        public void FindResidentReturnsNoMatchWhenEitherFirstNameOrLastNameIsMissingForAllEmptyCases(bool isDobTest, string testCaseName)
         {
             // arrange
             var notMatchingNhsNumber = _faker.Random.Hash();
