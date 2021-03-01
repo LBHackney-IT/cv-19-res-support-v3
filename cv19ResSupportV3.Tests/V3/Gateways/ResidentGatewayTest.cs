@@ -413,6 +413,67 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             duplicateResidentIdAttempt2.Should().Be(null);
         }
 
+        [Test]
+        public void FindResidentReturnsAMatchByNhsNumberEvenWhenProvidedNhsNumberIsNotTrimmed()
+        {
+            // arrange
+
+            // Case 1 setup: Non-trimmed number is in the request, and the trimmed one in the DB.
+
+            var nhsNumber1 = _faker.Random.Hash();
+            var matchingNonTrimmedNHSNumber1 = $"  {nhsNumber1}     ";
+
+            // don't care about Fname, Lname or anything else, as I'm expecting a match via NHS number
+            var searchParameters1 = new FindResident
+            {
+                NhsNumber = matchingNonTrimmedNHSNumber1
+            };
+
+            var existingResidentWithNormalNhsNumber = new ResidentEntity
+            {
+                NhsNumber = nhsNumber1
+            };
+
+            // Case 2 setup: Non-trimmed number is in the DB, and the trimmed one in the request.
+
+            var matchingNhsNumber2 = _faker.Random.Hash();
+            var nonTrimmedNHSNumber2 = $"     {matchingNhsNumber2} ";
+
+            var searchParameters2 = new FindResident
+            {
+                NhsNumber = matchingNhsNumber2
+            };
+
+            var existingResidentWithNonTrimmedNhsNumber = new ResidentEntity
+            {
+                NhsNumber = nonTrimmedNHSNumber2
+            };
+
+            DatabaseContext.ResidentEntities.Add(existingResidentWithNormalNhsNumber);
+            DatabaseContext.ResidentEntities.Add(existingResidentWithNonTrimmedNhsNumber);
+            DatabaseContext.SaveChanges();
+
+            var ResidentWithNormalNhsNumberId1 = DatabaseContext.ResidentEntities
+                .FirstOrDefault(r => r.NhsNumber == nhsNumber1)?.Id;
+
+            var ResidentWithNormalNhsNumberId2 = DatabaseContext.ResidentEntities
+                .FirstOrDefault(r => r.NhsNumber == nonTrimmedNHSNumber2)?.Id;
+
+            // act
+            var duplicateResidentId1 = _classUnderTest.FindResident(searchParameters1); // trimmed in DB
+            bool isResidentDuplicate1 = duplicateResidentId1 != null;
+
+            var duplicateResidentId2 = _classUnderTest.FindResident(searchParameters2); // trimmed in request
+            bool isResidentDuplicate2 = duplicateResidentId2 != null;
+
+            // assert
+            isResidentDuplicate1.Should().BeTrue(); // trimmed in DB
+            duplicateResidentId1.Should().Be(ResidentWithNormalNhsNumberId1);
+
+            isResidentDuplicate2.Should().BeTrue(); // trimmed in request
+            duplicateResidentId2.Should().Be(ResidentWithNormalNhsNumberId2);
+        }
+
         #endregion
 
 
