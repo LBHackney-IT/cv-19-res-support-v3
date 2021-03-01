@@ -38,7 +38,8 @@ namespace cv19ResSupportV3.V4.Controllers
         /// <summary>
         /// Creates a resident help request with the values provided.
         /// </summary>
-        /// <response code="201">...</response>
+        /// <param name="id" example="123">Resident id</param>
+        /// <response code="201">Help request is created</response>
         [ProducesResponseType(typeof(ResidentHelpRequestResponse), StatusCodes.Status201Created)]
         [HttpPost]
         public IActionResult CreateResidentHelpRequest([FromRoute] int id, [FromBody] ResidentHelpRequestRequest request)
@@ -50,7 +51,9 @@ namespace cv19ResSupportV3.V4.Controllers
         /// <summary>
         /// Gets a resident help request with the id specified.
         /// </summary>
-        /// <response code="200">...</response>
+        /// <param name="id" example="123">Resident id</param>
+        /// <param name="help-request-id" example="456">Help request id</param>
+        /// <response code="200">Help request is returned</response>
         /// <response code="404">...</response>
         [ProducesResponseType(typeof(ResidentHelpRequestResponse), StatusCodes.Status200OK)]
         [HttpGet]
@@ -66,7 +69,8 @@ namespace cv19ResSupportV3.V4.Controllers
         /// <summary>
         /// Gets a collection of help requests for a resident with the id specified.
         /// </summary>
-        /// <response code="200">...</response>
+        /// <param name="id" example="123">Resident id</param>
+        /// <response code="200">List of help requests is returned</response>
         /// <response code="404">...</response>
         [ProducesResponseType(typeof(List<ResidentHelpRequestResponse>), StatusCodes.Status200OK)]
         [HttpGet]
@@ -81,7 +85,9 @@ namespace cv19ResSupportV3.V4.Controllers
         /// <summary>
         /// Updates a help request with the id specified.
         /// </summary>
-        /// <response code="200">...</response>
+        /// <param name="id" example="123">Resident id</param>
+        /// <param name="help-request-id" example="456">Help request id</param>
+        /// <response code="200">Help request is updated</response>
         /// <response code="404">...</response>
         [ProducesResponseType(typeof(ResidentResponseBoundary), StatusCodes.Status200OK)]
         [HttpPatch]

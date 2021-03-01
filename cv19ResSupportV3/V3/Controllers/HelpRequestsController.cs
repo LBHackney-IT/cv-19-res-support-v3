@@ -39,7 +39,7 @@ namespace cv19ResSupportV3.V3.Controllers
         /// <summary>
         /// Creates a help request with the values provided.
         /// </summary>
-        /// <response code="201">...</response>
+        /// <response code="201">Help request is created</response>
         [ProducesResponseType(typeof(HelpRequestCreateResponse), StatusCodes.Status201Created)]
         [HttpPost]
         public IActionResult CreateResidentAndHelpRequest(HelpRequestCreateRequestBoundary request)
@@ -58,7 +58,7 @@ namespace cv19ResSupportV3.V3.Controllers
         }
 
         /// <summary>
-        /// Replaces an existing help request record with
+        /// Replaces an existing help request record with provided values
         /// </summary>
         /// <response code="200">The record has been updated</response>
         /// <response code="400">There was an issue updating the record.</response>
@@ -80,33 +80,9 @@ namespace cv19ResSupportV3.V3.Controllers
         }
 
         /// <summary>
-        /// Updates an existing record with the values specified.  This only updates specified editable fields:
-        /// GettingInTouchReason
-        /// HelpWithAccessingFood
-        /// HelpWithAccessingMedicine
-        /// HelpWithAccessingOtherEssentials
-        /// HelpWithDebtAndMoney
-        /// HelpWithHealth
-        /// HelpWithMentalHealth
-        /// HelpWithAccessingInternet
-        /// HelpWithSomethingElse
-        /// CurrentSupport
-        /// CurrentSupportFeedback
-        /// FirstName
-        /// LastName
-        /// DobMonth
-        /// DobYear
-        /// DobDay
-        /// ContactTelephoneNumber
-        /// ContactMobileNumber
-        /// EmailAddress
-        /// GpSurgeryDetails
-        /// NumberOfChildrenUnder18
-        /// ConsentToShare
-        /// CaseNotes
-        /// AdviceNotes
-        /// RecordStatus
+        /// Updates an existing record with the values specified.  This only updates specified editable fields
         /// </summary>
+        /// <param name="id" example="123">Help request id</param>
         /// <response code="200">The record has been updated</response>
         /// <response code="400">There was an issue updating the record.</response>
         [HttpPatch]
@@ -145,6 +121,7 @@ namespace cv19ResSupportV3.V3.Controllers
         /// <summary>
         /// Returns a single help request matching the provided id.
         /// </summary>
+        /// <param name="id" example="123">Help request id</param>
         /// <response code="200">Record retrieved successfully</response>
         /// <response code="404">A record with the specified id was not found</response>
         [ProducesResponseType(typeof(HelpRequestResponse), StatusCodes.Status200OK)]
