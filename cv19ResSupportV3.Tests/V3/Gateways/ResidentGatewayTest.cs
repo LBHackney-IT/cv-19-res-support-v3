@@ -5,6 +5,8 @@ using cv19ResSupportV3.V3.Infrastructure;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
+using Bogus;
+using System.Linq;
 
 namespace cv19ResSupportV3.Tests.V3.Gateways
 {
@@ -12,6 +14,7 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
     public class ResidentGatewayTest : DatabaseTests
     {
         private ResidentGateway _classUnderTest;
+        private Faker _faker = new Faker();
 
         [SetUp]
         public void Setup()
@@ -19,74 +22,389 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             _classUnderTest = new ResidentGateway(DatabaseContext);
         }
 
+        // not matching first name, but matching uprn or dob
+        // Does not throw an error if... empty db
+
+        #region Duplicate Resident Finding Tests (FindResident)
+
+        // If NHS numbers match, then:
+        // Resident id is returned as duplicate.
         [Test]
-        public void FindResidentWithUprnAndNameReturnsTheResidentIdIfItExists()
+        public void FindResidentReturnsAMatchIdWhenThereIsAResidentWithMatchingNHSNumber()
         {
-            var existingResident = new ResidentEntity { Uprn = "uprn", FirstName = "FirstName", LastName = "LastName" };
+            // arrange
+            var matchingNhsNumber = _faker.Random.Hash();
 
-            var findResidentCommand = new FindResident
+            var searchParameters = new FindResident
             {
-                Uprn = "uprn",
-                FirstName = "FirstName",
-                LastName = "LastName",
-                DobDay = "Day",
-                DobMonth = "Month",
-                DobYear = "Year"
+                NhsNumber = matchingNhsNumber
             };
 
-            DatabaseContext.ResidentEntities.Add(existingResident);
+            // control resident
+            var existingResidentNoNhsNumberMatch = new ResidentEntity
+            {
+                NhsNumber = _faker.Random.Hash()
+            };
+
+            var existingResidentNhsNumberMatch = new ResidentEntity
+            {
+                NhsNumber = matchingNhsNumber
+            };
+
+            DatabaseContext.ResidentEntities.Add(existingResidentNoNhsNumberMatch);
+            DatabaseContext.ResidentEntities.Add(existingResidentNhsNumberMatch);
             DatabaseContext.SaveChanges();
-            var response = _classUnderTest.FindResident(findResidentCommand);
-            var createdRecord = DatabaseContext.ResidentEntities.Find(response);
-            var expectedRecord = new ResidentEntity
-            {
-                Id = existingResident.Id,
-                Uprn = "uprn",
-                FirstName = "FirstName",
-                LastName = "LastName"
-            };
 
-            createdRecord.Should().BeEquivalentTo(expectedRecord);
+            var nhsNumberMatchResidentId = DatabaseContext.ResidentEntities.FirstOrDefault(r => r.NhsNumber == matchingNhsNumber)?.Id;
+
+            // act
+            var duplicateResidentId = _classUnderTest.FindResident(searchParameters);
+            bool isResidentDuplicate = duplicateResidentId != null;
+
+            // assert
+            isResidentDuplicate.Should().BeTrue();
+            duplicateResidentId.Should().Be(nhsNumberMatchResidentId);
         }
 
-        [Test]
-        public void FindResidentWithDobandNameReturnsTheResidentIdIfItExists()
+        // If NHS number is empty or null or does not match &
+        // If Uprn is present, then:
+        // Resident is considered a duplicate, when First Name, Last Name & Uprn match.
+        [TestCase(null)]
+        [TestCase("")]
+        [TestCase(" ")]
+        [TestCase("nhs number")]
+        public void FindResidentReturnsAMatchWhenNoNhsNumberIsPresentAndWhenThereIsAResidentWithMatchingNonEmptyUprnAndFirstAndLastNames(string testCaseNhsNumber)
         {
+            // arrange
+            var matchingEmptyNhsNumber = testCaseNhsNumber;
+            var matchingFirstName = _faker.Random.Hash();
+            var matchingLastName = _faker.Random.Hash();
+            var matchingUprn = _faker.Random.Hash();
+
+            var searchParameters = new FindResident
+            {
+                NhsNumber = matchingEmptyNhsNumber,
+                Uprn = matchingUprn,
+                FirstName = matchingFirstName,
+                LastName = matchingLastName,
+            };
+
+            // empty nhs number match - making sure that doesn't get treated as a false positive
+            var existingResidentEmptyNhsNumberMatch = new ResidentEntity
+            {
+                NhsNumber = matchingEmptyNhsNumber,
+                Uprn = _faker.Random.Hash(),
+                FirstName = _faker.Random.Hash(),
+                LastName = _faker.Random.Hash()
+            };
+
+            var existingResidentUprnMatch = new ResidentEntity
+            {
+                NhsNumber = _faker.Random.Hash(),
+                Uprn = matchingUprn,
+                FirstName = matchingFirstName,
+                LastName = matchingLastName
+            };
+
+            // testing the no match path (adding this 1 line, so I wouldn't need to copy the whole test)
+            if (matchingEmptyNhsNumber == "nhs number") existingResidentEmptyNhsNumberMatch.NhsNumber = _faker.Random.Hash();
+
+            DatabaseContext.ResidentEntities.Add(existingResidentEmptyNhsNumberMatch);
+            DatabaseContext.ResidentEntities.Add(existingResidentUprnMatch);
+            DatabaseContext.SaveChanges();
+
+            var uprnMatchResidentId = DatabaseContext.ResidentEntities.FirstOrDefault(r => r.Uprn == matchingUprn)?.Id;
+
+            // act
+            var duplicateResidentId = _classUnderTest.FindResident(searchParameters);
+            bool isResidentDuplicate = duplicateResidentId != null;
+
+            // assert
+            isResidentDuplicate.Should().BeTrue();
+            duplicateResidentId.Should().Be(uprnMatchResidentId);
+        }
+
+        // If NHS number is empty or null or does not match &
+        // If Uprn is empty or null or does not match &
+        // If any of the Dob fields are missing (The focus here is on the Uprn paths, not the dob), then:
+        // Resident is considered unique even when the First Name, Last Name & Nonempty Uprn match.
+        [TestCase(null)]
+        [TestCase("")]
+        [TestCase(" ")]
+        [TestCase("uprn")]
+        public void FindResidentReturnsNoMatchWhenNoNhsNumberAndUprnNumberAndAnyOfTheDobFieldsArePresent(string testCaseUprn)
+        {
+            // arrange
+            var notMatchingNhsNumber = _faker.Random.Hash();
+            var matchingFirstName = _faker.Random.Hash();
+            var matchingLastName = _faker.Random.Hash();
+            var matchingEmptyUprn = testCaseUprn;
+
+            var searchParameters = new FindResident
+            {
+                NhsNumber = notMatchingNhsNumber,
+                Uprn = matchingEmptyUprn,
+                FirstName = matchingFirstName,
+                LastName = matchingLastName,
+            };
+
+            var existingResidentNoUprnMatch = new ResidentEntity
+            {
+                NhsNumber = _faker.Random.Hash(),
+                Uprn = _faker.Random.Hash(), // no uprn match
+                FirstName = matchingFirstName,
+                LastName = matchingLastName
+            };
+
+            var existingResidentEmptyUprnMatch = new ResidentEntity
+            {
+                NhsNumber = _faker.Random.Hash(),
+                Uprn = matchingEmptyUprn, // matching empty uprn
+                FirstName = matchingFirstName,
+                LastName = matchingLastName
+            };
+
+            // testing a case path, where uprn is not empty, but still does not match
+            if (matchingEmptyUprn == "uprn") existingResidentEmptyUprnMatch.NhsNumber = _faker.Random.Hash();
+
+            DatabaseContext.ResidentEntities.Add(existingResidentNoUprnMatch);
+            DatabaseContext.ResidentEntities.Add(existingResidentEmptyUprnMatch);
+            DatabaseContext.SaveChanges();
+
+            // act
+            var duplicateResidentId = _classUnderTest.FindResident(searchParameters);
+            bool isResidentDuplicate = duplicateResidentId != null;
+
+            // assert
+            isResidentDuplicate.Should().BeFalse();
+            duplicateResidentId.Should().Be(null);
+        }
+
+        // If NHS number is empty or null or does not match &
+        // If Uprn is empty or null or does not match &
+        // If Dob is non-empty and not null, then
+        // Resident is considered a duplicate when its Dob, Fname & Lname match.
+        // (Difference between this test and the above one is that for the same given UPRNs, DOBs are no longer empty)
+        [TestCase(null)]
+        [TestCase("")]
+        [TestCase(" ")]
+        [TestCase("uprn")]
+        public void FindResidentReturnsAMatchWhenNoNhsAndUprnNumberMatchIsFoundButThereExistsAResidentWithMatchingFirstAndLastNameAndDOB(string testCaseUprn)
+        {
+            // arrange
+            var notMatchingNhsNumber = _faker.Random.Hash();
+            var matchingFirstName = _faker.Random.Hash();
+            var matchingLastName = _faker.Random.Hash();
+            var emptyMatchingUprn = testCaseUprn;
+
+            var matchingDOBDay = _faker.Random.Hash();
+            var matchingDOBMonth = _faker.Random.Hash();
+            var matchingDOBYear = _faker.Random.Hash();
+
+            var searchParameters = new FindResident
+            {
+                NhsNumber = notMatchingNhsNumber,
+                Uprn = emptyMatchingUprn,
+                FirstName = matchingFirstName,
+                LastName = matchingLastName,
+                DobDay = matchingDOBDay,
+                DobMonth = matchingDOBMonth,
+                DobYear = matchingDOBYear
+            };
+
+            var existingResidentNoDOBMatch = new ResidentEntity
+            {
+                NhsNumber = _faker.Random.Hash(),
+                Uprn = _faker.Random.Hash(),
+                FirstName = matchingFirstName,
+                LastName = matchingLastName,
+                DobDay = _faker.Random.Hash(),
+                DobMonth = _faker.Random.Hash(),
+                DobYear = _faker.Random.Hash()
+            };
+
+            var existingResidentDOBMatch = new ResidentEntity
+            {
+                NhsNumber = _faker.Random.Hash(),
+                Uprn = emptyMatchingUprn, // check to see if we fall through to the next rule on empty match
+                FirstName = matchingFirstName,
+                LastName = matchingLastName,
+                DobDay = matchingDOBDay,
+                DobMonth = matchingDOBMonth,
+                DobYear = matchingDOBYear
+            };
+
+            // checking rule falling through to the next on Uprn no match (not just empty)
+            if (emptyMatchingUprn == "uprn") existingResidentDOBMatch.Uprn = _faker.Random.Hash();
+
+            DatabaseContext.ResidentEntities.Add(existingResidentNoDOBMatch);
+            DatabaseContext.ResidentEntities.Add(existingResidentDOBMatch);
+            DatabaseContext.SaveChanges();
+
+            var dobMatchResidentId = DatabaseContext.ResidentEntities
+                .FirstOrDefault(r =>
+                    r.DobDay == matchingDOBDay &&
+                    r.DobMonth == matchingDOBMonth &&
+                    r.DobYear == matchingDOBYear
+                )?.Id;
+
+            // act
+            var duplicateResidentId = _classUnderTest.FindResident(searchParameters);
+            bool isResidentDuplicate = duplicateResidentId != null;
+
+            // assert
+            isResidentDuplicate.Should().BeTrue();
+            duplicateResidentId.Should().Be(dobMatchResidentId);
+        }
+
+        // If NHS number rule returns no match &
+        // If Uprn rule returns no match &
+        // If Dob is null or empty, then:
+        // Resident is considered to be unique (as there's no better way to dedupe it after that point)
+        // Test cases not exhaustive (there are 27 combinations), however due to the syntax nature of C# it's relatively safe to assume
+        // that if the following 3 combinations pass, then the code works for all 27 (unless we're dealing with many lines of code of IF statments).
+        // (Difference from one of the tests above is that this test assumes the UPRN rule is tested for all UPRN inputs, and it's only looking at
+        // the possible DOB inputs under the case of assumed bad UPRN input)
+        [TestCase(null, null, null)]
+        [TestCase("", "", "")]
+        [TestCase(" ", " ", " ")]
+        [TestCase("23", "1", "1994")]
+        public void FindResidentReturnsNoMatchWhenNoNhsAndUprnNumberMatchIsFoundAndThereIsNoResidentWithMatchingFirstAndLastNameAndDOB(string tcDay, string tcMonth, string tcYear)
+        {
+            // arrange
+            var notMatchingNhsNumber = _faker.Random.Hash();
+            var notMatchingUprn = _faker.Random.Hash();
+            var matchingFirstName = _faker.Random.Hash();
+            var matchingLastName = _faker.Random.Hash();
+
+            var emptyMatchingDOBDay = tcDay;
+            var emptyMatchingDOBMonth = tcMonth;
+            var emptyMatchingDOBYear = tcYear;
+
+            var searchParameters = new FindResident
+            {
+                NhsNumber = notMatchingNhsNumber,
+                Uprn = notMatchingUprn,
+                FirstName = matchingFirstName,
+                LastName = matchingLastName,
+                DobDay = emptyMatchingDOBDay,
+                DobMonth = emptyMatchingDOBMonth,
+                DobYear = emptyMatchingDOBYear
+            };
+
+            var existingResidentNoDOBMatch = new ResidentEntity
+            {
+                NhsNumber = _faker.Random.Hash(),
+                Uprn = _faker.Random.Hash(),
+                FirstName = matchingFirstName,
+                LastName = matchingLastName,
+                DobDay = _faker.Random.Hash(),
+                DobMonth = _faker.Random.Hash(),
+                DobYear = _faker.Random.Hash()
+            };
+
+            var existingResidentEmptyDOBMatch = new ResidentEntity
+            {
+                NhsNumber = _faker.Random.Hash(),
+                Uprn = notMatchingUprn,
+                FirstName = matchingFirstName,
+                LastName = matchingLastName,
+                DobDay = emptyMatchingDOBDay,
+                DobMonth = emptyMatchingDOBMonth,
+                DobYear = emptyMatchingDOBYear
+            };
+
+            // checking a non-empty match case
+            if (emptyMatchingDOBYear == "1994")
+            {
+                existingResidentEmptyDOBMatch.DobDay = _faker.Random.Hash();
+                existingResidentEmptyDOBMatch.DobMonth = _faker.Random.Hash();
+                existingResidentEmptyDOBMatch.DobYear = _faker.Random.Hash();
+            }
+
+            DatabaseContext.ResidentEntities.Add(existingResidentNoDOBMatch);
+            DatabaseContext.ResidentEntities.Add(existingResidentEmptyDOBMatch);
+            DatabaseContext.SaveChanges();
+
+            // act
+            var duplicateResidentId = _classUnderTest.FindResident(searchParameters);
+            bool isResidentDuplicate = duplicateResidentId != null;
+
+            // assert
+            isResidentDuplicate.Should().BeFalse();
+            duplicateResidentId.Should().Be(null);
+
+        }
+
+        // Should there be checks for the inserted records values?
+        // Also should this case be treated as Unique Resident or the 400 Bad Request? (There doesn't seem to be validation preventing this)
+        // For now will treat this as a new unique record.
+        [TestCase(null)]
+        [TestCase("")]
+        [TestCase(" ")]
+        public void FindResidentReturnsNoMatchWhenEitherFirstNameAndLastNameIsMissing(bool isDobTest, string testCaseName)
+        {
+            // arrange
+            var notMatchingNhsNumber = _faker.Random.Hash();
+            var matchingFirstName = _faker.Random.Hash();
+            var matchingLastName = _faker.Random.Hash();
+            var matchingUprn = _faker.Random.Hash();
+
+            var matchingDOBDay = _faker.Random.Hash();
+            var matchingDOBMonth = _faker.Random.Hash();
+            var matchingDOBYear = _faker.Random.Hash();
+
+            var searchParametersNoFirstName = new FindResident
+            {
+                NhsNumber = notMatchingNhsNumber,
+                Uprn = isDobTest ? _faker.Random.Hash() : matchingUprn,
+                FirstName = testCaseName,
+                LastName = matchingLastName,
+                DobDay = isDobTest ? matchingDOBDay : _faker.Random.Hash(),
+                DobMonth = isDobTest ? matchingDOBMonth : _faker.Random.Hash(),
+                DobYear = isDobTest ? matchingDOBYear : _faker.Random.Hash(),
+            };
+
+            var searchParametersNoLastName = new FindResident
+            {
+                NhsNumber = notMatchingNhsNumber,
+                Uprn = isDobTest ? _faker.Random.Hash() : matchingUprn,
+                FirstName = matchingFirstName,
+                LastName = testCaseName,
+                DobDay = isDobTest ? matchingDOBDay : _faker.Random.Hash(),
+                DobMonth = isDobTest ? matchingDOBMonth : _faker.Random.Hash(),
+                DobYear = isDobTest ? matchingDOBYear : _faker.Random.Hash(),
+            };
+
             var existingResident = new ResidentEntity
             {
-                FirstName = "FirstName",
-                LastName = "LastName",
-                DobDay = "Day",
-                DobMonth = "Month",
-                DobYear = "Year"
-            };
-
-            var findResidentCommand = new FindResident
-            {
-                Uprn = "uprn",
-                FirstName = "FirstName",
-                LastName = "LastName",
-                DobDay = "Day",
-                DobMonth = "Month",
-                DobYear = "Year"
+                NhsNumber = _faker.Random.Hash(),
+                Uprn = matchingUprn,
+                FirstName = matchingFirstName,
+                LastName = matchingLastName,
+                DobDay = matchingDOBDay,
+                DobMonth = matchingDOBMonth,
+                DobYear = matchingDOBYear
             };
 
             DatabaseContext.ResidentEntities.Add(existingResident);
             DatabaseContext.SaveChanges();
-            var response = _classUnderTest.FindResident(findResidentCommand);
-            var createdRecord = DatabaseContext.ResidentEntities.Find(response);
-            var expectedRecord = new ResidentEntity
-            {
-                Id = existingResident.Id,
-                FirstName = "FirstName",
-                LastName = "LastName",
-                DobDay = "Day",
-                DobMonth = "Month",
-                DobYear = "Year"
-            };
 
-            createdRecord.Should().BeEquivalentTo(expectedRecord);
+            // act
+            var duplicateResidentIdAttempt1 = _classUnderTest.FindResident(searchParametersNoFirstName);
+            var duplicateResidentIdAttempt2 = _classUnderTest.FindResident(searchParametersNoLastName);
+            bool isResidentRequest1Duplicate = duplicateResidentIdAttempt1 != null;
+            bool isResidentRequest2Duplicate = duplicateResidentIdAttempt2 != null;
+
+            // assert
+            isResidentRequest1Duplicate.Should().BeFalse();
+            duplicateResidentIdAttempt1.Should().Be(null);
+
+            isResidentRequest2Duplicate.Should().BeFalse();
+            duplicateResidentIdAttempt2.Should().Be(null);
         }
+
+        #endregion
 
 
         [Test]
