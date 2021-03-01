@@ -35,4 +35,7 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="V4\TestHelpers\" />
+  </ItemGroup>
 </Project>
