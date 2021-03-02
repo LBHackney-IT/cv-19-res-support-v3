@@ -56,15 +56,13 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             DatabaseContext.ResidentEntities.Add(existingResidentNhsNumberMatch);
             DatabaseContext.SaveChanges();
 
-            var nhsNumberMatchResidentId = DatabaseContext.ResidentEntities.FirstOrDefault(r => r.NhsNumber == matchingNhsNumber)?.Id;
-
             // act
             var duplicateResidentId = _classUnderTest.FindResident(searchParameters);
             bool isResidentDuplicate = duplicateResidentId != null;
 
             // assert
             isResidentDuplicate.Should().BeTrue();
-            duplicateResidentId.Should().Be(nhsNumberMatchResidentId);
+            duplicateResidentId.Should().Be(existingResidentNhsNumberMatch.Id);
         }
 
         // If NHS number is empty or null or does not match &
@@ -115,15 +113,13 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             DatabaseContext.ResidentEntities.Add(existingResidentUprnMatch);
             DatabaseContext.SaveChanges();
 
-            var uprnMatchResidentId = DatabaseContext.ResidentEntities.FirstOrDefault(r => r.Uprn == matchingUprn)?.Id;
-
             // act
             var duplicateResidentId = _classUnderTest.FindResident(searchParameters);
             bool isResidentDuplicate = duplicateResidentId != null;
 
             // assert
             isResidentDuplicate.Should().BeTrue();
-            duplicateResidentId.Should().Be(uprnMatchResidentId);
+            duplicateResidentId.Should().Be(existingResidentUprnMatch.Id);
         }
 
         // If NHS number is empty or null or does not match &
@@ -246,20 +242,13 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             DatabaseContext.ResidentEntities.Add(existingResidentDOBMatch);
             DatabaseContext.SaveChanges();
 
-            var dobMatchResidentId = DatabaseContext.ResidentEntities
-                .FirstOrDefault(r =>
-                    r.DobDay == matchingDOBDay &&
-                    r.DobMonth == matchingDOBMonth &&
-                    r.DobYear == matchingDOBYear
-                )?.Id;
-
             // act
             var duplicateResidentId = _classUnderTest.FindResident(searchParameters);
             bool isResidentDuplicate = duplicateResidentId != null;
 
             // assert
             isResidentDuplicate.Should().BeTrue();
-            duplicateResidentId.Should().Be(dobMatchResidentId);
+            duplicateResidentId.Should().Be(existingResidentDOBMatch.Id);
         }
 
         // If NHS number rule returns no match &
@@ -453,12 +442,6 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             DatabaseContext.ResidentEntities.Add(existingResidentWithNonTrimmedNhsNumber);
             DatabaseContext.SaveChanges();
 
-            var ResidentWithNormalNhsNumberId1 = DatabaseContext.ResidentEntities
-                .FirstOrDefault(r => r.NhsNumber == nhsNumber1)?.Id;
-
-            var ResidentWithNormalNhsNumberId2 = DatabaseContext.ResidentEntities
-                .FirstOrDefault(r => r.NhsNumber == nonTrimmedNHSNumber2)?.Id;
-
             // act
             var duplicateResidentId1 = _classUnderTest.FindResident(searchParameters1); // trimmed in DB
             bool isResidentDuplicate1 = duplicateResidentId1 != null;
@@ -468,10 +451,10 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
 
             // assert
             isResidentDuplicate1.Should().BeTrue(); // trimmed in DB
-            duplicateResidentId1.Should().Be(ResidentWithNormalNhsNumberId1);
+            duplicateResidentId1.Should().Be(existingResidentWithNormalNhsNumber.Id);
 
             isResidentDuplicate2.Should().BeTrue(); // trimmed in request
-            duplicateResidentId2.Should().Be(ResidentWithNormalNhsNumberId2);
+            duplicateResidentId2.Should().Be(existingResidentWithNonTrimmedNhsNumber.Id);
         }
 
         #endregion
