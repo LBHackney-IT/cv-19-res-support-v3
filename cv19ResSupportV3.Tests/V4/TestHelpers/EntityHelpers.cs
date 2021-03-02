@@ -4,7 +4,7 @@ using cv19ResSupportV3.V3.Infrastructure;
 using LBHFSSPublicAPI.Tests.TestHelpers;
 using AutoFixture;
 
-namespace cv19ResSupportV3.Tests.V4.Helpers
+namespace cv19ResSupportV3.Tests.V4.TestHelpers
 {
     public static class EntityHelpers
     {

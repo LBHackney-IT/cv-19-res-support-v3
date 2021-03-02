@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using AutoFixture;
 using Bogus;
 using cv19ResSupportV3.Tests.V3.E2ETests;
-using cv19ResSupportV3.Tests.V4.Helpers;
+using cv19ResSupportV3.Tests.V4.TestHelpers;
 using cv19ResSupportV3.V3.Factories;
 using cv19ResSupportV3.V3.Infrastructure;
 using cv19ResSupportV3.V4;
