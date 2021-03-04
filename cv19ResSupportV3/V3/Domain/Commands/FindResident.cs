@@ -3,6 +3,11 @@ namespace cv19ResSupportV3.V3.Domain.Commands
     public class FindResident
     {
         /// <summary>
+        /// NHS number (10 digit number)
+        /// </summary>
+        /// <example>4857773456</example>
+        public string NhsNumber { get; set; }
+        /// <summary>
         /// Uprn
         /// </summary>
         /// <example>111111111111</example>
