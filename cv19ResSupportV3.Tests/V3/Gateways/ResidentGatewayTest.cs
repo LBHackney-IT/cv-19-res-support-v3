@@ -460,7 +460,7 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
 
         // When de-duplicating by dob, dobDay and dobMonth leading zeros are ignored
         [Test]
-        public void WhenDeduplicatingByDobRuleFindResidentDoesNotLooseTrailingZerosByTrimmingLeadingZeros()
+        public void UponDeduplicatingByDobRuleFindResidentDoesNotLooseTrailingZerosByTrimmingLeadingZeros()
         {
             // arrange
             // generic setup, so the rest would work
@@ -524,6 +524,7 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             };
 
             DatabaseContext.ResidentEntities.Add(existingResidentDate20InDB);
+            DatabaseContext.SaveChanges();
 
             // act
             var duplicateResidentDate1Id = _classUnderTest.FindResident(searchParametersDate10);
