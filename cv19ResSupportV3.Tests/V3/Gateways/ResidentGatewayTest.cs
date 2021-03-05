@@ -457,6 +457,58 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             duplicateResidentId2.Should().Be(existingResidentWithNonTrimmedNhsNumber.Id);
         }
 
+        // When de-duplicating by nhsnumber, number formatting is ignored
+        [Test]
+        public void UponDeduplicatingByNhsNumberRuleFindResidentFindsAMatchEvenWhenNhsNumberAreSameButFormattedDifferentlyWithSpacesInTheMiddle()
+        {
+            // arrange
+            // case formatted in db, not in request
+            var unformattedNhsNumberInARequest = "4857773456";
+            var formattedNhsNumberInADatabase  = "485 777 3456";
+
+            var searchParametersNoFormat = new FindResident
+            {
+                NhsNumber = unformattedNhsNumberInARequest
+            };
+
+            var existingResidentFormatted = new ResidentEntity
+            {
+                NhsNumber = formattedNhsNumberInADatabase
+            };
+
+            DatabaseContext.ResidentEntities.Add(existingResidentFormatted);
+
+            // case formatted in request, not in db
+            var unformattedNhsNumberInADatabase = "4888991234";
+            var formattedNhsNumberInARequest = "48 88 99 1234";
+
+            var searchParametersFormattedRequest = new FindResident
+            {
+                NhsNumber = formattedNhsNumberInARequest
+            };
+
+            var existingResidentNoFormat = new ResidentEntity
+            {
+                NhsNumber = unformattedNhsNumberInADatabase
+            };
+
+            DatabaseContext.ResidentEntities.Add(existingResidentNoFormat);
+            DatabaseContext.SaveChanges();
+
+            // act
+            var duplicateResidentFormatted = _classUnderTest.FindResident(searchParametersNoFormat);
+            bool isResidentFormattedDuplicate = duplicateResidentFormatted != null;
+
+            var duplicateResidentNotFormatted = _classUnderTest.FindResident(searchParametersFormattedRequest);
+            bool isResidentNotFormattedDuplicate = duplicateResidentNotFormatted != null;
+
+            // assert
+            isResidentFormattedDuplicate.Should().BeTrue();
+            duplicateResidentFormatted.Should().Be(existingResidentFormatted.Id);
+
+            isResidentNotFormattedDuplicate.Should().BeTrue();
+            duplicateResidentNotFormatted.Should().Be(existingResidentNoFormat.Id);
+        }
 
         // When de-duplicating by dob, dobDay and dobMonth leading zeros are ignored
         [Test]

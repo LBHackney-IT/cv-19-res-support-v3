@@ -172,7 +172,7 @@ namespace cv19ResSupportV3.V3.Gateways
                 if (Predicates.IsNotNullAndNotEmpty(command.NhsNumber))
                 {
                     var matchingResident = _helpRequestsContext.ResidentEntities
-                        .FirstOrDefault(r => r.NhsNumber.Trim() == command.NhsNumber.Trim());
+                        .FirstOrDefault(r => r.NhsNumber.Replace(" ", "") == command.NhsNumber.Replace(" ", ""));
 
                     if (matchingResident != null)
                         return matchingResident.Id;
