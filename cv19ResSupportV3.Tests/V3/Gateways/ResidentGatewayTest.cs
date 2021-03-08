@@ -457,8 +457,302 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             duplicateResidentId2.Should().Be(existingResidentWithNonTrimmedNhsNumber.Id);
         }
 
-        #endregion
+        // When de-duplicating by nhsnumber, number formatting is ignored
+        [Test]
+        public void UponDeduplicatingByNhsNumberRuleFindResidentFindsAMatchEvenWhenNhsNumberAreSameButFormattedDifferentlyWithSpacesInTheMiddle()
+        {
+            // arrange
+            // case formatted in db, not in request
+            var unformattedNhsNumberInARequest = "4857773456";
+            var formattedNhsNumberInADatabase = "485 777 3456";
 
+            var searchParametersNoFormat = new FindResident
+            {
+                NhsNumber = unformattedNhsNumberInARequest
+            };
+
+            var existingResidentFormatted = new ResidentEntity
+            {
+                NhsNumber = formattedNhsNumberInADatabase
+            };
+
+            DatabaseContext.ResidentEntities.Add(existingResidentFormatted);
+
+            // case formatted in request, not in db
+            var unformattedNhsNumberInADatabase = "4888991234";
+            var formattedNhsNumberInARequest = "48 88 99 1234";
+
+            var searchParametersFormattedRequest = new FindResident
+            {
+                NhsNumber = formattedNhsNumberInARequest
+            };
+
+            var existingResidentNoFormat = new ResidentEntity
+            {
+                NhsNumber = unformattedNhsNumberInADatabase
+            };
+
+            DatabaseContext.ResidentEntities.Add(existingResidentNoFormat);
+            DatabaseContext.SaveChanges();
+
+            // act
+            var duplicateResidentFormattedId = _classUnderTest.FindResident(searchParametersNoFormat);
+            bool isResidentFormattedDuplicate = duplicateResidentFormattedId != null;
+
+            var duplicateResidentNotFormattedId = _classUnderTest.FindResident(searchParametersFormattedRequest);
+            bool isResidentNotFormattedDuplicate = duplicateResidentNotFormattedId != null;
+
+            // assert
+            isResidentFormattedDuplicate.Should().BeTrue();
+            duplicateResidentFormattedId.Should().Be(existingResidentFormatted.Id);
+
+            isResidentNotFormattedDuplicate.Should().BeTrue();
+            duplicateResidentNotFormattedId.Should().Be(existingResidentNoFormat.Id);
+        }
+
+        // When de-duplicating by dob, dobDay and dobMonth leading zeros are ignored
+        [Test]
+        public void UponDeduplicatingByDobRuleFindResidentDoesNotLooseTrailingZerosByTrimmingLeadingZeros()
+        {
+            // arrange
+            // generic setup, so the rest would work
+            var matchingFirstName = _faker.Random.Hash();
+            var matchingLastName = _faker.Random.Hash();
+            var dobYear = _faker.Random.Hash();
+
+            // need to make sure we don't lose the non-leading zero's upon removing leading ones
+            var dobDay1 = "1";
+            var dobMonth1 = "1";
+
+            var dobDay10 = "10";
+            var dobMonth10 = "10";
+
+            // request date = 10, db date = 1
+            var searchParametersDate10 = new FindResident
+            {
+                FirstName = matchingFirstName,
+                LastName = matchingLastName,
+                DobDay = dobDay10,
+                DobMonth = dobMonth10,
+                DobYear = dobYear,
+            };
+
+            // Should not match. If it matches, it meanst the zero from "10" gets trimmed from request field
+            var existingResidentDate1InDB = new ResidentEntity
+            {
+                FirstName = matchingFirstName,
+                LastName = matchingLastName,
+                DobDay = dobDay1,
+                DobMonth = dobMonth1,
+                DobYear = dobYear
+            };
+
+            DatabaseContext.ResidentEntities.Add(existingResidentDate1InDB);
+
+            var dobDay2 = "2";
+            var dobMonth2 = "2";
+
+            var dobDay20 = "20";
+            var dobMonth20 = "20";
+
+            // request date = 2, db date = 20
+            var searchParametersDate2 = new FindResident
+            {
+                FirstName = matchingFirstName,
+                LastName = matchingLastName,
+                DobDay = dobDay2,
+                DobMonth = dobMonth2,
+                DobYear = dobYear,
+            };
+
+            // Should not match. If it matches, it meanst the zero from "20" gets trimmed from DB field
+            var existingResidentDate20InDB = new ResidentEntity
+            {
+                FirstName = matchingFirstName,
+                LastName = matchingLastName,
+                DobDay = dobDay20,
+                DobMonth = dobMonth20,
+                DobYear = dobYear
+            };
+
+            DatabaseContext.ResidentEntities.Add(existingResidentDate20InDB);
+            DatabaseContext.SaveChanges();
+
+            // act
+            var duplicateResidentDate1Id = _classUnderTest.FindResident(searchParametersDate10);
+            bool isResidentDate1Duplicate = duplicateResidentDate1Id != null;
+
+            var duplicateResidentDate20Id = _classUnderTest.FindResident(searchParametersDate2);
+            bool isResidentDate20Duplicate = duplicateResidentDate20Id != null;
+
+            // assert
+            isResidentDate1Duplicate.Should().BeFalse();
+            duplicateResidentDate1Id.Should().Be(null);
+
+            isResidentDate20Duplicate.Should().BeFalse();
+            duplicateResidentDate20Id.Should().Be(null);
+        }
+
+
+        [Test]
+        public void WhenDeduplicatingByDobRuleFindResidentReturnsAMatchEvenWhenDobDayAndMonthFieldsContainLeadingZeros()
+        {
+            // arrange
+            // generic setup, so the rest would work
+            var matchingFirstName = _faker.Random.Hash();
+            var matchingLastName = _faker.Random.Hash();
+            var dobYear = _faker.Random.Hash();
+
+            // other case - leading 0s in db, not in request
+            var requestDobDayAny = _faker.Random.Int(1, 4).ToString();
+            var requestDobMonthAny = _faker.Random.Int(1, 4).ToString();
+            var databaseDobDayAnyLeadingZero = "0" + requestDobDayAny;
+            var databaseDobMonthAnyLeadingZero = "0" + requestDobMonthAny;
+
+            // no leading zeros
+            var searchParametersNoLeadingZeros = new FindResident
+            {
+                FirstName = matchingFirstName,
+                LastName = matchingLastName,
+                DobDay = requestDobDayAny,
+                DobMonth = requestDobMonthAny,
+                DobYear = dobYear,
+            };
+
+            // with leading zeros
+            var existingResidentLeadingZeros = new ResidentEntity
+            {
+                FirstName = matchingFirstName,
+                LastName = matchingLastName,
+                DobDay = databaseDobDayAnyLeadingZero,
+                DobMonth = databaseDobMonthAnyLeadingZero,
+                DobYear = dobYear
+            };
+
+            DatabaseContext.ResidentEntities.Add(existingResidentLeadingZeros);
+
+            // other case - leading 0s in request, not in db
+            var databaseDobDayAny = _faker.Random.Int(5, 9).ToString();
+            var databaseDobMonthAny = _faker.Random.Int(5, 9).ToString();
+            var requestDobDayAnyLeadingZero = "0" + databaseDobDayAny;
+            var requestDobMonthAnyLeadingZero = "0" + databaseDobMonthAny;
+
+            // leading zeros
+            var searchParametersWithLeadingZeros = new FindResident
+            {
+                FirstName = matchingFirstName,
+                LastName = matchingLastName,
+                DobDay = requestDobDayAnyLeadingZero,
+                DobMonth = requestDobMonthAnyLeadingZero,
+                DobYear = dobYear,
+            };
+
+            // no leading zeros
+            var existingResidentNoneLeadingZeros = new ResidentEntity
+            {
+                FirstName = matchingFirstName,
+                LastName = matchingLastName,
+                DobDay = databaseDobDayAny,
+                DobMonth = databaseDobMonthAny,
+                DobYear = dobYear
+            };
+
+            DatabaseContext.ResidentEntities.Add(existingResidentNoneLeadingZeros);
+
+            DatabaseContext.SaveChanges();
+
+            // act
+            var duplicateResidentLeadZerosInDbId = _classUnderTest.FindResident(searchParametersNoLeadingZeros);
+            bool isResidentLeadZerosInDbDuplicate = duplicateResidentLeadZerosInDbId != null;
+
+            var duplicateResidentLeadZerosInRequestId = _classUnderTest.FindResident(searchParametersWithLeadingZeros);
+            bool isResidentLeadZerosInRequestDuplicate = duplicateResidentLeadZerosInRequestId != null;
+
+            // assert
+            isResidentLeadZerosInDbDuplicate.Should().BeTrue();
+            duplicateResidentLeadZerosInDbId.Should().Be(existingResidentLeadingZeros.Id);
+
+            isResidentLeadZerosInRequestDuplicate.Should().BeTrue();
+            duplicateResidentLeadZerosInRequestId.Should().Be(existingResidentNoneLeadingZeros.Id);
+        }
+
+        // When de-duplicating by nhsnumber, number formatting is ignored
+        // To simplify setup, I didn't do mixed case, but making request and db casing different should cover the cases implicitly
+        [Test]
+        public void UponDeduplicatingByDobRuleFindResidentFindsAMatchEvenWhenDobMonthIsAMonthNameAndCasingDiffers()
+        {
+            // arrange
+            // generic setup, so the rest would work
+            var matchingFirstName = _faker.Random.Hash();
+            var matchingLastName = _faker.Random.Hash();
+            var dobYear = _faker.Random.Hash();
+            var dobDay = _faker.Random.Hash();
+
+            // case: Request Lowercase, Database Uppercase (dobMonth text)
+            // hash is a complex string like "Jan", "Dec", "April" already, so that part of the test is long covered
+            // what's left is to test whether matching happens on different casing.
+            var dobMonthRLDU = _faker.Random.Hash();
+
+            var searchParametersLowerCasing = new FindResident
+            {
+                FirstName = matchingFirstName,
+                LastName = matchingLastName,
+                DobDay = dobDay,
+                DobMonth = dobMonthRLDU.ToLower(),
+                DobYear = dobYear,
+            };
+
+            var existingResidentInUpperCasing = new ResidentEntity
+            {
+                FirstName = matchingFirstName,
+                LastName = matchingLastName,
+                DobDay = dobDay,
+                DobMonth = dobMonthRLDU.ToUpper(),
+                DobYear = dobYear
+            };
+
+            DatabaseContext.ResidentEntities.Add(existingResidentInUpperCasing);
+
+            // case: Request Uppercase, Database Lowercase (dobMonth text)
+            var dobMonthRUDL = _faker.Random.Hash();
+
+            var searchParametersUpperCasing = new FindResident
+            {
+                FirstName = matchingFirstName,
+                LastName = matchingLastName,
+                DobDay = dobDay,
+                DobMonth = dobMonthRUDL.ToUpper(),
+                DobYear = dobYear,
+            };
+
+            var existingResidentInLowerCasing = new ResidentEntity
+            {
+                FirstName = matchingFirstName,
+                LastName = matchingLastName,
+                DobDay = dobDay,
+                DobMonth = dobMonthRUDL.ToLower(),
+                DobYear = dobYear
+            };
+
+            DatabaseContext.ResidentEntities.Add(existingResidentInLowerCasing);
+            DatabaseContext.SaveChanges();
+
+            // act
+            var duplicateResidentUpperCasingId = _classUnderTest.FindResident(searchParametersLowerCasing);
+            bool isResidentUpperCasingDuplicate = duplicateResidentUpperCasingId != null;
+
+            var duplicateResidentLowerCasingId = _classUnderTest.FindResident(searchParametersUpperCasing);
+            bool isResidentLowerCasingDuplicate = duplicateResidentLowerCasingId != null;
+
+            // assert
+            isResidentUpperCasingDuplicate.Should().BeTrue();
+            duplicateResidentUpperCasingId.Should().Be(existingResidentInUpperCasing.Id);
+
+            isResidentLowerCasingDuplicate.Should().BeTrue();
+            duplicateResidentLowerCasingId.Should().Be(existingResidentInLowerCasing.Id);
+        }
+
+        #endregion
 
         [Test]
         public void PatchResidentReturnsTheUpdatedResident()
