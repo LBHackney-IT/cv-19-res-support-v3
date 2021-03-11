@@ -172,7 +172,7 @@ namespace cv19ResSupportV3.V3.Gateways
                 if (Predicates.IsNotNullAndNotEmpty(command.NhsNumber))
                 {
                     var matchingResident = _helpRequestsContext.ResidentEntities
-                        .FirstOrDefault(r => r.NhsNumber.Trim() == command.NhsNumber.Trim());
+                        .FirstOrDefault(r => r.NhsNumber.Replace(" ", "") == command.NhsNumber.Replace(" ", ""));
 
                     if (matchingResident != null)
                         return matchingResident.Id;
@@ -207,8 +207,8 @@ namespace cv19ResSupportV3.V3.Gateways
                             .FirstOrDefault(r =>
                                 r.DobYear.Trim() == command.DobYear.Trim() &&
                                 // adding .ToUpper here in case month is specified with alphabetic characters for some cases (Jan, Dec)
-                                r.DobMonth.Trim().ToUpper() == command.DobMonth.Trim().ToUpper() &&
-                                r.DobDay.Trim() == command.DobDay.Trim() &&
+                                r.DobMonth.Trim().TrimStart('0').ToUpper() == command.DobMonth.Trim().TrimStart('0').ToUpper() &&
+                                r.DobDay.Trim().TrimStart('0') == command.DobDay.Trim().TrimStart('0') &&
                                 r.FirstName.Trim().ToUpper() == command.FirstName.Trim().ToUpper() &&
                                 r.LastName.Trim().ToUpper() == command.LastName.Trim().ToUpper());
 
