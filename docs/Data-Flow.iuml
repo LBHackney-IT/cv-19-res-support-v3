@@ -1,0 +1,71 @@
+@startuml
+!include <awslib/AWSCommon>
+!include <awslib/General/all>
+
+!include <awslib/Compute/all>
+!include <awslib/Database/all>
+!include <awslib/AWSSimplified>
+
+!include <logos/google-drive.puml>
+
+skinparam linetype polyline
+skinparam defaultTextAlignment center
+
+skinparam rectangle {
+    StereotypeFontSize 12
+    BackgroundColor AWS_BG_COLOR
+    BorderColor AWS_BORDER_COLOR
+}
+
+!define GoogleDrive(e_alias, e_label, e_techn) AWSEntity(e_alias, e_label, e_techn, #4285F4, google-drive, google-drive)
+
+title Here To Help Data Flow
+
+Users(dataIngestors, "Data Ingestors", "")
+Users(sources, "Call Handlers","")
+
+Lambda(hereToHelpFrontend, "Here To Help UI", "")
+TraditionalServer(iNeedHelpFrontend, "inh-admin\n(legacy)","")
+Lambda(hereToHelpAPI, "Here To Help API", "")
+
+RDSPostgreSQLinstance(db, "Database", "")
+
+sources ---> hereToHelpFrontend
+hereToHelpFrontend --> hereToHelpAPI
+
+sources ---> iNeedHelpFrontend
+iNeedHelpFrontend --> hereToHelpAPI
+
+hereToHelpAPI --> db
+
+package "Contact Tracing Ingestion" {
+    GoogleDrive(driveContactTracingInbound, "PowerBI In\ndata/T&T daily extracts", "")
+    Lambda(dataIngestionContactTracing, "Data Ingestion\nContact Tracing", "")
+
+    dataIngestors --> driveContactTracingInbound
+    driveContactTracingInbound --> dataIngestionContactTracing
+    dataIngestionContactTracing --> hereToHelpAPI
+}
+
+package "Shielding Patient List Ingestion" {
+    GoogleDrive(driveSPLInbound, "SPL In\ndata/cev-SPL/inbound", "")
+    GoogleDrive(driveSPLOutbound, "SPL Out\ndata/cev-SPL/outbound", "")
+    Lambda(dataIngestionSPL, "Data Ingestion\nSPL", "")
+
+    dataIngestors --> driveSPLInbound
+    driveSPLInbound --> dataIngestionSPL
+    dataIngestionSPL -u-> driveSPLOutbound
+    dataIngestionSPL --> hereToHelpAPI
+}
+
+package "National Sheilding Support Service Ingestion" {
+    GoogleDrive(driveNSSSInbound, "NSSS In\ndata/cev-NSSS/inbound", "")
+    GoogleDrive(driveNSSSOutbound, "NSSS Out\ndata/cev-NSSS/outbound", "")
+    Lambda(dataIngestionNSSS, "Data Ingestion\nNSSS", "")
+
+    dataIngestors --> driveNSSSInbound
+    driveNSSSInbound --> dataIngestionNSSS
+    dataIngestionNSSS -u-> driveNSSSOutbound
+    dataIngestionNSSS --> hereToHelpAPI
+}
+@enduml
