@@ -42,10 +42,12 @@ hereToHelpAPI --> db
 
 package "Contact Tracing Ingestion" {
     GoogleDrive(driveContactTracingInbound, "PowerBI In\ndata/T&T daily extracts", "")
+    GoogleDrive(driveContactTracingOutbound, "PowerBI In\ndata/T&T daily outputs", "")
     Lambda(dataIngestionContactTracing, "Data Ingestion\nContact Tracing", "")
 
     dataIngestors --> driveContactTracingInbound
     driveContactTracingInbound --> dataIngestionContactTracing
+    dataIngestionContactTracing -u-> driveContactTracingOutbound
     dataIngestionContactTracing --> hereToHelpAPI
 }
 
