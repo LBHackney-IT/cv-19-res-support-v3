@@ -22,18 +22,20 @@ skinparam rectangle {
 title Here To Help Data Flow
 
 Users(dataIngestors, "Data Ingestors", "")
-Users(sources, "Call Handlers","")
+Users(callHandlers, "Call Handlers","")
 
-Lambda(hereToHelpFrontend, "Here To Help UI", "")
-TraditionalServer(iNeedHelpFrontend, "inh-admin\n(legacy)","")
+together {
+    Lambda(hereToHelpFrontend, "Here To Help UI", "")
+    TraditionalServer(iNeedHelpFrontend, "inh-admin\n(legacy)","")
+}
 Lambda(hereToHelpAPI, "Here To Help API", "")
 
 RDSPostgreSQLinstance(db, "Database", "")
 
-sources ---> hereToHelpFrontend
+callHandlers ---> hereToHelpFrontend
 hereToHelpFrontend --> hereToHelpAPI
 
-sources ---> iNeedHelpFrontend
+callHandlers ---> iNeedHelpFrontend
 iNeedHelpFrontend --> hereToHelpAPI
 
 hereToHelpAPI --> db
