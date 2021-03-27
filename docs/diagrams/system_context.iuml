@@ -3,6 +3,7 @@
 !include ./c4_shared.puml
 
 Person_Ext(resident, "Resident", "A resident affected by COVID-19")
+Person_Ext(cityOfLondon, "City of London\n==Health Protection", "Officers who act on data shared from Hackney")
 
 Enterprise_Boundary(centralGov, "Central Government") {
     System_Ext(powerBI, "Contact Tracing Advisory Service", "National system responsible for Contact Tracing")
@@ -19,8 +20,12 @@ Enterprise_Boundary(hackney, "Hackney Council") {
         System(hereToHelpDataIngestion, "Here To Help Data Ingestion", "Normalises help requests")
         System(hereToHelp, "Here To Help", "Call Management System")
     }
-    
+
     System(addressesApi, "Addresses API", "Hackney Address Provider", $tags="hackney system")
+
+    ' Internal System Interaction
+    Rel(hereToHelp, addressesApi, "Looks up addresses using")
+    Rel_Right(hereToHelpDataIngestion, hereToHelp, "Creates/Updates Help Requests in")
 }
 
 ' Resident interaction
@@ -37,13 +42,14 @@ Rel_Up(dataHandler, nhsDigital, "Retrieves Shielding Patient List from")
 Rel_Up(dataHandler, nsss, "Retrieves Help Requests from")
 Rel(dataHandler, hereToHelpDataIngestion, "Uploads reports into")
 
+' Data Out
+Rel_Up(cityOfLondon, hereToHelpDataIngestion, "Looks for new City of London shielders")
+Rel_Up(cityOfLondon, hereToHelpDataIngestion, "Looks for new City of London Help Requests")
+
 ' User Interaction with System
 Rel(callCenterManager, hereToHelp, "Assigns calls to Call Handlers using")
 Rel(callHandler, hereToHelp, "Finds calls to make, and records call outcomes using")
 
-' Internal System Interaction
-Rel(hereToHelp, addressesApi, "Looks up addresses using")
-Rel_Right(hereToHelpDataIngestion, hereToHelp, "Creates/Updates Help Requests in")
 
 SHOW_DYNAMIC_LEGEND()
 @enduml
