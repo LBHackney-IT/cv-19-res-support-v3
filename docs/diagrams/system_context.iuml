@@ -1,0 +1,49 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+!include ./c4_shared.puml
+
+Person_Ext(resident, "Resident", "A resident affected by COVID-19")
+
+Enterprise_Boundary(centralGov, "Central Government") {
+    System_Ext(powerBI, "Contact Tracing Advisory Service", "National system responsible for Contact Tracing")
+    System_Ext(nsss, "National Shielding Support Service", "GDS Supplied system to capture support required for residents")
+    System_Ext(nhsDigital, "NHS Digital", "Provides information on patients")
+}
+
+Enterprise_Boundary(hackney, "Hackney Council") {
+    Person(callHandler, "Call Handler", "An employee who makes and receives phone calls to residents")
+    Person(callCenterManager, "Call Centre Manager", "A manager who assigns calls to Call Handlers")
+    Person(dataHandler, "Data Handler", "An employee responsible for retrieving datasets to update the system")
+
+    Boundary(hereToHelpSystem, "Here To Help") {
+        System(hereToHelpDataIngestion, "Here To Help Data Ingestion", "Normalises help requests")
+        System(hereToHelp, "Here To Help", "Call Management System")
+    }
+    
+    System(addressesApi, "Addresses API", "Hackney Address Provider", $tags="hackney system")
+}
+
+' Resident interaction
+BiRel(resident, callHandler, "Calls to discuss help requirements")
+Rel(resident, nsss, "Fills out details of help required from")
+
+' Emails
+System_Ext(govNotify, "GOV.UK Notify", "GDS Supplied SMS/Email Sending System")
+Rel(hereToHelp, govNotify, "Sends SMS and Emails using")
+
+' Data In
+Rel_Up(dataHandler, powerBI, "Retrieves report of failed calls from")
+Rel_Up(dataHandler, nhsDigital, "Retrieves Shielding Patient List from")
+Rel_Up(dataHandler, nsss, "Retrieves Help Requests from")
+Rel(dataHandler, hereToHelpDataIngestion, "Uploads reports into")
+
+' User Interaction with System
+Rel(callCenterManager, hereToHelp, "Assigns calls to Call Handlers using")
+Rel(callHandler, hereToHelp, "Finds calls to make, and records call outcomes using")
+
+' Internal System Interaction
+Rel(hereToHelp, addressesApi, "Looks up addresses using")
+Rel_Right(hereToHelpDataIngestion, hereToHelp, "Creates/Updates Help Requests in")
+
+SHOW_DYNAMIC_LEGEND()
+@enduml
