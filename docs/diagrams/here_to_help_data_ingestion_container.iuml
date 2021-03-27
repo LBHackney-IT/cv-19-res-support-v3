@@ -2,44 +2,44 @@
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 !include ./c4_shared.puml
 
+title Container Diagram to show Here To Help Data Ingestion
+
 Person_Ext(cityOfLondon, "City of London\n==Health Protection", "Officers who act on data shared from Hackney")
 
 Enterprise_Boundary(hackney, "Hackney Council") {
     Person(dataHandler, "Data Handler", "An employee responsible for retrieving datasets to update the system")
 
-    Boundary(hereToHelpSystem, "Here To Help") {
-        System(hereToHelp, "Here To Help", "Call Management System")
-        System(addressesApi, "Addresses API", "Hackney Address Provider", $tags="hackney system")
+    System(hereToHelp, "Here To Help", "Call Management System")
+    System(addressesApi, "Addresses API", "Hackney Address Provider", $tags="hackney system")
 
-        System_Boundary(hereToHelpDataIngestion, "Here To Help Data Ingestion") {
-            Container_Ext(nsssIn, "NSSS Inbound", "Google Drive")
-            Container_Ext(nsssOut, "NSSS Outbound", "Google Drive")
-            Container(nsssLambda, "NSSS Processor", "Python Lambda", "Parses NSSS reports")
-            Rel_Up(nsssLambda, nsssIn, "Looks for new files in")
-            Rel_Down(nsssLambda, nsssOut, "Outputs processed files")
-            Rel(nsssLambda, hereToHelp, "Submits new help requests to")
-
+    System_Boundary(hereToHelpDataIngestion, "Here To Help Data Ingestion") {
+        Container_Ext(nsssIn, "NSSS Inbound", "Google Drive")
+        Container_Ext(nsssOut, "NSSS Outbound", "Google Drive")
+        Container(nsssLambda, "NSSS Processor", "Python Lambda", "Parses NSSS reports")
+        Rel_Up(nsssLambda, nsssIn, "Looks for new files in")
+        Rel_Down(nsssLambda, nsssOut, "Outputs processed files")
+        Rel(nsssLambda, hereToHelp, "Submits new help requests to")
 
 
-            Container_Ext(splIn, "SPL Inbound", "Google Drive")
-            Container_Ext(splOut, "SPL Outbound", "Google Drive")
-            Container(splLambda, "SPL Processor", "Python Lambda", "Parses SPL reports")
-            Rel_Up(splLambda, splIn, "Looks for new files in")
-            Rel_Down(splLambda, splOut, "Outputs processed files")
-            Rel(splLambda, hereToHelp, "Submits changes to residents to")
+
+        Container_Ext(splIn, "SPL Inbound", "Google Drive")
+        Container_Ext(splOut, "SPL Outbound", "Google Drive")
+        Container(splLambda, "SPL Processor", "Python Lambda", "Parses SPL reports")
+        Rel_Up(splLambda, splIn, "Looks for new files in")
+        Rel_Down(splLambda, splOut, "Outputs processed files")
+        Rel(splLambda, hereToHelp, "Submits changes to residents to")
 
 
-            Container_Ext(powerBIIn, "PowerBI Inbound", "Google Drive")
-            Container_Ext(powerBIOut, "PowerBI Outbound", "Google Drive")
-            Container(powerBILambda, "PowerBI Processor", "Python Lambda", "Parses PowerBI reports")
-            Rel_Up(powerBILambda, powerBIIn, "Looks for new files in")
-            Rel_Down(powerBILambda, powerBIOut, "Outputs processed files")
-            Rel(powerBILambda, hereToHelp, "Submits new Contact Tracing cases to")
-        }
-
-        ' Internal System Interaction
-        Rel(hereToHelp, addressesApi, "Looks up addresses using")
+        Container_Ext(powerBIIn, "PowerBI Inbound", "Google Drive")
+        Container_Ext(powerBIOut, "PowerBI Outbound", "Google Drive")
+        Container(powerBILambda, "PowerBI Processor", "Python Lambda", "Parses PowerBI reports")
+        Rel_Up(powerBILambda, powerBIIn, "Looks for new files in")
+        Rel_Down(powerBILambda, powerBIOut, "Outputs processed files")
+        Rel(powerBILambda, hereToHelp, "Submits new Contact Tracing cases to")
     }
+
+    ' Internal System Interaction
+    Rel(hereToHelp, addressesApi, "Looks up addresses using")
 }
 
 ' Data In

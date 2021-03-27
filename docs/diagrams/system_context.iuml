@@ -2,6 +2,8 @@
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
 !include ./c4_shared.puml
 
+title System Context to show Here To Help
+
 Person_Ext(resident, "Resident", "A resident affected by COVID-19")
 Person_Ext(cityOfLondon, "City of London\n==Health Protection", "Officers who act on data shared from Hackney")
 
@@ -16,10 +18,8 @@ Enterprise_Boundary(hackney, "Hackney Council") {
     Person(callCenterManager, "Call Centre Manager", "A manager who assigns calls to Call Handlers")
     Person(dataHandler, "Data Handler", "An employee responsible for retrieving datasets to update the system")
 
-    Boundary(hereToHelpSystem, "Here To Help") {
-        System(hereToHelpDataIngestion, "Here To Help Data Ingestion", "Normalises help requests")
-        System(hereToHelp, "Here To Help", "Call Management System")
-    }
+    System(hereToHelpDataIngestion, "Here To Help Data Ingestion", "Normalises help requests")
+    System(hereToHelp, "Here To Help", "Call Management System")
 
     System(addressesApi, "Addresses API", "Hackney Address Provider", $tags="hackney system")
 
@@ -43,8 +43,7 @@ Rel_Up(dataHandler, nsss, "Retrieves Help Requests from")
 Rel(dataHandler, hereToHelpDataIngestion, "Uploads reports into")
 
 ' Data Out
-Rel_Up(cityOfLondon, hereToHelpDataIngestion, "Looks for new City of London shielders")
-Rel_Up(cityOfLondon, hereToHelpDataIngestion, "Looks for new City of London Help Requests")
+Rel_Up(cityOfLondon, hereToHelpDataIngestion, "Looks for new City of London help requests")
 
 ' User Interaction with System
 Rel(callCenterManager, hereToHelp, "Assigns calls to Call Handlers using")
