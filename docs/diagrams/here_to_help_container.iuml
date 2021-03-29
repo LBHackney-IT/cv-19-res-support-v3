@@ -1,0 +1,40 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+!include ./c4_shared.puml
+
+title Container Diagram to show Here To Help
+
+Enterprise_Boundary(hackney, "Hackney Council") {
+    Person(callHandler, "Call Handler", "An employee who makes and receives phone calls to residents")
+    Person(callCenterManager, "Call Centre Manager", "A manager who assigns calls to Call Handlers")
+
+    System(hereToHelpDataIngestion, "Here To Help Data Ingestion", "Normalises help requests")
+    System_Boundary(hereToHelp, "Here To Help") {
+        Container(hereToHelpFrontend, "Here To Help\n==Frontend", "Next.js, JavaScript")
+        Container(hereToHelpAPI, "Here To Help\n==API", ".NET Core, C#")
+        Container(iNeedHelpFrontend, "I Need Help\n==Frontend", "Express, React, JavaScript", "Legacy", $tags="legacy")
+        ContainerDb(postgres, "Database", "Postgres", "Stores information about residents, help requests, and call logs")
+
+        Rel(hereToHelpFrontend, hereToHelpAPI, "calls", "REST/HTTPS")
+        Rel(iNeedHelpFrontend, hereToHelpAPI, "calls", "REST/HTTPS")
+        Rel(hereToHelpAPI, postgres, "reads from and writes to")
+    }
+
+    System(addressesApi, "Addresses API", "Hackney Address Provider", $tags="hackney system")
+
+    ' Internal System Interaction
+    Rel(hereToHelpAPI, addressesApi, "Looks up addresses using")
+    Rel(hereToHelpDataIngestion, hereToHelpAPI, "Creates/Updates Help Requests in")
+}
+
+' Emails
+System_Ext(govNotify, "GOV.UK Notify", "GDS Supplied SMS/Email Sending System")
+Rel(hereToHelpAPI, govNotify, "Sends SMS and Emails using")
+
+
+' User Interaction with System
+Rel(callCenterManager, hereToHelpFrontend, "Assigns calls to Call Handlers using")
+Rel(callHandler, hereToHelpFrontend, "Finds calls to make, and records call outcomes using")
+
+SHOW_DYNAMIC_LEGEND()
+@enduml
