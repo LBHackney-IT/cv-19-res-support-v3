@@ -285,15 +285,15 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
         }
 
         [Test]
-        public void CanFindHelpRequestByCtasId()
+        public void CanFindHelpRequestByCtasIdAndHelpNeeded()
         {
             var resident = EntityHelpers.createResident(118);
-            var helpRequest = EntityHelpers.createHelpRequestEntity(117, resident.Id);
+            var helpRequest = EntityHelpers.createHelpRequestEntity(117, resident.Id, "Welfare Call");
             DatabaseContext.ResidentEntities.Add(resident);
             DatabaseContext.HelpRequestEntities.Add(helpRequest);
             DatabaseContext.SaveChanges();
 
-            var response = _classUnderTest.FindHelpRequestByCtasId(helpRequest.NhsCtasId);
+            var response = _classUnderTest.FindHelpRequestByCtasId(helpRequest.NhsCtasId, helpRequest.HelpNeeded);
 
             response.Should().Be(117);
         }
@@ -301,10 +301,25 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
         [Test]
         public void FindHelpRequestByCtasIdReturnsNullIfItDoesntExist()
         {
-            var response = _classUnderTest.FindHelpRequestByCtasId("anything");
+            var response = _classUnderTest.FindHelpRequestByCtasId("anything", "anything");
 
             response.Should().BeNull();
         }
+
+        [Test]
+        public void FindHelpRequestByCtasIdReturnsNullIfCtasIdExistsButHelpNeededDoesNotMatch()
+        {
+            var resident = EntityHelpers.createResident(118);
+            var helpRequest = EntityHelpers.createHelpRequestEntity(117, resident.Id, "Welfare Call");
+            DatabaseContext.ResidentEntities.Add(resident);
+            DatabaseContext.HelpRequestEntities.Add(helpRequest);
+            DatabaseContext.SaveChanges();
+
+            var response = _classUnderTest.FindHelpRequestByCtasId(helpRequest.NhsCtasId, "Shielding");
+
+            response.Should().BeNull();
+        }
+
         [Test]
         public void FindHelpRequestByMetadaReturnsNullIfItDoesntExist()
         {
