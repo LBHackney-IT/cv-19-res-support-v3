@@ -77,6 +77,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
                 HelpWithNoNeedsIdentified = null,
                 HelpWithAccessingSupermarketFood = true,
                 Id = requestObject.Id,
+                HelpNeeded = requestObject.HelpNeeded,
             };
 
             var data = JsonConvert.SerializeObject(updateRequestObject);

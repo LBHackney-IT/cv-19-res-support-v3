@@ -45,12 +45,12 @@ namespace cv19ResSupportV3.V3.Gateways
             }
         }
 
-        public int? FindHelpRequestByCtasId(string ctasId)
+        public int? FindHelpRequestByCtasId(string ctasId, string helpNeeded)
         {
             try
             {
                 if (ctasId == null) return null;
-                var helpRequestEntity = _helpRequestsContext.HelpRequestEntities.FirstOrDefault(x => x.NhsCtasId == ctasId);
+                var helpRequestEntity = _helpRequestsContext.HelpRequestEntities.FirstOrDefault(x => x.NhsCtasId == ctasId && x.HelpNeeded.ToUpper() == helpNeeded.ToUpper());
                 return helpRequestEntity?.Id;
             }
             catch (Exception e)
