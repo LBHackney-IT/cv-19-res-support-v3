@@ -13,7 +13,7 @@ namespace cv19ResSupportV3.V3.UseCase
         }
         public int Execute(int residentId, CreateHelpRequest command)
         {
-            var helpRequestId = _gateway.FindHelpRequestByCtasId(command.NhsCtasId);
+            var helpRequestId = _gateway.FindHelpRequestByCtasId(command.NhsCtasId, command.HelpNeeded);
             if (helpRequestId != null) { return (int) helpRequestId; }
 
             helpRequestId = _gateway.FindHelpRequestByMetadata("nsss_id", command.Metadata);
