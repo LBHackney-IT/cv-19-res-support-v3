@@ -42,5 +42,10 @@ namespace cv19ResSupportV3.V3.Domain.Commands
         /// </summary>
         /// <example>A1 2BC</example>
         public string Postcode { get; set; }
+        /// <summary>
+        /// Contact Tracing Number (8 character alphanumeral)
+        /// </summary>
+        /// <example>z1a238ff</example>
+        public string NhsCtasId { get; set; }
     }
 }

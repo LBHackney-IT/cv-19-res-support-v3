@@ -15,7 +15,8 @@ namespace cv19ResSupportV3.V3.Factories.Commands
                 DobYear = command.DobYear,
                 DobDay = command.DobDay,
                 Postcode = command.Postcode,
-                NhsNumber = command.NhsNumber
+                NhsNumber = command.NhsNumber,
+                NhsCtasId = command.NhsCtasId
             };
         }
     }
