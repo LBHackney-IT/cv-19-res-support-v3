@@ -338,6 +338,8 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             // create matching secondary fields
             var matchingNhsCtasId = _faker.Random.AlphaNumeric(8);
             var matchingEmailAddress = _faker.Person.Email;
+            var matchingContactMobileNumber = _faker.Random.Hash();
+            var matchingContactTelephoneNumber = _faker.Random.Hash();
 
             // create a request object
             var searchParameters = new FindResident
@@ -345,26 +347,31 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
                 FirstName = _faker.Random.Hash(),
                 LastName = _faker.Random.Hash(),
                 EmailAddress = matchingEmailAddress,
+                ContactMobileNumber = matchingContactMobileNumber,
+                ContactTelephoneNumber = matchingContactTelephoneNumber,
                 NhsCtasId = matchingNhsCtasId
             };
 
             // create a resident with a child help case containing matching NhsCtasId
-            var residentWithMachingCtasCase = EntityHelpers.createResident(id: _faker.Random.Int(10, 1000));
+            var residentWithMachingRemainingData = EntityHelpers.createResident(id: _faker.Random.Int(10, 1000));
+            residentWithMachingRemainingData.EmailAddress = matchingEmailAddress;
+            residentWithMachingRemainingData.ContactMobileNumber = matchingContactMobileNumber;
+            residentWithMachingRemainingData.ContactTelephoneNumber = matchingContactTelephoneNumber;
 
             var matchingNhsCtasIdHelpCase = EntityHelpers.createHelpRequestEntity(
                 id: _faker.Random.Int(100, 1000), // avoid potential inter-test clash
-                residentId: residentWithMachingCtasCase.Id);
+                residentId: residentWithMachingRemainingData.Id);
             matchingNhsCtasIdHelpCase.NhsCtasId = matchingNhsCtasId;
 
             // create non-matching by everything (control) resident
-            var controlResident = EntityHelpers.createResident(id: residentWithMachingCtasCase.Id + 1); // making sure ids are different
+            var controlResident = EntityHelpers.createResident(id: residentWithMachingRemainingData.Id + 1); // making sure ids are different
 
             var controlHelpCase = EntityHelpers.createHelpRequestEntity(
                 id: matchingNhsCtasIdHelpCase.Id + 1, // making sure ids are different
                 residentId: controlResident.Id);
 
             // add resident entities
-            DatabaseContext.ResidentEntities.Add(residentWithMachingCtasCase);
+            DatabaseContext.ResidentEntities.Add(residentWithMachingRemainingData);
             DatabaseContext.ResidentEntities.Add(controlResident);
 
             // add help request entities
