@@ -322,7 +322,6 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
 
             // confirm that the retrieved id was the one inserted
             returnedDuplicateResidentId.Should().Be(duplicateResident.Id);
-
         }
 
         // If NHS number rule fails to match &
@@ -951,6 +950,8 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
 
         #endregion
 
+        #region Patch, Update & Get
+
         [Test]
         public void PatchResidentReturnsTheUpdatedResident()
         {
@@ -1089,5 +1090,7 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             var response = _classUnderTest.GetResident(residentId);
             residentEntity.Should().BeEquivalentTo(response);
         }
+
+        #endregion
     }
 }
