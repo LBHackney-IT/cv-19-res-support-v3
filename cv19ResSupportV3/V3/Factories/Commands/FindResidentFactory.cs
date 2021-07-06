@@ -15,6 +15,8 @@ namespace cv19ResSupportV3.V3.Factories.Commands
                 DobYear = command.DobYear,
                 DobDay = command.DobDay,
                 EmailAddress = command.EmailAddress,
+                ContactTelephoneNumber = command.ContactTelephoneNumber,
+                ContactMobileNumber = command.ContactMobileNumber,
                 Postcode = command.Postcode,
                 NhsNumber = command.NhsNumber,
                 NhsCtasId = command.NhsCtasId

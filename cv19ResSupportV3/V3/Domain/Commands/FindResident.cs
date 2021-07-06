@@ -43,6 +43,16 @@ namespace cv19ResSupportV3.V3.Domain.Commands
         /// <example>someone@anywhere.tld</example>
         public string EmailAddress { get; set; }
         /// <summary>
+        /// Email address of the resident
+        /// </summary>
+        /// <example>7951721227</example>
+        public string ContactTelephoneNumber { get; set; }
+        /// <summary>
+        /// Email address of the resident
+        /// </summary>
+        /// <example>2077092577</example>
+        public string ContactMobileNumber { get; set; }
+        /// <summary>
         /// Postcode of the resident
         /// </summary>
         /// <example>A1 2BC</example>
