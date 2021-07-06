@@ -38,6 +38,11 @@ namespace cv19ResSupportV3.V3.Domain.Commands
         /// <example>01</example>
         public string DobDay { get; set; }
         /// <summary>
+        /// Email address of the resident
+        /// </summary>
+        /// <example>someone@anywhere.tld</example>
+        public string EmailAddress { get; set; }
+        /// <summary>
         /// Postcode of the resident
         /// </summary>
         /// <example>A1 2BC</example>

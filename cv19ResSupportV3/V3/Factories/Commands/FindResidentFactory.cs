@@ -14,6 +14,7 @@ namespace cv19ResSupportV3.V3.Factories.Commands
                 DobMonth = command.DobMonth,
                 DobYear = command.DobYear,
                 DobDay = command.DobDay,
+                EmailAddress = command.EmailAddress,
                 Postcode = command.Postcode,
                 NhsNumber = command.NhsNumber,
                 NhsCtasId = command.NhsCtasId
