@@ -215,6 +215,20 @@ namespace cv19ResSupportV3.V3.Gateways
                         if (matchingResident != null)
                             return matchingResident.Id;
                     }
+
+                    if (Predicates.IsNotNullAndNotEmpty(command.NhsCtasId))
+                    {
+                        var matchingResident = _helpRequestsContext.ResidentEntities
+                            .Include(r => r.HelpRequests)
+                            .AsEnumerable()
+                            .FirstOrDefault(r =>
+                                r.HelpRequests.Exists(hr => hr.NhsCtasId == command.NhsCtasId) &&
+                                r.FirstName.Trim().ToUpper() == command.FirstName.Trim().ToUpper() &&
+                                r.LastName.Trim().ToUpper() == command.LastName.Trim().ToUpper());
+
+                        if (matchingResident != null)
+                            return matchingResident.Id;
+                    }
                 }
 
                 return null;

@@ -251,6 +251,203 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             duplicateResidentId.Should().Be(existingResidentDOBMatch.Id);
         }
 
+        // If NHS number rule fails to match &
+        // If Uprn rule fails to match &
+        // If Dob rule fails to match &
+        // If Resident First Name & Last Name match &
+        // If Resident has associated HelpCase entity with matching Contact Tracing Id (NhsCtasId) :
+        // Then the resident is considered a duplicate.
+        [Test]
+        public void FindResidentReturnsAMatchWhenFullNameAndNhsCtsIdOfChildHelpCaseEntityMatchButNoPreviousRulesMatch()
+        {
+            //// arrange
+
+            // create matching name data
+            var matchingFirstName = _faker.Random.Hash();
+            var matchingLastName = _faker.Random.Hash();
+
+            // matching Nhs Ctas Id
+            var matchingNhsCtasId = _faker.Random.AlphaNumeric(8);
+
+            // create a request object
+            var searchParameters = new FindResident
+            {
+                FirstName = matchingFirstName,
+                LastName = matchingLastName,
+                NhsCtasId = matchingNhsCtasId
+            };
+
+            // create a matching resident object
+            var duplicateResident = EntityHelpers.createResident(id: _faker.Random.Int(10, 1000));
+            duplicateResident.FirstName = matchingFirstName;
+            duplicateResident.LastName = matchingLastName;
+
+            // create a matching help case entity with ctas id
+            var matchingNhsCtasIdHelpCase = EntityHelpers.createHelpRequestEntity(
+                id: _faker.Random.Int(100, 1000), // avoid potential inter-test clash
+                residentId: duplicateResident.Id);
+            matchingNhsCtasIdHelpCase.NhsCtasId = matchingNhsCtasId;
+
+            // create non-matching (control) resident
+            var controlResident = EntityHelpers.createResident(id: duplicateResident.Id + 1); // making sure ids are different
+
+            // create non-matching help case entity (making sure only that non-matching ctas id wouldn't trigger the rule)
+            var controlHelpCase = EntityHelpers.createHelpRequestEntity(
+                id: matchingNhsCtasIdHelpCase.Id + 1, // making sure ids are different
+                residentId: controlResident.Id);
+
+            // add resident entities
+            DatabaseContext.ResidentEntities.Add(duplicateResident);
+            DatabaseContext.ResidentEntities.Add(controlResident);
+
+            // add help request entities
+            DatabaseContext.HelpRequestEntities.Add(matchingNhsCtasIdHelpCase);
+            DatabaseContext.HelpRequestEntities.Add(controlHelpCase);
+
+            // save db changes
+            DatabaseContext.SaveChanges();
+
+
+            //// act
+
+            // call FindResident function with the request object
+            var returnedDuplicateResidentId = _classUnderTest.FindResident(searchParameters);
+            bool isResidentDuplicate = returnedDuplicateResidentId != null;
+
+
+            //// assert
+
+            // duplicate should have been found
+            isResidentDuplicate.Should().BeTrue();
+
+            // confirm that the retrieved id was the one inserted
+            returnedDuplicateResidentId.Should().Be(duplicateResident.Id);
+
+        }
+
+        // If NHS number rule fails to match &
+        // If Uprn rule fails to match &
+        // If Dob rule fails to match &
+        // If First Name & Last Name rule fails to match &
+        // Even if Resident has associated HelpCase entity with matching Contact Tracing Id (NhsCtasId) :
+        // Then the Ctas rule fails to match.
+        [Test]
+        public void FindResidentReturnsNoMatchWhenFirstAndLastNamesDoNotMatchRegardlessOfNhsCtasId()
+        {
+            //// arrange
+
+            // create matching Nhs Ctas Id
+            var matchingNhsCtasId = _faker.Random.AlphaNumeric(8);
+
+            // create a request object
+            var searchParameters = new FindResident
+            {
+                FirstName = _faker.Random.Hash(),
+                LastName = _faker.Random.Hash(),
+                NhsCtasId = matchingNhsCtasId
+            };
+
+            // create a resident with a child help case containing matching NhsCtasId
+            var residentWithMachingCtasCase = EntityHelpers.createResident(id: _faker.Random.Int(10, 1000));
+
+            var matchingNhsCtasIdHelpCase = EntityHelpers.createHelpRequestEntity(
+                id: _faker.Random.Int(100, 1000), // avoid potential inter-test clash
+                residentId: residentWithMachingCtasCase.Id);
+            matchingNhsCtasIdHelpCase.NhsCtasId = matchingNhsCtasId;
+
+            // create non-matching by everything (control) resident
+            var controlResident = EntityHelpers.createResident(id: residentWithMachingCtasCase.Id + 1); // making sure ids are different
+
+            var controlHelpCase = EntityHelpers.createHelpRequestEntity(
+                id: matchingNhsCtasIdHelpCase.Id + 1, // making sure ids are different
+                residentId: controlResident.Id);
+
+            // add resident entities
+            DatabaseContext.ResidentEntities.Add(residentWithMachingCtasCase);
+            DatabaseContext.ResidentEntities.Add(controlResident);
+
+            // add help request entities
+            DatabaseContext.HelpRequestEntities.Add(matchingNhsCtasIdHelpCase);
+            DatabaseContext.HelpRequestEntities.Add(controlHelpCase);
+
+            // save db changes
+            DatabaseContext.SaveChanges();
+
+
+            //// act
+
+            // call FindResident function with the request object
+            var returnedDuplicateResidentId = _classUnderTest.FindResident(searchParameters);
+            bool isResidentDuplicate = returnedDuplicateResidentId != null;
+
+
+            //// assert
+
+            // duplicate should have been found
+            isResidentDuplicate.Should().BeFalse();
+        }
+
+        // If NHS number rule fails to match &
+        // If Uprn rule fails to match &
+        // If Dob rule fails to match &
+        // If First Name & Last Name rule match &
+        // If Request contains empty, null, whitespace or non-matching Contact Tracing Id (NhsCtasId) :
+        // Then the overall Ctas rule fails to match.
+        [TestCase(null)]
+        [TestCase("")]
+        [TestCase(" ")]
+        [TestCase("nhsctasid")]
+        public void FindResidentReturnsNoMatchWhenNhsCtasIdIsNullEmptyWhiteSpaceOrDoesntMatchAndThereAreNoMatchesAgaistOtherRules(string testCaseNhsCtasId)
+        {
+            //// arrange
+
+            // create matching Nhs Ctas Id
+            var ruleFailingNhsCtasId = testCaseNhsCtasId;
+
+            // create a request object
+            var searchParameters = new FindResident
+            {
+                FirstName = _faker.Random.Hash(),
+                LastName = _faker.Random.Hash(),
+                NhsCtasId = ruleFailingNhsCtasId
+            };
+
+            // create a resident with a child help case containing matching NhsCtasId
+            var nonMatchingResident = EntityHelpers.createResident(id: _faker.Random.Int(10, 1000));
+
+            var nonMatchingHelpCase = EntityHelpers.createHelpRequestEntity(
+                id: _faker.Random.Int(100, 1000), // avoid potential inter-test clash
+                residentId: nonMatchingResident.Id);
+            nonMatchingHelpCase.NhsCtasId = ruleFailingNhsCtasId;
+
+            // during the first 3 test cases, there should be no match even when request & db values match.
+            // for the 4th one, no match should be found only when request & db record NhsCtasIds are different.
+            // so setting them to be different.
+            if (testCaseNhsCtasId == "nhsctasid") nonMatchingHelpCase.NhsCtasId = _faker.Random.Hash();
+
+            // add resident entities
+            DatabaseContext.ResidentEntities.Add(nonMatchingResident);
+
+            // add help request entities
+            DatabaseContext.HelpRequestEntities.Add(nonMatchingHelpCase);
+
+            // save db changes
+            DatabaseContext.SaveChanges();
+
+
+            //// act
+
+            // call FindResident function with the request object
+            var returnedDuplicateResidentId = _classUnderTest.FindResident(searchParameters);
+            bool isResidentDuplicate = returnedDuplicateResidentId != null;
+
+
+            //// assert
+
+            // duplicate should have been found
+            isResidentDuplicate.Should().BeFalse();
+        }
+
         // If NHS number rule returns no match &
         // If Uprn rule returns no match &
         // If Dob is null or empty, then:
