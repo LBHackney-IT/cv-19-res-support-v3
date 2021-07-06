@@ -948,6 +948,89 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             duplicateResidentLowerCasingId.Should().Be(existingResidentInLowerCasing.Id);
         }
 
+        [Test]
+        public void UponDeDuplicatingByNhsCtasIdRuleFindResidentMethodIgnoresNhsCtasIdCasingBetweenDBRecordAndRequest()
+        {
+            //// arrange
+
+            // create matching name data
+            var matchingFirstName = _faker.Random.Hash();
+            var matchingLastName = _faker.Random.Hash();
+
+            // matching Nhs Ctas Id
+            var matchingNhsCtasId1 = _faker.Random.AlphaNumeric(8);
+            var matchingNhsCtasId2 = _faker.Random.AlphaNumeric(8);
+
+            // create request objects
+            var searchParametersLowerCasing = new FindResident
+            {
+                FirstName = matchingFirstName,
+                LastName = matchingLastName,
+                NhsCtasId = matchingNhsCtasId1.ToLower()
+            };
+
+            var searchParametersUpperCasing = new FindResident
+            {
+                FirstName = matchingFirstName,
+                LastName = matchingLastName,
+                NhsCtasId = matchingNhsCtasId2.ToUpper()
+            };
+
+            // create Resident for Help Case 1
+            var Resident1 = EntityHelpers.createResident(id: _faker.Random.Int(10, 1000));
+            Resident1.FirstName = matchingFirstName;
+            Resident1.LastName = matchingLastName;
+
+            // create Help Case that will match when Request Ctas Id is lowercased, while db one is uppercased.
+            var HelpCase1 = EntityHelpers.createHelpRequestEntity(
+                id: _faker.Random.Int(100, 1000),
+                residentId: Resident1.Id);
+            HelpCase1.NhsCtasId = matchingNhsCtasId1.ToUpper(); // Req: Lower, DB: Upper
+
+            // create Resident for Help Case 2
+            var Resident2 = EntityHelpers.createResident(id: Resident1.Id + 1);
+            Resident2.FirstName = matchingFirstName;
+            Resident2.LastName = matchingLastName;
+
+            // create Help Case that will match when Request Ctas Id is uppercased, while db one is lowercased.
+            var HelpCase2 = EntityHelpers.createHelpRequestEntity(
+                id: HelpCase1.Id + 1,
+                residentId: Resident2.Id);
+            HelpCase2.NhsCtasId = matchingNhsCtasId2.ToLower(); // Req: Lower, DB: Upper
+
+            // add resident entities
+            DatabaseContext.ResidentEntities.Add(Resident1);
+            DatabaseContext.ResidentEntities.Add(Resident2);
+
+            // add help request entities
+            DatabaseContext.HelpRequestEntities.Add(HelpCase1);
+            DatabaseContext.HelpRequestEntities.Add(HelpCase2);
+
+            DatabaseContext.SaveChanges();
+
+
+            //// act
+
+            // call FindResident function with the request containing lowercased ctas id
+            var returnedDuplicateResidentId1 = _classUnderTest.FindResident(searchParametersLowerCasing);
+            bool isResidentDuplicate1 = returnedDuplicateResidentId1 != null;
+
+            // call FindResident function with the request containing uppercased ctas id
+            var returnedDuplicateResidentId2 = _classUnderTest.FindResident(searchParametersUpperCasing);
+            bool isResidentDuplicate2 = returnedDuplicateResidentId2 != null;
+
+
+            //// assert
+
+            // Confirm that correct Req: Lower, Db: Upper match was found
+            isResidentDuplicate1.Should().BeTrue();
+            returnedDuplicateResidentId1.Should().Be(Resident1.Id);
+
+            // Confirm that correct Req: Upper, Db: Lower match was found
+            isResidentDuplicate2.Should().BeTrue();
+            returnedDuplicateResidentId2.Should().Be(Resident2.Id);
+        }
+
         #endregion
 
         #region Patch, Update & Get
