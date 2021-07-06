@@ -1163,15 +1163,15 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             var matchingLastName = _faker.Random.Hash();
 
             var matchingNhsCtasId = _faker.Random.Hash();
-            var nonTrimmedNHSNumberRequest = $"  {matchingNhsCtasId}     ";
-            var nonTrimmedNHSNumberDBRecord = $"     {matchingNhsCtasId} ";
+            var nonTrimmedNhsCtasIdRequest = $"  {matchingNhsCtasId}     ";
+            var nonTrimmedNhsCtasIdDBRecord = $"     {matchingNhsCtasId} ";
 
             // create request
             var searchParameters = new FindResident
             {
                 FirstName = matchingFirstName,
                 LastName = matchingLastName,
-                NhsCtasId = nonTrimmedNHSNumberRequest
+                NhsCtasId = nonTrimmedNhsCtasIdRequest
             };
 
             // create entities
@@ -1182,11 +1182,120 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             var helpCase = EntityHelpers.createHelpRequestEntity(
                 id: _faker.Random.Int(100, 1000),
                 residentId: duplicateResident.Id);
-            helpCase.NhsCtasId = nonTrimmedNHSNumberDBRecord;
+            helpCase.NhsCtasId = nonTrimmedNhsCtasIdDBRecord;
 
             // add & save
             DatabaseContext.ResidentEntities.Add(duplicateResident);
             DatabaseContext.HelpRequestEntities.Add(helpCase);
+            DatabaseContext.SaveChanges();
+
+            // act
+            var duplicateResidentId = _classUnderTest.FindResident(searchParameters);
+            bool isResidentDuplicate = duplicateResidentId != null;
+
+            // assert
+            isResidentDuplicate.Should().BeTrue();
+            duplicateResidentId.Should().Be(duplicateResident.Id);
+        }
+
+        [Test]
+        public void UponDeDuplicatingByEmailAddressRuleFindResidentMethodIgnoresEmailAddressCasingBetweenDBRecordAndRequest()
+        {
+            //// arrange
+
+            // create matching name data
+            var matchingFirstName = _faker.Random.Hash();
+            var matchingLastName = _faker.Random.Hash();
+
+            // matching Email Addresses
+            var matchingEmailAddress1 = _faker.Random.Hash();
+            var matchingEmailAddress2 = _faker.Random.Hash();
+
+            // create request objects
+            var searchParametersLowerCasing = new FindResident
+            {
+                FirstName = matchingFirstName,
+                LastName = matchingLastName,
+                EmailAddress = matchingEmailAddress1.ToLower()
+            };
+
+            var searchParametersUpperCasing = new FindResident
+            {
+                FirstName = matchingFirstName,
+                LastName = matchingLastName,
+                EmailAddress = matchingEmailAddress2.ToUpper()
+            };
+
+            // create Resident with uppercased email
+            var resident1 = EntityHelpers.createResident(id: _faker.Random.Int(10, 1000));
+            resident1.FirstName = matchingFirstName;
+            resident1.LastName = matchingLastName;
+            resident1.EmailAddress = matchingEmailAddress1.ToUpper();
+
+            // create Resident with lowercased email
+            var resident2 = EntityHelpers.createResident(id: resident1.Id + 1);
+            resident2.FirstName = matchingFirstName;
+            resident2.LastName = matchingLastName;
+            resident2.EmailAddress = matchingEmailAddress2.ToLower();
+
+            // add resident entities
+            DatabaseContext.ResidentEntities.Add(resident1);
+            DatabaseContext.ResidentEntities.Add(resident2);
+
+            DatabaseContext.SaveChanges();
+
+
+            //// act
+
+            // call FindResident function with the request containing lowercased email
+            var returnedDuplicateResidentId1 = _classUnderTest.FindResident(searchParametersLowerCasing);
+            bool isResidentDuplicate1 = returnedDuplicateResidentId1 != null;
+
+            // call FindResident function with the request containing uppercased email
+            var returnedDuplicateResidentId2 = _classUnderTest.FindResident(searchParametersUpperCasing);
+            bool isResidentDuplicate2 = returnedDuplicateResidentId2 != null;
+
+
+            //// assert
+
+            // Confirm that correct Req: Lower, Db: Upper match was found
+            isResidentDuplicate1.Should().BeTrue();
+            returnedDuplicateResidentId1.Should().Be(resident1.Id);
+
+            // Confirm that correct Req: Upper, Db: Lower match was found
+            isResidentDuplicate2.Should().BeTrue();
+            returnedDuplicateResidentId2.Should().Be(resident2.Id);
+        }
+
+        [Test]
+        public void UponDeDuplicatingByEmailAddressRuleFindResidentMethodIgnoresEmailAddressLeftAndRightWhitespaceBetweenDBRecordAndRequest()
+        {
+            // arrange
+
+            // initialise testing data
+            var matchingFirstName = _faker.Random.Hash();
+            var matchingLastName = _faker.Random.Hash();
+
+            var matchingEmailAddress = _faker.Random.Hash();
+            var nonTrimmedEmailAddressRequest = $"  {matchingEmailAddress}     ";
+            var nonTrimmedEmailAddressDBRecord = $"     {matchingEmailAddress} ";
+
+            // create request
+            var searchParameters = new FindResident
+            {
+                FirstName = matchingFirstName,
+                LastName = matchingLastName,
+                EmailAddress = nonTrimmedEmailAddressRequest
+            };
+
+            // create entities
+            var duplicateResident = EntityHelpers.createResident(id: _faker.Random.Int(10, 1000));
+            duplicateResident.FirstName = matchingFirstName;
+            duplicateResident.LastName = matchingLastName;
+            duplicateResident.EmailAddress = nonTrimmedEmailAddressDBRecord;
+
+            // add & save
+            DatabaseContext.ResidentEntities.Add(duplicateResident);
             DatabaseContext.SaveChanges();
 
             // act

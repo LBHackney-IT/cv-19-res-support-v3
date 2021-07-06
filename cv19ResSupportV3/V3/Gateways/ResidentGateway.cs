@@ -234,7 +234,7 @@ namespace cv19ResSupportV3.V3.Gateways
                     {
                         var matchingResident = _helpRequestsContext.ResidentEntities
                             .FirstOrDefault(r =>
-                                r.EmailAddress == command.EmailAddress &&
+                                r.EmailAddress.Trim().ToUpper() == command.EmailAddress.Trim().ToUpper() &&
                                 r.FirstName.Trim().ToUpper() == command.FirstName.Trim().ToUpper() &&
                                 r.LastName.Trim().ToUpper() == command.LastName.Trim().ToUpper());
 
