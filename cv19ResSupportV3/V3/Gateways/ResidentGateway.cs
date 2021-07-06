@@ -229,6 +229,18 @@ namespace cv19ResSupportV3.V3.Gateways
                         if (matchingResident != null)
                             return matchingResident.Id;
                     }
+
+                    if (Predicates.IsNotNullAndNotEmpty(command.EmailAddress))
+                    {
+                        var matchingResident = _helpRequestsContext.ResidentEntities
+                            .FirstOrDefault(r =>
+                                r.EmailAddress == command.EmailAddress &&
+                                r.FirstName.Trim().ToUpper() == command.FirstName.Trim().ToUpper() &&
+                                r.LastName.Trim().ToUpper() == command.LastName.Trim().ToUpper());
+
+                        if (matchingResident != null)
+                            return matchingResident.Id;
+                    }
                 }
 
                 return null;
