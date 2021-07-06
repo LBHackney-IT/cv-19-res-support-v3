@@ -598,6 +598,10 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             duplicateResidentIdAttempt2.Should().Be(null);
         }
 
+        #endregion
+
+        #region Formatting-insensitive de-duplication tests
+
         [Test]
         public void FindResidentReturnsAMatchByNhsNumberEvenWhenProvidedNhsNumberIsNotTrimmed()
         {
