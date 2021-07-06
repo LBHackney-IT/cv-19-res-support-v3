@@ -644,6 +644,154 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             isResidentDuplicate.Should().BeFalse();
         }
 
+        // asdf
+
+        // If NHS number rule fails to match &
+        // If Resident First Name & Last Name match &
+        // If Uprn rule fails to match &
+        // If Dob rule fails to match &
+        // If NhsCtasId rule fails to match &
+        // If EmailAddress rule fails to match &
+        // If ContactMobileNumber or ContactTelephoneNumber match:
+        // Then the resident is considered a duplicate.
+        [Test]
+        public void FindResidentReturnsAMatchWhenFNAndLNAndContactMobileNumberOrContactTelephoneNumberMatchesAreFoundAndNoPreviousRulesMatched()
+        {
+            //// arrange
+
+            // initialise matching data
+            var matchingFirstName = _faker.Random.Hash();
+            var matchingLastName = _faker.Random.Hash();
+            var matchingContactMobileNumber = _faker.Random.Hash();
+            var matchingContactTelephoneNumber = _faker.Random.Hash();
+
+            // create a request objects
+            var searchParametersMobile = new FindResident
+            {
+                FirstName = matchingFirstName,
+                LastName = matchingLastName,
+                ContactMobileNumber = matchingContactMobileNumber,
+            };
+
+            var searchParametersDesk = new FindResident
+            {
+                FirstName = matchingFirstName,
+                LastName = matchingLastName,
+                ContactTelephoneNumber = matchingContactTelephoneNumber
+            };
+
+            // create a resident with matching mobile number
+            var duplicateResidentMobile = EntityHelpers.createResident(id: _faker.Random.Int(10, 1000));
+            duplicateResidentMobile.FirstName = matchingFirstName;
+            duplicateResidentMobile.LastName = matchingLastName;
+            duplicateResidentMobile.ContactMobileNumber = matchingContactMobileNumber;
+
+            // create resident with matching desk phone number
+            var duplicateResidentDesk = EntityHelpers.createResident(id: duplicateResidentMobile.Id + 1); // making sure ids are different
+            duplicateResidentDesk.FirstName = matchingFirstName;
+            duplicateResidentDesk.LastName = matchingLastName;
+            duplicateResidentDesk.ContactTelephoneNumber = matchingContactTelephoneNumber;
+
+            // create control resident
+            var controlResident = EntityHelpers.createResident(id: duplicateResidentDesk.Id + 1);
+
+            // add resident entities
+            DatabaseContext.ResidentEntities.Add(duplicateResidentMobile);
+            DatabaseContext.ResidentEntities.Add(duplicateResidentDesk);
+            DatabaseContext.ResidentEntities.Add(controlResident);
+            DatabaseContext.SaveChanges();
+
+
+            //// act
+
+            // call FindResident function with the request object
+            var returnedResidentIdMobile = _classUnderTest.FindResident(searchParametersMobile);
+            bool isResidentDuplicateMobile = returnedResidentIdMobile != null;
+
+            var returnedResidentIdDesk = _classUnderTest.FindResident(searchParametersDesk);
+            bool isResidentDuplicateDesk = returnedResidentIdDesk != null;
+
+
+            //// assert
+
+            // duplicate with mobile phone number should be found
+            isResidentDuplicateMobile.Should().BeTrue();
+            returnedResidentIdMobile.Should().Be(duplicateResidentMobile.Id);
+
+            // duplicate with desk phone number should be found
+            isResidentDuplicateDesk.Should().BeTrue();
+            returnedResidentIdDesk.Should().Be(duplicateResidentDesk.Id);
+        }
+
+
+        // cross-match test
+
+
+
+        // If NHS number rule fails to match &
+        // If Uprn rule fails to match &
+        // If Dob rule fails to match &
+        // If First Name & Last Name rule match &
+        // If Contact Tracing Id rule fails to match (NhsCtasId) &
+        // If Request contains empty, null, whitespace or non-matching ContactMobileNumber And ContactTelephoneNumber:
+        // Then the overall Phone number rule fails to match.
+        [TestCase(null)]
+        [TestCase("")]
+        [TestCase(" ")]
+        [TestCase("phoneNumber")]
+        public void FindResidentReturnsNoMatchWhenBothContactMobileNumberAndContactTelephoneNumberAreNullEmptyWhiteSpaceOrDoesntMatchAndThereAreNoMatchesAgaistOtherRules(string testCasePhoneNumber)
+        {
+            //// arrange
+
+            // create matching Nhs Ctas Id
+            var matchingFirstName = _faker.Random.Hash();
+            var matchingLastName = _faker.Random.Hash();
+            var ruleFailingContactMobileNumber = testCasePhoneNumber;
+            var ruleFailingContactTelephoneNumber = testCasePhoneNumber;
+
+            // create a request object
+            var searchParameters = new FindResident
+            {
+                FirstName = _faker.Random.Hash(),
+                LastName = _faker.Random.Hash(),
+                ContactMobileNumber = ruleFailingContactMobileNumber,
+                ContactTelephoneNumber = ruleFailingContactTelephoneNumber
+            };
+
+            // create a resident with a child help case containing matching NhsCtasId
+            var nonMatchingResident = EntityHelpers.createResident(id: _faker.Random.Int(10, 1000));
+            nonMatchingResident.FirstName = matchingFirstName;
+            nonMatchingResident.LastName = matchingLastName;
+            nonMatchingResident.ContactMobileNumber = ruleFailingContactMobileNumber;
+            nonMatchingResident.ContactTelephoneNumber = ruleFailingContactTelephoneNumber;
+
+            // during the first 3 test cases, there should be no match even when request & db values match.
+            // for the 4th one, no match should be found only when request & db record Phone numbers are different.
+            // so setting them to be different.
+            if (testCasePhoneNumber == "phoneNumber")
+            {
+                nonMatchingResident.ContactMobileNumber = _faker.Random.Hash();
+                nonMatchingResident.ContactTelephoneNumber = _faker.Random.Hash();
+            }
+
+            // add resident entity
+            DatabaseContext.ResidentEntities.Add(nonMatchingResident);
+            DatabaseContext.SaveChanges();
+
+
+            //// act
+
+            // call FindResident function with the request object
+            var returnedDuplicateResidentId = _classUnderTest.FindResident(searchParameters);
+            bool isResidentDuplicate = returnedDuplicateResidentId != null;
+
+
+            //// assert
+
+            // duplicate should have been found
+            isResidentDuplicate.Should().BeFalse();
+        }
+
         // Should there be checks for the inserted records values?
         // Also should this case be treated as Unique Resident or the 400 Bad Request? (There doesn't seem to be validation preventing this)
         // For now will treat this as a new unique record.

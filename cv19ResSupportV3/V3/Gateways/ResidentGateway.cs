@@ -241,6 +241,30 @@ namespace cv19ResSupportV3.V3.Gateways
                         if (matchingResident != null)
                             return matchingResident.Id;
                     }
+
+                    if (Predicates.IsNotNullAndNotEmpty(command.ContactMobileNumber))
+                    {
+                        var matchingResident = _helpRequestsContext.ResidentEntities
+                            .FirstOrDefault(r =>
+                                r.ContactMobileNumber == command.ContactMobileNumber &&
+                                r.FirstName.Trim().ToUpper() == command.FirstName.Trim().ToUpper() &&
+                                r.LastName.Trim().ToUpper() == command.LastName.Trim().ToUpper());
+
+                        if (matchingResident != null)
+                            return matchingResident.Id;
+                    }
+
+                    if (Predicates.IsNotNullAndNotEmpty(command.ContactTelephoneNumber))
+                    {
+                        var matchingResident = _helpRequestsContext.ResidentEntities
+                            .FirstOrDefault(r =>
+                                r.ContactTelephoneNumber == command.ContactTelephoneNumber &&
+                                r.FirstName.Trim().ToUpper() == command.FirstName.Trim().ToUpper() &&
+                                r.LastName.Trim().ToUpper() == command.LastName.Trim().ToUpper());
+
+                        if (matchingResident != null)
+                            return matchingResident.Id;
+                    }
                 }
 
                 return null;
