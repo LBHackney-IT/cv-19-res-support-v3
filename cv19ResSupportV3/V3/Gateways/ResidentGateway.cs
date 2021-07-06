@@ -222,7 +222,7 @@ namespace cv19ResSupportV3.V3.Gateways
                             .Include(r => r.HelpRequests)
                             .AsEnumerable()
                             .FirstOrDefault(r =>
-                                r.HelpRequests.Exists(hr => hr.NhsCtasId.ToUpper() == command.NhsCtasId.ToUpper()) &&
+                                r.HelpRequests.Exists(hr => hr.NhsCtasId.Trim().ToUpper() == command.NhsCtasId.Trim().ToUpper()) &&
                                 r.FirstName.Trim().ToUpper() == command.FirstName.Trim().ToUpper() &&
                                 r.LastName.Trim().ToUpper() == command.LastName.Trim().ToUpper());
 

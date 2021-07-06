@@ -981,34 +981,34 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             };
 
             // create Resident for Help Case 1
-            var Resident1 = EntityHelpers.createResident(id: _faker.Random.Int(10, 1000));
-            Resident1.FirstName = matchingFirstName;
-            Resident1.LastName = matchingLastName;
+            var resident1 = EntityHelpers.createResident(id: _faker.Random.Int(10, 1000));
+            resident1.FirstName = matchingFirstName;
+            resident1.LastName = matchingLastName;
 
             // create Help Case that will match when Request Ctas Id is lowercased, while db one is uppercased.
-            var HelpCase1 = EntityHelpers.createHelpRequestEntity(
+            var helpCase1 = EntityHelpers.createHelpRequestEntity(
                 id: _faker.Random.Int(100, 1000),
-                residentId: Resident1.Id);
-            HelpCase1.NhsCtasId = matchingNhsCtasId1.ToUpper(); // Req: Lower, DB: Upper
+                residentId: resident1.Id);
+            helpCase1.NhsCtasId = matchingNhsCtasId1.ToUpper(); // Req: Lower, DB: Upper
 
             // create Resident for Help Case 2
-            var Resident2 = EntityHelpers.createResident(id: Resident1.Id + 1);
-            Resident2.FirstName = matchingFirstName;
-            Resident2.LastName = matchingLastName;
+            var resident2 = EntityHelpers.createResident(id: resident1.Id + 1);
+            resident2.FirstName = matchingFirstName;
+            resident2.LastName = matchingLastName;
 
             // create Help Case that will match when Request Ctas Id is uppercased, while db one is lowercased.
-            var HelpCase2 = EntityHelpers.createHelpRequestEntity(
-                id: HelpCase1.Id + 1,
-                residentId: Resident2.Id);
-            HelpCase2.NhsCtasId = matchingNhsCtasId2.ToLower(); // Req: Lower, DB: Upper
+            var helpCase2 = EntityHelpers.createHelpRequestEntity(
+                id: helpCase1.Id + 1,
+                residentId: resident2.Id);
+            helpCase2.NhsCtasId = matchingNhsCtasId2.ToLower(); // Req: Lower, DB: Upper
 
             // add resident entities
-            DatabaseContext.ResidentEntities.Add(Resident1);
-            DatabaseContext.ResidentEntities.Add(Resident2);
+            DatabaseContext.ResidentEntities.Add(resident1);
+            DatabaseContext.ResidentEntities.Add(resident2);
 
             // add help request entities
-            DatabaseContext.HelpRequestEntities.Add(HelpCase1);
-            DatabaseContext.HelpRequestEntities.Add(HelpCase2);
+            DatabaseContext.HelpRequestEntities.Add(helpCase1);
+            DatabaseContext.HelpRequestEntities.Add(helpCase2);
 
             DatabaseContext.SaveChanges();
 
@@ -1028,11 +1028,56 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
 
             // Confirm that correct Req: Lower, Db: Upper match was found
             isResidentDuplicate1.Should().BeTrue();
-            returnedDuplicateResidentId1.Should().Be(Resident1.Id);
+            returnedDuplicateResidentId1.Should().Be(resident1.Id);
 
             // Confirm that correct Req: Upper, Db: Lower match was found
             isResidentDuplicate2.Should().BeTrue();
-            returnedDuplicateResidentId2.Should().Be(Resident2.Id);
+            returnedDuplicateResidentId2.Should().Be(resident2.Id);
+        }
+
+        [Test]
+        public void UponDeDuplicatingByNhsCtasIdRuleFindResidentMethodIgnoresNhsCtasIdLeftAndRightWhitespaceBetweenDBRecordAndRequest()
+        {
+            // arrange
+
+            // initialise testing data
+            var matchingFirstName = _faker.Random.Hash();
+            var matchingLastName = _faker.Random.Hash();
+
+            var matchingNhsCtasId = _faker.Random.Hash();
+            var nonTrimmedNHSNumberRequest = $"  {matchingNhsCtasId}     ";
+            var nonTrimmedNHSNumberDBRecord = $"     {matchingNhsCtasId} ";
+
+            // create request
+            var searchParameters = new FindResident
+            {
+                FirstName = matchingFirstName,
+                LastName = matchingLastName,
+                NhsCtasId = nonTrimmedNHSNumberRequest
+            };
+
+            // create entities
+            var duplicateResident = EntityHelpers.createResident(id: _faker.Random.Int(10, 1000));
+            duplicateResident.FirstName = matchingFirstName;
+            duplicateResident.LastName = matchingLastName;
+
+            var helpCase = EntityHelpers.createHelpRequestEntity(
+                id: _faker.Random.Int(100, 1000),
+                residentId: duplicateResident.Id);
+            helpCase.NhsCtasId = nonTrimmedNHSNumberDBRecord;
+
+            // add & save
+            DatabaseContext.ResidentEntities.Add(duplicateResident);
+            DatabaseContext.HelpRequestEntities.Add(helpCase);
+            DatabaseContext.SaveChanges();
+
+            // act
+            var duplicateResidentId = _classUnderTest.FindResident(searchParameters);
+            bool isResidentDuplicate = duplicateResidentId != null;
+
+            // assert
+            isResidentDuplicate.Should().BeTrue();
+            duplicateResidentId.Should().Be(duplicateResident.Id);
         }
 
         #endregion
