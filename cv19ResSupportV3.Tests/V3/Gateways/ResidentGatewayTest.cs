@@ -401,18 +401,22 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             //// arrange
 
             // create matching Nhs Ctas Id
+            var matchingFirstName = _faker.Random.Hash();
+            var matchingLastName = _faker.Random.Hash();
             var ruleFailingNhsCtasId = testCaseNhsCtasId;
 
             // create a request object
             var searchParameters = new FindResident
             {
-                FirstName = _faker.Random.Hash(),
-                LastName = _faker.Random.Hash(),
+                FirstName = matchingFirstName,
+                LastName = matchingLastName,
                 NhsCtasId = ruleFailingNhsCtasId
             };
 
             // create a resident with a child help case containing matching NhsCtasId
             var nonMatchingResident = EntityHelpers.createResident(id: _faker.Random.Int(10, 1000));
+            nonMatchingResident.FirstName = matchingFirstName;
+            nonMatchingResident.LastName = matchingLastName;
 
             var nonMatchingHelpCase = EntityHelpers.createHelpRequestEntity(
                 id: _faker.Random.Int(100, 1000), // avoid potential inter-test clash
