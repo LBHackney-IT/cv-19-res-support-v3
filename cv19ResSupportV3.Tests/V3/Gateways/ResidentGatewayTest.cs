@@ -651,8 +651,6 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             isResidentDuplicate.Should().BeFalse();
         }
 
-        // asdf
-
         // If NHS number rule fails to match &
         // If Resident First Name & Last Name match &
         // If Uprn rule fails to match &
@@ -672,7 +670,7 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             var matchingContactMobileNumber = _faker.Random.Hash();
             var matchingContactTelephoneNumber = _faker.Random.Hash();
 
-            // create a request objects
+            // create request objects
             var searchParametersMobile = new FindResident
             {
                 FirstName = matchingFirstName,
@@ -731,8 +729,79 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
         }
 
 
-        // cross-match test
+        // If NHS number rule fails to match &
+        // If Resident First Name & Last Name match &
+        // If Uprn rule fails to match &
+        // If Dob rule fails to match &
+        // If NhsCtasId rule fails to match &
+        // If EmailAddress rule fails to match &
+        // If ContactMobileNumber or ContactTelephoneNumber fail to match on respective fields &
+        // If ContactMobileNumber or ContactTelephoneNumber matches on switched around field, e.g.:
+        // ContactMobileNumber matches ContactTelephoneNumber, or vice-versa :
+        // Then the resident is considered a duplicate.
+        [Test]
+        public void FindResidentReturnsAMatchWhenFNAndLNAndContactMobileNumberOrContactTelephoneNumberMatchSwitchedAroundAndNoPreviousRulesMatched()
+        {
+            //// arrange
 
+            // initialise matching data
+            var matchingFirstName = _faker.Random.Hash();
+            var matchingLastName = _faker.Random.Hash();
+            var matchingContactMobileNumber = _faker.Random.Hash();
+            var matchingContactTelephoneNumber = _faker.Random.Hash();
+
+            // create request objects
+            var searchParametersMobile = new FindResident
+            {
+                FirstName = matchingFirstName,
+                LastName = matchingLastName,
+                ContactMobileNumber = matchingContactMobileNumber,
+            };
+
+            var searchParametersDesk = new FindResident
+            {
+                FirstName = matchingFirstName,
+                LastName = matchingLastName,
+                ContactTelephoneNumber = matchingContactTelephoneNumber
+            };
+
+            // create a resident with matching desk phone number in the mobile number field
+            var duplicateResidentDesk = EntityHelpers.createResident(id: _faker.Random.Int(10, 1000));
+            duplicateResidentDesk.FirstName = matchingFirstName;
+            duplicateResidentDesk.LastName = matchingLastName;
+            duplicateResidentDesk.ContactMobileNumber = matchingContactTelephoneNumber;
+
+            // create resident with matching mobile number in the desk phone number field
+            var duplicateResidentMobile = EntityHelpers.createResident(id: duplicateResidentDesk.Id + 1);
+            duplicateResidentMobile.FirstName = matchingFirstName;
+            duplicateResidentMobile.LastName = matchingLastName;
+            duplicateResidentMobile.ContactTelephoneNumber = matchingContactMobileNumber;
+
+            // add resident entities
+            DatabaseContext.ResidentEntities.Add(duplicateResidentDesk);
+            DatabaseContext.ResidentEntities.Add(duplicateResidentMobile);
+            DatabaseContext.SaveChanges();
+
+            //// act
+
+            // call FindResident function with the request object
+            var returnedResidentIdDeskFieldMobile = _classUnderTest.FindResident(searchParametersMobile);
+            bool isResidentDuplicateDeskFieldMobile = returnedResidentIdDeskFieldMobile != null;
+
+            var returnedResidentIdMobileFieldDesk = _classUnderTest.FindResident(searchParametersDesk);
+            bool isResidentDuplicateMobileFieldDesk = returnedResidentIdMobileFieldDesk != null;
+
+
+            //// assert
+
+            // duplicate with desk phone number should be found
+            isResidentDuplicateDeskFieldMobile.Should().BeTrue();
+            returnedResidentIdDeskFieldMobile.Should().Be(duplicateResidentMobile.Id);
+
+            // duplicate with mobile phone number should be found
+            isResidentDuplicateMobileFieldDesk.Should().BeTrue();
+            returnedResidentIdMobileFieldDesk.Should().Be(duplicateResidentDesk.Id);
+        }
 
 
         // If NHS number rule fails to match &
