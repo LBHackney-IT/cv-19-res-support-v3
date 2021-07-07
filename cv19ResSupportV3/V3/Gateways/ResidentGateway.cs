@@ -247,7 +247,7 @@ namespace cv19ResSupportV3.V3.Gateways
                         var matchingResident = _helpRequestsContext.ResidentEntities
                             .FirstOrDefault(r =>
                                 (r.ContactMobileNumber.Trim() == command.ContactMobileNumber.Trim() ||
-                                r.ContactTelephoneNumber == command.ContactMobileNumber) &&
+                                r.ContactTelephoneNumber.Trim() == command.ContactMobileNumber.Trim()) &&
                                 r.FirstName.Trim().ToUpper() == command.FirstName.Trim().ToUpper() &&
                                 r.LastName.Trim().ToUpper() == command.LastName.Trim().ToUpper());
 
@@ -260,7 +260,7 @@ namespace cv19ResSupportV3.V3.Gateways
                         var matchingResident = _helpRequestsContext.ResidentEntities
                             .FirstOrDefault(r =>
                                 (r.ContactTelephoneNumber.Trim() == command.ContactTelephoneNumber.Trim() ||
-                                r.ContactMobileNumber == command.ContactTelephoneNumber) &&
+                                r.ContactMobileNumber.Trim() == command.ContactTelephoneNumber.Trim()) &&
                                 r.FirstName.Trim().ToUpper() == command.FirstName.Trim().ToUpper() &&
                                 r.LastName.Trim().ToUpper() == command.LastName.Trim().ToUpper());
 

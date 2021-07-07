@@ -1595,6 +1595,70 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             duplicateResidentIdDesk.Should().Be(duplicateResidentDesk.Id);
         }
 
+        [Test]
+        public void UponDeDuplicatingByPhoneNumbersSwitchMatchRuleFindResidentMethodIgnoresPhoneNumbersLeftAndRightWhitespaceBetweenDBRecordAndRequest()
+        {
+            // arrange
+
+            // initialise testing data
+            var matchingFirstName = _faker.Random.Hash();
+            var matchingLastName = _faker.Random.Hash();
+
+            var matchingContactMobileNumber = _faker.Random.Hash();
+            var nonTrimmedContactMobileNumberRequest = $"  {matchingContactMobileNumber}     ";
+            var nonTrimmedContactMobileNumberDBRecord = $"     {matchingContactMobileNumber} ";
+
+            var matchingContactTelephoneNumber = _faker.Random.Hash();
+            var nonTrimmedContactTelephoneNumberRequest = $"     {matchingContactTelephoneNumber}     ";
+            var nonTrimmedContactTelephoneNumberDBRecord = $"        {matchingContactTelephoneNumber}   ";
+
+            // create request
+            var searchParametersMobile = new FindResident
+            {
+                FirstName = matchingFirstName,
+                LastName = matchingLastName,
+                ContactMobileNumber = nonTrimmedContactMobileNumberRequest
+            };
+
+            var searchParametersDesk = new FindResident
+            {
+                FirstName = matchingFirstName,
+                LastName = matchingLastName,
+                ContactTelephoneNumber = nonTrimmedContactTelephoneNumberRequest
+            };
+
+            // create entities
+            // mobile number in desk phone field
+            var duplicateResidentMobile = EntityHelpers.createResident(id: _faker.Random.Int(10, 1000));
+            duplicateResidentMobile.FirstName = matchingFirstName;
+            duplicateResidentMobile.LastName = matchingLastName;
+            duplicateResidentMobile.ContactTelephoneNumber = nonTrimmedContactMobileNumberDBRecord;
+
+            // desk phone number in mobile field
+            var duplicateResidentDesk = EntityHelpers.createResident(id: _faker.Random.Int(10, 1000));
+            duplicateResidentDesk.FirstName = matchingFirstName;
+            duplicateResidentDesk.LastName = matchingLastName;
+            duplicateResidentDesk.ContactMobileNumber = nonTrimmedContactTelephoneNumberDBRecord;
+
+            DatabaseContext.ResidentEntities.Add(duplicateResidentMobile);
+            DatabaseContext.ResidentEntities.Add(duplicateResidentDesk);
+            DatabaseContext.SaveChanges();
+
+            // act
+            var duplicateResidentIdMobile = _classUnderTest.FindResident(searchParametersMobile);
+            bool isResidentDuplicateMobile = duplicateResidentIdMobile != null;
+
+            var duplicateResidentIdDesk = _classUnderTest.FindResident(searchParametersDesk);
+            bool isResidentDuplicateDesk = duplicateResidentIdDesk != null;
+
+            // assert
+            isResidentDuplicateMobile.Should().BeTrue();
+            duplicateResidentIdMobile.Should().Be(duplicateResidentMobile.Id);
+
+            isResidentDuplicateDesk.Should().BeTrue();
+            duplicateResidentIdDesk.Should().Be(duplicateResidentDesk.Id);
+        }
+
         #endregion
 
         #region Patch, Update & Get
