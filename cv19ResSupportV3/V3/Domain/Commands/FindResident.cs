@@ -38,9 +38,29 @@ namespace cv19ResSupportV3.V3.Domain.Commands
         /// <example>01</example>
         public string DobDay { get; set; }
         /// <summary>
+        /// Email address of the resident
+        /// </summary>
+        /// <example>someone@anywhere.tld</example>
+        public string EmailAddress { get; set; }
+        /// <summary>
+        /// Email address of the resident
+        /// </summary>
+        /// <example>7951721227</example>
+        public string ContactTelephoneNumber { get; set; }
+        /// <summary>
+        /// Email address of the resident
+        /// </summary>
+        /// <example>2077092577</example>
+        public string ContactMobileNumber { get; set; }
+        /// <summary>
         /// Postcode of the resident
         /// </summary>
         /// <example>A1 2BC</example>
         public string Postcode { get; set; }
+        /// <summary>
+        /// Contact Tracing Number (8 character alphanumeral)
+        /// </summary>
+        /// <example>z1a238ff</example>
+        public string NhsCtasId { get; set; }
     }
 }

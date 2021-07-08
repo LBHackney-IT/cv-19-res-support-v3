@@ -251,6 +251,215 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             duplicateResidentId.Should().Be(existingResidentDOBMatch.Id);
         }
 
+        // If NHS number rule fails to match &
+        // If Uprn rule fails to match &
+        // If Dob rule fails to match &
+        // If Resident First Name & Last Name match &
+        // If Resident has associated HelpCase entity with matching Contact Tracing Id (NhsCtasId) :
+        // Then the resident is considered a duplicate.
+        [Test]
+        public void FindResidentReturnsAMatchWhenFullNameAndNhsCtsIdOfChildHelpCaseEntityMatchButNoPreviousRulesMatch()
+        {
+            //// arrange
+
+            // create matching name data
+            var matchingFirstName = _faker.Random.Hash();
+            var matchingLastName = _faker.Random.Hash();
+
+            // matching Nhs Ctas Id
+            var matchingNhsCtasId = _faker.Random.AlphaNumeric(8);
+
+            // create a request object
+            var searchParameters = new FindResident
+            {
+                FirstName = matchingFirstName,
+                LastName = matchingLastName,
+                NhsCtasId = matchingNhsCtasId
+            };
+
+            // create a matching resident object
+            var duplicateResident = EntityHelpers.createResident(id: _faker.Random.Int(10, 1000));
+            duplicateResident.FirstName = matchingFirstName;
+            duplicateResident.LastName = matchingLastName;
+
+            // create a matching help case entity with ctas id
+            var matchingNhsCtasIdHelpCase = EntityHelpers.createHelpRequestEntity(
+                id: _faker.Random.Int(100, 1000), // avoid potential inter-test clash
+                residentId: duplicateResident.Id);
+            matchingNhsCtasIdHelpCase.NhsCtasId = matchingNhsCtasId;
+
+            // create non-matching (control) resident
+            var controlResident = EntityHelpers.createResident(id: duplicateResident.Id + 1); // making sure ids are different
+
+            // create non-matching help case entity (making sure only that non-matching ctas id wouldn't trigger the rule)
+            var controlHelpCase = EntityHelpers.createHelpRequestEntity(
+                id: matchingNhsCtasIdHelpCase.Id + 1, // making sure ids are different
+                residentId: controlResident.Id);
+
+            // add resident entities
+            DatabaseContext.ResidentEntities.Add(duplicateResident);
+            DatabaseContext.ResidentEntities.Add(controlResident);
+
+            // add help request entities
+            DatabaseContext.HelpRequestEntities.Add(matchingNhsCtasIdHelpCase);
+            DatabaseContext.HelpRequestEntities.Add(controlHelpCase);
+
+            // save db changes
+            DatabaseContext.SaveChanges();
+
+
+            //// act
+
+            // call FindResident function with the request object
+            var returnedDuplicateResidentId = _classUnderTest.FindResident(searchParameters);
+            bool isResidentDuplicate = returnedDuplicateResidentId != null;
+
+
+            //// assert
+
+            // duplicate should have been found
+            isResidentDuplicate.Should().BeTrue();
+
+            // confirm that the retrieved id was the one inserted
+            returnedDuplicateResidentId.Should().Be(duplicateResident.Id);
+        }
+
+        // If NHS number rule fails to match &
+        // If Uprn rule fails to match &
+        // If Dob rule fails to match &
+        // If First Name & Last Name rule fails to match &
+        // Even if the rest of the data matches :
+        // Then the Ctas rule fails to match.
+        [Test]
+        public void FindResidentReturnsNoMatchWhenNhsNumberRuleFailsToMatchAndWhenFirstAndLastNamesDoNotMatchRegardlessOfRemainingData()
+        {
+            //// arrange
+
+            // create matching secondary fields
+            var matchingNhsCtasId = _faker.Random.AlphaNumeric(8);
+            var matchingEmailAddress = _faker.Person.Email;
+            var matchingContactMobileNumber = _faker.Random.Hash();
+            var matchingContactTelephoneNumber = _faker.Random.Hash();
+
+            // create a request object
+            var searchParameters = new FindResident
+            {
+                FirstName = _faker.Random.Hash(),
+                LastName = _faker.Random.Hash(),
+                EmailAddress = matchingEmailAddress,
+                ContactMobileNumber = matchingContactMobileNumber,
+                ContactTelephoneNumber = matchingContactTelephoneNumber,
+                NhsCtasId = matchingNhsCtasId
+            };
+
+            // create a resident with a child help case containing matching NhsCtasId
+            var residentWithMachingRemainingData = EntityHelpers.createResident(id: _faker.Random.Int(10, 1000));
+            residentWithMachingRemainingData.EmailAddress = matchingEmailAddress;
+            residentWithMachingRemainingData.ContactMobileNumber = matchingContactMobileNumber;
+            residentWithMachingRemainingData.ContactTelephoneNumber = matchingContactTelephoneNumber;
+
+            var matchingNhsCtasIdHelpCase = EntityHelpers.createHelpRequestEntity(
+                id: _faker.Random.Int(100, 1000), // avoid potential inter-test clash
+                residentId: residentWithMachingRemainingData.Id);
+            matchingNhsCtasIdHelpCase.NhsCtasId = matchingNhsCtasId;
+
+            // create non-matching by everything (control) resident
+            var controlResident = EntityHelpers.createResident(id: residentWithMachingRemainingData.Id + 1); // making sure ids are different
+
+            var controlHelpCase = EntityHelpers.createHelpRequestEntity(
+                id: matchingNhsCtasIdHelpCase.Id + 1, // making sure ids are different
+                residentId: controlResident.Id);
+
+            // add resident entities
+            DatabaseContext.ResidentEntities.Add(residentWithMachingRemainingData);
+            DatabaseContext.ResidentEntities.Add(controlResident);
+
+            // add help request entities
+            DatabaseContext.HelpRequestEntities.Add(matchingNhsCtasIdHelpCase);
+            DatabaseContext.HelpRequestEntities.Add(controlHelpCase);
+
+            // save db changes
+            DatabaseContext.SaveChanges();
+
+
+            //// act
+
+            // call FindResident function with the request object
+            var returnedDuplicateResidentId = _classUnderTest.FindResident(searchParameters);
+            bool isResidentDuplicate = returnedDuplicateResidentId != null;
+
+
+            //// assert
+
+            // duplicate should have been found
+            isResidentDuplicate.Should().BeFalse();
+        }
+
+        // If NHS number rule fails to match &
+        // If Uprn rule fails to match &
+        // If Dob rule fails to match &
+        // If First Name & Last Name rule match &
+        // If Request contains empty, null, whitespace or non-matching Contact Tracing Id (NhsCtasId) :
+        // Then the overall Ctas rule fails to match.
+        [TestCase(null)]
+        [TestCase("")]
+        [TestCase(" ")]
+        [TestCase("nhsctasid")]
+        public void FindResidentReturnsNoMatchWhenNhsCtasIdIsNullEmptyWhiteSpaceOrDoesntMatchAndThereAreNoMatchesAgaistOtherRules(string testCaseNhsCtasId)
+        {
+            //// arrange
+
+            // create matching Nhs Ctas Id
+            var matchingFirstName = _faker.Random.Hash();
+            var matchingLastName = _faker.Random.Hash();
+            var ruleFailingNhsCtasId = testCaseNhsCtasId;
+
+            // create a request object
+            var searchParameters = new FindResident
+            {
+                FirstName = matchingFirstName,
+                LastName = matchingLastName,
+                NhsCtasId = ruleFailingNhsCtasId
+            };
+
+            // create a resident with a child help case containing matching NhsCtasId
+            var nonMatchingResident = EntityHelpers.createResident(id: _faker.Random.Int(10, 1000));
+            nonMatchingResident.FirstName = matchingFirstName;
+            nonMatchingResident.LastName = matchingLastName;
+
+            var nonMatchingHelpCase = EntityHelpers.createHelpRequestEntity(
+                id: _faker.Random.Int(100, 1000), // avoid potential inter-test clash
+                residentId: nonMatchingResident.Id);
+            nonMatchingHelpCase.NhsCtasId = ruleFailingNhsCtasId;
+
+            // during the first 3 test cases, there should be no match even when request & db values match.
+            // for the 4th one, no match should be found only when request & db record NhsCtasIds are different.
+            // so setting them to be different.
+            if (testCaseNhsCtasId == "nhsctasid") nonMatchingHelpCase.NhsCtasId = _faker.Random.Hash();
+
+            // add resident entities
+            DatabaseContext.ResidentEntities.Add(nonMatchingResident);
+
+            // add help request entities
+            DatabaseContext.HelpRequestEntities.Add(nonMatchingHelpCase);
+
+            // save db changes
+            DatabaseContext.SaveChanges();
+
+
+            //// act
+
+            // call FindResident function with the request object
+            var returnedDuplicateResidentId = _classUnderTest.FindResident(searchParameters);
+            bool isResidentDuplicate = returnedDuplicateResidentId != null;
+
+
+            //// assert
+
+            // duplicate should have been found
+            isResidentDuplicate.Should().BeFalse();
+        }
+
         // If NHS number rule returns no match &
         // If Uprn rule returns no match &
         // If Dob is null or empty, then:
@@ -330,6 +539,335 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             duplicateResidentId.Should().Be(null);
         }
 
+        // If NHS number rule fails to match &
+        // If Resident First Name & Last Name match &
+        // If Uprn rule fails to match &
+        // If Dob rule fails to match &
+        // If NhsCtasId rule fails to match &
+        // If EmailAddress rule matches :
+        // Then the resident is considered a duplicate.
+        [Test]
+        public void FindResidentReturnsAMatchWhenFNAndLNAndEmailAddressMatchesAreFoundAndNoPreviousRulesMatched()
+        {
+            //// arrange
+
+            // initialise matching data
+            var matchingFirstName = _faker.Random.Hash();
+            var matchingLastName = _faker.Random.Hash();
+            var matchingEmailAddress = _faker.Person.Email;
+
+            // create a request object
+            var searchParameters = new FindResident
+            {
+                FirstName = matchingFirstName,
+                LastName = matchingLastName,
+                EmailAddress = matchingEmailAddress
+            };
+
+            // create a matching resident object
+            var duplicateResident = EntityHelpers.createResident(id: _faker.Random.Int(10, 1000));
+            duplicateResident.FirstName = matchingFirstName;
+            duplicateResident.LastName = matchingLastName;
+            duplicateResident.EmailAddress = matchingEmailAddress;
+
+            // create non-matching (control) resident
+            var controlResident = EntityHelpers.createResident(id: duplicateResident.Id + 1); // making sure ids are different
+
+            // add resident entities
+            DatabaseContext.ResidentEntities.Add(duplicateResident);
+            DatabaseContext.ResidentEntities.Add(controlResident);
+            DatabaseContext.SaveChanges();
+
+
+            //// act
+
+            // call FindResident function with the request object
+            var returnedResidentId = _classUnderTest.FindResident(searchParameters);
+            bool isResidentDuplicate = returnedResidentId != null;
+
+
+            //// assert
+
+            // duplicate should have been found
+            isResidentDuplicate.Should().BeTrue();
+
+            // confirm that the retrieved id was the one inserted
+            returnedResidentId.Should().Be(duplicateResident.Id);
+        }
+
+        // If NHS number rule fails to match &
+        // If Uprn rule fails to match &
+        // If Dob rule fails to match &
+        // If First Name & Last Name rule match &
+        // If Request contains empty, null, whitespace or non-matching Contact Tracing Id (NhsCtasId) :
+        // Then the overall Ctas rule fails to match.
+        [TestCase(null)]
+        [TestCase("")]
+        [TestCase(" ")]
+        [TestCase("name@site.ee")]
+        public void FindResidentReturnsNoMatchWhenEmailAddressIsNullEmptyWhiteSpaceOrDoesntMatchAndThereAreNoMatchesAgaistOtherRules(string testCaseEmailAddress)
+        {
+            //// arrange
+
+            // create matching Nhs Ctas Id
+            var matchingFirstName = _faker.Random.Hash();
+            var matchingLastName = _faker.Random.Hash();
+            var ruleFailingEmailAddress = testCaseEmailAddress;
+
+            // create a request object
+            var searchParameters = new FindResident
+            {
+                FirstName = _faker.Random.Hash(),
+                LastName = _faker.Random.Hash(),
+                NhsCtasId = ruleFailingEmailAddress
+            };
+
+            // create a resident with a child help case containing matching NhsCtasId
+            var nonMatchingResident = EntityHelpers.createResident(id: _faker.Random.Int(10, 1000));
+            nonMatchingResident.FirstName = matchingFirstName;
+            nonMatchingResident.LastName = matchingLastName;
+            nonMatchingResident.EmailAddress = ruleFailingEmailAddress;
+
+            // during the first 3 test cases, there should be no match even when request & db values match.
+            // for the 4th one, no match should be found only when request & db record EmailAddresses are different.
+            // so setting them to be different.
+            if (testCaseEmailAddress == "name@site.ee") nonMatchingResident.EmailAddress = _faker.Random.Hash();
+
+            // add resident entity
+            DatabaseContext.ResidentEntities.Add(nonMatchingResident);
+            DatabaseContext.SaveChanges();
+
+
+            //// act
+
+            // call FindResident function with the request object
+            var returnedDuplicateResidentId = _classUnderTest.FindResident(searchParameters);
+            bool isResidentDuplicate = returnedDuplicateResidentId != null;
+
+
+            //// assert
+
+            // duplicate should have been found
+            isResidentDuplicate.Should().BeFalse();
+        }
+
+        // If NHS number rule fails to match &
+        // If Resident First Name & Last Name match &
+        // If Uprn rule fails to match &
+        // If Dob rule fails to match &
+        // If NhsCtasId rule fails to match &
+        // If EmailAddress rule fails to match &
+        // If ContactMobileNumber or ContactTelephoneNumber match:
+        // Then the resident is considered a duplicate.
+        [Test]
+        public void FindResidentReturnsAMatchWhenFNAndLNAndContactMobileNumberOrContactTelephoneNumberMatchesAreFoundAndNoPreviousRulesMatched()
+        {
+            //// arrange
+
+            // initialise matching data
+            var matchingFirstName = _faker.Random.Hash();
+            var matchingLastName = _faker.Random.Hash();
+            var matchingContactMobileNumber = _faker.Random.Hash();
+            var matchingContactTelephoneNumber = _faker.Random.Hash();
+
+            // create request objects
+            var searchParametersMobile = new FindResident
+            {
+                FirstName = matchingFirstName,
+                LastName = matchingLastName,
+                ContactMobileNumber = matchingContactMobileNumber,
+            };
+
+            var searchParametersDesk = new FindResident
+            {
+                FirstName = matchingFirstName,
+                LastName = matchingLastName,
+                ContactTelephoneNumber = matchingContactTelephoneNumber
+            };
+
+            // create a resident with matching mobile number
+            var duplicateResidentMobile = EntityHelpers.createResident(id: _faker.Random.Int(10, 1000));
+            duplicateResidentMobile.FirstName = matchingFirstName;
+            duplicateResidentMobile.LastName = matchingLastName;
+            duplicateResidentMobile.ContactMobileNumber = matchingContactMobileNumber;
+
+            // create resident with matching desk phone number
+            var duplicateResidentDesk = EntityHelpers.createResident(id: duplicateResidentMobile.Id + 1); // making sure ids are different
+            duplicateResidentDesk.FirstName = matchingFirstName;
+            duplicateResidentDesk.LastName = matchingLastName;
+            duplicateResidentDesk.ContactTelephoneNumber = matchingContactTelephoneNumber;
+
+            // create control resident
+            var controlResident = EntityHelpers.createResident(id: duplicateResidentDesk.Id + 1);
+
+            // add resident entities
+            DatabaseContext.ResidentEntities.Add(duplicateResidentMobile);
+            DatabaseContext.ResidentEntities.Add(duplicateResidentDesk);
+            DatabaseContext.ResidentEntities.Add(controlResident);
+            DatabaseContext.SaveChanges();
+
+
+            //// act
+
+            // call FindResident function with the request object
+            var returnedResidentIdMobile = _classUnderTest.FindResident(searchParametersMobile);
+            bool isResidentDuplicateMobile = returnedResidentIdMobile != null;
+
+            var returnedResidentIdDesk = _classUnderTest.FindResident(searchParametersDesk);
+            bool isResidentDuplicateDesk = returnedResidentIdDesk != null;
+
+
+            //// assert
+
+            // duplicate with mobile phone number should be found
+            isResidentDuplicateMobile.Should().BeTrue();
+            returnedResidentIdMobile.Should().Be(duplicateResidentMobile.Id);
+
+            // duplicate with desk phone number should be found
+            isResidentDuplicateDesk.Should().BeTrue();
+            returnedResidentIdDesk.Should().Be(duplicateResidentDesk.Id);
+        }
+
+
+        // If NHS number rule fails to match &
+        // If Resident First Name & Last Name match &
+        // If Uprn rule fails to match &
+        // If Dob rule fails to match &
+        // If NhsCtasId rule fails to match &
+        // If EmailAddress rule fails to match &
+        // If ContactMobileNumber or ContactTelephoneNumber fail to match on respective fields &
+        // If ContactMobileNumber or ContactTelephoneNumber matches on switched around field, e.g.:
+        // ContactMobileNumber matches ContactTelephoneNumber, or vice-versa :
+        // Then the resident is considered a duplicate.
+        [Test]
+        public void FindResidentReturnsAMatchWhenFNAndLNAndContactMobileNumberOrContactTelephoneNumberMatchSwitchedAroundAndNoPreviousRulesMatched()
+        {
+            //// arrange
+
+            // initialise matching data
+            var matchingFirstName = _faker.Random.Hash();
+            var matchingLastName = _faker.Random.Hash();
+            var matchingContactMobileNumber = _faker.Random.Hash();
+            var matchingContactTelephoneNumber = _faker.Random.Hash();
+
+            // create request objects
+            var searchParametersMobile = new FindResident
+            {
+                FirstName = matchingFirstName,
+                LastName = matchingLastName,
+                ContactMobileNumber = matchingContactMobileNumber,
+            };
+
+            var searchParametersDesk = new FindResident
+            {
+                FirstName = matchingFirstName,
+                LastName = matchingLastName,
+                ContactTelephoneNumber = matchingContactTelephoneNumber
+            };
+
+            // create a resident with matching desk phone number in the mobile number field
+            var duplicateResidentDesk = EntityHelpers.createResident(id: _faker.Random.Int(10, 1000));
+            duplicateResidentDesk.FirstName = matchingFirstName;
+            duplicateResidentDesk.LastName = matchingLastName;
+            duplicateResidentDesk.ContactMobileNumber = matchingContactTelephoneNumber;
+
+            // create resident with matching mobile number in the desk phone number field
+            var duplicateResidentMobile = EntityHelpers.createResident(id: duplicateResidentDesk.Id + 1);
+            duplicateResidentMobile.FirstName = matchingFirstName;
+            duplicateResidentMobile.LastName = matchingLastName;
+            duplicateResidentMobile.ContactTelephoneNumber = matchingContactMobileNumber;
+
+            // add resident entities
+            DatabaseContext.ResidentEntities.Add(duplicateResidentDesk);
+            DatabaseContext.ResidentEntities.Add(duplicateResidentMobile);
+            DatabaseContext.SaveChanges();
+
+            //// act
+
+            // call FindResident function with the request object
+            var returnedResidentIdDeskFieldMobile = _classUnderTest.FindResident(searchParametersMobile);
+            bool isResidentDuplicateDeskFieldMobile = returnedResidentIdDeskFieldMobile != null;
+
+            var returnedResidentIdMobileFieldDesk = _classUnderTest.FindResident(searchParametersDesk);
+            bool isResidentDuplicateMobileFieldDesk = returnedResidentIdMobileFieldDesk != null;
+
+
+            //// assert
+
+            // duplicate with desk phone number should be found
+            isResidentDuplicateDeskFieldMobile.Should().BeTrue();
+            returnedResidentIdDeskFieldMobile.Should().Be(duplicateResidentMobile.Id);
+
+            // duplicate with mobile phone number should be found
+            isResidentDuplicateMobileFieldDesk.Should().BeTrue();
+            returnedResidentIdMobileFieldDesk.Should().Be(duplicateResidentDesk.Id);
+        }
+
+
+        // If NHS number rule fails to match &
+        // If Uprn rule fails to match &
+        // If Dob rule fails to match &
+        // If First Name & Last Name rule match &
+        // If Contact Tracing Id rule fails to match (NhsCtasId) &
+        // If Request contains empty, null, whitespace or non-matching ContactMobileNumber And ContactTelephoneNumber:
+        // Then the overall Phone number rule fails to match.
+        [TestCase(null)]
+        [TestCase("")]
+        [TestCase(" ")]
+        [TestCase("phoneNumber")]
+        public void FindResidentReturnsNoMatchWhenBothContactMobileNumberAndContactTelephoneNumberAreNullEmptyWhiteSpaceOrDoesntMatchAndThereAreNoMatchesAgaistOtherRules(string testCasePhoneNumber)
+        {
+            //// arrange
+
+            // create matching Nhs Ctas Id
+            var matchingFirstName = _faker.Random.Hash();
+            var matchingLastName = _faker.Random.Hash();
+            var ruleFailingContactMobileNumber = testCasePhoneNumber;
+            var ruleFailingContactTelephoneNumber = testCasePhoneNumber;
+
+            // create a request object
+            var searchParameters = new FindResident
+            {
+                FirstName = _faker.Random.Hash(),
+                LastName = _faker.Random.Hash(),
+                ContactMobileNumber = ruleFailingContactMobileNumber,
+                ContactTelephoneNumber = ruleFailingContactTelephoneNumber
+            };
+
+            // create a resident with a child help case containing matching NhsCtasId
+            var nonMatchingResident = EntityHelpers.createResident(id: _faker.Random.Int(10, 1000));
+            nonMatchingResident.FirstName = matchingFirstName;
+            nonMatchingResident.LastName = matchingLastName;
+            nonMatchingResident.ContactMobileNumber = ruleFailingContactMobileNumber;
+            nonMatchingResident.ContactTelephoneNumber = ruleFailingContactTelephoneNumber;
+
+            // during the first 3 test cases, there should be no match even when request & db values match.
+            // for the 4th one, no match should be found only when request & db record Phone numbers are different.
+            // so setting them to be different.
+            if (testCasePhoneNumber == "phoneNumber")
+            {
+                nonMatchingResident.ContactMobileNumber = _faker.Random.Hash();
+                nonMatchingResident.ContactTelephoneNumber = _faker.Random.Hash();
+            }
+
+            // add resident entity
+            DatabaseContext.ResidentEntities.Add(nonMatchingResident);
+            DatabaseContext.SaveChanges();
+
+
+            //// act
+
+            // call FindResident function with the request object
+            var returnedDuplicateResidentId = _classUnderTest.FindResident(searchParameters);
+            bool isResidentDuplicate = returnedDuplicateResidentId != null;
+
+
+            //// assert
+
+            // duplicate should have been found
+            isResidentDuplicate.Should().BeFalse();
+        }
+
         // Should there be checks for the inserted records values?
         // Also should this case be treated as Unique Resident or the 400 Bad Request? (There doesn't seem to be validation preventing this)
         // For now will treat this as a new unique record.
@@ -401,6 +939,10 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             isResidentRequest2Duplicate.Should().BeFalse();
             duplicateResidentIdAttempt2.Should().Be(null);
         }
+
+        #endregion
+
+        #region Formatting-insensitive de-duplication tests
 
         [Test]
         public void FindResidentReturnsAMatchByNhsNumberEvenWhenProvidedNhsNumberIsNotTrimmed()
@@ -752,7 +1294,374 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             duplicateResidentLowerCasingId.Should().Be(existingResidentInLowerCasing.Id);
         }
 
+        [Test]
+        public void UponDeDuplicatingByNhsCtasIdRuleFindResidentMethodIgnoresNhsCtasIdCasingBetweenDBRecordAndRequest()
+        {
+            //// arrange
+
+            // create matching name data
+            var matchingFirstName = _faker.Random.Hash();
+            var matchingLastName = _faker.Random.Hash();
+
+            // matching Nhs Ctas Id
+            var matchingNhsCtasId1 = _faker.Random.AlphaNumeric(8);
+            var matchingNhsCtasId2 = _faker.Random.AlphaNumeric(8);
+
+            // create request objects
+            var searchParametersLowerCasing = new FindResident
+            {
+                FirstName = matchingFirstName,
+                LastName = matchingLastName,
+                NhsCtasId = matchingNhsCtasId1.ToLower()
+            };
+
+            var searchParametersUpperCasing = new FindResident
+            {
+                FirstName = matchingFirstName,
+                LastName = matchingLastName,
+                NhsCtasId = matchingNhsCtasId2.ToUpper()
+            };
+
+            // create Resident for Help Case 1
+            var resident1 = EntityHelpers.createResident(id: _faker.Random.Int(10, 1000));
+            resident1.FirstName = matchingFirstName;
+            resident1.LastName = matchingLastName;
+
+            // create Help Case that will match when Request Ctas Id is lowercased, while db one is uppercased.
+            var helpCase1 = EntityHelpers.createHelpRequestEntity(
+                id: _faker.Random.Int(100, 1000),
+                residentId: resident1.Id);
+            helpCase1.NhsCtasId = matchingNhsCtasId1.ToUpper(); // Req: Lower, DB: Upper
+
+            // create Resident for Help Case 2
+            var resident2 = EntityHelpers.createResident(id: resident1.Id + 1);
+            resident2.FirstName = matchingFirstName;
+            resident2.LastName = matchingLastName;
+
+            // create Help Case that will match when Request Ctas Id is uppercased, while db one is lowercased.
+            var helpCase2 = EntityHelpers.createHelpRequestEntity(
+                id: helpCase1.Id + 1,
+                residentId: resident2.Id);
+            helpCase2.NhsCtasId = matchingNhsCtasId2.ToLower(); // Req: Lower, DB: Upper
+
+            // add resident entities
+            DatabaseContext.ResidentEntities.Add(resident1);
+            DatabaseContext.ResidentEntities.Add(resident2);
+
+            // add help request entities
+            DatabaseContext.HelpRequestEntities.Add(helpCase1);
+            DatabaseContext.HelpRequestEntities.Add(helpCase2);
+
+            DatabaseContext.SaveChanges();
+
+
+            //// act
+
+            // call FindResident function with the request containing lowercased ctas id
+            var returnedDuplicateResidentId1 = _classUnderTest.FindResident(searchParametersLowerCasing);
+            bool isResidentDuplicate1 = returnedDuplicateResidentId1 != null;
+
+            // call FindResident function with the request containing uppercased ctas id
+            var returnedDuplicateResidentId2 = _classUnderTest.FindResident(searchParametersUpperCasing);
+            bool isResidentDuplicate2 = returnedDuplicateResidentId2 != null;
+
+
+            //// assert
+
+            // Confirm that correct Req: Lower, Db: Upper match was found
+            isResidentDuplicate1.Should().BeTrue();
+            returnedDuplicateResidentId1.Should().Be(resident1.Id);
+
+            // Confirm that correct Req: Upper, Db: Lower match was found
+            isResidentDuplicate2.Should().BeTrue();
+            returnedDuplicateResidentId2.Should().Be(resident2.Id);
+        }
+
+        [Test]
+        public void UponDeDuplicatingByNhsCtasIdRuleFindResidentMethodIgnoresNhsCtasIdLeftAndRightWhitespaceBetweenDBRecordAndRequest()
+        {
+            // arrange
+
+            // initialise testing data
+            var matchingFirstName = _faker.Random.Hash();
+            var matchingLastName = _faker.Random.Hash();
+
+            var matchingNhsCtasId = _faker.Random.Hash();
+            var nonTrimmedNhsCtasIdRequest = $"  {matchingNhsCtasId}     ";
+            var nonTrimmedNhsCtasIdDBRecord = $"     {matchingNhsCtasId} ";
+
+            // create request
+            var searchParameters = new FindResident
+            {
+                FirstName = matchingFirstName,
+                LastName = matchingLastName,
+                NhsCtasId = nonTrimmedNhsCtasIdRequest
+            };
+
+            // create entities
+            var duplicateResident = EntityHelpers.createResident(id: _faker.Random.Int(10, 1000));
+            duplicateResident.FirstName = matchingFirstName;
+            duplicateResident.LastName = matchingLastName;
+
+            var helpCase = EntityHelpers.createHelpRequestEntity(
+                id: _faker.Random.Int(100, 1000),
+                residentId: duplicateResident.Id);
+            helpCase.NhsCtasId = nonTrimmedNhsCtasIdDBRecord;
+
+            // add & save
+            DatabaseContext.ResidentEntities.Add(duplicateResident);
+            DatabaseContext.HelpRequestEntities.Add(helpCase);
+            DatabaseContext.SaveChanges();
+
+            // act
+            var duplicateResidentId = _classUnderTest.FindResident(searchParameters);
+            bool isResidentDuplicate = duplicateResidentId != null;
+
+            // assert
+            isResidentDuplicate.Should().BeTrue();
+            duplicateResidentId.Should().Be(duplicateResident.Id);
+        }
+
+        [Test]
+        public void UponDeDuplicatingByEmailAddressRuleFindResidentMethodIgnoresEmailAddressCasingBetweenDBRecordAndRequest()
+        {
+            //// arrange
+
+            // create matching name data
+            var matchingFirstName = _faker.Random.Hash();
+            var matchingLastName = _faker.Random.Hash();
+
+            // matching Email Addresses
+            var matchingEmailAddress1 = _faker.Random.Hash();
+            var matchingEmailAddress2 = _faker.Random.Hash();
+
+            // create request objects
+            var searchParametersLowerCasing = new FindResident
+            {
+                FirstName = matchingFirstName,
+                LastName = matchingLastName,
+                EmailAddress = matchingEmailAddress1.ToLower()
+            };
+
+            var searchParametersUpperCasing = new FindResident
+            {
+                FirstName = matchingFirstName,
+                LastName = matchingLastName,
+                EmailAddress = matchingEmailAddress2.ToUpper()
+            };
+
+            // create Resident with uppercased email
+            var resident1 = EntityHelpers.createResident(id: _faker.Random.Int(10, 1000));
+            resident1.FirstName = matchingFirstName;
+            resident1.LastName = matchingLastName;
+            resident1.EmailAddress = matchingEmailAddress1.ToUpper();
+
+            // create Resident with lowercased email
+            var resident2 = EntityHelpers.createResident(id: resident1.Id + 1);
+            resident2.FirstName = matchingFirstName;
+            resident2.LastName = matchingLastName;
+            resident2.EmailAddress = matchingEmailAddress2.ToLower();
+
+            // add resident entities
+            DatabaseContext.ResidentEntities.Add(resident1);
+            DatabaseContext.ResidentEntities.Add(resident2);
+
+            DatabaseContext.SaveChanges();
+
+
+            //// act
+
+            // call FindResident function with the request containing lowercased email
+            var returnedDuplicateResidentId1 = _classUnderTest.FindResident(searchParametersLowerCasing);
+            bool isResidentDuplicate1 = returnedDuplicateResidentId1 != null;
+
+            // call FindResident function with the request containing uppercased email
+            var returnedDuplicateResidentId2 = _classUnderTest.FindResident(searchParametersUpperCasing);
+            bool isResidentDuplicate2 = returnedDuplicateResidentId2 != null;
+
+
+            //// assert
+
+            // Confirm that correct Req: Lower, Db: Upper match was found
+            isResidentDuplicate1.Should().BeTrue();
+            returnedDuplicateResidentId1.Should().Be(resident1.Id);
+
+            // Confirm that correct Req: Upper, Db: Lower match was found
+            isResidentDuplicate2.Should().BeTrue();
+            returnedDuplicateResidentId2.Should().Be(resident2.Id);
+        }
+
+        [Test]
+        public void UponDeDuplicatingByEmailAddressRuleFindResidentMethodIgnoresEmailAddressLeftAndRightWhitespaceBetweenDBRecordAndRequest()
+        {
+            // arrange
+
+            // initialise testing data
+            var matchingFirstName = _faker.Random.Hash();
+            var matchingLastName = _faker.Random.Hash();
+
+            var matchingEmailAddress = _faker.Random.Hash();
+            var nonTrimmedEmailAddressRequest = $"  {matchingEmailAddress}     ";
+            var nonTrimmedEmailAddressDBRecord = $"     {matchingEmailAddress} ";
+
+            // create request
+            var searchParameters = new FindResident
+            {
+                FirstName = matchingFirstName,
+                LastName = matchingLastName,
+                EmailAddress = nonTrimmedEmailAddressRequest
+            };
+
+            // create entities
+            var duplicateResident = EntityHelpers.createResident(id: _faker.Random.Int(10, 1000));
+            duplicateResident.FirstName = matchingFirstName;
+            duplicateResident.LastName = matchingLastName;
+            duplicateResident.EmailAddress = nonTrimmedEmailAddressDBRecord;
+
+            // add & save
+            DatabaseContext.ResidentEntities.Add(duplicateResident);
+            DatabaseContext.SaveChanges();
+
+            // act
+            var duplicateResidentId = _classUnderTest.FindResident(searchParameters);
+            bool isResidentDuplicate = duplicateResidentId != null;
+
+            // assert
+            isResidentDuplicate.Should().BeTrue();
+            duplicateResidentId.Should().Be(duplicateResident.Id);
+        }
+
+        // Shouldn't need case-insensitivity test for the Phone numbers as they're digits.
+
+        [Test]
+        public void UponDeDuplicatingByPhoneNumbersRuleFindResidentMethodIgnoresPhoneNumbersLeftAndRightWhitespaceBetweenDBRecordAndRequest()
+        {
+            // arrange
+
+            // initialise testing data
+            var matchingFirstName = _faker.Random.Hash();
+            var matchingLastName = _faker.Random.Hash();
+
+            var matchingContactMobileNumber = _faker.Random.Hash();
+            var nonTrimmedContactMobileNumberRequest = $"  {matchingContactMobileNumber}     ";
+            var nonTrimmedContactMobileNumberDBRecord = $"     {matchingContactMobileNumber} ";
+
+            var matchingContactTelephoneNumber = _faker.Random.Hash();
+            var nonTrimmedContactTelephoneNumberRequest = $"  {matchingContactTelephoneNumber}     ";
+            var nonTrimmedContactTelephoneNumberDBRecord = $"     {matchingContactTelephoneNumber} ";
+
+            // create request
+            var searchParametersMobile = new FindResident
+            {
+                FirstName = matchingFirstName,
+                LastName = matchingLastName,
+                ContactMobileNumber = nonTrimmedContactMobileNumberRequest
+            };
+
+            var searchParametersDesk = new FindResident
+            {
+                FirstName = matchingFirstName,
+                LastName = matchingLastName,
+                ContactTelephoneNumber = nonTrimmedContactTelephoneNumberRequest
+            };
+
+            // create entities
+            var duplicateResidentMobile = EntityHelpers.createResident(id: _faker.Random.Int(10, 1000));
+            duplicateResidentMobile.FirstName = matchingFirstName;
+            duplicateResidentMobile.LastName = matchingLastName;
+            duplicateResidentMobile.ContactMobileNumber = nonTrimmedContactMobileNumberDBRecord;
+
+            var duplicateResidentDesk = EntityHelpers.createResident(id: _faker.Random.Int(10, 1000));
+            duplicateResidentDesk.FirstName = matchingFirstName;
+            duplicateResidentDesk.LastName = matchingLastName;
+            duplicateResidentDesk.ContactTelephoneNumber = nonTrimmedContactTelephoneNumberDBRecord;
+
+            DatabaseContext.ResidentEntities.Add(duplicateResidentMobile);
+            DatabaseContext.ResidentEntities.Add(duplicateResidentDesk);
+            DatabaseContext.SaveChanges();
+
+            // act
+            var duplicateResidentIdMobile = _classUnderTest.FindResident(searchParametersMobile);
+            bool isResidentDuplicateMobile = duplicateResidentIdMobile != null;
+
+            var duplicateResidentIdDesk = _classUnderTest.FindResident(searchParametersDesk);
+            bool isResidentDuplicateDesk = duplicateResidentIdDesk != null;
+
+            // assert
+            isResidentDuplicateMobile.Should().BeTrue();
+            duplicateResidentIdMobile.Should().Be(duplicateResidentMobile.Id);
+
+            isResidentDuplicateDesk.Should().BeTrue();
+            duplicateResidentIdDesk.Should().Be(duplicateResidentDesk.Id);
+        }
+
+        [Test]
+        public void UponDeDuplicatingByPhoneNumbersSwitchMatchRuleFindResidentMethodIgnoresPhoneNumbersLeftAndRightWhitespaceBetweenDBRecordAndRequest()
+        {
+            // arrange
+
+            // initialise testing data
+            var matchingFirstName = _faker.Random.Hash();
+            var matchingLastName = _faker.Random.Hash();
+
+            var matchingContactMobileNumber = _faker.Random.Hash();
+            var nonTrimmedContactMobileNumberRequest = $"  {matchingContactMobileNumber}     ";
+            var nonTrimmedContactMobileNumberDBRecord = $"     {matchingContactMobileNumber} ";
+
+            var matchingContactTelephoneNumber = _faker.Random.Hash();
+            var nonTrimmedContactTelephoneNumberRequest = $"     {matchingContactTelephoneNumber}     ";
+            var nonTrimmedContactTelephoneNumberDBRecord = $"        {matchingContactTelephoneNumber}   ";
+
+            // create request
+            var searchParametersMobile = new FindResident
+            {
+                FirstName = matchingFirstName,
+                LastName = matchingLastName,
+                ContactMobileNumber = nonTrimmedContactMobileNumberRequest
+            };
+
+            var searchParametersDesk = new FindResident
+            {
+                FirstName = matchingFirstName,
+                LastName = matchingLastName,
+                ContactTelephoneNumber = nonTrimmedContactTelephoneNumberRequest
+            };
+
+            // create entities
+            // mobile number in desk phone field
+            var duplicateResidentMobile = EntityHelpers.createResident(id: _faker.Random.Int(10, 1000));
+            duplicateResidentMobile.FirstName = matchingFirstName;
+            duplicateResidentMobile.LastName = matchingLastName;
+            duplicateResidentMobile.ContactTelephoneNumber = nonTrimmedContactMobileNumberDBRecord;
+
+            // desk phone number in mobile field
+            var duplicateResidentDesk = EntityHelpers.createResident(id: _faker.Random.Int(10, 1000));
+            duplicateResidentDesk.FirstName = matchingFirstName;
+            duplicateResidentDesk.LastName = matchingLastName;
+            duplicateResidentDesk.ContactMobileNumber = nonTrimmedContactTelephoneNumberDBRecord;
+
+            DatabaseContext.ResidentEntities.Add(duplicateResidentMobile);
+            DatabaseContext.ResidentEntities.Add(duplicateResidentDesk);
+            DatabaseContext.SaveChanges();
+
+            // act
+            var duplicateResidentIdMobile = _classUnderTest.FindResident(searchParametersMobile);
+            bool isResidentDuplicateMobile = duplicateResidentIdMobile != null;
+
+            var duplicateResidentIdDesk = _classUnderTest.FindResident(searchParametersDesk);
+            bool isResidentDuplicateDesk = duplicateResidentIdDesk != null;
+
+            // assert
+            isResidentDuplicateMobile.Should().BeTrue();
+            duplicateResidentIdMobile.Should().Be(duplicateResidentMobile.Id);
+
+            isResidentDuplicateDesk.Should().BeTrue();
+            duplicateResidentIdDesk.Should().Be(duplicateResidentDesk.Id);
+        }
+
         #endregion
+
+        #region Patch, Update & Get
 
         [Test]
         public void PatchResidentReturnsTheUpdatedResident()
@@ -892,5 +1801,7 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             var response = _classUnderTest.GetResident(residentId);
             residentEntity.Should().BeEquivalentTo(response);
         }
+
+        #endregion
     }
 }

@@ -29,6 +29,7 @@ namespace cv19ResSupportV3.V3.Factories.Commands
                 ConsentToShare = helpRequest.ConsentToShare,
                 RecordStatus = helpRequest.RecordStatus,
                 NhsNumber = helpRequest.NhsNumber,
+                NhsCtasId = helpRequest.NhsCtasId
             };
         }
     }
