@@ -169,13 +169,13 @@ namespace cv19ResSupportV3.V3.Gateways
         {
             try
             {
+                var residentsTable = _helpRequestsContext.ResidentEntities;
+
                 if (Predicates.IsNotNullAndNotEmpty(command.NhsNumber))
                 {
-                    var matchingResident = _helpRequestsContext.ResidentEntities
-                        .FirstOrDefault(r => r.NhsNumber.Replace(" ", "") == command.NhsNumber.Replace(" ", ""));
+                    var matchingResident = residentsTable.FirstOrDefault(r => r.NhsNumber.Replace(" ", "") == command.NhsNumber.Replace(" ", ""));
 
-                    if (matchingResident != null)
-                        return matchingResident.Id;
+                    if (matchingResident != null) return matchingResident.Id;
                 }
 
                 // If Fname or Lname are missing, no point checking Uprn or Dob. When these two fields
@@ -183,17 +183,17 @@ namespace cv19ResSupportV3.V3.Gateways
                 if (Predicates.IsNotNullAndNotEmpty(command.FirstName) &&
                     Predicates.IsNotNullAndNotEmpty(command.LastName))
                 {
+                    var matchingNameResidents = residentsTable.Where(r =>
+                        r.FirstName.Trim().ToUpper() == command.FirstName.Trim().ToUpper() &&
+                        r.LastName.Trim().ToUpper() == command.LastName.Trim().ToUpper());
+
                     if (Predicates.IsNotNullAndNotEmpty(command.Uprn))
                     {
-                        var matchingResident = _helpRequestsContext.ResidentEntities
-                            .FirstOrDefault(r =>
-                                //uprn is all numbers, no need to change case
-                                r.Uprn.Trim() == command.Uprn.Trim() &&
-                                r.FirstName.Trim().ToUpper() == command.FirstName.Trim().ToUpper() &&
-                                r.LastName.Trim().ToUpper() == command.LastName.Trim().ToUpper());
+                        var matchingResident = matchingNameResidents.FirstOrDefault(r =>
+                            //uprn is all numbers, no need to change case
+                            r.Uprn.Trim() == command.Uprn.Trim());
 
-                        if (matchingResident != null)
-                            return matchingResident.Id;
+                        if (matchingResident != null) return matchingResident.Id;
                     }
 
                     // Will ignore cases, where for instance DobYear and DobMonth are not empty, but DobDay is empty
@@ -203,17 +203,50 @@ namespace cv19ResSupportV3.V3.Gateways
                         Predicates.IsNotNullAndNotEmpty(command.DobMonth) &&
                         Predicates.IsNotNullAndNotEmpty(command.DobDay))
                     {
-                        var matchingResident = _helpRequestsContext.ResidentEntities
-                            .FirstOrDefault(r =>
-                                r.DobYear.Trim() == command.DobYear.Trim() &&
-                                // adding .ToUpper here in case month is specified with alphabetic characters for some cases (Jan, Dec)
-                                r.DobMonth.Trim().TrimStart('0').ToUpper() == command.DobMonth.Trim().TrimStart('0').ToUpper() &&
-                                r.DobDay.Trim().TrimStart('0') == command.DobDay.Trim().TrimStart('0') &&
-                                r.FirstName.Trim().ToUpper() == command.FirstName.Trim().ToUpper() &&
-                                r.LastName.Trim().ToUpper() == command.LastName.Trim().ToUpper());
+                        var matchingResident = matchingNameResidents.FirstOrDefault(r =>
+                            r.DobYear.Trim() == command.DobYear.Trim() &&
+                            // adding .ToUpper here in case month is specified with alphabetic characters for some cases (Jan, Dec)
+                            r.DobMonth.Trim().TrimStart('0').ToUpper() == command.DobMonth.Trim().TrimStart('0').ToUpper() &&
+                            r.DobDay.Trim().TrimStart('0') == command.DobDay.Trim().TrimStart('0'));
 
-                        if (matchingResident != null)
-                            return matchingResident.Id;
+                        if (matchingResident != null) return matchingResident.Id;
+                    }
+
+                    if (Predicates.IsNotNullAndNotEmpty(command.NhsCtasId))
+                    {
+                        var matchingResident = matchingNameResidents
+                            .Include(r => r.HelpRequests)
+                            .AsEnumerable()
+                            .FirstOrDefault(r =>
+                                r.HelpRequests.Exists(hr => hr.NhsCtasId.Trim().ToUpper() == command.NhsCtasId.Trim().ToUpper()));
+
+                        if (matchingResident != null) return matchingResident.Id;
+                    }
+
+                    if (Predicates.IsNotNullAndNotEmpty(command.EmailAddress))
+                    {
+                        var matchingResident = matchingNameResidents.FirstOrDefault(r =>
+                            r.EmailAddress.Trim().ToUpper() == command.EmailAddress.Trim().ToUpper());
+
+                        if (matchingResident != null) return matchingResident.Id;
+                    }
+
+                    if (Predicates.IsNotNullAndNotEmpty(command.ContactMobileNumber))
+                    {
+                        var matchingResident = matchingNameResidents.FirstOrDefault(r =>
+                            r.ContactMobileNumber.Trim() == command.ContactMobileNumber.Trim() ||
+                            r.ContactTelephoneNumber.Trim() == command.ContactMobileNumber.Trim());
+
+                        if (matchingResident != null) return matchingResident.Id;
+                    }
+
+                    if (Predicates.IsNotNullAndNotEmpty(command.ContactTelephoneNumber))
+                    {
+                        var matchingResident = matchingNameResidents.FirstOrDefault(r =>
+                            r.ContactTelephoneNumber.Trim() == command.ContactTelephoneNumber.Trim() ||
+                            r.ContactMobileNumber.Trim() == command.ContactTelephoneNumber.Trim());
+
+                        if (matchingResident != null) return matchingResident.Id;
                     }
                 }
 

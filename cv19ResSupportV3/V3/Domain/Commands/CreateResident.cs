@@ -25,5 +25,8 @@ namespace cv19ResSupportV3.V3.Domain.Commands
         public bool? ConsentToShare { get; set; }
         public string RecordStatus { get; set; }
         public string NhsNumber { get; set; }
+        // NhsCtasId is used for finding a duplicate record;
+        // it's not being stored on resident entity.
+        public string NhsCtasId { get; set; }
     }
 }
