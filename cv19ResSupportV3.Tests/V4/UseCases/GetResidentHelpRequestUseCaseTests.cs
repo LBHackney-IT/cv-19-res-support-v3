@@ -33,7 +33,7 @@ namespace cv19ResSupportV3.Tests.V4.UseCases
 
             _mockGateway.Setup(gw => gw.GetHelpRequest(It.IsAny<int>())).Returns(gatewayResponse);
 
-            var response = _classUnderTest.Execute(1, 2);
+            var response = _classUnderTest.Execute(1, 2, HelpTypes.Excluded);
 
             _mockGateway.Verify(uc => uc.GetHelpRequest(It.IsAny<int>()), Times.Once);
         }
@@ -50,7 +50,7 @@ namespace cv19ResSupportV3.Tests.V4.UseCases
 
             _mockGateway.Setup(gw => gw.GetHelpRequest(It.IsAny<int>())).Returns(gatewayResponse);
 
-            var response = _classUnderTest.Execute(residentId, 3);
+            var response = _classUnderTest.Execute(residentId, 3, HelpTypes.Excluded);
 
             response.Should().BeEquivalentTo(new ResidentHelpRequestResponse());
         }
@@ -63,7 +63,7 @@ namespace cv19ResSupportV3.Tests.V4.UseCases
 
             _mockGateway.Setup(gw => gw.GetHelpRequest(It.IsAny<int>())).Returns(gatewayResponse);
 
-            var response = _classUnderTest.Execute(residentId, 3);
+            var response = _classUnderTest.Execute(residentId, 3, HelpTypes.Excluded);
 
             response.Should().BeEquivalentTo(gatewayResponse.ToResidentHelpRequestResponse());
         }
@@ -75,7 +75,7 @@ namespace cv19ResSupportV3.Tests.V4.UseCases
 
             _mockGateway.Setup(gw => gw.GetHelpRequest(It.IsAny<int>())).Returns(gatewayResponse);
 
-            var response = _classUnderTest.Execute(2, 3);
+            var response = _classUnderTest.Execute(2, 3, HelpTypes.Excluded);
 
             response.Should().BeEquivalentTo(new ResidentHelpRequestResponse());
         }

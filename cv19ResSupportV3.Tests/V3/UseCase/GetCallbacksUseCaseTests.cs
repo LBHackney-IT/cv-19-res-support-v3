@@ -27,7 +27,7 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
         [Test]
         public void ReturnsPopulatedHelpRequestListIfParamsProvided()
         {
-            var reqParams = new CallbackQuery() { HelpNeeded = "shielding" };
+            var reqParams = new CallbackQuery() { HelpNeeded = "shielding", ExcludedHelpTypes = HelpTypes.Excluded };
             var expectedResponse = new List<HelpRequestWithResident>() { new HelpRequestWithResident() { Id = 3 } };
             _mockGateway.Setup(x => x.GetCallbacks(reqParams)).Returns(expectedResponse);
             var response = _classUnderTest.Execute(reqParams);
@@ -39,7 +39,7 @@ namespace cv19ResSupportV3.Tests.V3.UseCase
         [Test]
         public void DoesNotReturnExcludedHelpTypes()
         {
-            var reqParams = new CallbackQuery();
+            var reqParams = new CallbackQuery() { ExcludedHelpTypes = HelpTypes.Excluded };
             var gatewayResponse = new List<HelpRequestWithResident>() {
                 new HelpRequestWithResident() { Id = 3, HelpNeeded = HelpTypes.Excluded.First() },
                 new HelpRequestWithResident() { Id = 4, HelpNeeded = "Contact Tracing" }

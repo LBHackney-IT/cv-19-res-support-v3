@@ -15,10 +15,10 @@ namespace cv19ResSupportV3.V4.UseCase
         {
             _gateway = gateway;
         }
-        public List<ResidentCaseNote> Execute(int id)
+        public List<ResidentCaseNote> Execute(int id, IEnumerable<string> excludedHelpTypes)
         {
             return _gateway.GetByHelpRequestId(id)
-                ?.Where(x => !HelpTypes.Excluded.Contains(x.HelpNeeded)).ToList();
+                ?.Where(x => !excludedHelpTypes.Contains(x.HelpNeeded)).ToList();
         }
     }
 }

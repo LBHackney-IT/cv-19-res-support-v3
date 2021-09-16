@@ -33,7 +33,7 @@ namespace cv19ResSupportV3.Tests.V4.UseCases
             var gatewayResponse = new Fixture().Build<List<HelpRequestWithResident>>().Create();
 
             _mockGateway.Setup(gw => gw.GetResidentHelpRequests(It.IsAny<int>())).Returns(gatewayResponse);
-            var response = _classUnderTest.Execute(1);
+            var response = _classUnderTest.Execute(1, HelpTypes.Excluded);
             _mockGateway.Verify(uc => uc.GetResidentHelpRequests(It.IsAny<int>()), Times.Once);
             response.Should().BeEquivalentTo(gatewayResponse.ToResidentHelpRequestResponse());
         }
@@ -48,7 +48,7 @@ namespace cv19ResSupportV3.Tests.V4.UseCases
 
             _mockGateway.Setup(gw => gw.GetResidentHelpRequests(It.IsAny<int>())).Returns(gatewayResponse);
 
-            var response = _classUnderTest.Execute(1);
+            var response = _classUnderTest.Execute(1, HelpTypes.Excluded);
 
             response.Should().BeEquivalentTo(gatewayResponse.ToResidentHelpRequestResponse().Where(x => x.HelpNeeded != HelpTypes.Excluded.First()));
         }

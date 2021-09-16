@@ -5,6 +5,7 @@ using cv19ResSupportV3.V3.UseCase.Interfaces;
 using cv19ResSupportV3.V4.Boundary.Requests;
 using cv19ResSupportV3.V4.Boundary.Responses;
 using cv19ResSupportV3.V4.Factories;
+using cv19ResSupportV3.V4.Helpers;
 using cv19ResSupportV3.V4.UseCase.Interface;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -56,9 +57,9 @@ namespace cv19ResSupportV3.V4.Controllers
         [ProducesResponseType(typeof(List<CaseNoteResponse>), StatusCodes.Status201Created)]
         [HttpGet]
         [Route("case-notes")]
-        public IActionResult GetCaseNotesByResidentId([FromRoute(Name = "id")] int residentId)
+        public IActionResult GetCaseNotesByResidentId([FromRoute(Name = "id")] int residentId, string includeType)
         {
-            var response = _getCaseNotesByResidentId.Execute(residentId);
+            var response = _getCaseNotesByResidentId.Execute(residentId, DataFilteringHelpers.GetExcludedHelpTypes(includeType));
             return Ok(response.ToResponse());
         }
 
@@ -71,9 +72,12 @@ namespace cv19ResSupportV3.V4.Controllers
         [ProducesResponseType(typeof(List<CaseNoteResponse>), StatusCodes.Status201Created)]
         [HttpGet]
         [Route("help-requests/{help-request-id}/case-notes")]
-        public IActionResult GetCaseNotesByHelpRequestId([FromRoute(Name = "id")] int residentId, [FromRoute(Name = "help-request-id")] int helpRequestId)
+        public IActionResult GetCaseNotesByHelpRequestId(
+            [FromRoute(Name = "id")] int residentId,
+            [FromRoute(Name = "help-request-id")] int helpRequestId,
+            string includeType)
         {
-            var response = _getCaseNotesByHelpRequestId.Execute(helpRequestId);
+            var response = _getCaseNotesByHelpRequestId.Execute(helpRequestId, DataFilteringHelpers.GetExcludedHelpTypes(includeType));
             return Ok(response.ToResponse());
         }
     }

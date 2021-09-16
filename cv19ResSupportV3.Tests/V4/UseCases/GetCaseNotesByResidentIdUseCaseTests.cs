@@ -30,7 +30,7 @@ namespace cv19ResSupportV3.Tests.V4.UseCases
         {
             var gatewayResponse = new Fixture().Build<ResidentCaseNote>().CreateMany().ToList();
             _mockGateway.Setup(gw => gw.GetByResidentId(It.IsAny<int>())).Returns(gatewayResponse);
-            var response = _classUnderTest.Execute(1);
+            var response = _classUnderTest.Execute(1, HelpTypes.Excluded);
             _mockGateway.Verify(uc => uc.GetByResidentId(1), Times.Once);
             response.Should().BeEquivalentTo(gatewayResponse.ToResponse());
         }
@@ -45,7 +45,7 @@ namespace cv19ResSupportV3.Tests.V4.UseCases
 
             _mockGateway.Setup(gw => gw.GetByResidentId(It.IsAny<int>())).Returns(gatewayResponse);
 
-            var response = _classUnderTest.Execute(1);
+            var response = _classUnderTest.Execute(1, HelpTypes.Excluded);
 
             response.Count.Should().Be(1);
             response.Should().BeEquivalentTo(gatewayResponse.Where(x => x.HelpNeeded != HelpTypes.Excluded.First()));
