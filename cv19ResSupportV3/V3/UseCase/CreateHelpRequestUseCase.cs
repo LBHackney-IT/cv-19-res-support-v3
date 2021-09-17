@@ -22,6 +22,9 @@ namespace cv19ResSupportV3.V3.UseCase
             helpRequestId = _gateway.FindHelpRequestByMetadata("spl_id", command.Metadata);
             if (helpRequestId != null) { return (int) helpRequestId; }
 
+            helpRequestId = _gateway.FindHelpRequestByMetadataAndResidentId("generic_ingestion_id", command.Metadata, residentId);
+            if (helpRequestId != null) { return (int) helpRequestId; }
+
             return _gateway.CreateHelpRequest(residentId, command);
         }
     }
