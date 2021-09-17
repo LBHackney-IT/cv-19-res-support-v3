@@ -89,6 +89,35 @@ namespace cv19ResSupportV3.V3.Gateways
             }
         }
 
+        public int? FindHelpRequestByMetadataAndResidentId(string propertyName, dynamic metadata, int residentId)
+        {
+            string propertyInfo;
+
+            try
+            {
+                propertyInfo = metadata.GetProperty(propertyName).ToString();
+            }
+            catch (Exception e)
+            {
+                return null;
+            };
+
+            try
+            {
+                var helpRequestEntity = _helpRequestsContext.HelpRequestEntities
+                    .FromSqlRaw("select * from help_requests WHERE metadata->>{0} LIKE {1}", propertyName, propertyInfo)
+                    .FirstOrDefault(x => x.ResidentId == residentId);
+
+                return helpRequestEntity?.Id;
+            }
+            catch (Exception e)
+            {
+                LambdaLogger.Log("FindHelpRequestByMetadata error: ");
+                LambdaLogger.Log(e.Message);
+                throw;
+            }
+        }
+
         public List<LookupDomain> GetLookups(LookupQuery command)
         {
             Expression<Func<LookupEntity, bool>> queryLookups = x =>
