@@ -19,7 +19,8 @@ namespace cv19ResSupportV3.Tests.V4.Factories
             var domain = _fixture.Build<ResidentCaseNote>().Create();
             var response = domain.ToResponse();
 
-            response.Should().BeEquivalentTo(new CaseNoteResponse() {
+            response.Should().BeEquivalentTo(new CaseNoteResponse()
+            {
                 CaseNote = domain.CaseNote,
                 HelpRequestId = domain.HelpRequestId,
                 Id = domain.Id,

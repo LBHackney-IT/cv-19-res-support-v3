@@ -1,9 +1,7 @@
 using System.Collections.Generic;
 using cv19ResSupportV3.V3.Boundary.Requests;
-using cv19ResSupportV3.V3.Domain;
 using cv19ResSupportV3.V3.Domain.Commands;
 using cv19ResSupportV3.V3.Factories.Commands;
-using cv19ResSupportV3.V3.Infrastructure;
 using cv19ResSupportV3.V4.UseCase.Enumeration;
 using FluentAssertions;
 using NUnit.Framework;

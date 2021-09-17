@@ -1,11 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using cv19ResSupportV3.V3.Domain;
-using cv19ResSupportV3.V3.Factories;
 using cv19ResSupportV3.V3.Gateways;
 using cv19ResSupportV3.V4.Boundary.Response;
 using cv19ResSupportV3.V4.Factories;
-using cv19ResSupportV3.V4.UseCase.Enumeration;
 using cv19ResSupportV3.V4.UseCase.Interface;
 
 namespace cv19ResSupportV3.V4.UseCase
@@ -31,7 +29,6 @@ namespace cv19ResSupportV3.V4.UseCase
         }
 
         private static bool IsAuthorised(HelpRequestWithResident helpRequest, int residentId, IEnumerable<string> excludedHelpRequestTypes)
-            => helpRequest.ResidentId == residentId &&
-            !excludedHelpRequestTypes.Contains(helpRequest.HelpNeeded);
+            => helpRequest.ResidentId == residentId && !excludedHelpRequestTypes.Contains(helpRequest.HelpNeeded);
     }
 }
