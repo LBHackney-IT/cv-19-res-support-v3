@@ -6,5 +6,6 @@ namespace cv19ResSupportV3.V3.Domain
         public int ResidentId { get; set; }
         public int HelpRequestId { get; set; }
         public string CaseNote { get; set; }
+        public string HelpNeeded { get; set; }
     }
 }

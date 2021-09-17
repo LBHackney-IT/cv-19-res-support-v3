@@ -26,5 +26,6 @@
 
   <ItemGroup>
     <Folder Include="V4\Helpers\" />
+    <Folder Include="V4\UseCase\Enumeration\" />
   </ItemGroup>
 </Project>

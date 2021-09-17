@@ -3,6 +3,7 @@ using cv19ResSupportV3.V3.Domain;
 using cv19ResSupportV3.V3.UseCase.Interfaces;
 using cv19ResSupportV3.V4.Boundary.Requests;
 using cv19ResSupportV3.V4.Controllers;
+using cv19ResSupportV3.V4.UseCase.Enumeration;
 using cv19ResSupportV3.V4.UseCase.Interface;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
@@ -44,18 +45,18 @@ namespace cv19ResSupportV3.Tests.V4.Controllers
         [Test]
         public void GetByResidentIdReturnsResponseWithStatus()
         {
-            _getCaseNotesByResidentIdUseCase.Setup(uc => uc.Execute(It.IsAny<int>()))
+            _getCaseNotesByResidentIdUseCase.Setup(uc => uc.Execute(It.IsAny<int>(), HelpTypes.Excluded))
                 .Returns(new List<ResidentCaseNote>() { new ResidentCaseNote() { Id = 1 } });
-            var response = _classUnderTest.GetCaseNotesByResidentId(1) as OkObjectResult;
+            var response = _classUnderTest.GetCaseNotesByResidentId(1, null) as OkObjectResult;
             response.StatusCode.Should().Be(200);
         }
 
         [Test]
         public void GetByHelpRequestIdReturnsResponseWithStatus()
         {
-            _getCaseNotesByHelpRequestIdUseCase.Setup(uc => uc.Execute(It.IsAny<int>()))
+            _getCaseNotesByHelpRequestIdUseCase.Setup(uc => uc.Execute(It.IsAny<int>(), HelpTypes.Excluded))
                 .Returns(new List<ResidentCaseNote>() { new ResidentCaseNote() { Id = 1 } });
-            var response = _classUnderTest.GetCaseNotesByHelpRequestId(1, 1) as OkObjectResult;
+            var response = _classUnderTest.GetCaseNotesByHelpRequestId(1, 1, null) as OkObjectResult;
             response.StatusCode.Should().Be(200);
         }
     }

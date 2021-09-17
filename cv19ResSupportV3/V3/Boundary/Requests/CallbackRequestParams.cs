@@ -12,5 +12,7 @@ namespace cv19ResSupportV3.V3.Boundary.Requests
         /// </summary>
         /// <example>Contact Tracing</example>
         public string HelpNeeded { get; set; }
+
+        public string IncludeType { get; set; }
     }
 }
