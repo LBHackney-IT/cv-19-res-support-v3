@@ -5,6 +5,7 @@ using Amazon.Lambda.Core;
 using cv19ResSupportV3.V3.Domain;
 using cv19ResSupportV3.V3.Factories;
 using cv19ResSupportV3.V3.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 
 namespace cv19ResSupportV3.V3.Gateways
 {
@@ -102,7 +103,9 @@ namespace cv19ResSupportV3.V3.Gateways
         {
             try
             {
-                return _helpRequestsContext.CaseNoteEntities.Where(x => x.ResidentId == residentId).ToList().ToDomain();
+                return _helpRequestsContext.CaseNoteEntities
+                    .Where(x => x.ResidentId == residentId)
+                    .Include(x => x.HelpRequestEntity).ToList().ToDomain();
             }
             catch (Exception e)
             {

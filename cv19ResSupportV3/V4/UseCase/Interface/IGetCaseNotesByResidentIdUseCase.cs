@@ -5,6 +5,6 @@ namespace cv19ResSupportV3.V4.UseCase.Interface
 {
     public interface IGetCaseNotesByResidentIdUseCase
     {
-        List<ResidentCaseNote> Execute(int id);
+        List<ResidentCaseNote> Execute(int id, IEnumerable<string> excludedHelpTypes);
     }
 }

@@ -98,7 +98,8 @@ namespace cv19ResSupportV3.V3.Factories
                 Id = caseNote.Id,
                 CaseNote = caseNote.CaseNote,
                 HelpRequestId = caseNote.HelpRequestId,
-                ResidentId = caseNote.ResidentId
+                ResidentId = caseNote.ResidentId,
+                HelpNeeded = caseNote.HelpRequestEntity?.HelpNeeded
             };
         }
 

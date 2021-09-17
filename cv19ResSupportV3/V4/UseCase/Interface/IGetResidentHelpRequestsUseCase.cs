@@ -5,6 +5,6 @@ namespace cv19ResSupportV3.V4.UseCase.Interface
 {
     public interface IGetResidentHelpRequestsUseCase
     {
-        List<ResidentHelpRequestResponse> Execute(int id);
+        List<ResidentHelpRequestResponse> Execute(int id, IEnumerable<string> excludedHelpTypes);
     }
 }

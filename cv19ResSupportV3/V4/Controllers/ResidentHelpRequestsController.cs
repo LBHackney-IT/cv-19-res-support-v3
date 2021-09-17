@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using cv19ResSupportV3.V3.Controllers;
 using cv19ResSupportV3.V4.Boundary.Requests;
 using cv19ResSupportV3.V4.Boundary.Response;
+using cv19ResSupportV3.V4.Helpers;
 using cv19ResSupportV3.V4.UseCase.Interface;
 using cv19ResSupportV3.V4.UseCase.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -58,9 +59,12 @@ namespace cv19ResSupportV3.V4.Controllers
         [ProducesResponseType(typeof(ResidentHelpRequestResponse), StatusCodes.Status200OK)]
         [HttpGet]
         [Route("{help-request-id}")]
-        public IActionResult GetResidentHelpRequest([FromRoute(Name = "id")] int id, [FromRoute(Name = "help-request-id")] int helpRequestId)
+        public IActionResult GetResidentHelpRequest(
+            [FromRoute(Name = "id")] int id,
+            [FromRoute(Name = "help-request-id")] int helpRequestId,
+            string includeType)
         {
-            var response = _getResidentHelpRequestUseCase.Execute(id, helpRequestId);
+            var response = _getResidentHelpRequestUseCase.Execute(id, helpRequestId, DataFilteringHelpers.GetExcludedHelpTypes(includeType));
             if (response != null)
                 return Ok(response);
             return (NotFound("Resident or help request not found"));
@@ -74,11 +78,13 @@ namespace cv19ResSupportV3.V4.Controllers
         /// <response code="404">...</response>
         [ProducesResponseType(typeof(List<ResidentHelpRequestResponse>), StatusCodes.Status200OK)]
         [HttpGet]
-        public IActionResult GetResidentHelpRequests(int id)
+        public IActionResult GetResidentHelpRequests(int id, string includeType)
         {
-            var response = _getResidentHelpRequestsUseCase.Execute(id);
+            var response = _getResidentHelpRequestsUseCase.Execute(id, DataFilteringHelpers.GetExcludedHelpTypes(includeType));
+
             if (response != null)
                 return Ok(response);
+
             return (NotFound("Resident not found"));
         }
 

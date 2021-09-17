@@ -1,5 +1,6 @@
 using cv19ResSupportV3.V3.Boundary.Requests;
 using cv19ResSupportV3.V3.Domain.Commands;
+using cv19ResSupportV3.V4.Helpers;
 
 namespace cv19ResSupportV3.V3.Factories.Commands
 {
@@ -10,7 +11,8 @@ namespace cv19ResSupportV3.V3.Factories.Commands
             return new CallbackQuery()
             {
                 Master = callback.Master,
-                HelpNeeded = callback.HelpNeeded
+                HelpNeeded = callback.HelpNeeded,
+                ExcludedHelpTypes = DataFilteringHelpers.GetExcludedHelpTypes(callback.IncludeType),
             };
         }
     }
