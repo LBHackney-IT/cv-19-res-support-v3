@@ -112,7 +112,7 @@ namespace cv19ResSupportV3.V3.Gateways
             }
             catch (Exception e)
             {
-                LambdaLogger.Log("FindHelpRequestByMetadata error: ");
+                LambdaLogger.Log("FindHelpRequestByMetadataAndResidentId error: ");
                 LambdaLogger.Log(e.Message);
                 throw;
             }
