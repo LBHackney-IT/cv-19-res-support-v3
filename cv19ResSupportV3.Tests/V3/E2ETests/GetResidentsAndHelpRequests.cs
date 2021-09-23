@@ -56,6 +56,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             convertedResponse.First().Should().BeEquivalentTo(expectedResponse1, options =>
             {
                 options.Excluding(ex => ex.HelpRequestCalls);
+                options.Excluding(ex => ex.HelpNeededSubtype);
                 return options;
             });
             convertedResponse[1].Should().BeEquivalentTo(expectedResponse2, options =>

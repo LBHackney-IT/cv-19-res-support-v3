@@ -48,6 +48,7 @@ namespace cv19ResSupportV3.V3.Factories.Commands
                 AdviceNotes = helpRequest.AdviceNotes,
                 Metadata = helpRequest.Metadata,
                 HelpNeeded = helpRequest.HelpNeeded,
+                HelpNeededSubtype = helpRequest.HelpNeededSubtype,
                 NhsCtasId = helpRequest.NhsCtasId,
                 AssignedTo = helpRequest.AssignedTo,
                 HelpRequestCalls = helpRequest.HelpRequestCalls.ToEntity()
@@ -95,6 +96,7 @@ namespace cv19ResSupportV3.V3.Factories.Commands
                 AdviceNotes = helpRequest.AdviceNotes,
                 Metadata = helpRequest.Metadata,
                 HelpNeeded = helpRequest.HelpNeeded,
+                HelpNeededSubtype = helpRequest.HelpNeededSubtype,
                 NhsCtasId = helpRequest.NhsCtasId
             };
         }

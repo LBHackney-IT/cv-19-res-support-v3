@@ -17,12 +17,13 @@ namespace cv19ResSupportV3.Tests.V3.Helpers
                 .Create();
             return helpRequestEntity;
         }
-        public static HelpRequestEntity createHelpRequestEntity(int id = 1, int residentId = 1, string helpNeeded = "CallType")
+        public static HelpRequestEntity createHelpRequestEntity(int id = 1, int residentId = 1, string helpNeeded = "CallType", string helpNeededSubtype = "Repairs")
         {
             var helpRequestEntity = Randomm.Build<HelpRequestEntity>()
                 .With(x => x.Id, id)
                 .With(x => x.ResidentId, residentId)
                 .With(x => x.HelpNeeded, helpNeeded)
+                .With(x => x.HelpNeededSubtype, helpNeededSubtype)
                 .Without(h => h.HelpRequestCalls)
                 .Without(h => h.CaseNotes)
                 .Without(h => h.ResidentEntity)

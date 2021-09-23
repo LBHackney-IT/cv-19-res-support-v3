@@ -43,6 +43,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             convertedResponse.Should().BeEquivalentTo(expectedResponse, options =>
             {
                 options.Excluding(ex => ex.HelpRequestCalls);
+                options.Excluding(ex => ex.HelpNeededSubtype);
                 return options;
             });
         }

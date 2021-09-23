@@ -74,6 +74,7 @@ namespace cv19ResSupportV3.V3.Factories
                 CaseNotes = helpRequest.CaseNotes.ToCaseNotesString(),
                 AdviceNotes = helpRequest.AdviceNotes,
                 HelpNeeded = helpRequest.HelpNeeded,
+                HelpNeededSubtype = helpRequest.HelpNeededSubtype,
                 NhsCtasId = helpRequest.NhsCtasId,
                 NhsNumber = helpRequest.ResidentEntity.NhsNumber,
                 AssignedTo = helpRequest.AssignedTo,
