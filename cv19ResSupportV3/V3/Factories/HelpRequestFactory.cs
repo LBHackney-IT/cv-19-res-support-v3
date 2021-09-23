@@ -51,6 +51,7 @@ namespace cv19ResSupportV3.V3.Factories
                 HelpRequestCalls = helpRequest.HelpRequestCalls.ToDomain(),
                 AdviceNotes = helpRequest.AdviceNotes,
                 HelpNeeded = helpRequest.HelpNeeded,
+                HelpNeededSubtype = helpRequest.HelpNeededSubtype,
                 Metadata = helpRequest.Metadata,
                 NhsCtasId = helpRequest.NhsCtasId,
                 AssignedTo = helpRequest.AssignedTo,

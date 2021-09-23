@@ -61,6 +61,7 @@ namespace cv19ResSupportV3.V3.Domain.Commands
         public string CaseNotes { get; set; }
         public string AdviceNotes { get; set; }
         public string HelpNeeded { get; set; }
+        public string HelpNeededSubtype { get; set; }
         public string NhsNumber { get; set; }
         public dynamic Metadata { get; set; }
         public string NhsCtasId { get; set; }

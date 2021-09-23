@@ -103,6 +103,8 @@ namespace cv19ResSupportV3.V3.Infrastructure
 
         [Column("help_needed")] public string HelpNeeded { get; set; }
 
+        [Column("help_needed_subtype")] public string HelpNeededSubtype { get; set; }
+
         [Column("nhs_ctas_id")] public string NhsCtasId { get; set; }
 
         [Column("assigned_staff")] public string AssignedTo { get; set; }
