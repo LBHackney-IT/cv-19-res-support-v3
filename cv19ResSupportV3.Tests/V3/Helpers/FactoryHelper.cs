@@ -70,6 +70,7 @@ namespace cv19ResSupportV3.Tests.V3.Helpers
                 HelpRequestCalls = helpRequest.HelpRequestCalls.ToDomain(),
                 AdviceNotes = helpRequest.AdviceNotes,
                 HelpNeeded = helpRequest.HelpNeeded,
+                HelpNeededSubtype = helpRequest.HelpNeededSubtype,
                 NhsNumber = resident.NhsNumber,
                 NhsCtasId = helpRequest.NhsCtasId,
                 AssignedTo = helpRequest.AssignedTo
