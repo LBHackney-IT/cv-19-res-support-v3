@@ -130,7 +130,7 @@ namespace cv19ResSupportV3
 
         private static void ConfigureDbContext(IServiceCollection services)
         {
-            var connectionString = "Host=127.0.0.1;Port=5432;Database=testdb;Username=postgres;Password=mypassword";
+            var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");
 
             if (connectionString != null && !connectionString.Contains("CommandTimeout")) { connectionString += $";CommandTimeout=900"; }
 
