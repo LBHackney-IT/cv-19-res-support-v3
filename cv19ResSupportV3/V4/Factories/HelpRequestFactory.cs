@@ -177,6 +177,7 @@ namespace cv19ResSupportV3.V4.Factories
                     AdviceNotes = domain.AdviceNotes,
                     Metadata = domain.Metadata,
                     HelpNeeded = domain.HelpNeeded,
+                    HelpNeededSubtype = domain.HelpNeededSubtype,
                     AssignedTo = domain.AssignedTo,
                     NhsCtasId = domain.NhsCtasId,
                     HelpRequestCalls = domain.HelpRequestCalls,
