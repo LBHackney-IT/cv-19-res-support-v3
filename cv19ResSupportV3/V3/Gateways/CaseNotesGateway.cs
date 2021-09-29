@@ -62,6 +62,8 @@ namespace cv19ResSupportV3.V3.Gateways
                 _helpRequestsContext.CaseNoteEntities.Add(rec);
                 _helpRequestsContext.SaveChanges();
 
+                rec.HelpRequestEntity = _helpRequestsContext.HelpRequestEntities.FirstOrDefault(x => x.Id == helpRequestId);
+
                 return rec.ToDomain();
             }
             catch (Exception e)
