@@ -51,6 +51,7 @@ namespace cv19ResSupportV3.V4.Factories
                     CallbackRequired = request.CallbackRequired,
                     AdviceNotes = request.AdviceNotes,
                     HelpNeeded = request.HelpNeeded,
+                    HelpNeededSubtype = request.HelpNeededSubtype,
                     AssignedTo = request.AssignedTo,
                     NhsCtasId = request.NhsCtasId
                 };
@@ -128,6 +129,7 @@ namespace cv19ResSupportV3.V4.Factories
                     CallbackRequired = domain.CallbackRequired,
                     AdviceNotes = domain.AdviceNotes,
                     HelpNeeded = domain.HelpNeeded,
+                    HelpNeededSubtype = domain.HelpNeededSubtype,
                     AssignedTo = domain.AssignedTo,
                     NhsCtasId = domain.NhsCtasId
                 };
