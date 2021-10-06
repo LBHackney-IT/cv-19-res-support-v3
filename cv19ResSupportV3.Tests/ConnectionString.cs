@@ -7,10 +7,10 @@ namespace cv19ResSupportV3.Tests
         public static string TestDatabase()
         {
             return $"Host={Environment.GetEnvironmentVariable("DB_HOST") ?? "127.0.0.1"};" +
-                   $"Port={Environment.GetEnvironmentVariable("DB_PORT") ?? "5432"};" +
+                   $"Port={Environment.GetEnvironmentVariable("DB_PORT") ?? "5433"};" +
                    $"Username={Environment.GetEnvironmentVariable("DB_USERNAME") ?? "postgres"};" +
                    $"Password={Environment.GetEnvironmentVariable("DB_PASSWORD") ?? "mypassword"};" +
-                   $"Database={Environment.GetEnvironmentVariable("DB_DATABASE") ?? "testdb"}";
+                   $"Database={Environment.GetEnvironmentVariable("DB_DATABASE") ?? "devdb"}";
         }
     }
 }

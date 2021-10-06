@@ -19,7 +19,9 @@ This is the API for the third iteration of the resident support request service.
 
 ### Development
 
-To serve the application, run it using your IDE of choice, we use Visual Studio CE and JetBrains Rider on Mac.
+This application is a Visual Studio solution built with C#. It uses Entity Framework.
+Visual Studio or Rider are therefore recommended over VS Code.
+Debugging and Entity Framework migrations will potentially require more steps than below for other IDEs.
 
 The application can also be served locally using docker:
 1.  Add you security credentials to AWS CLI.
@@ -35,7 +37,21 @@ $ aws ecr get-login --no-include-email
 $ make build && make serve
 ```
 
-See further information in [here](./docs/Development.md).
+This will initialise the API on port 3000.
+This may conflict with other applications, it also doesn't provide full debugging capabilities of Visual Studio.
+
+4. Ensure Docker is started and the appSettings connection string matches the cv-19-res-support-v3_dev_database values, which should also be running in Docker.
+
+5. In your Visual Studio/IDE Terminal your current directory should be cv19ResSupportV3.
+
+6. Now apply all migrations: This command is for Visual Studio / Mac. 
+```sh
+$ dotnet ef database update
+```
+
+You can now run the application in full debug mode which will open it on port 5001, allowing breakpoints to be added and hit.
+
+See further information in [here](./docs/Development.md) which contains information on using a development database in AWS.
 
 ### Release process
 
@@ -72,12 +88,6 @@ Documentation on how to do this can be found [here](https://docs.microsoft.com/e
 ```sh
 $ make test
 ```
-
-To run database tests locally (e.g. via Visual Studio) the `CONNECTION_STRING` environment variable will need to be populated with:
-
-`Host=localhost;Database=entitycore;Username=postgres;Password=mypassword"`
-
-Note: The Host name needs to be the name of the stub database docker-compose service, in order to run tests via Docker.
 
 ### Agreed Testing Approach
 - Use nUnit, FluentAssertions and Moq
