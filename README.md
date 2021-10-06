@@ -42,7 +42,7 @@ This may conflict with other applications, it also doesn't provide full debuggin
 
 4. Ensure Docker is started and the appSettings connection string matches the cv-19-res-support-v3_dev_database values, which should also be running in Docker.
 
-5. In your Visual Studio/IDE Terminal your current directory should be cv19ResSupportV3.
+5. In your Visual Studio/IDE Terminal your current directory should be cv19ResSupportV3 which contains the main .csproj file.
 
 6. Now apply all migrations: This command is for Visual Studio / Mac. 
 ```sh
