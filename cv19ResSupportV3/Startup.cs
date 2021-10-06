@@ -130,10 +130,13 @@ namespace cv19ResSupportV3
 
         private void ConfigureDbContext(IServiceCollection services)
         {
-#if DEBUG
-            var connectionString = Configuration.GetConnectionString("DevDocker");
-#else
             var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");
+
+#if DEBUG
+            if (connectionString == null)
+            {
+                connectionString = Configuration.GetConnectionString("DevDocker");
+            }
 #endif
 
             if (connectionString != null && !connectionString.Contains("CommandTimeout")) { connectionString += $";CommandTimeout=900"; }
