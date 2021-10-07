@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using cv19ResSupportV3.V3.Domain;
 
 namespace cv19ResSupportV3.V3.Infrastructure
 {
@@ -19,6 +18,8 @@ namespace cv19ResSupportV3.V3.Infrastructure
         [Key] public int Id { get; set; }
 
         [Column("resident_id")] [ForeignKey("ResidentEntity")] public int ResidentId { get; set; }
+
+        [Column("call_handler_id")] [ForeignKey("CallHandlerEntity")] public int? CallHandlerId { get; set; }
 
         [Column("is_on_behalf")] public bool? IsOnBehalf { get; set; }
 
@@ -112,6 +113,7 @@ namespace cv19ResSupportV3.V3.Infrastructure
         [Column("metadata", TypeName = "jsonb")] public dynamic Metadata { get; set; }
 
         public ResidentEntity ResidentEntity { get; set; }
+        public CallHandlerEntity CallHandlerEntity { get; set; }
         public List<CaseNoteEntity> CaseNotes { get; set; }
         public List<HelpRequestCallEntity> HelpRequestCalls { get; set; }
 

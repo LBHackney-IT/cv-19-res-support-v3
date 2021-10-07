@@ -14,7 +14,7 @@ namespace cv19ResSupportV3.V3.Infrastructure
         public DbSet<HelpRequestEntity> HelpRequestEntities { get; set; }
         public DbSet<ResidentEntity> ResidentEntities { get; set; }
         public DbSet<CaseNoteEntity> CaseNoteEntities { get; set; }
-
+        public DbSet<CallHandlerEntity> CallHandlerEntities { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -96,6 +96,8 @@ namespace cv19ResSupportV3.V3.Infrastructure
                        entity.Property(e => e.Id).HasColumnName("id");
                        entity.Property(e => e.ResidentId)
                            .HasColumnName("resident_id");
+                       entity.Property(e => e.CallHandlerId)
+                           .HasColumnName("call_handler_id");
                        entity.Property(e => e.IsOnBehalf)
                            .HasColumnName("is_on_behalf")
                            .HasColumnType("bool");
@@ -214,7 +216,21 @@ namespace cv19ResSupportV3.V3.Infrastructure
                            .HasColumnType("character varying");
                        entity.HasOne(e => e.ResidentEntity)
                            .WithMany(c => c.HelpRequests);
+                       entity.HasOne(e => e.CallHandlerEntity);
                    }
+               );
+            modelBuilder.Entity<CallHandlerEntity>(entity =>
+            {
+                entity.ToTable("call_handlers");
+                entity.HasKey(callHandler => new { callHandler.Id });
+                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Name)
+                    .HasColumnName("name")
+                    .HasColumnType("character varying");
+                entity.Property(e => e.Email)
+                    .HasColumnName("email")
+                    .HasColumnType("character varying");
+            }
                );
             modelBuilder.Entity<CaseNoteEntity>(entity =>
                 {

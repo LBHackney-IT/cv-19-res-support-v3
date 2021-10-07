@@ -24,9 +24,11 @@ namespace cv19ResSupportV3.Tests.V3.Helpers
                 .With(x => x.ResidentId, residentId)
                 .With(x => x.HelpNeeded, helpNeeded)
                 .With(x => x.HelpNeededSubtype, helpNeededSubtype)
+                .Without(x => x.CallHandlerId)
                 .Without(h => h.HelpRequestCalls)
                 .Without(h => h.CaseNotes)
                 .Without(h => h.ResidentEntity)
+                .Without(h => h.CallHandlerEntity)
                 .Create();
             return helpRequestEntity;
         }
@@ -37,6 +39,8 @@ namespace cv19ResSupportV3.Tests.V3.Helpers
                 .Without(h => h.HelpRequestCalls)
                 .Without(h => h.CaseNotes)
                 .Without(h => h.ResidentEntity)
+                .Without(h => h.CallHandlerEntity)
+                .Without(h => h.CallHandlerId)
                 .With(x => x.ResidentId, residentId)
                 .CreateMany(count)
                 .ToList();

@@ -196,6 +196,8 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             {
                 options.Excluding(x => x.CaseNotes);
                 options.Excluding(x => x.ResidentEntity);
+                options.Excluding(x => x.CallHandlerEntity);
+                options.Excluding(x => x.CallHandlerId);
                 return options;
             });
 
@@ -228,6 +230,8 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             {
                 options.Excluding(x => x.CaseNotes);
                 options.Excluding(x => x.ResidentEntity);
+                options.Excluding(x => x.CallHandlerEntity);
+                options.Excluding(x => x.CallHandlerId);
                 return options;
             });
         }
