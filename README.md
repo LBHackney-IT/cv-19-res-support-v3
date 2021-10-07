@@ -38,7 +38,7 @@ $ make build && make serve
 ```
 
 This will initialise the API on port 3000.
-This may conflict with other applications, it also doesn't provide full debugging capabilities of Visual Studio.
+This may conflict with other applications, it also doesn't provide debugging capabilities of Visual Studio.
 
 4. Ensure Docker is started and the appSettings connection string matches the cv-19-res-support-v3_dev_database values, which should also be running in Docker.
 
@@ -49,7 +49,7 @@ This may conflict with other applications, it also doesn't provide full debuggin
 $ dotnet ef database update
 ```
 
-You can now run the application in full debug mode which will open it on port 5001, allowing breakpoints to be added and hit.
+You can now run the application in debug mode which will open it on port 5000, allowing breakpoints to be added and hit.
 
 See further information in [here](./docs/Development.md) which contains information on using a development database in AWS.
 
