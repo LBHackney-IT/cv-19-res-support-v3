@@ -137,6 +137,8 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             {
                 options.Excluding(ex => ex.CaseNotes);
                 options.Excluding(ex => ex.ResidentEntity);
+                options.Excluding(ex => ex.CallHandlerEntity);
+                options.Excluding(ex => ex.CallHandlerId);
                 return options;
             });
         }
