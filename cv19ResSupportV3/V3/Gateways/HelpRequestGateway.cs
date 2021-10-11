@@ -336,6 +336,12 @@ namespace cv19ResSupportV3.V3.Gateways
                     rec.HelpNeeded = command.HelpNeeded;
                 }
 
+                var assignedToHandler =
+                    _helpRequestsContext.CallHandlerEntities.FirstOrDefault(x => x.Name == command.AssignedTo);
+
+                rec.CallHandlerId = assignedToHandler?.Id;
+                rec.AssignedTo = assignedToHandler?.Name;
+
                 _helpRequestsContext.SaveChanges();
             }
             catch (Exception e)
