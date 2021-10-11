@@ -1,14 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using Amazon.Lambda.Core;
 using cv19ResSupportV3.V3.Domain;
-using cv19ResSupportV3.V3.Domain.Commands;
 using cv19ResSupportV3.V4.Factories;
 using cv19ResSupportV3.V3.Infrastructure;
-using cv19ResSupportV3.V4.Helpers;
-using Microsoft.EntityFrameworkCore;
 
 namespace cv19ResSupportV3.V3.Gateways
 {
