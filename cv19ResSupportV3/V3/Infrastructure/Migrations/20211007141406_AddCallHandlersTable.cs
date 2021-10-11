@@ -59,3 +59,4 @@ namespace cv19ResSupportV3.V3.Infrastructure.Migrations
         }
     }
 }
+
