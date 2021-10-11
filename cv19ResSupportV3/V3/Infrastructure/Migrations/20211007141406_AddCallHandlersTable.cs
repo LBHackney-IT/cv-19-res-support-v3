@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace cv19ResSupportV3.V3.Infrastructure.Migrations
@@ -59,4 +59,3 @@ namespace cv19ResSupportV3.V3.Infrastructure.Migrations
         }
     }
 }
-
