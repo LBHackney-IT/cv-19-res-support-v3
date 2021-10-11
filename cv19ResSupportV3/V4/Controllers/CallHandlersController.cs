@@ -10,7 +10,7 @@ using cv19ResSupportV3.V4.UseCase.Interfaces;
 namespace cv19ResSupportV3.V4.Controllers
 {
     [ApiController]
-    [Route("api/v4/callhandlers")]
+    [Route("api/v4/call-handlers")]
     [Produces("application/json")]
     // Check service api version information
     [ApiVersion("3.0")]
