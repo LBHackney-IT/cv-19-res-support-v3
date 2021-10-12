@@ -35,5 +35,15 @@ namespace cv19ResSupportV3.Tests.V4.Controllers
             var result = _classUnderTest.GetCallHandlers() as OkObjectResult;
             result.StatusCode.Should().Be(200);
         }
+
+        [Test]
+        public void GetEmptyListResponseWithStatus()
+        {
+            var response = new List<CallHandlerResponseBoundary>();
+            _getCallHandlersUseCase.Setup(uc => uc.Execute())
+                .Returns(response);
+            var result = _classUnderTest.GetCallHandlers() as OkObjectResult;
+            result.StatusCode.Should().Be(200);
+        }
     }
 }
