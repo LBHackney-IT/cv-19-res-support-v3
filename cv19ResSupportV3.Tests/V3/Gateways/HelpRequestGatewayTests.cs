@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using AutoFixture;
 using cv19ResSupportV3.Tests.V3.Helpers;
@@ -182,18 +183,23 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             var resident = EntityHelpers.createResident();
             var residentId = 809;
             resident.Id = residentId;
+
+            var callhandlers = new List<CallHandlerEntity>();
             var helpRequests = EntityHelpers.createHelpRequestEntities();
             var id = 0;
             foreach (var request in helpRequests)
             {
+                var callHandler = new CallHandlerEntity() { Id = id, Name = "Jeremy" };
+                callhandlers.Add(callHandler);
                 request.InitialCallbackCompleted = true;
                 request.CallbackRequired = true;
                 request.HelpNeeded = "help request";
                 request.ResidentId = residentId;
-                request.CallHandlerEntity = new CallHandlerEntity() { Id = id, Name = "Jeremy" };
+                request.CallHandlerEntity = callHandler;
                 id++;
             }
 
+            DatabaseContext.CallHandlerEntities.AddRange(callhandlers);
             DatabaseContext.ResidentEntities.Add(resident);
             DatabaseContext.HelpRequestEntities.AddRange(helpRequests);
             DatabaseContext.SaveChanges();
