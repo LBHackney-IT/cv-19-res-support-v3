@@ -52,7 +52,6 @@ namespace cv19ResSupportV3.V4.Factories
                     AdviceNotes = request.AdviceNotes,
                     HelpNeeded = request.HelpNeeded,
                     HelpNeededSubtype = request.HelpNeededSubtype,
-                    AssignedTo = request.AssignedTo,
                     NhsCtasId = request.NhsCtasId
                 };
         }

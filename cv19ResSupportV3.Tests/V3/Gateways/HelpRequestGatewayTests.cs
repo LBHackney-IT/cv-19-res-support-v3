@@ -129,7 +129,7 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             var id = 120;
             var residentId = 101;
             DatabaseContext.ResidentEntities.Add(EntityHelpers.createResident(residentId));
-            var helpRequestEntity = EntityHelpers.createHelpRequestEntity(id, residentId);
+            var helpRequestEntity = EntityHelpers.createHelpRequestEntity(id, residentId, callHandler: new CallHandlerEntity() { Id = 1, Name = "Test" });
             DatabaseContext.HelpRequestEntities.Add(helpRequestEntity);
             DatabaseContext.SaveChanges();
             var response = _classUnderTest.GetHelpRequest(id);
@@ -141,6 +141,8 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
                 options.Excluding(ex => ex.CallHandlerId);
                 return options;
             });
+
+            response.AssignedTo.Should().BeEquivalentTo(helpRequestEntity.CallHandlerEntity.Name);
         }
 
         [Test]
@@ -181,12 +183,15 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             var residentId = 809;
             resident.Id = residentId;
             var helpRequests = EntityHelpers.createHelpRequestEntities();
+            var id = 0;
             foreach (var request in helpRequests)
             {
                 request.InitialCallbackCompleted = true;
                 request.CallbackRequired = true;
                 request.HelpNeeded = "help request";
                 request.ResidentId = residentId;
+                request.CallHandlerEntity = new CallHandlerEntity() { Id = id, Name = "Jeremy" };
+                id++;
             }
 
             DatabaseContext.ResidentEntities.Add(resident);
@@ -201,6 +206,11 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
                 options.Excluding(x => x.CallHandlerEntity);
                 options.Excluding(x => x.CallHandlerId);
                 return options;
+            });
+
+            response.ForEach(r =>
+            {
+                r.AssignedTo.Should().BeEquivalentTo(helpRequests.FirstOrDefault(h => h.Id == r.Id).CallHandlerEntity.Name);
             });
 
             var hrParams2 = new CallbackQuery() { HelpNeeded = "something else" };
@@ -228,14 +238,8 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             DatabaseContext.SaveChanges();
             var hrParams = new CallbackQuery() { HelpNeeded = "shielding" };
             var response = _classUnderTest.GetCallbacks(hrParams);
-            response.Should().BeEquivalentTo(helpRequests, options =>
-            {
-                options.Excluding(x => x.CaseNotes);
-                options.Excluding(x => x.ResidentEntity);
-                options.Excluding(x => x.CallHandlerEntity);
-                options.Excluding(x => x.CallHandlerId);
-                return options;
-            });
+
+            response.Count.Should().Be(helpRequests.Count);
         }
 
         [Test]
@@ -257,11 +261,6 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
             var response = _classUnderTest.GetCallbacks(new CallbackQuery() { HelpNeeded = "" });
 
             response.First().HelpRequestCalls.Count.Should().Be(3);
-            response.First().HelpRequestCalls.Should().BeEquivalentTo(calls, options =>
-            {
-                options.Excluding(ex => ex.HelpRequestEntity);
-                return options;
-            });
         }
 
         [Test]
