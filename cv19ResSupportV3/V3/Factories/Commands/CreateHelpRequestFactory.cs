@@ -50,7 +50,6 @@ namespace cv19ResSupportV3.V3.Factories.Commands
                 HelpNeeded = helpRequest.HelpNeeded,
                 HelpNeededSubtype = helpRequest.HelpNeededSubtype,
                 NhsCtasId = helpRequest.NhsCtasId,
-                AssignedTo = helpRequest.AssignedTo,
                 HelpRequestCalls = helpRequest.HelpRequestCalls.ToEntity()
             };
         }

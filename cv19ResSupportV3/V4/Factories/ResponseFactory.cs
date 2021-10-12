@@ -62,7 +62,7 @@ namespace cv19ResSupportV3.V4.Factories
                 HelpNeededSubtype = hr.HelpNeededSubtype,
                 Metadata = hr.Metadata,
                 NhsCtasId = hr.NhsCtasId,
-                AssignedTo = hr.AssignedTo,
+                AssignedTo = hr.CallHandlerEntity?.Name,
                 HelpRequestCalls = hr.HelpRequestCalls.ToDomain()
             };
 

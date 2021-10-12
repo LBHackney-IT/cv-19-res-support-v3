@@ -108,8 +108,6 @@ namespace cv19ResSupportV3.V3.Infrastructure
 
         [Column("nhs_ctas_id")] public string NhsCtasId { get; set; }
 
-        [Column("assigned_staff")] public string AssignedTo { get; set; }
-
         [Column("metadata", TypeName = "jsonb")] public dynamic Metadata { get; set; }
 
         public ResidentEntity ResidentEntity { get; set; }

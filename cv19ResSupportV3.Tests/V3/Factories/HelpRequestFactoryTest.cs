@@ -16,6 +16,7 @@ namespace cv19ResSupportV3.Tests.V3.Factories
             entityObject.Should().BeEquivalentTo(domainObject, options =>
             {
                 options.Excluding(x => x.CaseNotes);
+                options.Excluding(x => x.AssignedTo);
                 return options;
             });
         }

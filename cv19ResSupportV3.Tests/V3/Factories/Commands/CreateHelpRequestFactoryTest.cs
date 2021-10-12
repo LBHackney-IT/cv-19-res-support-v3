@@ -17,7 +17,11 @@ namespace cv19ResSupportV3.Tests.V3.Factories.Commands
         {
             var entity = _fixture.Build<CreateHelpRequest>().Create();
             var command = entity.ToEntity();
-            command.Should().BeEquivalentTo(entity);
+            command.Should().BeEquivalentTo(entity, options =>
+            {
+                options.Excluding(ex => ex.AssignedTo);
+                return options;
+            });
             command.Should().BeOfType<HelpRequestEntity>();
         }
         [Test]

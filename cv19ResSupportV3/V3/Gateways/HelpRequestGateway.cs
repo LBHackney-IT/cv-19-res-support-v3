@@ -167,6 +167,7 @@ namespace cv19ResSupportV3.V3.Gateways
                     .Include(x => x.HelpRequestCalls)
                     .Include(x => x.ResidentEntity)
                     .Include(x => x.CaseNotes)
+                    .Include(x => x.CallHandlerEntity)
                     .FirstOrDefault(x => x.Id == id);
                 return helpRequest?.ToHelpRequestWithResidentDomain();
             }
@@ -206,6 +207,7 @@ namespace cv19ResSupportV3.V3.Gateways
                     .Include(x => x.HelpRequestCalls)
                     .Include(x => x.CaseNotes)
                     .Include(x => x.ResidentEntity)
+                    .Include(x => x.CallHandlerEntity)
                     .Where(queryPostcode)
                     .Where(queryFirstName)
                     .Where(queryLastName)
@@ -328,19 +330,15 @@ namespace cv19ResSupportV3.V3.Gateways
 
                 if (command.AssignedTo != null)
                 {
-                    rec.AssignedTo = command.AssignedTo;
+                    rec.CallHandlerId =
+                        _helpRequestsContext.CallHandlerEntities.FirstOrDefault(x => x.Name == command.AssignedTo)
+                        ?.Id;
                 }
 
                 if (command.HelpNeeded != null)
                 {
                     rec.HelpNeeded = command.HelpNeeded;
                 }
-
-                var assignedToHandler =
-                    _helpRequestsContext.CallHandlerEntities.FirstOrDefault(x => x.Name == command.AssignedTo);
-
-                rec.CallHandlerId = assignedToHandler?.Id;
-                rec.AssignedTo = assignedToHandler?.Name;
 
                 _helpRequestsContext.SaveChanges();
             }
@@ -364,6 +362,7 @@ namespace cv19ResSupportV3.V3.Gateways
             {
                 var response = _helpRequestsContext.HelpRequestEntities.Include(x => x.HelpRequestCalls)
                     .Include(x => x.ResidentEntity)
+                    .Include(x => x.CallHandlerEntity)
                     .Include(x => x.CaseNotes)
                     .Where(x => (x.CallbackRequired == true || x.CallbackRequired == null ||
                                  (x.InitialCallbackCompleted == false && x.CallbackRequired == false)))
@@ -388,6 +387,7 @@ namespace cv19ResSupportV3.V3.Gateways
                 var helpRequests = _helpRequestsContext.HelpRequestEntities
                     .Include(x => x.HelpRequestCalls)
                     .Include(x => x.ResidentEntity)
+                    .Include(x => x.CallHandlerEntity)
                     .Include(x => x.CaseNotes)
                     .Where(x => x.ResidentId == id);
                 return helpRequests.Select(hr => hr.ToHelpRequestWithResidentDomain()).ToList();
@@ -399,32 +399,5 @@ namespace cv19ResSupportV3.V3.Gateways
                 throw;
             }
         }
-
-        //        private void SetRecordStatus(HelpRequestEntityOld request)
-        //        {
-        //            request.RecordStatus = "MASTER";
-        //            var duplicates = _helpRequestsContext.HelpRequestEntities
-        //                .Where(x => x.Uprn == request.Uprn && x.DobMonth == request.DobMonth
-        //                                                   && x.DobDay == request.DobDay && x.DobYear == request.DobYear &&
-        //                                                   x.ContactTelephoneNumber == request.ContactTelephoneNumber &&
-        //                                                   x.ContactMobileNumber == request.ContactMobileNumber).ToList();
-        //            if (duplicates.Count > 0)
-        //            {
-        //                foreach (var record in duplicates)
-        //                {
-        //                    var rec = _helpRequestsContext.HelpRequestEntities.Find(record.Id);
-        //                    rec.RecordStatus = "DUPLICATE";
-        //                }
-        //            }
-        //            else
-        //            {
-        //                var exceptions = _helpRequestsContext.HelpRequestEntities
-        //                    .Where(x => x.Uprn == request.Uprn).ToList();
-        //                if (exceptions.Count > 0)
-        //                {
-        //                    request.RecordStatus = "EXCEPTION";
-        //                }
-        //            }
-        //        }
     }
 }

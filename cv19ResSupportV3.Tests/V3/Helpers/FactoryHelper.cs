@@ -73,7 +73,7 @@ namespace cv19ResSupportV3.Tests.V3.Helpers
                 HelpNeededSubtype = helpRequest.HelpNeededSubtype,
                 NhsNumber = resident.NhsNumber,
                 NhsCtasId = helpRequest.NhsCtasId,
-                AssignedTo = helpRequest.AssignedTo
+                AssignedTo = helpRequest.CallHandlerEntity?.Name
             };
         }
     }
