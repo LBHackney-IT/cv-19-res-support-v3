@@ -10,7 +10,7 @@ namespace cv19ResSupportV3.V4.Factories
     {
         public static CallHandlerResponseBoundary ToResponse(this CallHandler domain)
         {
-            return domain == null ? null : new CallHandlerResponseBoundary
+            return new CallHandlerResponseBoundary
             {
                 Id = domain.Id,
                 Name = domain.Name,
