@@ -30,15 +30,12 @@ namespace cv19ResSupportV3.V4.Controllers
         /// Gets all call handlers.
         /// </summary>
         /// <response code="200">Call handlers are returned</response>
-        /// <response code="404">...</response>
         [ProducesResponseType(typeof(List<CallHandlerResponseBoundary>), StatusCodes.Status200OK)]
         [HttpGet]
         public IActionResult GetCallHandlers()
         {
             var response = _getCallHandlersUseCase.Execute();
-            if (response != null)
-                return Ok(response);
-            return (NotFound("No call handlers found"));
+            return Ok(response);
         }
     }
 }
