@@ -54,7 +54,7 @@ namespace cv19ResSupportV3.V3.Factories
                 HelpNeededSubtype = helpRequest.HelpNeededSubtype,
                 Metadata = helpRequest.Metadata,
                 NhsCtasId = helpRequest.NhsCtasId,
-                AssignedTo = helpRequest.AssignedTo,
+                AssignedTo = helpRequest.CallHandlerEntity?.Name,
             };
         }
         public static Resident ToDomain(this ResidentEntity resident)

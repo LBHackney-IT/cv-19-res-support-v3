@@ -17,13 +17,15 @@ namespace cv19ResSupportV3.Tests.V3.Helpers
                 .Create();
             return helpRequestEntity;
         }
-        public static HelpRequestEntity createHelpRequestEntity(int id = 1, int residentId = 1, string helpNeeded = "CallType", string helpNeededSubtype = "Repairs")
+        public static HelpRequestEntity createHelpRequestEntity(int id = 1, int residentId = 1, string helpNeeded = "CallType", string helpNeededSubtype = "Repairs", CallHandlerEntity callHandler = null)
         {
             var helpRequestEntity = Randomm.Build<HelpRequestEntity>()
                 .With(x => x.Id, id)
                 .With(x => x.ResidentId, residentId)
                 .With(x => x.HelpNeeded, helpNeeded)
                 .With(x => x.HelpNeededSubtype, helpNeededSubtype)
+                .With(x => x.CallHandlerEntity, callHandler)
+                .Without(x => x.CallHandlerId)
                 .Without(h => h.HelpRequestCalls)
                 .Without(h => h.CaseNotes)
                 .Without(h => h.ResidentEntity)
@@ -37,6 +39,8 @@ namespace cv19ResSupportV3.Tests.V3.Helpers
                 .Without(h => h.HelpRequestCalls)
                 .Without(h => h.CaseNotes)
                 .Without(h => h.ResidentEntity)
+                .Without(h => h.CallHandlerEntity)
+                .Without(h => h.CallHandlerId)
                 .With(x => x.ResidentId, residentId)
                 .CreateMany(count)
                 .ToList();

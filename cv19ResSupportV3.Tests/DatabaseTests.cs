@@ -39,6 +39,8 @@ namespace cv19ResSupportV3.Tests
             DatabaseContext.HelpRequestCallEntities.RemoveRange(addedCalls);
             var addedEntities = DatabaseContext.HelpRequestEntities;
             DatabaseContext.HelpRequestEntities.RemoveRange(addedEntities);
+            var addedCallHandlers = DatabaseContext.CallHandlerEntities;
+            DatabaseContext.CallHandlerEntities.RemoveRange(addedCallHandlers);
             var addedLookups = DatabaseContext.Lookups;
             DatabaseContext.Lookups.RemoveRange(addedLookups);
             try

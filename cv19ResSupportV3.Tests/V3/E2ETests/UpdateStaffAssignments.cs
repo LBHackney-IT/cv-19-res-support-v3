@@ -32,7 +32,7 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
         {
             var residentEntity = DatabaseContext.ResidentEntities.Add(EntityHelpers.createResident());
             var helpRequestEntity = DatabaseContext.HelpRequestEntities.Add(EntityHelpers.createHelpRequestEntity(123, residentEntity.Entity.Id));
-            helpRequestEntity.Entity.AssignedTo = null;
+            helpRequestEntity.Entity.CallHandlerEntity = null;
             helpRequestEntity.Entity.HelpNeeded = "Help Request";
             helpRequestEntity.Entity.CallbackRequired = true;
             helpRequestEntity.Entity.InitialCallbackCompleted = false;

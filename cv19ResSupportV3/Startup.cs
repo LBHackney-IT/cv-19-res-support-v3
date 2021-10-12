@@ -150,6 +150,7 @@ namespace cv19ResSupportV3
             services.AddScoped<IHelpRequestGateway, HelpRequestGateway>();
             services.AddScoped<IHelpRequestCallGateway, HelpRequestCallGateway>();
             services.AddScoped<IResidentGateway, ResidentGateway>();
+            services.AddScoped<ICallHandlerGateway, CallHandlerGateway>();
             services.AddScoped<ICaseNotesGateway, CaseNotesGateway>();
         }
 
@@ -183,6 +184,7 @@ namespace cv19ResSupportV3
             services.AddScoped<IPatchResidentHelpRequestUseCase, PatchResidentHelpRequestUseCase>();
             services.AddScoped<IGetCaseNotesByResidentIdUseCase, GetCaseNotesByResidentIdUseCase>();
             services.AddScoped<IGetCaseNotesByHelpRequestIdUseCase, GetCaseNotesByHelpRequestIdUseCase>();
+            services.AddScoped<IGetCallHandlersUseCase, GetCallHandlersUseCase>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
