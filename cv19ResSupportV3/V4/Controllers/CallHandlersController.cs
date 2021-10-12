@@ -27,10 +27,9 @@ namespace cv19ResSupportV3.V4.Controllers
 
 
         /// <summary>
-        /// Gets a resident with the id specified.
+        /// Gets all call handlers.
         /// </summary>
-        /// <param name="id" example="123">Resident id</param>
-        /// <response code="200">Resident is returned</response>
+        /// <response code="200">Call handlers are returned</response>
         /// <response code="404">...</response>
         /// <response code="400">...</response>
         [ProducesResponseType(typeof(List<CallHandlerResponseBoundary>), StatusCodes.Status200OK)]
