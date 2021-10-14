@@ -187,9 +187,8 @@ namespace cv19ResSupportV3.Tests.V3.E2ETests
             statusCode.Should().Be(200);
             var content = response.Result.Content;
             var stringContent = await content.ReadAsStringAsync().ConfigureAwait(true);
-            var convertedResponse = JsonConvert.DeserializeObject<HelpRequestCreateResponse>(stringContent);
             var updatedEntity = DatabaseContext.HelpRequestEntities.First();
-            updatedEntity.AssignedTo.Should().BeEquivalentTo(changeValue);
+            updatedEntity.CallHandlerEntity.Name.Should().BeEquivalentTo(changeValue);
         }
     }
 }

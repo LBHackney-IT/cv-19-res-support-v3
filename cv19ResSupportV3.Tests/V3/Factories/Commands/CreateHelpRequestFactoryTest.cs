@@ -15,10 +15,9 @@ namespace cv19ResSupportV3.Tests.V3.Factories.Commands
         [Test]
         public void CanMapCreateHelpRequestCommandToHelpRequestEntity()
         {
-            var entity = _fixture.Build<CreateHelpRequest>().Create();
-            var command = entity.ToEntity();
-            command.Should().BeEquivalentTo(entity);
-            command.Should().BeOfType<HelpRequestEntity>();
+            var command = _fixture.Build<CreateHelpRequest>().Create();
+            var entity = command.ToEntity();
+            entity.Should().BeOfType<HelpRequestEntity>();
         }
         [Test]
         public void CanMapHelpRequestCreateRequestBoundaryToCreateResidentAndHelpRequest()

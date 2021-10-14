@@ -35,7 +35,7 @@ namespace cv19ResSupportV3
         private const string ApiName = "cv-19-resident-support";
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public static void ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
             services
                 .AddMvc(setupAction =>
@@ -128,9 +128,16 @@ namespace cv19ResSupportV3
             RegisterUseCases(services);
         }
 
-        private static void ConfigureDbContext(IServiceCollection services)
+        private void ConfigureDbContext(IServiceCollection services)
         {
             var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");
+
+#if DEBUG
+            if (connectionString == null)
+            {
+                connectionString = Configuration.GetConnectionString("DevDocker");
+            }
+#endif
 
             if (connectionString != null && !connectionString.Contains("CommandTimeout")) { connectionString += $";CommandTimeout=900"; }
 
@@ -143,6 +150,7 @@ namespace cv19ResSupportV3
             services.AddScoped<IHelpRequestGateway, HelpRequestGateway>();
             services.AddScoped<IHelpRequestCallGateway, HelpRequestCallGateway>();
             services.AddScoped<IResidentGateway, ResidentGateway>();
+            services.AddScoped<ICallHandlerGateway, CallHandlerGateway>();
             services.AddScoped<ICaseNotesGateway, CaseNotesGateway>();
         }
 
@@ -176,6 +184,7 @@ namespace cv19ResSupportV3
             services.AddScoped<IPatchResidentHelpRequestUseCase, PatchResidentHelpRequestUseCase>();
             services.AddScoped<IGetCaseNotesByResidentIdUseCase, GetCaseNotesByResidentIdUseCase>();
             services.AddScoped<IGetCaseNotesByHelpRequestIdUseCase, GetCaseNotesByHelpRequestIdUseCase>();
+            services.AddScoped<IGetCallHandlersUseCase, GetCallHandlersUseCase>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
