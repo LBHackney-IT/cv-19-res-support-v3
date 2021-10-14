@@ -17,6 +17,7 @@ namespace cv19ResSupportV3.Tests.V3.Helpers
                 .Create();
             return helpRequestEntity;
         }
+
         public static HelpRequestEntity createHelpRequestEntity(int id = 1, int residentId = 1, string helpNeeded = "CallType", string helpNeededSubtype = "Repairs", CallHandlerEntity callHandler = null)
         {
             var helpRequestEntity = Randomm.Build<HelpRequestEntity>()
