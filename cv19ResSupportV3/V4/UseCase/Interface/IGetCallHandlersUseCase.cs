@@ -5,5 +5,7 @@ namespace cv19ResSupportV3.V4.UseCase.Interface
     public interface IGetCallHandlersUseCase
     {
         List<CallHandlerResponseBoundary> Execute();
+
+        CallHandlerResponseBoundary Execute(int id);
     }
 }

@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
 using cv19ResSupportV3.V3.Controllers;
-using cv19ResSupportV3.V3.Domain.Commands;
 using cv19ResSupportV3.V4.UseCase.Interface;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using cv19ResSupportV3.V4.UseCase.Interfaces;
+using cv19ResSupportV3.V3.UseCase.Interfaces;
 
 namespace cv19ResSupportV3.V4.Controllers
 {
@@ -18,13 +17,15 @@ namespace cv19ResSupportV3.V4.Controllers
     public class CallHandlersController : BaseController
     {
         private readonly IGetCallHandlersUseCase _getCallHandlersUseCase;
+        private readonly IUpsertCallHandlerUseCase _upsertCallHandlerUseCase;
 
         public CallHandlersController(
-             IGetCallHandlersUseCase getCallHandlersUseCase)
+             IGetCallHandlersUseCase getCallHandlersUseCase,
+             IUpsertCallHandlerUseCase upsertCallHandlerUseCase)
         {
             _getCallHandlersUseCase = getCallHandlersUseCase;
+            _upsertCallHandlerUseCase = upsertCallHandlerUseCase;
         }
-
 
         /// <summary>
         /// Gets all call handlers.
@@ -36,6 +37,55 @@ namespace cv19ResSupportV3.V4.Controllers
         {
             var response = _getCallHandlersUseCase.Execute();
             return Ok(response);
+        }
+
+        /// <summary>
+        /// Gets a call handler with the id specified.
+        /// </summary>
+        /// <param name="id" example="123">Call handler id</param>
+        /// <response code="200">Call handler is returned</response>
+        /// <response code="404">...</response>
+        [ProducesResponseType(typeof(CallHandlerResponseBoundary), StatusCodes.Status200OK)]
+        [HttpGet]
+        [Route("{id}")]
+        public IActionResult GetCallHandler(int id)
+        {
+            var response = _getCallHandlersUseCase.Execute(id);
+            if (response != null)
+                return Ok(response);
+            return (NotFound("Call handler not found"));
+        }
+
+        /// <summary>
+        /// Creates a call handler with the values provided.
+        /// </summary>
+        /// <response code="201">Call handler is created</response>
+        /// <response code="400">...</response>
+        [ProducesResponseType(typeof(CallHandlerResponseBoundary), StatusCodes.Status201Created)]
+        [HttpPut]
+        public IActionResult PutCallHandler(CallHandlerRequestBoundary request)
+        {
+            var response = _upsertCallHandlerUseCase.Execute(request);
+
+            if (response != null)
+                return Created(new Uri($"api/v4/call-handlers/{response.Id}", UriKind.Relative), response);
+
+            return (BadRequest("Call handler not created"));
+        }
+
+        /// <summary>
+        /// Creates a call handler with the values provided.
+        /// </summary>
+        /// <response code="201">Call handler is created</response>
+        /// <response code="400">...</response>
+        [ProducesResponseType(typeof(CallHandlerResponseBoundary), StatusCodes.Status201Created)]
+        [HttpPost]
+        public IActionResult CreateCallHandler(CallHandlerRequestBoundary request)
+        {
+            var response = _upsertCallHandlerUseCase.Execute(request);
+            if (response != null)
+                return Created(new Uri($"api/v4/call-handlers/{response.Id}", UriKind.Relative), response);
+            return (BadRequest("Call handler not created"));
         }
     }
 }

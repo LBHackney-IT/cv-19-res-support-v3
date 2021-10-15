@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
 using System.Collections.Generic;
+using cv19ResSupportV3.V3.UseCase.Interfaces;
 
 namespace cv19ResSupportV3.Tests.V4.Controllers
 {
@@ -18,12 +19,16 @@ namespace cv19ResSupportV3.Tests.V4.Controllers
     {
         private CallHandlersController _classUnderTest;
         private Mock<IGetCallHandlersUseCase> _getCallHandlersUseCase;
+        private Mock<IUpsertCallHandlerUseCase> _upsertCallHandlersUseCase;
 
         [SetUp]
         public void SetUp()
         {
             _getCallHandlersUseCase = new Mock<IGetCallHandlersUseCase>();
-            _classUnderTest = new CallHandlersController(_getCallHandlersUseCase.Object);
+            _upsertCallHandlersUseCase = new Mock<IUpsertCallHandlerUseCase>();
+            _classUnderTest = new CallHandlersController(
+                _getCallHandlersUseCase.Object,
+                _upsertCallHandlersUseCase.Object);
         }
 
         [Test]

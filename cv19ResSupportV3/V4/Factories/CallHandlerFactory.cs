@@ -32,5 +32,31 @@ namespace cv19ResSupportV3.V4.Factories
         {
             return callhandlers.Select(x => x.ToResponse()).ToList();
         }
+
+        public static CallHandlerEntity ToEntity(this CallHandler request)
+        {
+            return request.Id.HasValue
+                ? new CallHandlerEntity()
+                {
+                    Id = request.Id.Value,
+                    Name = request.Name,
+                    Email = request.Email,
+                }
+                : new CallHandlerEntity()
+                {
+                    Name = request.Name,
+                    Email = request.Email,
+                };
+        }
+
+        public static CallHandler ToDomain(this CallHandlerRequestBoundary callHandler)
+        {
+            return new CallHandler()
+            {
+                Id = callHandler.Id,
+                Name = callHandler.Name,
+                Email = callHandler.Email,
+            };
+        }
     }
 }

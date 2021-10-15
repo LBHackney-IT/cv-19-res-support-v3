@@ -1,8 +1,6 @@
-using System.Collections.Generic;
-
-namespace cv19ResSupportV3.V3.Domain
+namespace cv19ResSupportV3.V4
 {
-    public class CallHandler
+    public class CallHandlerRequestBoundary
     {
         public int? Id { get; set; }
         public string Name { get; set; }
