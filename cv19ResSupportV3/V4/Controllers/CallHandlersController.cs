@@ -5,6 +5,7 @@ using cv19ResSupportV3.V4.UseCase.Interface;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using cv19ResSupportV3.V3.UseCase.Interfaces;
+using cv19ResSupportV3.V4.Factories;
 
 namespace cv19ResSupportV3.V4.Controllers
 {
@@ -61,11 +62,11 @@ namespace cv19ResSupportV3.V4.Controllers
         /// </summary>
         /// <response code="201">Call handler is created</response>
         /// <response code="400">...</response>
-        [ProducesResponseType(typeof(CallHandlerResponseBoundary), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(CreatedResult), StatusCodes.Status201Created)]
         [HttpPut]
-        public IActionResult PutCallHandler(CallHandlerRequestBoundary request)
+        public IActionResult PutCallHandler(PutCallHandlerRequestBoundary request)
         {
-            var response = _upsertCallHandlerUseCase.Execute(request);
+            var response = _upsertCallHandlerUseCase.Execute(request.ToDomain());
 
             if (response != null)
                 return Created(new Uri($"api/v4/call-handlers/{response.Id}", UriKind.Relative), response);
@@ -78,14 +79,15 @@ namespace cv19ResSupportV3.V4.Controllers
         /// </summary>
         /// <response code="201">Call handler is created</response>
         /// <response code="400">...</response>
-        [ProducesResponseType(typeof(CallHandlerResponseBoundary), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(CreatedResult), StatusCodes.Status201Created)]
         [HttpPost]
-        public IActionResult CreateCallHandler(CallHandlerRequestBoundary request)
+        public IActionResult CreateCallHandler(CreateCallHandlerRequestBoundary request)
         {
-            var response = _upsertCallHandlerUseCase.Execute(request);
-            if (response != null)
-                return Created(new Uri($"api/v4/call-handlers/{response.Id}", UriKind.Relative), response);
-            return (BadRequest("Call handler not created"));
+            if (request == null) return (BadRequest("Call handler not created"));
+
+            var response = _upsertCallHandlerUseCase.Execute(request.ToDomain());
+
+            return Created(new Uri($"api/v4/call-handlers/{response.Id}", UriKind.Relative), response);
         }
     }
 }

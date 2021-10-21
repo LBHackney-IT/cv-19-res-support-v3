@@ -1,16 +1,17 @@
 using System.Collections.Generic;
 using cv19ResSupportV3.V3.Domain;
+using cv19ResSupportV3.V3.Domain.Commands;
 
 namespace cv19ResSupportV3.V3.Gateways
 {
     public interface ICallHandlerGateway
     {
-        List<CallHandler> GetCallHandlers();
+        List<CallHandlerResponse> GetCallHandlers();
 
-        CallHandler GetCallHandler(int id);
+        CallHandlerResponse GetCallHandler(int id);
 
-        CallHandler CreateCallHandler(CallHandler request);
+        CallHandlerResponse CreateCallHandler(CallHandlerCommand request);
 
-        CallHandler UpdateCallHandler(CallHandler request);
+        CallHandlerResponse UpdateCallHandler(CallHandlerCommand request);
     }
 }

@@ -5,6 +5,7 @@ using Amazon.Lambda.Core;
 using cv19ResSupportV3.V3.Domain;
 using cv19ResSupportV3.V4.Factories;
 using cv19ResSupportV3.V3.Infrastructure;
+using cv19ResSupportV3.V3.Domain.Commands;
 
 namespace cv19ResSupportV3.V3.Gateways
 {
@@ -17,7 +18,7 @@ namespace cv19ResSupportV3.V3.Gateways
             _helpRequestsContext = helpRequestsContext;
         }
 
-        public CallHandler GetCallHandler(int id)
+        public CallHandlerResponse GetCallHandler(int id)
         {
             try
             {
@@ -33,7 +34,7 @@ namespace cv19ResSupportV3.V3.Gateways
             }
         }
 
-        public List<CallHandler> GetCallHandlers()
+        public List<CallHandlerResponse> GetCallHandlers()
         {
             try
             {
@@ -49,7 +50,7 @@ namespace cv19ResSupportV3.V3.Gateways
             }
         }
 
-        public CallHandler UpdateCallHandler(CallHandler request)
+        public CallHandlerResponse UpdateCallHandler(CallHandlerCommand request)
         {
             if (request == null) return null;
 
@@ -68,7 +69,7 @@ namespace cv19ResSupportV3.V3.Gateways
             }
         }
 
-        public CallHandler CreateCallHandler(CallHandler request)
+        public CallHandlerResponse CreateCallHandler(CallHandlerCommand request)
         {
             var requestEntity = request?.ToEntity();
             if (requestEntity == null) return null;

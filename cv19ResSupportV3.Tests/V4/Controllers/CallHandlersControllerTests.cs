@@ -1,7 +1,6 @@
 using AutoFixture;
 using cv19ResSupportV3.V3.Domain;
 using cv19ResSupportV3.V3.Domain.Commands;
-using cv19ResSupportV3.V4.UseCase.Interfaces;
 using cv19ResSupportV3.V4;
 using cv19ResSupportV3.V4.Controllers;
 using cv19ResSupportV3.V4.UseCase.Interface;
@@ -49,6 +48,46 @@ namespace cv19ResSupportV3.Tests.V4.Controllers
                 .Returns(response);
             var result = _classUnderTest.GetCallHandlers() as OkObjectResult;
             result.StatusCode.Should().Be(200);
+        }
+
+        [Test]
+        public void CreateReturnsResponseWithStatus()
+        {
+            var request = new Fixture().Build<CreateCallHandlerRequestBoundary>().Create();
+            _upsertCallHandlersUseCase.Setup(uc => uc.Execute(It.IsAny<CallHandlerCommand>()))
+                .Returns(new CallHandlerResponse());
+            var response = _classUnderTest.CreateCallHandler(request) as CreatedResult;
+            response.StatusCode.Should().Be(201);
+        }
+
+        [Test]
+        public void CreateCallHandlerCallsUseCaseExecuteMethod()
+        {
+            var request = new Fixture().Build<CreateCallHandlerRequestBoundary>().Create();
+            _upsertCallHandlersUseCase.Setup(uc => uc.Execute(It.IsAny<CallHandlerCommand>()))
+                .Returns(new CallHandlerResponse());
+            _classUnderTest.CreateCallHandler(request);
+            _upsertCallHandlersUseCase.Verify(uc => uc.Execute(It.IsAny<CallHandlerCommand>()), Times.Once);
+        }
+
+        [Test]
+        public void PutReturnsResponseWithStatus()
+        {
+            var request = new Fixture().Build<PutCallHandlerRequestBoundary>().Create();
+            _upsertCallHandlersUseCase.Setup(uc => uc.Execute(It.IsAny<CallHandlerCommand>()))
+                .Returns(new CallHandlerResponse());
+            var response = _classUnderTest.PutCallHandler(request) as CreatedResult;
+            response.StatusCode.Should().Be(201);
+        }
+
+        [Test]
+        public void PutCallHandlerCallsUseCaseExecuteMethod()
+        {
+            var request = new Fixture().Build<PutCallHandlerRequestBoundary>().Create();
+            _upsertCallHandlersUseCase.Setup(uc => uc.Execute(It.IsAny<CallHandlerCommand>()))
+                .Returns(new CallHandlerResponse());
+            _classUnderTest.PutCallHandler(request);
+            _upsertCallHandlersUseCase.Verify(uc => uc.Execute(It.IsAny<CallHandlerCommand>()), Times.Once);
         }
     }
 }
