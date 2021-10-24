@@ -88,5 +88,30 @@ namespace cv19ResSupportV3.V3.Gateways
                 throw;
             }
         }
+
+        public bool DeleteCallHandler(int id)
+        {
+            try
+            {
+                var callHandler = _helpRequestsContext.CallHandlerEntities.Find(id);
+
+                if (callHandler == null) return false;
+
+                foreach(var ch in _helpRequestsContext.HelpRequestEntities.Where(x => x.CallHandlerId == id))
+                {
+                    ch.CallHandlerId = null;
+                }
+
+                _helpRequestsContext.CallHandlerEntities.Remove(callHandler);
+
+                return _helpRequestsContext.SaveChanges() > 0;
+            }
+            catch (Exception e)
+            {
+                LambdaLogger.Log($"{nameof(DeleteCallHandler)} error: ");
+                LambdaLogger.Log(e.Message);
+                throw;
+            }
+        }
     }
 }

@@ -19,13 +19,16 @@ namespace cv19ResSupportV3.V4.Controllers
     {
         private readonly IGetCallHandlersUseCase _getCallHandlersUseCase;
         private readonly IUpsertCallHandlerUseCase _upsertCallHandlerUseCase;
+        private readonly IDeleteCallHandlerUseCase _deleteCallHandlerUseCase;
 
         public CallHandlersController(
              IGetCallHandlersUseCase getCallHandlersUseCase,
-             IUpsertCallHandlerUseCase upsertCallHandlerUseCase)
+             IUpsertCallHandlerUseCase upsertCallHandlerUseCase,
+             IDeleteCallHandlerUseCase deleteCallHandlerUseCase)
         {
             _getCallHandlersUseCase = getCallHandlersUseCase;
             _upsertCallHandlerUseCase = upsertCallHandlerUseCase;
+            _deleteCallHandlerUseCase = deleteCallHandlerUseCase;
         }
 
         /// <summary>
@@ -58,11 +61,11 @@ namespace cv19ResSupportV3.V4.Controllers
         }
 
         /// <summary>
-        /// Creates a call handler with the values provided.
+        /// Updates a call handler with the values provided.
         /// </summary>
-        /// <response code="201">Call handler is created</response>
+        /// <response code="200">Call handler is updated</response>
         /// <response code="400">...</response>
-        [ProducesResponseType(typeof(CreatedResult), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(OkResult), StatusCodes.Status200OK)]
         [HttpPut]
         public IActionResult PutCallHandler(PutCallHandlerRequestBoundary request)
         {
@@ -70,7 +73,7 @@ namespace cv19ResSupportV3.V4.Controllers
 
             var response = _upsertCallHandlerUseCase.Execute(request.ToDomain());
 
-            return Created(new Uri($"api/v4/call-handlers/{response.Id}", UriKind.Relative), response);
+            return Ok(response);
         }
 
         /// <summary>
@@ -87,6 +90,25 @@ namespace cv19ResSupportV3.V4.Controllers
             var response = _upsertCallHandlerUseCase.Execute(request.ToDomain());
 
             return Created(new Uri($"api/v4/call-handlers/{response.Id}", UriKind.Relative), response);
+        }
+
+        /// <summary>
+        /// Deletes a call handler and unassigns assigned calls.
+        /// </summary>
+        /// <response code="200">Call handler is deleted</response>
+        /// <response code="400">...</response>
+        [ProducesResponseType(typeof(OkResult), StatusCodes.Status200OK)]
+        [HttpDelete]
+        public IActionResult DeleteCallHandler(int id)
+        {
+            if (_deleteCallHandlerUseCase.Execute(id))
+            {
+                return Ok(true);
+            }
+            else
+            {
+                return BadRequest("Call handler not deleted.");
+            }
         }
     }
 }

@@ -13,5 +13,7 @@ namespace cv19ResSupportV3.V3.Gateways
         CallHandlerResponse CreateCallHandler(CallHandlerCommand request);
 
         CallHandlerResponse UpdateCallHandler(CallHandlerCommand request);
+
+        bool DeleteCallHandler(int id);
     }
 }

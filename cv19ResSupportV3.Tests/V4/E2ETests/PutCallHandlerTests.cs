@@ -50,7 +50,7 @@ namespace cv19ResSupportV3.Tests.V4.E2ETests
             var stringContent = await content.ReadAsStringAsync().ConfigureAwait(true);
 
             // Assert
-            statusCode.Should().Be(201);
+            statusCode.Should().Be(200);
             var convertedResponse = JsonConvert.DeserializeObject<CallHandlerResponseBoundary>(stringContent);
             var callHandlerEntity = DatabaseContext.CallHandlerEntities.FirstOrDefault(x => x.Id == _testId);
             convertedResponse.Should().BeEquivalentTo(requestObject);
