@@ -66,12 +66,11 @@ namespace cv19ResSupportV3.V4.Controllers
         [HttpPut]
         public IActionResult PutCallHandler(PutCallHandlerRequestBoundary request)
         {
+            if (request == null) return (BadRequest("Call handler not created"));
+
             var response = _upsertCallHandlerUseCase.Execute(request.ToDomain());
 
-            if (response != null)
-                return Created(new Uri($"api/v4/call-handlers/{response.Id}", UriKind.Relative), response);
-
-            return (BadRequest("Call handler not created"));
+            return Created(new Uri($"api/v4/call-handlers/{response.Id}", UriKind.Relative), response);
         }
 
         /// <summary>
