@@ -99,7 +99,8 @@ namespace cv19ResSupportV3.V4.Controllers
         /// <response code="400">...</response>
         [ProducesResponseType(typeof(OkResult), StatusCodes.Status200OK)]
         [HttpDelete]
-        public IActionResult DeleteCallHandler(int id)
+        [Route("{id}")]
+        public IActionResult DeleteCallHandler([FromRoute(Name = "id")] int id)
         {
             if (_deleteCallHandlerUseCase.Execute(id))
             {
