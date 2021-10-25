@@ -35,11 +35,11 @@ namespace cv19ResSupportV3.V4.Factories
 
         public static CallHandlerEntity ToEntity(this CallHandlerCommand request)
             => request.Id.HasValue ? new CallHandlerEntity()
-             {
-                 Id = request.Id.Value,
-                 Name = request.Name,
-                 Email = request.Email,
-             }
+            {
+                Id = request.Id.Value,
+                Name = request.Name,
+                Email = request.Email,
+            }
              : new CallHandlerEntity()
              {
                  Name = request.Name,

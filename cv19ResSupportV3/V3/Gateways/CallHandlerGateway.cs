@@ -97,7 +97,7 @@ namespace cv19ResSupportV3.V3.Gateways
 
                 if (callHandler == null) return false;
 
-                foreach(var ch in _helpRequestsContext.HelpRequestEntities.Where(x => x.CallHandlerId == id))
+                foreach (var ch in _helpRequestsContext.HelpRequestEntities.Where(x => x.CallHandlerId == id))
                 {
                     ch.CallHandlerId = null;
                 }

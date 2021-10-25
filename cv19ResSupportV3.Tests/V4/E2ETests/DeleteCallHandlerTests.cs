@@ -47,7 +47,7 @@ namespace cv19ResSupportV3.Tests.V4.E2ETests
 
             // Assert
             statusCode.Should().Be(200);
-           
+
             var callHandlerEntity = DatabaseContext.CallHandlerEntities.FirstOrDefault();
             var helpRequestEntity = DatabaseContext.HelpRequestEntities.FirstOrDefault(x => x.CallHandlerId == testId);
 
