@@ -46,16 +46,6 @@ namespace cv19ResSupportV3.V4.Factories
                  Email = request.Email,
              };
 
-        //public static CallHandlerResponse ToDomain(this CallHandlerCommand command)
-        //{
-        //    return new CallHandlerResponse()
-        //    {
-        //        Id = command.Id.Value,
-        //        Name = command.Name,
-        //        Email = command.Email,
-        //    };
-        //}
-
         public static CallHandlerCommand ToDomain(this CreateCallHandlerRequestBoundary request)
             => new CallHandlerCommand()
             {
