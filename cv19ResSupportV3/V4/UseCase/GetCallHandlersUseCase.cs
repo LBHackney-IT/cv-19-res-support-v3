@@ -13,7 +13,7 @@ namespace cv19ResSupportV3.V4.UseCase
         {
             _gateway = gateway;
         }
-        
+
         public List<CallHandlerResponseBoundary> Execute()
         {
             var gwResponse = _gateway.GetCallHandlers();
