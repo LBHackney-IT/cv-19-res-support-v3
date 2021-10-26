@@ -6,6 +6,14 @@ namespace cv19ResSupportV3.V3.Gateways
 {
     public interface ICallHandlerGateway
     {
-        List<CallHandler> GetCallHandlers();
+        List<CallHandlerResponse> GetCallHandlers();
+
+        CallHandlerResponse GetCallHandler(int id);
+
+        CallHandlerResponse CreateCallHandler(CallHandlerCommand request);
+
+        CallHandlerResponse UpdateCallHandler(CallHandlerCommand request);
+
+        bool DeleteCallHandler(int id);
     }
 }

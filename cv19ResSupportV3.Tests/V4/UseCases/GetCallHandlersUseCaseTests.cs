@@ -28,7 +28,7 @@ namespace cv19ResSupportV3.Tests.V4.UseCases
         [Test]
         public void ExecuteMethodCallsCallHandlerGateway()
         {
-            var gatewayResponse = new Fixture().Build<List<CallHandler>>().Create();
+            var gatewayResponse = new Fixture().Build<List<CallHandlerResponse>>().Create();
             _mockGateway.Setup(gw => gw.GetCallHandlers()).Returns(gatewayResponse);
             var response = _classUnderTest.Execute();
             _mockGateway.Verify(uc => uc.GetCallHandlers(), Times.Once);
