@@ -31,12 +31,6 @@ namespace cv19ResSupportV3.V4.Controllers
             _deleteCallHandlerUseCase = deleteCallHandlerUseCase;
         }
 
-        public CallHandlersController(
-             IGetCallHandlersUseCase getCallHandlersUseCase)
-        {
-            _getCallHandlersUseCase = getCallHandlersUseCase;
-        }
-
         /// <summary>
         /// Gets all call handlers.
         /// </summary>
@@ -48,7 +42,7 @@ namespace cv19ResSupportV3.V4.Controllers
             var response = _getCallHandlersUseCase.Execute();
             return Ok(response);
         }
-        
+
         /// <summary>
         /// Gets a call handler with the id specified.
         /// </summary>
