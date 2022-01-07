@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using Bogus;
 using System.Linq;
+using System;
 
 namespace cv19ResSupportV3.Tests.V3.Gateways
 {
@@ -458,6 +459,54 @@ namespace cv19ResSupportV3.Tests.V3.Gateways
 
             // duplicate should have been found
             isResidentDuplicate.Should().BeFalse();
+        }
+
+        // If the database contains a resident with matching name that has a help case (help request) with a "null" NhsCtasId
+        // Then upon trying to trim it & change its case, it should not fail with NullReferenceException.
+        [Test]
+        public void FindResidentShouldNotThrowExceptionWhenEncounteringNullCtasIdWithinDatabase()
+        {
+            //// arrange
+
+            // create matching name data
+            var matchingFirstName = _faker.Random.Hash();
+            var matchingLastName = _faker.Random.Hash();
+
+            // create a request object
+            var searchParameters = new FindResident
+            {
+                FirstName = matchingFirstName,
+                LastName = matchingLastName,
+                NhsCtasId = _faker.Random.AlphaNumeric(8)
+            };
+
+            // create a matching resident object
+            var duplicateResident = EntityHelpers.createResident(id: _faker.Random.Int(10, 1000));
+            duplicateResident.FirstName = matchingFirstName;
+            duplicateResident.LastName = matchingLastName;
+
+            // create a hc entity without set CTAS id
+            var nullNhsCtasIdHelpCase = EntityHelpers.createHelpRequestEntity(
+                id: _faker.Random.Int(100, 1000),
+                residentId: duplicateResident.Id);
+
+            // NhsCtasId unset in the database
+            nullNhsCtasIdHelpCase.NhsCtasId = null;
+
+            DatabaseContext.ResidentEntities.Add(duplicateResident);
+            DatabaseContext.HelpRequestEntities.Add(nullNhsCtasIdHelpCase);
+            DatabaseContext.SaveChanges();
+
+
+            //// act
+
+            Action dupeSearch = () => _classUnderTest.FindResident(searchParameters);
+
+
+            //// assert
+
+            // The check for matching NhsCtasIds should not throw 
+            dupeSearch.Should().NotThrow<NullReferenceException>();
         }
 
         // If NHS number rule returns no match &
