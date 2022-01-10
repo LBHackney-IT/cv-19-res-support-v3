@@ -218,7 +218,7 @@ namespace cv19ResSupportV3.V3.Gateways
                             .Include(r => r.HelpRequests)
                             .AsEnumerable()
                             .FirstOrDefault(r =>
-                                r.HelpRequests.Exists(hr => hr.NhsCtasId.Trim().ToUpper() == command.NhsCtasId.Trim().ToUpper()));
+                                r.HelpRequests.Exists(hr => hr.NhsCtasId?.Trim()?.ToUpper() == command.NhsCtasId.Trim().ToUpper()));
 
                         if (matchingResident != null) return matchingResident.Id;
                     }
