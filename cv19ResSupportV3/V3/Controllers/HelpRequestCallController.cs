@@ -24,6 +24,7 @@ namespace cv19ResSupportV3.V3.Controllers
         /// Creates a call with the values provided.
         /// </summary>
         /// <param name="id" example="123">Help request id</param>
+        /// <param name="request"></param>
         /// <response code="201">Call is created</response>
         [ProducesResponseType(typeof(HelpRequestCreateResponse), StatusCodes.Status201Created)]
         [HttpPost]
@@ -37,7 +38,7 @@ namespace cv19ResSupportV3.V3.Controllers
                 var result = new HelpRequestCallCreateResponse() { Id = callId };
                 return Created(new Uri($"api/v3/help-requests/{id}/calls/{callId}", UriKind.Relative), result);
             }
-            catch (InvalidOperationException e)
+            catch (InvalidOperationException)
             {
                 return NotFound($"Record with id {id} not found");
             }
