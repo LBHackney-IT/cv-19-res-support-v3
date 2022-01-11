@@ -83,6 +83,7 @@ namespace cv19ResSupportV3.V3.Controllers
         /// Updates an existing record with the values specified.  This only updates specified editable fields
         /// </summary>
         /// <param name="id" example="123">Help request id</param>
+        /// <param name="request"></param>
         /// <response code="200">The record has been updated</response>
         /// <response code="400">There was an issue updating the record.</response>
         [HttpPatch]
