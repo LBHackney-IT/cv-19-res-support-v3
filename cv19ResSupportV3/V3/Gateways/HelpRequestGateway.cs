@@ -68,7 +68,7 @@ namespace cv19ResSupportV3.V3.Gateways
             {
                 propertyInfo = metadata.GetProperty(propertyName).ToString();
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return null;
             };
@@ -97,7 +97,7 @@ namespace cv19ResSupportV3.V3.Gateways
             {
                 propertyInfo = metadata.GetProperty(propertyName).ToString();
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return null;
             };

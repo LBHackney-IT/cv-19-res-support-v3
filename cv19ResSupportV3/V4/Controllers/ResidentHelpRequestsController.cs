@@ -40,6 +40,7 @@ namespace cv19ResSupportV3.V4.Controllers
         /// Creates a resident help request with the values provided.
         /// </summary>
         /// <param name="id" example="123">Resident id</param>
+        /// <param name="request"></param>
         /// <response code="201">Help request is created</response>
         [ProducesResponseType(typeof(ResidentHelpRequestResponse), StatusCodes.Status201Created)]
         [HttpPost]
@@ -53,7 +54,8 @@ namespace cv19ResSupportV3.V4.Controllers
         /// Gets a resident help request with the id specified.
         /// </summary>
         /// <param name="id" example="123">Resident id</param>
-        /// <param name="help-request-id" example="456">Help request id</param>
+        /// <param name="helpRequestId"></param>
+        /// <param name="includeType"></param>
         /// <response code="200">Help request is returned</response>
         /// <response code="404">...</response>
         [ProducesResponseType(typeof(ResidentHelpRequestResponse), StatusCodes.Status200OK)]
@@ -74,6 +76,7 @@ namespace cv19ResSupportV3.V4.Controllers
         /// Gets a collection of help requests for a resident with the id specified.
         /// </summary>
         /// <param name="id" example="123">Resident id</param>
+        /// <param name="includeType"></param>
         /// <response code="200">List of help requests is returned</response>
         /// <response code="404">...</response>
         [ProducesResponseType(typeof(List<ResidentHelpRequestResponse>), StatusCodes.Status200OK)]
@@ -92,7 +95,8 @@ namespace cv19ResSupportV3.V4.Controllers
         /// Updates a help request with the id specified.
         /// </summary>
         /// <param name="id" example="123">Resident id</param>
-        /// <param name="help-request-id" example="456">Help request id</param>
+        /// <param name="helpRequestId"></param>
+        /// <param name="request"></param>
         /// <response code="200">Help request is updated</response>
         /// <response code="404">...</response>
         [ProducesResponseType(typeof(ResidentResponseBoundary), StatusCodes.Status200OK)]

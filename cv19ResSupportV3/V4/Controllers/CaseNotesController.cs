@@ -36,8 +36,9 @@ namespace cv19ResSupportV3.V4.Controllers
         /// <summary>
         /// Creates a case note with the values provided.
         /// </summary>
-        /// <param name="id" example="123">Resident id</param>
-        /// <param name="help-request-id" example="456">Help request id</param>
+        /// <param name="residentId" example="123">Resident id</param>
+        /// <param name="helpRequestId" example="456">Help request id</param>
+        /// <param name="caseNote"></param>
         /// <response code="201">...</response>
         [ProducesResponseType(typeof(CaseNoteResponse), StatusCodes.Status201Created)]
         [HttpPost]
@@ -52,7 +53,8 @@ namespace cv19ResSupportV3.V4.Controllers
         /// <summary>
         /// Returns case notes belonging to the resident
         /// </summary>
-        /// <param name="id" example="123">Resident id</param>
+        /// <param name="residentId" example="123">Resident id</param>
+        /// <param name="includeType"></param>
         /// <response code="200">...</response>
         [ProducesResponseType(typeof(List<CaseNoteResponse>), StatusCodes.Status201Created)]
         [HttpGet]
@@ -66,8 +68,9 @@ namespace cv19ResSupportV3.V4.Controllers
         /// <summary>
         /// Returns case notes belonging to the help request
         /// </summary>
-        /// <param name="id" example="123">Resident id</param>
-        /// <param name="help-request-id" example="456">Help request id</param>
+        /// <param name="residentId" example="123">Resident id</param>
+        /// <param name="helpRequestId" example="456">Help request id</param>
+        /// <param name="includeType"></param>
         /// <response code="200">...</response>
         [ProducesResponseType(typeof(List<CaseNoteResponse>), StatusCodes.Status201Created)]
         [HttpGet]
