@@ -85,6 +85,7 @@ namespace cv19ResSupportV3.V4.Controllers
         /// Updates a resident with the id specified.
         /// </summary>
         /// <param name="id" example="123">Resident id</param>
+        /// <param name="request"></param>
         /// <response code="200">Resident has been updated</response>
         /// <response code="404">...</response>
         [ProducesResponseType(typeof(ResidentResponseBoundary), StatusCodes.Status200OK)]
